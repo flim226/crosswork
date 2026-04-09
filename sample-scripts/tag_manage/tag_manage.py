@@ -4,6 +4,8 @@
 import argparse
 import json
 import sys
+from urllib.parse import quote_plus
+
 import requests
 import urllib3
 
@@ -24,7 +26,7 @@ class CncClient:
         form_headers = {"Content-Type": "application/x-www-form-urlencoded"}
         resp = requests.post(
             f"{self.base}/crosswork/sso/v1/tickets",
-            data=f"username={username}&password={password}",
+            data=f"username={quote_plus(username)}&password={quote_plus(password)}",
             headers=form_headers, verify=False,
         )
         resp.raise_for_status()
