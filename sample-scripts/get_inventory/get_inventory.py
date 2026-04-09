@@ -198,21 +198,21 @@ def display_inventory(data: dict):
             
             # Display chassis first
             for eq in chassis:
-                name = eq.get("fdtn.name", "N/A")[:40]
-                eq_type = eq.get("eq.equipment-type", "N/A")[:15]
-                product = eq.get("eq.product-id", "N/A")[:25]
-                serial = eq.get("eq.serial-number", "N/A")[:20]
-                status = eq.get("eq.operational-state-code", "N/A")[:10]
+                name = str(eq.get("fdtn.name", "N/A"))[:40]
+                eq_type = str(eq.get("eq.equipment-type", "N/A"))[:15]
+                product = str(eq.get("eq.product-id", "N/A"))[:25]
+                serial = str(eq.get("eq.serial-number", "N/A"))[:20]
+                status = str(eq.get("eq.operational-state-code", "N/A"))[:10]
                 print(f"    {name:<40} {eq_type:<15} {product:<25} {serial:<20} {status:<10}")
             
             # Display modules (limit to 10)
             if modules:
                 print(f"\n    Modules ({len(modules)}):")
                 for eq in modules[:10]:
-                    name = eq.get("fdtn.name", "N/A")[:40]
-                    product = eq.get("eq.product-id", "N/A")[:25]
-                    serial = eq.get("eq.serial-number", "N/A")[:20]
-                    status = eq.get("eq.operational-state-code", "N/A")[:10]
+                    name = str(eq.get("fdtn.name", "N/A"))[:40]
+                    product = str(eq.get("eq.product-id", "N/A"))[:25]
+                    serial = str(eq.get("eq.serial-number", "N/A"))[:20]
+                    status = str(eq.get("eq.operational-state-code", "N/A"))[:10]
                     print(f"      {name:<40} {product:<25} {serial:<20} {status:<10}")
                 if len(modules) > 10:
                     print(f"      ... and {len(modules) - 10} more modules")
@@ -221,10 +221,10 @@ def display_inventory(data: dict):
             if power:
                 print(f"\n    Power Supplies ({len(power)}):")
                 for eq in power:
-                    name = eq.get("fdtn.name", "N/A")[:40]
-                    product = eq.get("eq.product-id", "N/A")[:25]
-                    serial = eq.get("eq.serial-number", "N/A")[:20]
-                    status = eq.get("eq.operational-state-code", "N/A")[:10]
+                    name = str(eq.get("fdtn.name", "N/A"))[:40]
+                    product = str(eq.get("eq.product-id", "N/A"))[:25]
+                    serial = str(eq.get("eq.serial-number", "N/A"))[:20]
+                    status = str(eq.get("eq.operational-state-code", "N/A"))[:10]
                     print(f"      {name:<40} {product:<25} {serial:<20} {status:<10}")
             
             # Display fans (summary)
@@ -239,11 +239,11 @@ def display_inventory(data: dict):
             print(f"    {'Name':<35} {'Admin':<10} {'Oper':<10} {'Speed':<15} {'Type':<20}")
             print(f"    {'-'*35} {'-'*10} {'-'*10} {'-'*15} {'-'*20}")
             for intf in interfaces[:20]:
-                name = intf.get("fdtn.name", "N/A")[:35]
-                admin = intf.get("intf.admin-status", "N/A")[:10]
-                oper = intf.get("intf.oper-status", "N/A")[:10]
-                speed = intf.get("intf.speed", "N/A")[:15]
-                intf_type = intf.get("intf.type", "N/A")[:20]
+                name = str(intf.get("fdtn.name", "N/A"))[:35]
+                admin = str(intf.get("intf.admin-status", "N/A"))[:10]
+                oper = str(intf.get("intf.oper-status", "N/A"))[:10]
+                speed = str(intf.get("intf.speed", "N/A"))[:15]
+                intf_type = str(intf.get("intf.type", "N/A"))[:20]
                 print(f"    {name:<35} {admin:<10} {oper:<10} {speed:<15} {intf_type:<20}")
             if len(interfaces) > 20:
                 print(f"    ... and {len(interfaces) - 20} more interfaces")
