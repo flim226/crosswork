@@ -16,6 +16,7 @@ import subprocess
 import sys
 
 import os
+from urllib.parse import quote_plus
 
 import graphviz
 import requests
@@ -48,7 +49,7 @@ def get_auth_token(ip: str, username: str, password: str, port: int) -> str:
 
     # Step 1: Get TGT ticket
     auth_url = f"{base_url}/crosswork/sso/v1/tickets"
-    payload = f"username={username}&password={password}"
+    payload = f"username={quote_plus(username)}&password={quote_plus(password)}"
 
     response = requests.post(auth_url, data=payload, headers=headers, verify=False)
     response.raise_for_status()

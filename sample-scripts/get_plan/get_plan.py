@@ -9,6 +9,7 @@ import requests
 import base64
 import urllib3
 from datetime import datetime
+from urllib.parse import quote_plus
 
 # Disable SSL warnings for self-signed certificates
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -18,7 +19,7 @@ def get_auth_ticket(ip: str, username: str, password: str) -> str:
     """Authenticate and get a ticket from Crosswork."""
     # Step 1: Get TGT ticket
     auth_url = f"https://{ip}:30603/crosswork/sso/v1/tickets"
-    payload = f"username={username}&password={password}"
+    payload = f"username={quote_plus(username)}&password={quote_plus(password)}"
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
     
     response = requests.post(auth_url, data=payload, headers=headers, verify=False)
