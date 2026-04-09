@@ -5,6 +5,7 @@ import os
 import subprocess
 import sys
 from typing import Dict, List, Optional, Tuple
+from urllib.parse import quote_plus
 
 import requests
 import urllib3
@@ -55,7 +56,7 @@ def get_auth_ticket(session: requests.Session, ip: str, username: str, password:
     """Authenticate and get a ticket from Crosswork."""
     # Step 1: Get TGT ticket
     auth_url = f"https://{ip}:30603/crosswork/sso/v1/tickets"
-    payload = f"username={username}&password={password}"
+    payload = f"username={quote_plus(username)}&password={quote_plus(password)}"
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
 
     response = session.post(auth_url, data=payload, headers=headers)
