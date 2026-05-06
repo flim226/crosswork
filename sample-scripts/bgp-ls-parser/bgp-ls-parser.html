@@ -186,20 +186,24 @@
 <body>
 
 <h1>🔍 BGP-LS Parser</h1>
-<p class="subtitle">Paste <code>show bgp link-state link-state</code> output to parse IS-IS prefix and SR Policy NLRIs</p>
+<p class="subtitle">Paste <code>show bgp link-state link-state</code> or <code>show lslib server topology-db</code> output to parse Nodes, Links, Prefixes, and SR Policy NLRIs</p>
 
 <textarea id="input" placeholder="Paste BGP-LS output here...
 Example: *> [SP][SR][I0x0][N[c0][b0.0.0.0][te39.39.39.39]][C[po0x3][f0x0][e66.66.66.66][cl0xf7e][as0][oa0.0.0.0][di100]]/536"></textarea>
 
 <div class="toolbar">
-  <button onclick="parse()">Parse</button>
+  <button class="secondary" onclick="document.getElementById('fileInput').click()">Load File</button>
+  <input type="file" id="fileInput" accept=".txt,.log" style="display:none" onchange="loadFile(event)">
   <button class="secondary" onclick="loadSample()">Load Sample</button>
+  <button onclick="parse()">Parse</button>
   <button class="secondary" onclick="clearAll()">Clear</button>
   <div class="filter-group">
     <label>Filter:</label>
     <input type="text" id="filterText" placeholder="IP, color, headend..." oninput="applyFilter()">
     <select id="filterType" onchange="applyFilter()">
       <option value="all">All Types</option>
+      <option value="node">Node</option>
+      <option value="link">Link</option>
       <option value="prefix">Prefix</option>
       <option value="sr-policy">SR Policy</option>
     </select>
@@ -214,6 +218,8 @@ Example: *> [SP][SR][I0x0][N[c0][b0.0.0.0][te39.39.39.39]][C[po0x3][f0x0][e66.66
 
 <div id="output">
   <div class="stats" id="stats"></div>
+  <div id="nodeSection"></div>
+  <div id="linkSection"></div>
   <div id="prefixSection"></div>
   <div id="policySection"></div>
 </div>
@@ -224,42 +230,19 @@ Example: *> [SP][SR][I0x0][N[c0][b0.0.0.0][te39.39.39.39]][C[po0x3][f0x0][e66.66
 </div>
 
 <script>
-const SAMPLE = `RP/0/RP0/CPU0:SR-PCE-48#show bgp link-state link-state | inc 66.66.66.66
-Tue Mar 24 10:39:14.584 CET
-* i[T][L2][I0x65][N[c100][b0.0.0.0][s0000.0000.6666.00]][P[p66.66.66.66/32]]/400
-*> [SP][SR][I0x0][N[c0][b0.0.0.0][te0.0.0.0]][C[po0x2][f0x0][e66.66.66.66][cl0x47][as0][oa0.0.0.0][di100]]/536
-*> [SP][SR][I0x0][N[c0][b0.0.0.0][te39.39.39.39]][C[po0x3][f0x0][e66.66.66.66][cl0xf7e][as0][oa0.0.0.0][di10]]/536
-*> [SP][SR][I0x0][N[c0][b0.0.0.0][te39.39.39.39]][C[po0x3][f0x0][e66.66.66.66][cl0xf7e][as0][oa0.0.0.0][di11]]/536
-*> [SP][SR][I0x0][N[c0][b0.0.0.0][te64.64.64.64]][C[po0x1][f0x0][e66.66.66.66][cl0x7d0][as0][oa48.48.48.48][di100]]/536
-*> [SP][SR][I0x0][N[c0][b0.0.0.0][te64.64.64.64]][C[po0x1][f0x0][e66.66.66.66][cl0x7d1][as0][oa48.48.48.48][di100]]/536
-*>i[SP][SR][I0x0][N[c100][b0.0.0.0][q39.39.39.39][te39.39.39.39]][C[po0x3][f0x0][e66.66.66.66][cl0xf7e][as0][oa0.0.0.0][di10]]/600
-*>i[SP][SR][I0x0][N[c100][b0.0.0.0][q39.39.39.39][te39.39.39.39]][C[po0x3][f0x0][e66.66.66.66][cl0xf7e][as0][oa0.0.0.0][di11]]/600
-*>i[SP][SR][I0x0][N[c100][b0.0.0.0][q66.66.66.66][te66.66.66.66]][C[po0xfb][f0x0][e50.50.50.50][cl0x7d0][as60][oa66.66.66.66][di100]]/600
-                      66.66.66.66                   100      0 i
-*>i[SP][SR][I0x0][N[c100][b0.0.0.0][q66.66.66.66][teaaaa:aaaa:0:0:66::]][C[po0x2][f0x0][e46.46.46.46][cl0x47][as0][oa0.0.0.0][di100]]/696
-                      66.66.66.66                   100      0 i
-*>i[SP][SR][I0x0][N[c100][b0.0.0.0][q66.66.66.66][teaaaa:aaaa:0:0:66::]][C[po0x2][f0x0][e46.46.46.46][cl0x47][as0][oa0.0.0.0][di200]]/696
-                      66.66.66.66                   100      0 i
-*>i[SP][SR][I0x0][N[c100][b0.0.0.0][q66.66.66.66][teaaaa:aaaa:0:0:66::]][C[po0x2][f0x0][e50.50.50.50][cl0x47][as0][oa0.0.0.0][di100]]/696
-                      66.66.66.66                   100      0 i
-*>i[SP][SR][I0x0][N[c100][b0.0.0.0][q66.66.66.66][teaaaa:aaaa:0:0:66::]][C[po0x2][f0x0][e50.50.50.50][cl0x47][as0][oa0.0.0.0][di200]]/696
-                      66.66.66.66                   100      0 i
-*>i[SP][SR][I0x0][N[c100][b0.0.0.0][q66.66.66.66][teaaaa:aaaa:0:0:66::]][C[po0x2][f0x0][e64.64.64.64][cl0x47][as0][oa0.0.0.0][di100]]/696
-                      66.66.66.66                   100      0 i
-*>i[SP][SR][I0x0][N[c100][b0.0.0.0][q66.66.66.66][teaaaa:aaaa:0:0:66::]][C[po0x2][f0x0][e64.64.64.64][cl0x47][as0][oa0.0.0.0][di200]]/696
-                      66.66.66.66                   100      0 i
-*>i[SP][SR][I0x0][N[c100][b0.0.0.0][q66.66.66.66][teaaaa:aaaa:0:0:66::]][C[po0x2][f0x80][eaaaa:aaaa:0:0:46::][cl0x47][as0][oa0.0.0.0][di100]]/792
-                      66.66.66.66                   100      0 i
-*>i[SP][SR][I0x0][N[c100][b0.0.0.0][q66.66.66.66][teaaaa:aaaa:0:0:66::]][C[po0x2][f0x80][eaaaa:aaaa:0:0:46::][cl0x47][as0][oa0.0.0.0][di200]]/792
-                      66.66.66.66                   100      0 i
-*>i[SP][SR][I0x0][N[c100][b0.0.0.0][q66.66.66.66][teaaaa:aaaa:0:0:66::]][C[po0x2][f0x80][eaaaa:aaaa:0:0:50::][cl0x47][as0][oa0.0.0.0][di100]]/792
-                      66.66.66.66                   100      0 i
-*>i[SP][SR][I0x0][N[c100][b0.0.0.0][q66.66.66.66][teaaaa:aaaa:0:0:66::]][C[po0x2][f0x80][eaaaa:aaaa:0:0:50::][cl0x47][as0][oa0.0.0.0][di200]]/792
-                      66.66.66.66                   100      0 i
-*>i[SP][SR][I0x0][N[c100][b0.0.0.0][q66.66.66.66][teaaaa:aaaa:0:0:66::]][C[po0x2][f0x80][eaaaa:aaaa:0:0:64::][cl0x47][as0][oa0.0.0.0][di100]]/792
-                      66.66.66.66                   100      0 i
-*>i[SP][SR][I0x0][N[c100][b0.0.0.0][q66.66.66.66][teaaaa:aaaa:0:0:66::]][C[po0x2][f0x80][eaaaa:aaaa:0:0:64::][cl0x47][as0][oa0.0.0.0][di200]]/792
-                      66.66.66.66                   100      0 i`;
+const SAMPLE = `RP/0/RP0/CPU0:srpc-lab-01#show lslib server topology-db
+Mon May  4 16:26:59.068 EEST
+
+Prefix codes: E link, V node, T IP reachable route, S SRv6 SID, SP SRTE Policy, u/U unknown
+              I Identifier, N local node, R remote node, L link, P prefix, S SID, C candidate path
+  [V][L2][I0x64][N[c0][b0.0.0.0][s1010.0000.0001.00]]/328
+  [V][L2][I0x64][N[c0][b0.0.0.0][s1010.0000.0002.00]]/328
+  [E][L2][I0x64][N[c0][b0.0.0.0][s1010.0000.0001.00]][R[c0][b0.0.0.0][s1010.0000.0002.00]][L[i172.16.3.54][n172.16.3.55]]/696
+  [E][L2][I0x64][N[c0][b0.0.0.0][s1010.0000.0002.00]][R[c0][b0.0.0.0][s1010.0000.0001.00]][L[i172.16.3.55][n172.16.3.54]]/696
+  [T][L2][I0x64][N[c0][b0.0.0.0][s1010.0000.0001.00]][P[p10.10.0.1/32]]/400
+  [T][L2][I0x64][N[c0][b0.0.0.0][s1010.0000.0002.00]][P[p10.10.0.2/32]]/400
+  [SP][SR][I0x0][N[c0][b0.0.0.0][te10.10.0.52]][C[po0x1][f0x0][e10.10.0.99][cl0x259][as0][oa10.10.0.6][di100]]/536
+  [SP][SR][I0x0][N[c0][b0.0.0.0][te10.10.0.52]][C[po0x3][f0x0][e10.10.0.95][cl0x3e6][as0][oa0.0.0.0][di10]]/536`;
 
 const PROTOCOL_ORIGINS = {
   '0x1': { name: 'PCEP', class: 'tag-pcep' },
@@ -267,16 +250,18 @@ const PROTOCOL_ORIGINS = {
   '0x3': { name: 'Config', class: 'tag-config' },
 };
 
-// Field label descriptions
 const FIELD_LABELS = {
-  T: 'Topology', SP: 'SR Policy', SR: 'Segment Routing',
+  V: 'Node', E: 'Link', T: 'Topology', SP: 'SR Policy', SR: 'Segment Routing',
   L1: 'IS-IS Level 1', L2: 'IS-IS Level 2',
   I: 'Instance ID', c: 'ASN', b: 'BGP Router ID', s: 'System ID',
   te: 'Headend', q: 'Originator Node', p: 'Prefix',
+  R: 'Remote Node', L: 'Link', i: 'Interface Address', n: 'Neighbor Address',
   po: 'Protocol Origin', f: 'Flags', e: 'Endpoint', cl: 'Color',
   as: 'AS Number', oa: 'Originator Address', di: 'Discriminator',
 };
 
+let parsedNodes = [];
+let parsedLinks = [];
 let parsedPrefixes = [];
 let parsedPolicies = [];
 let sortState = { table: null, col: null, asc: true };
@@ -319,7 +304,6 @@ function extractBracketFields(str) {
 // Parse a continuation line: "  66.66.66.66  100  0 i"
 function parseContinuationLine(line) {
   const trimmed = line.trim();
-  // Match: next-hop   local-pref   MED   origin
   const m = trimmed.match(/^([\da-fA-F:\.]+)\s+(\d+)\s+(\d+)\s+([ie\?])$/);
   if (!m) return null;
   const ORIGIN_MAP = { i: 'IGP', e: 'EGP', '?': 'Incomplete' };
@@ -332,12 +316,44 @@ function parseContinuationLine(line) {
   };
 }
 
+// Detect an NLRI line — either with BGP path marker (*) or starting with bracket notation
 function isNLRILine(line) {
-  return line.trim().match(/^\*/);
+  const trimmed = line.trim();
+  // BGP path marker style: *> [SP]... or * i[T]...
+  if (trimmed.match(/^\*/)) return true;
+  // lslib style: starts directly with [V], [E], [T], [SP], [S]
+  if (trimmed.match(/^\[(V|E|T|SP|S)\]/)) return true;
+  return false;
+}
+
+// Strip header lines (hostname/prompt, date, prefix codes legend, "Retrieved N entries")
+function stripHeaderLines(input) {
+  const lines = input.split('\n');
+  const cleaned = [];
+  let inPrefixCodes = false;
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    // Skip empty lines
+    if (!trimmed) { inPrefixCodes = false; continue; }
+    // Skip router prompt lines
+    if (trimmed.match(/^RP\/\d+\/RP\d+\/CPU\d+:/)) continue;
+    // Skip date lines (e.g., "Mon May  4 16:26:59.068 EEST")
+    if (trimmed.match(/^(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s+/)) continue;
+    // Skip prefix codes block
+    if (trimmed.startsWith('Prefix codes:')) { inPrefixCodes = true; continue; }
+    if (inPrefixCodes && !trimmed.startsWith('[') && !trimmed.startsWith('*')) continue;
+    inPrefixCodes = false;
+    // Skip "Retrieved N entries" line
+    if (trimmed.match(/^Retrieved \d+ entries/)) continue;
+    cleaned.push(line);
+  }
+  return cleaned.join('\n');
 }
 
 function parseAllLines(input) {
-  const lines = input.split('\n');
+  const cleaned = stripHeaderLines(input);
+  const lines = cleaned.split('\n');
   const entries = [];
   let lastEntry = null;
 
@@ -363,7 +379,11 @@ function parseNLRI(line) {
   const trimmed = line.trim();
   const pathMarker = parsePathMarker(trimmed);
 
-  if (trimmed.includes('[T]')) {
+  if (trimmed.includes('[V]')) {
+    return parseNodeNLRI(trimmed, pathMarker);
+  } else if (trimmed.includes('[E]')) {
+    return parseLinkNLRI(trimmed, pathMarker);
+  } else if (trimmed.includes('[T]')) {
     return parsePrefixNLRI(trimmed, pathMarker);
   } else if (trimmed.includes('[SP]')) {
     return parseSRPolicyNLRI(trimmed, pathMarker);
@@ -371,16 +391,80 @@ function parseNLRI(line) {
   return null;
 }
 
+function parseNodeNLRI(line, pathMarker) {
+  const allFields = extractBracketFields(line);
+  const level = line.match(/\[L(\d+)\]/)?.[1] || '';
+  const sizeMatch = line.match(/\/(\d+)\s*$/);
+
+  const nBlock = line.match(/\[N(\[[^\]]*\])+\]/)?.[0] || '';
+  const nFields = extractBracketFields(nBlock);
+
+  return {
+    type: 'node',
+    pathMarker,
+    level: level ? `L${level}` : '',
+    instanceHex: allFields.I || '',
+    instanceDec: allFields.I ? hexToDec(allFields.I) : '',
+    systemId: nFields.s || '',
+    asn: nFields.c || '',
+    bgpRouterId: nFields.b || '',
+    nlriSize: sizeMatch ? sizeMatch[1] : '',
+    nextHop: '', localPref: '', med: '', origin: '', originRaw: '',
+    raw: line,
+  };
+}
+
+function parseLinkNLRI(line, pathMarker) {
+  const allFields = extractBracketFields(line);
+  const level = line.match(/\[L(\d+)\]/)?.[1] || '';
+  const sizeMatch = line.match(/\/(\d+)\s*$/);
+
+  const nBlock = line.match(/\[N(\[[^\]]*\])+\]/)?.[0] || '';
+  const rBlock = line.match(/\[R(\[[^\]]*\])+\]/)?.[0] || '';
+  const nFields = extractBracketFields(nBlock);
+  const rFields = extractBracketFields(rBlock);
+
+  // L block: may contain [i...][n...] (interface/neighbor) or [l...][t...] (link-id/topology-id)
+  const ifMatch = line.match(/\[L\[i([^\]]*)\]\[n([^\]]*)\]\]/);
+  const ltMatch = line.match(/\[L\[l([^\]]*)\]\[t([^\]]*)\]\]/);
+  const interfaceAddr = ifMatch ? ifMatch[1] : '';
+  const neighborAddr = ifMatch ? ifMatch[2] : '';
+  const linkId = ltMatch ? ltMatch[1] : '';
+  const topologyId = ltMatch ? ltMatch[2] : '';
+
+  return {
+    type: 'link',
+    pathMarker,
+    level: level ? `L${level}` : '',
+    instanceHex: allFields.I || '',
+    instanceDec: allFields.I ? hexToDec(allFields.I) : '',
+    localSystemId: nFields.s || '',
+    localAsn: nFields.c || '',
+    localBgpRouterId: nFields.b || '',
+    remoteSystemId: rFields.s || '',
+    remoteAsn: rFields.c || '',
+    remoteBgpRouterId: rFields.b || '',
+    interfaceAddr,
+    neighborAddr,
+    linkId,
+    topologyId,
+    nlriSize: sizeMatch ? sizeMatch[1] : '',
+    nextHop: '', localPref: '', med: '', origin: '', originRaw: '',
+    raw: line,
+  };
+}
+
 function parsePrefixNLRI(line, pathMarker) {
   const allFields = extractBracketFields(line);
   const level = line.match(/\[L(\d+)\]/)?.[1] || '';
   const sizeMatch = line.match(/\/(\d+)\s*$/);
 
-  // Extract the N block and P block fields separately
   const nBlock = line.match(/\[N(\[[^\]]*\])+\]/)?.[0] || '';
-  const pBlock = line.match(/\[P(\[[^\]]*\])+\]/)?.[0] || '';
   const nFields = extractBracketFields(nBlock);
-  const pFields = extractBracketFields(pBlock);
+
+  // P block: extract prefix directly to avoid nested-bracket parsing issues
+  const prefixMatch = line.match(/\[P\[p([^\]]*)\]\]/);
+  const prefix = prefixMatch ? prefixMatch[1] : '';
 
   return {
     type: 'prefix',
@@ -392,9 +476,8 @@ function parsePrefixNLRI(line, pathMarker) {
     systemId: nFields.s || '',
     asn: nFields.c || '',
     bgpRouterId: nFields.b || '',
-    prefix: pFields.p || '',
+    prefix,
     nlriSize: sizeMatch ? sizeMatch[1] : '',
-    // BGP attributes from continuation line
     nextHop: '', localPref: '', med: '', origin: '', originRaw: '',
     raw: line,
   };
@@ -428,12 +511,10 @@ function parseSRPolicyNLRI(line, pathMarker) {
     nlriSubType: isSR ? 'SR' : '',
     instanceHex: allFields.I || nFields.I || '',
     instanceDec: (allFields.I || nFields.I) ? hexToDec(allFields.I || nFields.I) : '',
-    // Node descriptor (N block)
     nodeAsn: nFields.c || '',
     bgpRouterId: nFields.b || '',
     headend: nFields.te || '',
     originatorNode: nFields.q || '',
-    // Candidate path descriptor (C block)
     endpoint: cFields.e || '',
     colorHex,
     colorDec,
@@ -447,7 +528,6 @@ function parseSRPolicyNLRI(line, pathMarker) {
     originatorAddr: cFields.oa || '',
     discriminator: cFields.di || '',
     nlriSize: sizeMatch ? sizeMatch[1] : '',
-    // BGP attributes from continuation line
     nextHop: '', localPref: '', med: '', origin: '', originRaw: '',
     raw: line,
   };
@@ -457,12 +537,16 @@ function parse() {
   const input = document.getElementById('input').value.trim();
   if (!input) return;
 
+  parsedNodes = [];
+  parsedLinks = [];
   parsedPrefixes = [];
   parsedPolicies = [];
 
   const entries = parseAllLines(input);
   for (const entry of entries) {
-    if (entry.type === 'prefix') parsedPrefixes.push(entry);
+    if (entry.type === 'node') parsedNodes.push(entry);
+    else if (entry.type === 'link') parsedLinks.push(entry);
+    else if (entry.type === 'prefix') parsedPrefixes.push(entry);
     else parsedPolicies.push(entry);
   }
 
@@ -470,7 +554,7 @@ function parse() {
 }
 
 function render() {
-  const total = parsedPrefixes.length + parsedPolicies.length;
+  const total = parsedNodes.length + parsedLinks.length + parsedPrefixes.length + parsedPolicies.length;
   if (total === 0) {
     document.getElementById('output').classList.remove('visible');
     document.getElementById('emptyState').style.display = '';
@@ -481,6 +565,8 @@ function render() {
   document.getElementById('output').classList.add('visible');
 
   renderStats();
+  renderNodes();
+  renderLinks();
   renderPrefixes();
   renderPolicies();
   applyFilter();
@@ -492,6 +578,7 @@ function renderStats() {
     origins[p.protocolOriginName] = (origins[p.protocolOriginName] || 0) + 1;
   });
 
+  const total = parsedNodes.length + parsedLinks.length + parsedPrefixes.length + parsedPolicies.length;
   const uniqueColors = new Set(parsedPolicies.map(p => p.colorDec)).size;
   const uniqueHeadends = new Set(parsedPolicies.map(p => p.headend)).size;
   const uniqueEndpoints = new Set(parsedPolicies.map(p => p.endpoint)).size;
@@ -499,23 +586,30 @@ function renderStats() {
   const ipv6Count = parsedPolicies.filter(p => p.isIPv6Endpoint).length;
 
   let html = `
-    <div class="stat-card"><div class="label">Total Entries</div><div class="value blue">${parsedPrefixes.length + parsedPolicies.length}</div></div>
-    <div class="stat-card"><div class="label">Prefixes</div><div class="value green">${parsedPrefixes.length}</div></div>
-    <div class="stat-card"><div class="label">SR Policies</div><div class="value orange">${parsedPolicies.length}</div></div>
-    <div class="stat-card"><div class="label">Unique Colors</div><div class="value purple">${uniqueColors}</div></div>
-    <div class="stat-card"><div class="label">Unique Headends</div><div class="value blue">${uniqueHeadends}</div></div>
-    <div class="stat-card"><div class="label">Unique Endpoints</div><div class="value green">${uniqueEndpoints}</div></div>
-    <div class="stat-card"><div class="label">IPv4 Endpoint</div><div class="value">${ipv4Count}</div></div>
-    <div class="stat-card"><div class="label">IPv6 Endpoint</div><div class="value">${ipv6Count}</div></div>
+    <div class="stat-card"><div class="label">Total Entries</div><div class="value blue">${total}</div></div>
+    <div class="stat-card"><div class="label">Nodes (V)</div><div class="value">${parsedNodes.length}</div></div>
+    <div class="stat-card"><div class="label">Links (E)</div><div class="value">${parsedLinks.length}</div></div>
+    <div class="stat-card"><div class="label">Prefixes (T)</div><div class="value green">${parsedPrefixes.length}</div></div>
+    <div class="stat-card"><div class="label">SR Policies (SP)</div><div class="value orange">${parsedPolicies.length}</div></div>
   `;
-  for (const [name, count] of Object.entries(origins)) {
-    html += `<div class="stat-card"><div class="label">${name} Origin</div><div class="value">${count}</div></div>`;
+  if (parsedPolicies.length > 0) {
+    html += `
+      <div class="stat-card"><div class="label">Unique Colors</div><div class="value purple">${uniqueColors}</div></div>
+      <div class="stat-card"><div class="label">Unique Headends</div><div class="value blue">${uniqueHeadends}</div></div>
+      <div class="stat-card"><div class="label">Unique Endpoints</div><div class="value green">${uniqueEndpoints}</div></div>
+      <div class="stat-card"><div class="label">IPv4 Endpoint</div><div class="value">${ipv4Count}</div></div>
+      <div class="stat-card"><div class="label">IPv6 Endpoint</div><div class="value">${ipv6Count}</div></div>
+    `;
+    for (const [name, count] of Object.entries(origins)) {
+      html += `<div class="stat-card"><div class="label">${name} Origin</div><div class="value">${count}</div></div>`;
+    }
   }
   document.getElementById('stats').innerHTML = html;
 }
 
 function pathMarkerTags(pm) {
-  let tags = `<span class="mono" style="color:var(--muted);margin-right:6px">${pm.raw || '—'}</span>`;
+  if (!pm.raw) return '<span style="color:var(--muted)">—</span>';
+  let tags = `<span class="mono" style="color:var(--muted);margin-right:6px">${pm.raw}</span>`;
   if (pm.best) tags += '<span class="tag tag-best">best</span> ';
   else if (pm.valid) tags += '<span class="tag tag-valid">valid</span> ';
   if (pm.ibgp) tags += '<span class="tag tag-ibgp">iBGP</span>';
@@ -532,6 +626,84 @@ function bgpAttrCells(entry) {
   `;
 }
 
+function renderNodes() {
+  if (parsedNodes.length === 0) {
+    document.getElementById('nodeSection').innerHTML = '';
+    return;
+  }
+
+  let html = `
+    <div class="section-title">Node NLRIs (V) <span class="badge badge-blue">${parsedNodes.length}</span></div>
+    <div class="table-wrap"><table id="nodeTable">
+      <thead><tr>
+        <th onclick="sortTable('node','idx')">#</th>
+        <th onclick="sortTable('node','path')">Status</th>
+        <th onclick="sortTable('node','level')">Level</th>
+        <th onclick="sortTable('node','instanceDec')">Instance</th>
+        <th onclick="sortTable('node','asn')">ASN (c)</th>
+        <th onclick="sortTable('node','bgpRouterId')">BGP Router (b)</th>
+        <th onclick="sortTable('node','systemId')">System ID (s)</th>
+        <th onclick="sortTable('node','nlriSize')">NLRI Size</th>
+      </tr></thead><tbody>`;
+
+  parsedNodes.forEach((p, i) => {
+    html += `<tr data-type="node" data-searchable="${[p.systemId, p.asn, p.level, p.bgpRouterId, p.instanceHex].join(' ').toLowerCase()}">
+      <td>${i + 1}</td>
+      <td>${pathMarkerTags(p.pathMarker)}</td>
+      <td>${p.level}</td>
+      <td>${fmtHex(p.instanceHex)}</td>
+      <td>${p.asn}</td>
+      <td class="mono">${p.bgpRouterId || '—'}</td>
+      <td class="mono">${p.systemId}</td>
+      <td>${p.nlriSize}</td>
+    </tr>`;
+  });
+
+  html += '</tbody></table></div>';
+  document.getElementById('nodeSection').innerHTML = html;
+}
+
+function renderLinks() {
+  if (parsedLinks.length === 0) {
+    document.getElementById('linkSection').innerHTML = '';
+    return;
+  }
+
+  let html = `
+    <div class="section-title">Link NLRIs (E) <span class="badge badge-blue">${parsedLinks.length}</span></div>
+    <div class="table-wrap"><table id="linkTable">
+      <thead><tr>
+        <th onclick="sortTable('link','idx')">#</th>
+        <th onclick="sortTable('link','path')">Status</th>
+        <th onclick="sortTable('link','level')">Level</th>
+        <th onclick="sortTable('link','instanceDec')">Instance</th>
+        <th onclick="sortTable('link','localSystemId')">Local System ID (N.s)</th>
+        <th onclick="sortTable('link','remoteSystemId')">Remote System ID (R.s)</th>
+        <th onclick="sortTable('link','interfaceAddr')">Interface (L.i)</th>
+        <th onclick="sortTable('link','neighborAddr')">Neighbor (L.n)</th>
+        <th onclick="sortTable('link','linkId')">Link ID (L.l)</th>
+        <th onclick="sortTable('link','nlriSize')">NLRI Size</th>
+      </tr></thead><tbody>`;
+
+  parsedLinks.forEach((p, i) => {
+    html += `<tr data-type="link" data-searchable="${[p.localSystemId, p.remoteSystemId, p.interfaceAddr, p.neighborAddr, p.linkId, p.level, p.instanceHex].join(' ').toLowerCase()}">
+      <td>${i + 1}</td>
+      <td>${pathMarkerTags(p.pathMarker)}</td>
+      <td>${p.level}</td>
+      <td>${fmtHex(p.instanceHex)}</td>
+      <td class="mono">${p.localSystemId}</td>
+      <td class="mono">${p.remoteSystemId}</td>
+      <td class="mono" style="color:var(--cyan)">${p.interfaceAddr || '—'}</td>
+      <td class="mono" style="color:var(--cyan)">${p.neighborAddr || '—'}</td>
+      <td class="mono">${p.linkId || '—'}</td>
+      <td>${p.nlriSize}</td>
+    </tr>`;
+  });
+
+  html += '</tbody></table></div>';
+  document.getElementById('linkSection').innerHTML = html;
+}
+
 function renderPrefixes() {
   if (parsedPrefixes.length === 0) {
     document.getElementById('prefixSection').innerHTML = '';
@@ -539,7 +711,7 @@ function renderPrefixes() {
   }
 
   let html = `
-    <div class="section-title">IS-IS Prefix NLRIs <span class="badge badge-green">${parsedPrefixes.length}</span></div>
+    <div class="section-title">Prefix NLRIs (T) <span class="badge badge-green">${parsedPrefixes.length}</span></div>
     <div class="table-wrap"><table id="prefixTable">
       <thead><tr>
         <th onclick="sortTable('prefix','idx')">#</th>
@@ -583,7 +755,7 @@ function renderPolicies() {
   }
 
   let html = `
-    <div class="section-title">SR Policy NLRIs <span class="badge badge-blue">${parsedPolicies.length}</span></div>
+    <div class="section-title">SR Policy NLRIs (SP) <span class="badge badge-blue">${parsedPolicies.length}</span></div>
     <div class="table-wrap"><table id="policyTable">
       <thead><tr>
         <th onclick="sortTable('policy','idx')">#</th>
@@ -657,7 +829,7 @@ function applyFilter() {
     row.style.display = show ? '' : 'none';
   });
 
-  ['prefixSection', 'policySection'].forEach(id => {
+  ['nodeSection', 'linkSection', 'prefixSection', 'policySection'].forEach(id => {
     const section = document.getElementById(id);
     if (!section.innerHTML) return;
     const visibleRows = section.querySelectorAll('tr[data-type]:not([style*="display: none"])');
@@ -667,7 +839,10 @@ function applyFilter() {
 }
 
 function sortTable(tableType, col) {
-  const arr = tableType === 'prefix' ? parsedPrefixes : parsedPolicies;
+  const tableMap = { node: parsedNodes, link: parsedLinks, prefix: parsedPrefixes, policy: parsedPolicies };
+  const arr = tableMap[tableType];
+  if (!arr) return;
+
   if (sortState.table === tableType && sortState.col === col) {
     sortState.asc = !sortState.asc;
   } else {
@@ -689,8 +864,8 @@ function sortTable(tableType, col) {
     return sortState.asc ? va.localeCompare(vb) : vb.localeCompare(va);
   });
 
-  if (tableType === 'prefix') renderPrefixes();
-  else renderPolicies();
+  const renderMap = { node: renderNodes, link: renderLinks, prefix: renderPrefixes, policy: renderPolicies };
+  renderMap[tableType]();
   applyFilter();
 }
 
@@ -699,12 +874,27 @@ function loadSample() {
   parse();
 }
 
+function loadFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('input').value = e.target.result;
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
 function clearAll() {
   document.getElementById('input').value = '';
+  parsedNodes = [];
+  parsedLinks = [];
   parsedPrefixes = [];
   parsedPolicies = [];
   document.getElementById('output').classList.remove('visible');
   document.getElementById('stats').innerHTML = '';
+  document.getElementById('nodeSection').innerHTML = '';
+  document.getElementById('linkSection').innerHTML = '';
   document.getElementById('prefixSection').innerHTML = '';
   document.getElementById('policySection').innerHTML = '';
   document.getElementById('emptyState').style.display = '';
