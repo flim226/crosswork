@@ -4,14 +4,36 @@
 import argparse
 import json
 import sys
-from urllib.parse import quote_plus
 
 import requests
 import urllib3
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
 BASE_PORT = 30603
+VERIFY_SSL = False
+
+# Suppress SSL warnings when verification is disabled
+if not VERIFY_SSL:
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+
+class CrossworkAuthError(RuntimeError):
+    """Raised when authentication or API calls fail."""
+
+
+def check_response(resp: requests.Response, context: str) -> None:
+    """Raise CrossworkAuthError with useful context when an HTTP response fails."""
+    if resp.ok:
+        return
+    body = (resp.text or "").strip()
+    if len(body) > 500:
+        body = body[:500] + "..."
+    if not body:
+        body = "<empty response body>"
+    reason = getattr(resp, "reason", "")
+    status = f"HTTP {resp.status_code}"
+    if reason:
+        status = f"{status} {reason}"
+    raise CrossworkAuthError(f"{context} returned {status}: {body}")
 
 
 class CncClient:
@@ -24,30 +46,53 @@ class CncClient:
 
     def _authenticate(self, username: str, password: str):
         form_headers = {"Content-Type": "application/x-www-form-urlencoded"}
+
+        # Step 1: Get TGT ticket
         resp = requests.post(
             f"{self.base}/crosswork/sso/v1/tickets",
-            data=f"username={quote_plus(username)}&password={quote_plus(password)}",
-            headers=form_headers, verify=False,
+            data={"username": username, "password": password},
+            headers=form_headers, verify=VERIFY_SSL,
         )
-        resp.raise_for_status()
-        tgt = resp.text.strip()
+        check_response(resp, "get_ticket")
 
+        location = resp.headers.get("Location", "")
+        if location:
+            ticket = location.rstrip("/").split("/")[-1]
+        else:
+            try:
+                ticket = resp.json().get("ticket", "")
+            except ValueError:
+                ticket = resp.text.strip()
+
+        if not ticket:
+            raise CrossworkAuthError(f"Could not extract ticket from response: {resp.text[:300]}")
+
+        # Step 2: Exchange TGT for JWT token via SSO v2
         resp = requests.post(
-            f"{self.base}/crosswork/sso/v1/tickets/{tgt}",
-            data=f"service={self.base}/app-dashboard",
-            headers=form_headers, verify=False,
+            f"{self.base}/crosswork/sso/v2/tickets/jwt",
+            data={"tgt": ticket, "service": f"{self.base}/app-dashboard"},
+            headers=form_headers, verify=VERIFY_SSL,
         )
-        resp.raise_for_status()
-        self._headers["Authorization"] = f"Bearer {resp.text.strip()}"
+        check_response(resp, "get_token")
+
+        try:
+            token = resp.json().get("token", "")
+        except ValueError:
+            token = resp.text.strip()
+
+        if not token:
+            raise CrossworkAuthError(f"Could not extract token from response: {resp.text[:300]}")
+
+        self._headers["Authorization"] = f"Bearer {token}"
 
     def _post(self, path: str, body: dict) -> dict:
-        resp = requests.post(f"{self.base}{path}", headers=self._headers, json=body, verify=False)
-        resp.raise_for_status()
+        resp = requests.post(f"{self.base}{path}", headers=self._headers, json=body, verify=VERIFY_SSL)
+        check_response(resp, f"POST {path}")
         return resp.json()
 
     def _put(self, path: str, body: dict) -> dict:
-        resp = requests.put(f"{self.base}{path}", headers=self._headers, json=body, verify=False)
-        resp.raise_for_status()
+        resp = requests.put(f"{self.base}{path}", headers=self._headers, json=body, verify=VERIFY_SSL)
+        check_response(resp, f"PUT {path}")
         return resp.json()
 
     def get_nodes(self, host: str = None) -> list:
@@ -171,8 +216,8 @@ def main():
     parser.add_argument("host", nargs="?", default=None, metavar="HOST",
                         help="Target hostname (all hosts if not specified)")
     parser.add_argument("--ip", required=True, help="Crosswork controller IP address")
-    parser.add_argument("--username", required=True, help="Username")
-    parser.add_argument("--password", required=True, help="Password")
+    parser.add_argument("--username", "-u", required=True, help="Username")
+    parser.add_argument("--password", "-p", required=True, help="Password")
     parser.add_argument("--get", "--list", action="store_true", help="Get tags")
     parser.add_argument("--add", action="store_true", help="Add tag")
     parser.add_argument("--remove", "--rm", "--del", "--delete", action="store_true", help="Remove tag")
@@ -199,15 +244,7 @@ def main():
             cmd_add(client, args)
         else:
             cmd_remove(client, args)
-    except requests.exceptions.HTTPError as e:
-        print(f"HTTP Error: {e}")
-        if e.response is not None:
-            print(f"Response: {e.response.text}")
-        sys.exit(1)
-    except requests.exceptions.ConnectionError:
-        print(f"Connection Error: Could not connect to {args.ip}")
-        sys.exit(1)
-    except Exception as e:
+    except (CrossworkAuthError, requests.RequestException, OSError) as e:
         print(f"Error: {e}")
         sys.exit(1)
 
