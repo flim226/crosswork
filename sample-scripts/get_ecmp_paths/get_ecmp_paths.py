@@ -16,7 +16,6 @@ import subprocess
 import sys
 
 import os
-from urllib.parse import quote_plus
 
 import graphviz
 import requests
@@ -28,40 +27,87 @@ CROSSWORK_USERNAME = "admin"
 CROSSWORK_PASSWORD = "PASSWORD"
 GRPC_PORT = 30603
 PROTOSET_FILE = "pa.protoset"
+VERIFY_SSL = False
 
-# Disable SSL warnings for self-signed certificates
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+# Suppress SSL warnings when verification is disabled
+if not VERIFY_SSL:
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 # ---------------------------------------------------------------------------
 # Authentication
 # ---------------------------------------------------------------------------
 
+class CrossworkAuthError(RuntimeError):
+    """Raised when authentication or API calls fail."""
+
+
+def check_response(resp: requests.Response, context: str) -> None:
+    """Raise CrossworkAuthError with useful context when an HTTP response fails."""
+    if resp.ok:
+        return
+    body = (resp.text or "").strip()
+    if len(body) > 500:
+        body = body[:500] + "..."
+    if not body:
+        body = "<empty response body>"
+    reason = getattr(resp, "reason", "")
+    status = f"HTTP {resp.status_code}"
+    if reason:
+        status = f"{status} {reason}"
+    raise CrossworkAuthError(f"{context} returned {status}: {body}")
+
+
 def get_auth_token(ip: str, username: str, password: str, port: int) -> str:
     """Authenticate and get a JWT token from Crosswork.
 
-    Uses the same two-step SSO flow as other Crosswork scripts:
-    1. POST credentials to get a TGT ticket
-    2. Exchange TGT for a JWT token
+    Uses the SSO v1/v2 flow:
+    1. POST credentials to get a TGT ticket (v1)
+    2. Exchange TGT for a JWT token (v2)
     """
     base_url = f"https://{ip}:{port}"
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
 
     # Step 1: Get TGT ticket
-    auth_url = f"{base_url}/crosswork/sso/v1/tickets"
-    payload = f"username={quote_plus(username)}&password={quote_plus(password)}"
+    url = f"{base_url}/crosswork/sso/v1/tickets"
+    resp = requests.post(
+        url,
+        data={"username": username, "password": password},
+        headers=headers,
+        verify=VERIFY_SSL,
+    )
+    check_response(resp, "get_ticket")
 
-    response = requests.post(auth_url, data=payload, headers=headers, verify=False)
-    response.raise_for_status()
-    tgt = response.text.strip()
+    location = resp.headers.get("Location", "")
+    if location:
+        ticket = location.rstrip("/").split("/")[-1]
+    else:
+        try:
+            ticket = resp.json().get("ticket", "")
+        except ValueError:
+            ticket = resp.text.strip()
 
-    # Step 2: Exchange TGT for JWT token
-    jwt_url = f"{base_url}/crosswork/sso/v1/tickets/{tgt}"
-    jwt_payload = f"service={base_url}/app-dashboard"
+    if not ticket:
+        raise CrossworkAuthError(f"Could not extract ticket from response: {resp.text[:300]}")
 
-    response = requests.post(jwt_url, data=jwt_payload, headers=headers, verify=False)
-    response.raise_for_status()
-    return response.text.strip()
+    # Step 2: Exchange TGT for JWT token via SSO v2
+    url = f"{base_url}/crosswork/sso/v2/tickets/jwt"
+    resp = requests.post(
+        url,
+        headers=headers,
+        data={"tgt": ticket, "service": f"{base_url}/app-dashboard"},
+        verify=VERIFY_SSL,
+    )
+    check_response(resp, "get_token")
+
+    try:
+        token = resp.json().get("token", "")
+    except ValueError:
+        token = resp.text.strip()
+
+    if not token:
+        raise CrossworkAuthError(f"Could not extract token from response: {resp.text[:300]}")
+    return token
 
 
 # ---------------------------------------------------------------------------
@@ -524,12 +570,8 @@ Examples:
         )
         sys.exit(rc)
 
-    except requests.exceptions.HTTPError as e:
-        print(f"HTTP Error: {e}")
-        print(f"Response: {e.response.text if e.response else 'No response'}")
-        sys.exit(1)
-    except requests.exceptions.ConnectionError:
-        print(f"Connection Error: Could not connect to {args.ip}")
+    except (CrossworkAuthError, requests.RequestException) as e:
+        print(f"Error: {e}")
         sys.exit(1)
     except FileNotFoundError:
         print(
