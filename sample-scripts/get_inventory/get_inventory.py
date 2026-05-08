@@ -10,75 +10,92 @@ import sys
 import urllib3
 import requests
 
-# Disable SSL warnings for self-signed certificates
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+DEFAULT_PORT = 30603
+DEFAULT_TIMEOUT = 30
+VERIFY_SSL = False
+
+# Suppress SSL warnings when verification is disabled
+if not VERIFY_SSL:
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
-def get_ticket(ip_address: str, username: str, password: str, port: int = 30603) -> str:
-    """Obtain JWT ticket from Crosswork SSO."""
-    url = f"https://{ip_address}:{port}/crosswork/sso/v1/tickets"
-    
-    # Try JSON body format
+class CrossworkAuthError(RuntimeError):
+    """Raised when authentication or API calls fail."""
+
+
+def check_response(resp: requests.Response, context: str) -> None:
+    """Raise CrossworkAuthError with useful context when an HTTP response fails."""
+    if resp.ok:
+        return
+    body = (resp.text or "").strip()
+    if len(body) > 500:
+        body = body[:500] + "..."
+    if not body:
+        body = "<empty response body>"
+    reason = getattr(resp, "reason", "")
+    status = f"HTTP {resp.status_code}"
+    if reason:
+        status = f"{status} {reason}"
+    raise CrossworkAuthError(f"{context} returned {status}: {body}")
+
+
+def get_ticket(base_url: str, username: str, password: str) -> str:
+    """POST credentials to Crosswork SSO and return a ticket-granting ticket."""
+    url = f"{base_url}/crosswork/sso/v1/tickets"
+    resp = requests.post(
+        url,
+        data={"username": username, "password": password},
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+        verify=VERIFY_SSL,
+        timeout=DEFAULT_TIMEOUT,
+    )
+    check_response(resp, "get_ticket")
+
+    location = resp.headers.get("Location", "")
+    if location:
+        ticket = location.rstrip("/").split("/")[-1]
+    else:
+        try:
+            ticket = resp.json().get("ticket", "")
+        except ValueError:
+            ticket = resp.text.strip()
+
+    if not ticket:
+        raise CrossworkAuthError(f"Could not extract ticket from response: {resp.text[:300]}")
+    return ticket
+
+
+def get_token(base_url: str, ticket: str) -> str:
+    """Exchange a Crosswork SSO ticket for a JWT bearer token via SSO v2."""
+    url = f"{base_url}/crosswork/sso/v2/tickets/jwt"
+    resp = requests.post(
+        url,
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+        data={"tgt": ticket, "service": f"{base_url}/app-dashboard"},
+        verify=VERIFY_SSL,
+        timeout=DEFAULT_TIMEOUT,
+    )
+    check_response(resp, "get_token")
+
     try:
-        response = requests.post(
-            url,
-            json={"username": username, "password": password},
-            headers={"Content-Type": "application/json"},
-            verify=False,
-            timeout=30
-        )
-        response.raise_for_status()
-        return response.text.strip()
-    except requests.exceptions.HTTPError:
-        pass
-    
-    # Try form-urlencoded format
-    try:
-        response = requests.post(
-            url,
-            data={"username": username, "password": password},
-            headers={"Content-Type": "application/x-www-form-urlencoded"},
-            verify=False,
-            timeout=30
-        )
-        response.raise_for_status()
-        return response.text.strip()
-    except requests.exceptions.HTTPError as e:
-        print(f"Authentication Error: {e}")
-        print(f"Response: {response.text}")
-        sys.exit(1)
-    except requests.exceptions.ConnectionError as e:
-        print(f"Connection Error: Unable to connect to {ip_address}:{port}")
-        sys.exit(1)
+        token = resp.json().get("token", "")
+    except ValueError:
+        token = resp.text.strip()
+
+    if not token:
+        raise CrossworkAuthError(f"Could not extract token from response: {resp.text[:300]}")
+    return token
 
 
-def get_jwt_token(ip_address: str, ticket: str, port: int = 30603) -> str:
-    """Exchange ticket for JWT token."""
-    url = f"https://{ip_address}:{port}/crosswork/sso/v1/tickets/{ticket}"
-    
-    try:
-        response = requests.post(
-            url,
-            data={"service": f"https://{ip_address}:{port}/app-dashboard"},
-            headers={"Content-Type": "application/x-www-form-urlencoded"},
-            verify=False,
-            timeout=30
-        )
-        response.raise_for_status()
-        return response.text.strip()
-    except requests.exceptions.HTTPError as e:
-        print(f"Token Error: {e}")
-        sys.exit(1)
-
-
-def get_inventory(ip_address: str, username: str, password: str, port: int = 30603) -> dict:
+def get_inventory(ip_address: str, username: str, password: str, port: int = DEFAULT_PORT) -> dict:
     """Retrieve deep inventory from Crosswork Network Controller."""
-    # First get authentication token
+    base_url = f"https://{ip_address}:{port}"
+
     print("Authenticating...")
-    ticket = get_ticket(ip_address, username, password, port)
-    token = get_jwt_token(ip_address, ticket, port)
+    ticket = get_ticket(base_url, username, password)
+    token = get_token(base_url, ticket)
     
-    url = f"https://{ip_address}:{port}/crosswork/inventory/restconf/data/v2/resource-physical:node"
+    url = f"{base_url}/crosswork/inventory/restconf/data/v2/resource-physical:node"
     
     headers = {
         "Accept": "application/json",
@@ -86,29 +103,14 @@ def get_inventory(ip_address: str, username: str, password: str, port: int = 306
         "Authorization": f"Bearer {token}"
     }
     
-    try:
-        response = requests.get(
-            url,
-            headers=headers,
-            verify=False,
-            timeout=60
-        )
-        response.raise_for_status()
-        return response.json()
-    except requests.exceptions.HTTPError as e:
-        print(f"HTTP Error: {e}")
-        print(f"Response: {response.text}")
-        sys.exit(1)
-    except requests.exceptions.ConnectionError as e:
-        print(f"Connection Error: Unable to connect to {ip_address}")
-        print(f"Details: {e}")
-        sys.exit(1)
-    except requests.exceptions.Timeout:
-        print(f"Timeout: Request to {ip_address} timed out")
-        sys.exit(1)
-    except json.JSONDecodeError:
-        print("Error: Invalid JSON response from server")
-        sys.exit(1)
+    response = requests.get(
+        url,
+        headers=headers,
+        verify=VERIFY_SSL,
+        timeout=60
+    )
+    check_response(response, "get_inventory")
+    return response.json()
 
 
 def display_short(data: dict):
@@ -281,7 +283,11 @@ Example:
     args = parser.parse_args()
     
     print(f"Connecting to Crosswork at {args.ip}...")
-    inventory_data = get_inventory(args.ip, args.username, args.password)
+    try:
+        inventory_data = get_inventory(args.ip, args.username, args.password)
+    except (CrossworkAuthError, requests.RequestException, OSError) as e:
+        print(f"Error: {e}")
+        sys.exit(1)
     
     if args.output:
         with open(args.output, "w") as f:
