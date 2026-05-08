@@ -5,7 +5,6 @@ import os
 import subprocess
 import sys
 from typing import Dict, List, Optional, Tuple
-from urllib.parse import quote_plus
 
 import requests
 import urllib3
@@ -20,6 +19,7 @@ CROSSWORK_PASSWORD = "PASSWORD"
 PLAN_VERSION = ""
 TMP_PLANFILE = "planfile.pln"
 CONNECT_TIMEOUT = 20
+VERIFY_SSL = False
 
 TRIM_FILES = {
     "trim_include.txt": "include node table",
@@ -28,10 +28,15 @@ TRIM_FILES = {
     "trim_exclude_regex.txt": "exclude nodes regex",
 }
 
-# Disable SSL warnings for self-signed certificates
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+# Suppress SSL warnings when verification is disabled
+if not VERIFY_SSL:
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 logger = logging.getLogger(__name__)
+
+
+class CrossworkAuthError(RuntimeError):
+    """Raised when authentication or API calls fail."""
 
 
 class _TimeoutAdapter(requests.adapters.HTTPAdapter):
@@ -43,40 +48,80 @@ class _TimeoutAdapter(requests.adapters.HTTPAdapter):
 
 
 def _create_session() -> requests.Session:
-    """Create an HTTP session with SSL verification disabled and default timeout."""
+    """Create an HTTP session with default timeout and SSL verification from VERIFY_SSL."""
     session = requests.Session()
-    session.verify = False
+    session.verify = VERIFY_SSL
     adapter = _TimeoutAdapter()
     session.mount("https://", adapter)
     session.mount("http://", adapter)
     return session
 
 
-def get_auth_ticket(session: requests.Session, ip: str, username: str, password: str) -> str:
-    """Authenticate and get a ticket from Crosswork."""
-    # Step 1: Get TGT ticket
-    auth_url = f"https://{ip}:30603/crosswork/sso/v1/tickets"
-    payload = f"username={quote_plus(username)}&password={quote_plus(password)}"
-    headers = {"Content-Type": "application/x-www-form-urlencoded"}
-
-    response = session.post(auth_url, data=payload, headers=headers)
-    response.raise_for_status()
-    tgt = response.text.strip()
-
-    # Step 2: Get JWT token using TGT
-    jwt_url = f"https://{ip}:30603/crosswork/sso/v1/tickets/{tgt}"
-    jwt_payload = f"service=https://{ip}:30603/app-dashboard"
-
-    response = session.post(jwt_url, data=jwt_payload, headers=headers)
-    response.raise_for_status()
-    return response.text.strip()
+def check_response(resp: requests.Response, context: str) -> None:
+    """Raise CrossworkAuthError with useful context when an HTTP response fails."""
+    if resp.ok:
+        return
+    body = (resp.text or "").strip()
+    if len(body) > 500:
+        body = body[:500] + "..."
+    if not body:
+        body = "<empty response body>"
+    reason = getattr(resp, "reason", "")
+    status = f"HTTP {resp.status_code}"
+    if reason:
+        status = f"{status} {reason}"
+    raise CrossworkAuthError(f"{context} returned {status}: {body}")
 
 
-def get_plan(session: requests.Session, ip: str, ticket: str, plan_format: str, version: str) -> bytes:
+def get_ticket(session: requests.Session, base_url: str, username: str, password: str) -> str:
+    """POST credentials to Crosswork SSO and return a ticket-granting ticket."""
+    url = f"{base_url}/crosswork/sso/v1/tickets"
+    resp = session.post(
+        url,
+        data={"username": username, "password": password},
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+    )
+    check_response(resp, "get_ticket")
+
+    location = resp.headers.get("Location", "")
+    if location:
+        ticket = location.rstrip("/").split("/")[-1]
+    else:
+        try:
+            ticket = resp.json().get("ticket", "")
+        except ValueError:
+            ticket = resp.text.strip()
+
+    if not ticket:
+        raise CrossworkAuthError(f"Could not extract ticket from response: {resp.text[:300]}")
+    return ticket
+
+
+def get_token(session: requests.Session, base_url: str, ticket: str) -> str:
+    """Exchange a Crosswork SSO ticket for a JWT bearer token via SSO v2."""
+    url = f"{base_url}/crosswork/sso/v2/tickets/jwt"
+    resp = session.post(
+        url,
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+        data={"tgt": ticket, "service": f"{base_url}/app-dashboard"},
+    )
+    check_response(resp, "get_token")
+
+    try:
+        token = resp.json().get("token", "")
+    except ValueError:
+        token = resp.text.strip()
+
+    if not token:
+        raise CrossworkAuthError(f"Could not extract token from response: {resp.text[:300]}")
+    return token
+
+
+def get_plan(session: requests.Session, base_url: str, token: str, plan_format: str, version: str) -> bytes:
     """Retrieve the plan file from Crosswork."""
-    plan_url = f"https://{ip}:30603/crosswork/nbi/optima/v2/restconf/operations/cisco-crosswork-optimization-engine-operations:get-plan"
+    plan_url = f"{base_url}/crosswork/nbi/optima/v2/restconf/operations/cisco-crosswork-optimization-engine-operations:get-plan"
     headers = {
-        "Authorization": f"Bearer {ticket}",
+        "Authorization": f"Bearer {token}",
         "Accept": "application/yang-data+json",
         "Content-Type": "application/yang-data+json",
     }
@@ -88,7 +133,7 @@ def get_plan(session: requests.Session, ip: str, ticket: str, plan_format: str, 
     }
 
     response = session.post(plan_url, headers=headers, json=payload)
-    response.raise_for_status()
+    check_response(response, "get_plan")
 
     data = response.json()
 
@@ -196,12 +241,14 @@ def main() -> None:
     try:
         logger.info("Startup script get_plan_cp_cw.py is initializing...")
         session = _create_session()
+        base_url = f"https://{args.ip}:30603"
 
         logger.info("Authenticating to Crosswork at %s...", args.ip)
-        ticket = get_auth_ticket(session, args.ip, args.username, args.password)
+        ticket = get_ticket(session, base_url, args.username, args.password)
+        token = get_token(session, base_url, ticket)
 
         logger.info("Retrieving plan: %s...", args.tmpfile)
-        plan_content = get_plan(session, args.ip, ticket, file_format, args.version)
+        plan_content = get_plan(session, base_url, token, file_format, args.version)
         logger.info("  Retrieved %d bytes", len(plan_content))
 
         with open(args.tmpfile, "wb") as f:
@@ -223,14 +270,7 @@ def main() -> None:
             f"Converting plan: ",
         )
 
-    except requests.exceptions.HTTPError as e:
-        logger.error("HTTP Error: %s", e)
-        logger.error("Response: %s", e.response.text if e.response else "No response")
-        sys.exit(1)
-    except requests.exceptions.ConnectionError:
-        logger.error("Connection Error: Could not connect to %s", args.ip)
-        sys.exit(1)
-    except Exception as e:
+    except (CrossworkAuthError, requests.RequestException, OSError) as e:
         logger.error("Error: %s", e)
         sys.exit(1)
     finally:
