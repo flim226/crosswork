@@ -164,7 +164,7 @@ python get_plan_cp_cw.py ignored output.db devauth.txt netaccess.txt /home/user 
 ```
 CROSSWORK_IP = "198.18.134.219"
 CROSSWORK_USERNAME = "admin"
-CROSSWORK_PASSWORD = "mypassword"
+CROSSWORK_PASSWORD = "PASSWORD"
 ```
 4. **Create Node trimming configuration files (Optional)**
 
@@ -209,21 +209,36 @@ CROSSWORK_PASSWORD = "mypassword"
 
 ## Key Functions
 
+### `CrossworkAuthError`
+
+Custom exception class raised when authentication or API calls fail.
+
+### `_TimeoutAdapter`
+
+An `HTTPAdapter` subclass that applies a default connect timeout (`CONNECT_TIMEOUT`) to all requests made through the session.
+
 ### `_create_session()`
 
-Creates a `requests.Session` with SSL verification disabled. All HTTP calls share this session for connection pooling and consistent settings.
+Creates a `requests.Session` with SSL verification controlled by the `VERIFY_SSL` constant. Mounts the `_TimeoutAdapter` for both `https://` and `http://` schemes so all HTTP calls share the session for connection pooling and consistent settings.
 
-### `get_auth_ticket(session, ip, username, password)`
+### `check_response(resp, context)`
 
-Performs two-step SSO authentication using the shared HTTP session:
-1. Obtains TGT (Ticket Granting Ticket) from CNC SSO endpoint
-2. Exchanges TGT for JWT token using service URL
+Inspects an HTTP response and raises `CrossworkAuthError` with the status code, reason, and truncated response body when the request was not successful.
 
-### `get_plan(session, ip, ticket, plan_format, version)`
+### `get_ticket(session, base_url, username, password)`
+
+Obtains a Ticket Granting Ticket (TGT) from the CNC SSO endpoint (`/crosswork/sso/v1/tickets`) by posting username and password.
+
+### `get_token(session, base_url, ticket)`
+
+Exchanges a TGT for a JWT bearer token via the CNC SSO v2 endpoint (`/crosswork/sso/v2/tickets/jwt`).
+
+### `get_plan(session, base_url, token, plan_format, version)`
 
 Calls the CNC Optimization Engine REST API to retrieve the plan file:
 - **Endpoint**: `/crosswork/nbi/optima/v2/restconf/operations/cisco-crosswork-optimization-engine-operations:get-plan`
 - **Payload**: `{ "input": { "version": "<version>", "format": "<pln|txt>" } }`
+- **Authorization**: Bearer token obtained from `get_token()`
 - **Returns**: Base64-decoded plan file content
 
 ### `run_command(cmd, description)`
@@ -232,7 +247,7 @@ Runs a subprocess command, logs its stdout/stderr via the `logging` module, and 
 
 ### `find_trim_file(filename, search_dirs, dir_labels)`
 
-Searches for node trimming configuration file across the given directories. Returns a `(path, label)` tuple if found, or `(None, None)` otherwise.
+Searches for a node trimming configuration file across the given directories. Returns a `(path, label)` tuple if found, or `(None, None)` otherwise.
 
 ### `find_and_apply_trim(tmpfile, search_dirs, dir_labels)`
 
@@ -244,7 +259,7 @@ Orchestrates the workflow:
 1. Configures logging
 2. Parses command-line arguments
 3. Deduces plan file format from `--tmpfile` extension (`.pln` or `.txt`)
-4. Creates an HTTP session and authenticates to CNC
+4. Creates an HTTP session and authenticates to CNC (ticket + token exchange)
 5. Retrieves plan file
 6. Saves intermediate file (`.pln` or `.txt`)
 7. Delegates node trimming to `find_and_apply_trim()` (see [Node Trimming](#node-trimming))
@@ -302,14 +317,18 @@ The script contains hardcoded defaults that should be modified for your environm
 ```python
 CROSSWORK_IP = "198.18.134.219"      # CNC IP address
 CROSSWORK_USERNAME = "admin"         # CNC username  
-CROSSWORK_PASSWORD = "mypassword"    # CNC password (update for production!)
+CROSSWORK_PASSWORD = "PASSWORD"      # CNC password (update for production!)
+PLAN_VERSION = ""                    # Plan version (empty = latest)
+TMP_PLANFILE = "planfile.pln"        # Intermediate plan file name
+CONNECT_TIMEOUT = 20                 # HTTP connect timeout in seconds
+VERIFY_SSL = False                   # Set to True for production with valid certs
 ```
 
 > **Security Note**: For production deployments, consider using environment variables or a secure credential store instead of hardcoded credentials.
 
 ## Dependencies
 
-- **Python packages**: `requests`, `urllib3`, `argparse`, `base64`, `subprocess`, `logging`, `sys`, `typing`  (Satisifed by Crosswork Planning)
+- **Python packages**: `requests`, `urllib3`, `argparse`, `base64`, `os`, `subprocess`, `logging`, `sys`, `typing`  (Satisfied by Crosswork Planning)
 - **External tools**: `mate_convert` (Cisco WAE/Crosswork Planning utility), `trim_nodes` (Cisco WAE/Crosswork Planning utility, used for optional node trimming)
 
 ## Error Handling
@@ -369,7 +388,7 @@ This script fulfills that role by providing the network model from CNC, enabling
 1. **Single startup script**: Only one startup script per collection chain
 2. **Database file requirement**: Downstream collectors fail if the script doesn't produce a valid `.db` file
 3. **Credential management**: Hardcoded credentials should be externalized for security
-4. **SSL verification**: Script disables SSL verification (`verify=False`) for self-signed certificates
+4. **SSL verification**: Script disables SSL verification by default (`VERIFY_SSL = False`) for self-signed certificates
 5. **AAA session Limits**: As a safeguard against resource exhaustion, it is preferred to use separate CNC credentials for get-plan. Under Admin > AAA Settings, No. of parallel sessions should be set orders higher than No. of parallel sessions per user (e.g. 200 vs 50). 
 
 ## References
@@ -379,6 +398,6 @@ This script fulfills that role by providing the network model from CNC, enabling
 
 ---
 
-*Document Version: 1.2*  
+*Document Version: 1.3*  
 *Script: get_plan_cp_cw.py*  
 *Platform: Cisco Crosswork Planning 7.2*
