@@ -39,10 +39,13 @@ def check_response(resp: requests.Response, context: str) -> None:
 class CncClient:
     """Crosswork Network Controller API client."""
 
-    def __init__(self, ip: str, username: str, password: str):
+    def __init__(self, ip: str, username: str = None, password: str = None, jwt_token: str = None):
         self.base = f"https://{ip}:{BASE_PORT}"
         self._headers = {"Content-Type": "application/json"}
-        self._authenticate(username, password)
+        if jwt_token:
+            self._headers["Authorization"] = f"Bearer {jwt_token}"
+        else:
+            self._authenticate(username, password)
 
     def _authenticate(self, username: str, password: str):
         form_headers = {"Content-Type": "application/x-www-form-urlencoded"}
@@ -216,8 +219,9 @@ def main():
     parser.add_argument("host", nargs="?", default=None, metavar="HOST",
                         help="Target hostname (all hosts if not specified)")
     parser.add_argument("--ip", required=True, help="Crosswork controller IP address")
-    parser.add_argument("--username", "-u", required=True, help="Username")
-    parser.add_argument("--password", "-p", required=True, help="Password")
+    parser.add_argument("--username", "-u", default="admin", help="Username (default: admin)")
+    parser.add_argument("--password", "-p", default="admin", help="Password (default: admin)")
+    parser.add_argument("--jwt", "-j", help="Path to JWT file (skips username/password auth)")
     parser.add_argument("--get", "--list", action="store_true", help="Get tags")
     parser.add_argument("--add", action="store_true", help="Add tag")
     parser.add_argument("--remove", "--rm", "--del", "--delete", action="store_true", help="Remove tag")
@@ -235,8 +239,14 @@ def main():
         parser.error("--tag is required when using --add or --remove")
 
     try:
-        print(f"Authenticating to {args.ip}...")
-        client = CncClient(args.ip, args.username, args.password)
+        jwt_token = None
+        if args.jwt:
+            with open(args.jwt, "r") as jf:
+                jwt_token = jf.read().strip()
+            print(f"Using JWT from {args.jwt}")
+        else:
+            print(f"Authenticating to {args.ip}...")
+        client = CncClient(args.ip, args.username, args.password, jwt_token=jwt_token)
 
         if args.get:
             cmd_get(client, args)
