@@ -87,13 +87,17 @@ def get_token(base_url: str, ticket: str) -> str:
     return token
 
 
-def get_inventory(ip_address: str, username: str, password: str, port: int = DEFAULT_PORT) -> dict:
+def get_inventory(ip_address: str, username: str = None, password: str = None,
+                  port: int = DEFAULT_PORT, jwt_token: str = None) -> dict:
     """Retrieve deep inventory from Crosswork Network Controller."""
     base_url = f"https://{ip_address}:{port}"
 
-    print("Authenticating...")
-    ticket = get_ticket(base_url, username, password)
-    token = get_token(base_url, ticket)
+    if jwt_token:
+        token = jwt_token
+    else:
+        print("Authenticating...")
+        ticket = get_ticket(base_url, username, password)
+        token = get_token(base_url, ticket)
     
     url = f"{base_url}/crosswork/inventory/restconf/data/v2/resource-physical:node"
     
@@ -270,8 +274,9 @@ Example:
     )
     
     parser.add_argument("--ip", required=True, help="Crosswork controller IP address")
-    parser.add_argument("--username", "-u", required=True, help="Username")
-    parser.add_argument("--password", "-p", required=True, help="Password")
+    parser.add_argument("--username", "-u", default="admin", help="Username (default: admin)")
+    parser.add_argument("--password", "-p", default="admin", help="Password (default: admin)")
+    parser.add_argument("--jwt", "-j", help="Path to JWT file (skips username/password auth)")
     parser.add_argument("--output", "-o", help="Output filename (saves JSON to file)")
     parser.add_argument("--short", "-s", action="store_true", help="Short tabular output")
     parser.add_argument(
@@ -284,7 +289,13 @@ Example:
     
     print(f"Connecting to Crosswork at {args.ip}...")
     try:
-        inventory_data = get_inventory(args.ip, args.username, args.password)
+        jwt_token = None
+        if args.jwt:
+            with open(args.jwt, "r") as jf:
+                jwt_token = jf.read().strip()
+            print(f"Using JWT from {args.jwt}")
+        inventory_data = get_inventory(args.ip, args.username, args.password,
+                                       jwt_token=jwt_token)
     except (CrossworkAuthError, requests.RequestException, OSError) as e:
         print(f"Error: {e}")
         sys.exit(1)
