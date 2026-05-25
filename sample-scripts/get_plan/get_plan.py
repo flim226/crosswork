@@ -140,8 +140,9 @@ def main():
     parser.add_argument("--ip", required=True, help="Crosswork controller IP address")
     parser.add_argument("--port", type=int, default=DEFAULT_PORT,
                         help=f"Crosswork HTTPS port (default: {DEFAULT_PORT})")
-    parser.add_argument("--username", "-u", required=True, help="Username")
-    parser.add_argument("--password", "-p", required=True, help="Password")
+    parser.add_argument("--username", "-u", default="admin", help="Username (default: admin)")
+    parser.add_argument("--password", "-p", default="admin", help="Password (default: admin)")
+    parser.add_argument("--jwt", "-j", help="Path to JWT file (skips username/password auth)")
     parser.add_argument("--planfile", "-f", help="Plan file name (must end with .txt or .pln). Default: <ip>.<timestamp>.<format>")
     parser.add_argument("--format", choices=["txt", "pln"], default="txt", help="Plan file format (default: txt). Used for default filename when --planfile is not provided.")
     parser.add_argument("--version", "-v", default="", help="Planfile schema version (default: empty string)")
@@ -172,11 +173,16 @@ def main():
     base_url = f"https://{args.ip}:{args.port}"
 
     try:
-        print(f"Authenticating to {args.ip}...")
-        ticket = get_ticket(base_url, args.username, args.password,
-                            verify_ssl=VERIFY_SSL, timeout=args.timeout)
-        token = get_token(base_url, ticket,
-                          verify_ssl=VERIFY_SSL, timeout=args.timeout)
+        if args.jwt:
+            with open(args.jwt, "r") as jf:
+                token = jf.read().strip()
+            print(f"Using JWT from {args.jwt}")
+        else:
+            print(f"Authenticating to {args.ip}...")
+            ticket = get_ticket(base_url, args.username, args.password,
+                                verify_ssl=VERIFY_SSL, timeout=args.timeout)
+            token = get_token(base_url, ticket,
+                              verify_ssl=VERIFY_SSL, timeout=args.timeout)
         
         print(f"Retrieving plan: {args.planfile}...")
         plan_content = get_plan(base_url, token, args.planfile, file_format, args.version,
