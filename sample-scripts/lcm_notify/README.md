@@ -418,7 +418,6 @@ This is normal behaviour. Investigate CNC platform health and optima-lcm service
 |--------|--------------|
 | `get_plan.py` | Shares the same SSO authentication flow and CLI conventions (`--ip`, `-u`, `-p`, `-j`) |
 | `cw_get_jwt.py` | Can be used to obtain a JWT file for `--jwt` authentication |
-| LCM SR Policy analysis skill | Consumes CNC platform logs; this script provides a complementary real-time RESTCONF event feed |
 
 ## References
 
