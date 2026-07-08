@@ -5,22 +5,44 @@ Retrieves physical node inventory using the resource-physical:node API
 """
 
 import argparse
+import getpass
 import json
+import os
 import sys
-import urllib3
+
 import requests
+import urllib3
 
-DEFAULT_PORT = 30603
-DEFAULT_TIMEOUT = 30
-VERIFY_SSL = False
-
-# Suppress SSL warnings when verification is disabled
-if not VERIFY_SSL:
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+BASE_PORT = 30603
+CONNECT_TIMEOUT = 20
+INVENTORY_TIMEOUT = 60
+ENV_USERNAME = "CW_USERNAME"
+ENV_PASSWORD = "CW_PASSWORD"
 
 
 class CrossworkAuthError(RuntimeError):
     """Raised when authentication or API calls fail."""
+
+
+class _TimeoutAdapter(requests.adapters.HTTPAdapter):
+    """HTTPAdapter that applies a default timeout to all requests."""
+
+    def send(self, *args, **kwargs):
+        if kwargs.get("timeout") is None:
+            kwargs["timeout"] = CONNECT_TIMEOUT
+        return super().send(*args, **kwargs)
+
+
+def _create_session(verify_ssl: bool = True) -> requests.Session:
+    """Create an HTTP session with default timeout and configurable SSL verification."""
+    if not verify_ssl:
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+    session = requests.Session()
+    session.verify = verify_ssl
+    adapter = _TimeoutAdapter()
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
+    return session
 
 
 def check_response(resp: requests.Response, context: str) -> None:
@@ -39,15 +61,13 @@ def check_response(resp: requests.Response, context: str) -> None:
     raise CrossworkAuthError(f"{context} returned {status}: {body}")
 
 
-def get_ticket(base_url: str, username: str, password: str) -> str:
+def get_ticket(session: requests.Session, base_url: str, username: str, password: str) -> str:
     """POST credentials to Crosswork SSO and return a ticket-granting ticket."""
     url = f"{base_url}/crosswork/sso/v1/tickets"
-    resp = requests.post(
+    resp = session.post(
         url,
         data={"username": username, "password": password},
         headers={"Content-Type": "application/x-www-form-urlencoded"},
-        verify=VERIFY_SSL,
-        timeout=DEFAULT_TIMEOUT,
     )
     check_response(resp, "get_ticket")
 
@@ -65,15 +85,13 @@ def get_ticket(base_url: str, username: str, password: str) -> str:
     return ticket
 
 
-def get_token(base_url: str, ticket: str) -> str:
+def get_token(session: requests.Session, base_url: str, ticket: str) -> str:
     """Exchange a Crosswork SSO ticket for a JWT bearer token via SSO v2."""
     url = f"{base_url}/crosswork/sso/v2/tickets/jwt"
-    resp = requests.post(
+    resp = session.post(
         url,
         headers={"Content-Type": "application/x-www-form-urlencoded"},
         data={"tgt": ticket, "service": f"{base_url}/app-dashboard"},
-        verify=VERIFY_SSL,
-        timeout=DEFAULT_TIMEOUT,
     )
     check_response(resp, "get_token")
 
@@ -87,32 +105,44 @@ def get_token(base_url: str, ticket: str) -> str:
     return token
 
 
-def get_inventory(ip_address: str, username: str = None, password: str = None,
-                  port: int = DEFAULT_PORT, jwt_token: str = None) -> dict:
+def get_jwt(ip: str, username: str, password: str, verify_ssl: bool = True, port: int = BASE_PORT) -> str:
+    """Authenticate to Crosswork and return the JWT token string."""
+    session = _create_session(verify_ssl=verify_ssl)
+    base_url = f"https://{ip}:{port}"
+    ticket = get_ticket(session, base_url, username, password)
+    return get_token(session, base_url, ticket)
+
+
+def _resolve_credentials(username=None, password=None) -> tuple:
+    """Resolve username and password from args, environment, or interactive prompt."""
+    username = username or os.environ.get(ENV_USERNAME)
+    if not username:
+        username = input("Username: ")
+
+    password = password or os.environ.get(ENV_PASSWORD)
+    if not password:
+        password = getpass.getpass("Password: ")
+
+    return username, password
+
+
+def load_token_from_file(path: str) -> str:
+    with open(path, "r", encoding="utf-8") as jwt_file:
+        return jwt_file.read().strip()
+
+
+def get_inventory(ip_address: str, token: str, port: int = BASE_PORT, verify_ssl: bool = True) -> dict:
     """Retrieve deep inventory from Crosswork Network Controller."""
     base_url = f"https://{ip_address}:{port}"
-
-    if jwt_token:
-        token = jwt_token
-    else:
-        print("Authenticating...")
-        ticket = get_ticket(base_url, username, password)
-        token = get_token(base_url, ticket)
-    
     url = f"{base_url}/crosswork/inventory/restconf/data/v2/resource-physical:node"
-    
     headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {token}"
+        "Authorization": f"Bearer {token}",
     }
-    
-    response = requests.get(
-        url,
-        headers=headers,
-        verify=VERIFY_SSL,
-        timeout=60
-    )
+
+    session = _create_session(verify_ssl=verify_ssl)
+    response = session.get(url, headers=headers, timeout=INVENTORY_TIMEOUT)
     check_response(response, "get_inventory")
     return response.json()
 
@@ -265,37 +295,52 @@ def main():
     parser = argparse.ArgumentParser(
         description="Retrieve deep inventory from Crosswork Network Controller",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
+        epilog=f"""
 Example:
-  python get_inventory.py --ip 192.168.1.100 -u admin -p mypassword
-  python get_inventory.py --ip 10.0.0.1 -u admin -p secret --json
-  python get_inventory.py --ip 10.0.0.1 -u admin -p secret --output inventory.json
-        """
+  python get_inventory.py --ip 192.168.1.100 -u admin
+  python get_inventory.py --ip 10.0.0.1 --jwt ~/.crosswork/10.0.0.1.jwt --json
+  python get_inventory.py --ip 10.0.0.1 -u admin --output inventory.json
+
+Credentials are resolved in order: CLI flags > environment variables
+({ENV_USERNAME}, {ENV_PASSWORD}) > interactive prompt.
+        """,
     )
-    
+
     parser.add_argument("--ip", required=True, help="Crosswork controller IP address")
-    parser.add_argument("--username", "-u", default="admin", help="Username (default: admin)")
-    parser.add_argument("--password", "-p", default="admin", help="Password (default: admin)")
+    parser.add_argument("--port", type=int, default=BASE_PORT,
+                        help=f"Crosswork HTTPS port (default: {BASE_PORT})")
+    parser.add_argument("--username", "-u", default=None,
+                        help=f"Username (or set {ENV_USERNAME})")
+    parser.add_argument("--password", "-p", default=None,
+                        help=f"Password (or set {ENV_PASSWORD}; will prompt if omitted)")
     parser.add_argument("--jwt", "-j", help="Path to JWT file (skips username/password auth)")
+    parser.add_argument("-k", "--insecure", action="store_true",
+                        help="Disable SSL certificate verification (not recommended)")
     parser.add_argument("--output", "-o", help="Output filename (saves JSON to file)")
     parser.add_argument("--short", "-s", action="store_true", help="Short tabular output")
     parser.add_argument(
         "--json",
         action="store_true",
-        help="Output raw JSON instead of formatted display"
+        help="Output raw JSON instead of formatted display",
     )
-    
+
     args = parser.parse_args()
-    
+
+    verify_ssl = not args.insecure
+    if args.insecure:
+        print("WARNING: SSL verification disabled", file=sys.stderr)
+
     print(f"Connecting to Crosswork at {args.ip}...")
     try:
-        jwt_token = None
         if args.jwt:
-            with open(args.jwt, "r") as jf:
-                jwt_token = jf.read().strip()
+            token = load_token_from_file(args.jwt)
             print(f"Using JWT from {args.jwt}")
-        inventory_data = get_inventory(args.ip, args.username, args.password,
-                                       jwt_token=jwt_token)
+        else:
+            print("Authenticating...")
+            username, password = _resolve_credentials(args.username, args.password)
+            token = get_jwt(args.ip, username, password, verify_ssl=verify_ssl, port=args.port)
+
+        inventory_data = get_inventory(args.ip, token, port=args.port, verify_ssl=verify_ssl)
     except (CrossworkAuthError, requests.RequestException, OSError) as e:
         print(f"Error: {e}")
         sys.exit(1)
