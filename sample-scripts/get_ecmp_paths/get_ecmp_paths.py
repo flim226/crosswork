@@ -9,37 +9,48 @@ Requires: grpcurl (https://github.com/fullstorydev/grpcurl)
 
 import argparse
 import base64
+import getpass
 import ipaddress
 import json
+import os
 import struct
 import subprocess
 import sys
-
-import os
 
 import graphviz
 import requests
 import urllib3
 
-# Default connection settings
-CROSSWORK_IP = "198.18.134.219"
-CROSSWORK_USERNAME = "admin"
-CROSSWORK_PASSWORD = "PASSWORD"
-GRPC_PORT = 30603
+BASE_PORT = 30603
+CONNECT_TIMEOUT = 20
+ENV_USERNAME = "CW_USERNAME"
+ENV_PASSWORD = "CW_PASSWORD"
 PROTOSET_FILE = "pa.protoset"
-VERIFY_SSL = False
 
-# Suppress SSL warnings when verification is disabled
-if not VERIFY_SSL:
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-
-# ---------------------------------------------------------------------------
-# Authentication
-# ---------------------------------------------------------------------------
 
 class CrossworkAuthError(RuntimeError):
     """Raised when authentication or API calls fail."""
+
+
+class _TimeoutAdapter(requests.adapters.HTTPAdapter):
+    """HTTPAdapter that applies a default timeout to all requests."""
+
+    def send(self, *args, **kwargs):
+        if kwargs.get("timeout") is None:
+            kwargs["timeout"] = CONNECT_TIMEOUT
+        return super().send(*args, **kwargs)
+
+
+def _create_session(verify_ssl: bool = True) -> requests.Session:
+    """Create an HTTP session with default timeout and configurable SSL verification."""
+    if not verify_ssl:
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+    session = requests.Session()
+    session.verify = verify_ssl
+    adapter = _TimeoutAdapter()
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
+    return session
 
 
 def check_response(resp: requests.Response, context: str) -> None:
@@ -58,23 +69,13 @@ def check_response(resp: requests.Response, context: str) -> None:
     raise CrossworkAuthError(f"{context} returned {status}: {body}")
 
 
-def get_auth_token(ip: str, username: str, password: str, port: int) -> str:
-    """Authenticate and get a JWT token from Crosswork.
-
-    Uses the SSO v1/v2 flow:
-    1. POST credentials to get a TGT ticket (v1)
-    2. Exchange TGT for a JWT token (v2)
-    """
-    base_url = f"https://{ip}:{port}"
-    headers = {"Content-Type": "application/x-www-form-urlencoded"}
-
-    # Step 1: Get TGT ticket
+def get_ticket(session: requests.Session, base_url: str, username: str, password: str) -> str:
+    """POST credentials to Crosswork SSO and return a ticket-granting ticket."""
     url = f"{base_url}/crosswork/sso/v1/tickets"
-    resp = requests.post(
+    resp = session.post(
         url,
         data={"username": username, "password": password},
-        headers=headers,
-        verify=VERIFY_SSL,
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
     )
     check_response(resp, "get_ticket")
 
@@ -89,14 +90,16 @@ def get_auth_token(ip: str, username: str, password: str, port: int) -> str:
 
     if not ticket:
         raise CrossworkAuthError(f"Could not extract ticket from response: {resp.text[:300]}")
+    return ticket
 
-    # Step 2: Exchange TGT for JWT token via SSO v2
+
+def get_token(session: requests.Session, base_url: str, ticket: str) -> str:
+    """Exchange a Crosswork SSO ticket for a JWT bearer token via SSO v2."""
     url = f"{base_url}/crosswork/sso/v2/tickets/jwt"
-    resp = requests.post(
+    resp = session.post(
         url,
-        headers=headers,
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
         data={"tgt": ticket, "service": f"{base_url}/app-dashboard"},
-        verify=VERIFY_SSL,
     )
     check_response(resp, "get_token")
 
@@ -108,6 +111,32 @@ def get_auth_token(ip: str, username: str, password: str, port: int) -> str:
     if not token:
         raise CrossworkAuthError(f"Could not extract token from response: {resp.text[:300]}")
     return token
+
+
+def get_jwt(ip: str, username: str, password: str, verify_ssl: bool = True, port: int = BASE_PORT) -> str:
+    """Authenticate to Crosswork and return the JWT token string."""
+    session = _create_session(verify_ssl=verify_ssl)
+    base_url = f"https://{ip}:{port}"
+    ticket = get_ticket(session, base_url, username, password)
+    return get_token(session, base_url, ticket)
+
+
+def _resolve_credentials(username=None, password=None) -> tuple:
+    """Resolve username and password from args, environment, or interactive prompt."""
+    username = username or os.environ.get(ENV_USERNAME)
+    if not username:
+        username = input("Username: ")
+
+    password = password or os.environ.get(ENV_PASSWORD)
+    if not password:
+        password = getpass.getpass("Password: ")
+
+    return username, password
+
+
+def load_token_from_file(path: str) -> str:
+    with open(path, "r", encoding="utf-8") as jwt_file:
+        return jwt_file.read().strip()
 
 
 # ---------------------------------------------------------------------------
@@ -512,26 +541,32 @@ Examples:
         help="Generate a Graphviz topology graph (format from extension, e.g. .png .svg .pdf)",
     )
 
-    # Connection settings (overridable defaults)
+    # Connection settings
     parser.add_argument(
         "--ip",
-        default=CROSSWORK_IP,
-        help=f"Crosswork controller IP (default: {CROSSWORK_IP})",
+        required=True,
+        help="Crosswork controller IP address",
     )
     parser.add_argument(
         "--username",
         "-u",
-        default=CROSSWORK_USERNAME,
-        help=f"Username (default: {CROSSWORK_USERNAME})",
+        default=None,
+        help=f"Username (or set {ENV_USERNAME})",
     )
     parser.add_argument(
-        "--password", "-p", default=CROSSWORK_PASSWORD, help="Password"
+        "--password",
+        "-p",
+        default=None,
+        help=f"Password (or set {ENV_PASSWORD}; will prompt if omitted)",
     )
+    parser.add_argument("--jwt", "-j", help="Path to JWT file (skips username/password auth)")
+    parser.add_argument("-k", "--insecure", action="store_true",
+                        help="Disable SSL certificate verification (not recommended)")
     parser.add_argument(
         "--port",
         type=int,
-        default=GRPC_PORT,
-        help=f"gRPC port (default: {GRPC_PORT})",
+        default=BASE_PORT,
+        help=f"gRPC port (default: {BASE_PORT})",
     )
     parser.add_argument(
         "--protoset",
@@ -550,8 +585,17 @@ Examples:
             sys.exit(1)
 
     try:
-        print(f"Authenticating to {args.ip}...", file=sys.stderr)
-        token = get_auth_token(args.ip, args.username, args.password, args.port)
+        verify_ssl = not args.insecure
+        if args.insecure:
+            print("WARNING: SSL verification disabled", file=sys.stderr)
+
+        if args.jwt:
+            token = load_token_from_file(args.jwt)
+            print(f"Using JWT from {args.jwt}", file=sys.stderr)
+        else:
+            print(f"Authenticating to {args.ip}...", file=sys.stderr)
+            username, password = _resolve_credentials(args.username, args.password)
+            token = get_jwt(args.ip, username, password, verify_ssl=verify_ssl, port=args.port)
 
         print(
             f"Querying ECMP paths: {args.source} -> {args.destination} (color: {args.color})",

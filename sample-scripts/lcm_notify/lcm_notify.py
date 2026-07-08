@@ -10,26 +10,30 @@ API References:
 from __future__ import annotations
 
 import argparse
+import getpass
 import json
+import os
 import signal
 import sys
 import time
-import urllib3
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from enum import Enum
 from typing import Callable, Literal, Optional, TextIO
 
 import requests
+import urllib3
 
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
 
-DEFAULT_PORT = 30603
+BASE_PORT = 30603
+CONNECT_TIMEOUT = 20
 DEFAULT_AUTH_TIMEOUT = 30
 DEFAULT_RECONNECT_DELAY = 3
-VERIFY_SSL = False
+ENV_USERNAME = "CW_USERNAME"
+ENV_PASSWORD = "CW_PASSWORD"
 CHUNK_SIZE = 4096
 
 OPTIMIZATION_V3_BASE = "/crosswork/nbi/optimization/v3/restconf"
@@ -48,17 +52,96 @@ LISTEN_PATH_V2 = (
 ApiMode = Literal["auto", "v3", "legacy"]
 ReconnectFactory = Callable[[], "StreamSession"]
 
-if not VERIFY_SSL:
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-
-# ---------------------------------------------------------------------------
-# Errors
-# ---------------------------------------------------------------------------
-
 
 class CrossworkAuthError(RuntimeError):
     """Raised when authentication or API calls fail."""
+
+
+class _TimeoutAdapter(requests.adapters.HTTPAdapter):
+    """HTTPAdapter that applies a default timeout to all requests."""
+
+    def __init__(self, timeout: int = CONNECT_TIMEOUT, **kwargs):
+        self._timeout = timeout
+        super().__init__(**kwargs)
+
+    def send(self, *args, **kwargs):
+        if kwargs.get("timeout") is None:
+            kwargs["timeout"] = self._timeout
+        return super().send(*args, **kwargs)
+
+
+def _create_session(verify_ssl: bool = True, timeout: int = CONNECT_TIMEOUT) -> requests.Session:
+    """Create an HTTP session with default timeout and configurable SSL verification."""
+    if not verify_ssl:
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+    session = requests.Session()
+    session.verify = verify_ssl
+    adapter = _TimeoutAdapter(timeout=timeout)
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
+    return session
+
+
+def get_ticket(session: requests.Session, base_url: str, username: str, password: str) -> str:
+    """POST credentials to Crosswork SSO and return a ticket-granting ticket."""
+    url = f"{base_url}/crosswork/sso/v1/tickets"
+    resp = session.post(
+        url,
+        data={"username": username, "password": password},
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+    )
+    check_response(resp, "get_ticket")
+
+    location = resp.headers.get("Location", "")
+    if location:
+        ticket = location.rstrip("/").split("/")[-1]
+    else:
+        try:
+            ticket = resp.json().get("ticket", "")
+        except ValueError:
+            ticket = resp.text.strip()
+
+    if not ticket:
+        raise CrossworkAuthError(f"Could not extract ticket from response: {resp.text[:300]}")
+    return ticket
+
+
+def get_token(session: requests.Session, base_url: str, ticket: str) -> str:
+    """Exchange a Crosswork SSO ticket for a JWT bearer token via SSO v2."""
+    url = f"{base_url}/crosswork/sso/v2/tickets/jwt"
+    resp = session.post(
+        url,
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+        data={"tgt": ticket, "service": f"{base_url}/app-dashboard"},
+    )
+    check_response(resp, "get_token")
+
+    try:
+        token = resp.json().get("token", "")
+    except ValueError:
+        token = resp.text.strip()
+
+    if not token:
+        raise CrossworkAuthError(f"Could not extract token from response: {resp.text[:300]}")
+    return token
+
+
+def _resolve_credentials(username=None, password=None) -> tuple[str, str]:
+    """Resolve username and password from args, environment, or interactive prompt."""
+    username = username or os.environ.get(ENV_USERNAME)
+    if not username:
+        username = input("Username: ")
+
+    password = password or os.environ.get(ENV_PASSWORD)
+    if not password:
+        password = getpass.getpass("Password: ")
+
+    return username, password
+
+
+def load_token_from_file(path: str) -> str:
+    with open(path, "r", encoding="utf-8") as jwt_file:
+        return jwt_file.read().strip()
 
 
 # ---------------------------------------------------------------------------
@@ -76,11 +159,16 @@ def response_text(resp: requests.Response, limit: int = 500) -> str:
 def check_response(resp: requests.Response, context: str) -> None:
     if resp.ok:
         return
+    body = (resp.text or "").strip()
+    if len(body) > 500:
+        body = body[:500] + "..."
+    if not body:
+        body = "<empty response body>"
     reason = getattr(resp, "reason", "")
     status = f"HTTP {resp.status_code}"
     if reason:
         status = f"{status} {reason}"
-    raise CrossworkAuthError(f"{context} returned {status}: {response_text(resp)}")
+    raise CrossworkAuthError(f"{context} returned {status}: {body}")
 
 
 def response_json(resp: requests.Response, context: str) -> dict:
@@ -101,8 +189,14 @@ def response_json(resp: requests.Response, context: str) -> dict:
 @dataclass(frozen=True)
 class ClientConfig:
     base_url: str
-    verify_ssl: bool = VERIFY_SSL
+    verify_ssl: bool = True
     timeout: int = DEFAULT_AUTH_TIMEOUT
+    session: requests.Session | None = None
+
+    def get_session(self) -> requests.Session:
+        if self.session is not None:
+            return self.session
+        return _create_session(verify_ssl=self.verify_ssl, timeout=self.timeout)
 
 
 def restconf_headers(token: str, *, accept: str = "application/yang-data+json") -> dict[str, str]:
@@ -112,63 +206,10 @@ def restconf_headers(token: str, *, accept: str = "application/yang-data+json") 
     }
 
 
-def get_ticket(config: ClientConfig, username: str, password: str) -> str:
-    url = f"{config.base_url}/crosswork/sso/v1/tickets"
-    resp = requests.post(
-        url,
-        data={"username": username, "password": password},
-        headers={"Content-Type": "application/x-www-form-urlencoded"},
-        verify=config.verify_ssl,
-        timeout=config.timeout,
-    )
-    check_response(resp, "get_ticket")
-
-    location = resp.headers.get("Location", "")
-    if location:
-        ticket = location.rstrip("/").split("/")[-1]
-    else:
-        try:
-            ticket = json.loads(resp.content).get("ticket", "")
-        except (ValueError, json.JSONDecodeError):
-            ticket = response_text(resp, limit=10000)
-
-    if not ticket:
-        raise CrossworkAuthError(
-            f"Could not extract ticket from response: {response_text(resp, limit=300)}"
-        )
-    return ticket
-
-
-def get_token(config: ClientConfig, ticket: str) -> str:
-    url = f"{config.base_url}/crosswork/sso/v2/tickets/jwt"
-    resp = requests.post(
-        url,
-        headers={"Content-Type": "application/x-www-form-urlencoded"},
-        data={"tgt": ticket, "service": f"{config.base_url}/app-dashboard"},
-        verify=config.verify_ssl,
-        timeout=config.timeout,
-    )
-    check_response(resp, "get_token")
-
-    try:
-        token = json.loads(resp.content).get("token", "")
-    except (ValueError, json.JSONDecodeError):
-        token = response_text(resp, limit=10000)
-
-    if not token:
-        raise CrossworkAuthError(
-            f"Could not extract token from response: {response_text(resp, limit=300)}"
-        )
-    return token
-
-
 def authenticate(config: ClientConfig, username: str, password: str) -> str:
-    return get_token(config, get_ticket(config, username, password))
-
-
-def load_token_from_file(path: str) -> str:
-    with open(path, "r", encoding="utf-8") as jwt_file:
-        return jwt_file.read().strip()
+    session = config.get_session()
+    ticket = get_ticket(session, config.base_url, username, password)
+    return get_token(session, config.base_url, ticket)
 
 
 # ---------------------------------------------------------------------------
@@ -269,12 +310,10 @@ class NotificationStreamClient:
                 "notification-output-type": "JSON",
             }
         }
-        resp = requests.post(
+        resp = self.config.get_session().post(
             url,
             headers=headers,
             json=payload,
-            verify=self.config.verify_ssl,
-            timeout=self.config.timeout,
         )
         data = response_json(resp, "create_notification_stream_v3")
         output = data.get("sal-remote:output", data.get("output", {}))
@@ -299,11 +338,9 @@ class NotificationStreamClient:
             f"{self.config.base_url}{OPTIMA_V2_BASE}/data/"
             "ietf-restconf-monitoring:restconf-state/streams"
         )
-        resp = requests.get(
+        resp = self.config.get_session().get(
             streams_url,
             headers=restconf_headers(self.token),
-            verify=self.config.verify_ssl,
-            timeout=self.config.timeout,
         )
         check_response(resp, "enable_notification_stream_v2")
 
@@ -312,11 +349,9 @@ class NotificationStreamClient:
             "ietf-restconf-monitoring:restconf-state/"
             f"streams/stream={STREAM_NAME_V2}/access=JSON/location"
         )
-        resp = requests.get(
+        resp = self.config.get_session().get(
             subscribe_url,
             headers=restconf_headers(self.token),
-            verify=self.config.verify_ssl,
-            timeout=self.config.timeout,
         )
         check_response(resp, "subscribe_notification_stream_v2")
 
@@ -405,11 +440,10 @@ class NotificationListener:
         new_events = 0
 
         try:
-            with requests.get(
+            with self.config.get_session().get(
                 session.url,
                 headers=session.headers,
                 stream=True,
-                verify=self.config.verify_ssl,
                 timeout=(DEFAULT_AUTH_TIMEOUT, None),
             ) as resp:
                 check_response(resp, "listen_notification_stream")
@@ -488,12 +522,16 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--port",
         type=int,
-        default=DEFAULT_PORT,
-        help=f"Crosswork HTTPS port (default: {DEFAULT_PORT})",
+        default=BASE_PORT,
+        help=f"Crosswork HTTPS port (default: {BASE_PORT})",
     )
-    parser.add_argument("--username", "-u", default="admin", help="Username (default: admin)")
-    parser.add_argument("--password", "-p", default="admin", help="Password (default: admin)")
+    parser.add_argument("--username", "-u", default=None,
+                        help=f"Username (or set {ENV_USERNAME})")
+    parser.add_argument("--password", "-p", default=None,
+                        help=f"Password (or set {ENV_PASSWORD}; will prompt if omitted)")
     parser.add_argument("--jwt", "-j", help="Path to JWT file (skips username/password auth)")
+    parser.add_argument("-k", "--insecure", action="store_true",
+                        help="Disable SSL certificate verification (not recommended)")
     parser.add_argument(
         "--timeout",
         type=int,
@@ -598,10 +636,16 @@ def listen_legacy(
 
 def main(argv: Optional[list[str]] = None) -> int:
     args = build_parser().parse_args(argv)
+    verify_ssl = not args.insecure
+    if args.insecure:
+        print("WARNING: SSL verification disabled", file=sys.stderr)
+
+    session = _create_session(verify_ssl=verify_ssl, timeout=args.timeout)
     config = ClientConfig(
         base_url=f"https://{args.ip}:{args.port}",
-        verify_ssl=VERIFY_SSL,
+        verify_ssl=verify_ssl,
         timeout=args.timeout,
+        session=session,
     )
     options = ListenOptions(
         pretty=args.pretty,
@@ -619,7 +663,8 @@ def main(argv: Optional[list[str]] = None) -> int:
             print(f"Using JWT from {args.jwt}", file=sys.stderr)
         else:
             print(f"Authenticating to {args.ip}...", file=sys.stderr)
-            token = authenticate(config, args.username, args.password)
+            username, password = _resolve_credentials(args.username, args.password)
+            token = authenticate(config, username, password)
 
         stream_client = NotificationStreamClient(config, token)
         api_mode, stream_id = resolve_api_mode(args.api, args.stream_id, stream_client)

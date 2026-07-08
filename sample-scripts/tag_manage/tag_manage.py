@@ -2,22 +2,43 @@
 """Script to manage tags on Crosswork Network Controller nodes."""
 
 import argparse
+import getpass
 import json
+import os
 import sys
 
 import requests
 import urllib3
 
 BASE_PORT = 30603
-VERIFY_SSL = False
-
-# Suppress SSL warnings when verification is disabled
-if not VERIFY_SSL:
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+CONNECT_TIMEOUT = 20
+ENV_USERNAME = "CW_USERNAME"
+ENV_PASSWORD = "CW_PASSWORD"
 
 
 class CrossworkAuthError(RuntimeError):
     """Raised when authentication or API calls fail."""
+
+
+class _TimeoutAdapter(requests.adapters.HTTPAdapter):
+    """HTTPAdapter that applies a default timeout to all requests."""
+
+    def send(self, *args, **kwargs):
+        if kwargs.get("timeout") is None:
+            kwargs["timeout"] = CONNECT_TIMEOUT
+        return super().send(*args, **kwargs)
+
+
+def _create_session(verify_ssl: bool = True) -> requests.Session:
+    """Create an HTTP session with default timeout and configurable SSL verification."""
+    if not verify_ssl:
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+    session = requests.Session()
+    session.verify = verify_ssl
+    adapter = _TimeoutAdapter()
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
+    return session
 
 
 def check_response(resp: requests.Response, context: str) -> None:
@@ -36,65 +57,94 @@ def check_response(resp: requests.Response, context: str) -> None:
     raise CrossworkAuthError(f"{context} returned {status}: {body}")
 
 
+def get_ticket(session: requests.Session, base_url: str, username: str, password: str) -> str:
+    """POST credentials to Crosswork SSO and return a ticket-granting ticket."""
+    url = f"{base_url}/crosswork/sso/v1/tickets"
+    resp = session.post(
+        url,
+        data={"username": username, "password": password},
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+    )
+    check_response(resp, "get_ticket")
+
+    location = resp.headers.get("Location", "")
+    if location:
+        ticket = location.rstrip("/").split("/")[-1]
+    else:
+        try:
+            ticket = resp.json().get("ticket", "")
+        except ValueError:
+            ticket = resp.text.strip()
+
+    if not ticket:
+        raise CrossworkAuthError(f"Could not extract ticket from response: {resp.text[:300]}")
+    return ticket
+
+
+def get_token(session: requests.Session, base_url: str, ticket: str) -> str:
+    """Exchange a Crosswork SSO ticket for a JWT bearer token via SSO v2."""
+    url = f"{base_url}/crosswork/sso/v2/tickets/jwt"
+    resp = session.post(
+        url,
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+        data={"tgt": ticket, "service": f"{base_url}/app-dashboard"},
+    )
+    check_response(resp, "get_token")
+
+    try:
+        token = resp.json().get("token", "")
+    except ValueError:
+        token = resp.text.strip()
+
+    if not token:
+        raise CrossworkAuthError(f"Could not extract token from response: {resp.text[:300]}")
+    return token
+
+
+def get_jwt(ip: str, username: str, password: str, verify_ssl: bool = True, port: int = BASE_PORT) -> str:
+    """Authenticate to Crosswork and return the JWT token string."""
+    session = _create_session(verify_ssl=verify_ssl)
+    base_url = f"https://{ip}:{port}"
+    ticket = get_ticket(session, base_url, username, password)
+    return get_token(session, base_url, ticket)
+
+
+def _resolve_credentials(username=None, password=None) -> tuple:
+    """Resolve username and password from args, environment, or interactive prompt."""
+    username = username or os.environ.get(ENV_USERNAME)
+    if not username:
+        username = input("Username: ")
+
+    password = password or os.environ.get(ENV_PASSWORD)
+    if not password:
+        password = getpass.getpass("Password: ")
+
+    return username, password
+
+
+def load_token_from_file(path: str) -> str:
+    with open(path, "r", encoding="utf-8") as jwt_file:
+        return jwt_file.read().strip()
+
+
 class CncClient:
     """Crosswork Network Controller API client."""
 
-    def __init__(self, ip: str, username: str = None, password: str = None, jwt_token: str = None):
-        self.base = f"https://{ip}:{BASE_PORT}"
-        self._headers = {"Content-Type": "application/json"}
-        if jwt_token:
-            self._headers["Authorization"] = f"Bearer {jwt_token}"
-        else:
-            self._authenticate(username, password)
-
-    def _authenticate(self, username: str, password: str):
-        form_headers = {"Content-Type": "application/x-www-form-urlencoded"}
-
-        # Step 1: Get TGT ticket
-        resp = requests.post(
-            f"{self.base}/crosswork/sso/v1/tickets",
-            data={"username": username, "password": password},
-            headers=form_headers, verify=VERIFY_SSL,
-        )
-        check_response(resp, "get_ticket")
-
-        location = resp.headers.get("Location", "")
-        if location:
-            ticket = location.rstrip("/").split("/")[-1]
-        else:
-            try:
-                ticket = resp.json().get("ticket", "")
-            except ValueError:
-                ticket = resp.text.strip()
-
-        if not ticket:
-            raise CrossworkAuthError(f"Could not extract ticket from response: {resp.text[:300]}")
-
-        # Step 2: Exchange TGT for JWT token via SSO v2
-        resp = requests.post(
-            f"{self.base}/crosswork/sso/v2/tickets/jwt",
-            data={"tgt": ticket, "service": f"{self.base}/app-dashboard"},
-            headers=form_headers, verify=VERIFY_SSL,
-        )
-        check_response(resp, "get_token")
-
-        try:
-            token = resp.json().get("token", "")
-        except ValueError:
-            token = resp.text.strip()
-
-        if not token:
-            raise CrossworkAuthError(f"Could not extract token from response: {resp.text[:300]}")
-
-        self._headers["Authorization"] = f"Bearer {token}"
+    def __init__(self, ip: str, token: str, *, port: int = BASE_PORT, verify_ssl: bool = True):
+        self.base = f"https://{ip}:{port}"
+        self._session = _create_session(verify_ssl=verify_ssl)
+        self._headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {token}",
+        }
 
     def _post(self, path: str, body: dict) -> dict:
-        resp = requests.post(f"{self.base}{path}", headers=self._headers, json=body, verify=VERIFY_SSL)
+        resp = self._session.post(f"{self.base}{path}", headers=self._headers, json=body)
         check_response(resp, f"POST {path}")
         return resp.json()
 
     def _put(self, path: str, body: dict) -> dict:
-        resp = requests.put(f"{self.base}{path}", headers=self._headers, json=body, verify=VERIFY_SSL)
+        resp = self._session.put(f"{self.base}{path}", headers=self._headers, json=body)
         check_response(resp, f"PUT {path}")
         return resp.json()
 
@@ -214,14 +264,26 @@ def cmd_remove(client: CncClient, args):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Manage tags on Crosswork Network Controller nodes"
+        description="Manage tags on Crosswork Network Controller nodes",
+        epilog=(
+            "Credentials are resolved in order: CLI flags > environment variables "
+            f"({ENV_USERNAME}, {ENV_PASSWORD}) > interactive prompt.\n"
+            "Use cw_get_jwt.py to obtain a JWT file for --jwt authentication."
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("host", nargs="?", default=None, metavar="HOST",
                         help="Target hostname (all hosts if not specified)")
     parser.add_argument("--ip", required=True, help="Crosswork controller IP address")
-    parser.add_argument("--username", "-u", default="admin", help="Username (default: admin)")
-    parser.add_argument("--password", "-p", default="admin", help="Password (default: admin)")
+    parser.add_argument("--port", type=int, default=BASE_PORT,
+                        help=f"Crosswork HTTPS port (default: {BASE_PORT})")
+    parser.add_argument("--username", "-u", default=None,
+                        help=f"Username (or set {ENV_USERNAME})")
+    parser.add_argument("--password", "-p", default=None,
+                        help=f"Password (or set {ENV_PASSWORD}; will prompt if omitted)")
     parser.add_argument("--jwt", "-j", help="Path to JWT file (skips username/password auth)")
+    parser.add_argument("-k", "--insecure", action="store_true",
+                        help="Disable SSL certificate verification (not recommended)")
     parser.add_argument("--get", "--list", action="store_true", help="Get tags")
     parser.add_argument("--add", action="store_true", help="Add tag")
     parser.add_argument("--remove", "--rm", "--del", "--delete", action="store_true", help="Remove tag")
@@ -238,15 +300,20 @@ def main():
     if (args.add or args.remove) and not args.tag:
         parser.error("--tag is required when using --add or --remove")
 
+    verify_ssl = not args.insecure
+    if args.insecure:
+        print("WARNING: SSL verification disabled", file=sys.stderr)
+
     try:
-        jwt_token = None
         if args.jwt:
-            with open(args.jwt, "r") as jf:
-                jwt_token = jf.read().strip()
+            token = load_token_from_file(args.jwt)
             print(f"Using JWT from {args.jwt}")
         else:
             print(f"Authenticating to {args.ip}...")
-        client = CncClient(args.ip, args.username, args.password, jwt_token=jwt_token)
+            username, password = _resolve_credentials(args.username, args.password)
+            token = get_jwt(args.ip, username, password, verify_ssl=verify_ssl, port=args.port)
+
+        client = CncClient(args.ip, token, port=args.port, verify_ssl=verify_ssl)
 
         if args.get:
             cmd_get(client, args)

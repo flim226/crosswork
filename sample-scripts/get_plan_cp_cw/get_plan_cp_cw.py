@@ -18,8 +18,10 @@ CROSSWORK_USERNAME = "admin"
 CROSSWORK_PASSWORD = "PASSWORD"
 PLAN_VERSION = ""
 TMP_PLANFILE = "planfile.pln"
+BASE_PORT = 30603
 CONNECT_TIMEOUT = 20
-VERIFY_SSL = False
+ENV_USERNAME = "CW_USERNAME"
+ENV_PASSWORD = "CW_PASSWORD"
 
 TRIM_FILES = {
     "trim_include.txt": "include node table",
@@ -27,10 +29,6 @@ TRIM_FILES = {
     "trim_include_regex.txt": "include nodes regex",
     "trim_exclude_regex.txt": "exclude nodes regex",
 }
-
-# Suppress SSL warnings when verification is disabled
-if not VERIFY_SSL:
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 logger = logging.getLogger(__name__)
 
@@ -47,10 +45,12 @@ class _TimeoutAdapter(requests.adapters.HTTPAdapter):
         return super().send(*args, **kwargs)
 
 
-def _create_session() -> requests.Session:
-    """Create an HTTP session with default timeout and SSL verification from VERIFY_SSL."""
+def _create_session(verify_ssl: bool = True) -> requests.Session:
+    """Create an HTTP session with default timeout and configurable SSL verification."""
+    if not verify_ssl:
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
     session = requests.Session()
-    session.verify = VERIFY_SSL
+    session.verify = verify_ssl
     adapter = _TimeoutAdapter()
     session.mount("https://", adapter)
     session.mount("http://", adapter)
@@ -115,6 +115,18 @@ def get_token(session: requests.Session, base_url: str, ticket: str) -> str:
     if not token:
         raise CrossworkAuthError(f"Could not extract token from response: {resp.text[:300]}")
     return token
+
+
+def _resolve_credentials(username=None, password=None) -> Tuple[str, str]:
+    """Resolve credentials from args, environment, or script defaults."""
+    username = username or os.environ.get(ENV_USERNAME) or CROSSWORK_USERNAME
+    password = password or os.environ.get(ENV_PASSWORD) or CROSSWORK_PASSWORD
+    return username, password
+
+
+def load_token_from_file(path: str) -> str:
+    with open(path, "r", encoding="utf-8") as jwt_file:
+        return jwt_file.read().strip()
 
 
 def get_plan(session: requests.Session, base_url: str, token: str, plan_format: str, version: str) -> bytes:
@@ -221,8 +233,13 @@ def main() -> None:
     parser.add_argument("archive_root_dir", help="Path to access archive root directory")
     parser.add_argument("--tmpfile", default=TMP_PLANFILE)
     parser.add_argument("--ip", default=CROSSWORK_IP, help=f"Crosswork controller IP address (default: {CROSSWORK_IP})")
-    parser.add_argument("--username", "-u", default=CROSSWORK_USERNAME, help=f"Username (default: {CROSSWORK_USERNAME})")
-    parser.add_argument("--password", "-p", default=CROSSWORK_PASSWORD, help="Password")
+    parser.add_argument("--username", "-u", default=CROSSWORK_USERNAME,
+                        help=f"Username (default: {CROSSWORK_USERNAME}, or set {ENV_USERNAME})")
+    parser.add_argument("--password", "-p", default=CROSSWORK_PASSWORD,
+                        help=f"Password (default: {CROSSWORK_PASSWORD}, or set {ENV_PASSWORD})")
+    parser.add_argument("--jwt", "-j", help="Path to JWT file (skips username/password auth)")
+    parser.add_argument("-k", "--insecure", action="store_true",
+                        help="Disable SSL certificate verification (not recommended)")
     parser.add_argument("--version", "-v", default=PLAN_VERSION, help="Planfile version (default: empty)")
 
     args = parser.parse_args()
@@ -240,12 +257,20 @@ def main() -> None:
     temp_files: List[str] = []
     try:
         logger.info("Startup script get_plan_cp_cw.py is initializing...")
-        session = _create_session()
-        base_url = f"https://{args.ip}:30603"
+        verify_ssl = not args.insecure
+        if args.insecure:
+            logger.warning("SSL verification disabled")
+        session = _create_session(verify_ssl=verify_ssl)
+        base_url = f"https://{args.ip}:{BASE_PORT}"
 
-        logger.info("Authenticating to Crosswork at %s...", args.ip)
-        ticket = get_ticket(session, base_url, args.username, args.password)
-        token = get_token(session, base_url, ticket)
+        if args.jwt:
+            logger.info("Using JWT from %s", args.jwt)
+            token = load_token_from_file(args.jwt)
+        else:
+            logger.info("Authenticating to Crosswork at %s...", args.ip)
+            username, password = _resolve_credentials(args.username, args.password)
+            ticket = get_ticket(session, base_url, username, password)
+            token = get_token(session, base_url, ticket)
 
         logger.info("Retrieving plan: %s...", args.tmpfile)
         plan_content = get_plan(session, base_url, token, file_format, args.version)
