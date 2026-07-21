@@ -2,9 +2,9 @@
 
 ## Overview
 
-This application note describes `lcm_notify_v2.py`, a single-file Python script that subscribes to and listens for **LCM Recommendation Events** from **Cisco Crosswork Network Controller (CNC)**. The script authenticates via CNC SSO, creates a RESTCONF notification stream for LCM recommendation events, and prints each notification as it arrives. It is intended for operators and integrators who need real-time visibility into Link Capacity Management (LCM) recommendation activity—such as new recommendations, updates, or lifecycle changes—without polling the CNC REST API.
+This application note describes `lcm_notify.py`, a single-file Python script that subscribes to and listens for **LCM Recommendation Events** from **Cisco Crosswork Network Controller (CNC)**. The script authenticates via CNC SSO, creates a RESTCONF notification stream for LCM recommendation events, and prints each notification as it arrives. It is intended for operators and integrators who need real-time visibility into Link Capacity Management (LCM) recommendation activity—such as new recommendations, updates, or lifecycle changes—without polling the CNC REST API.
 
-The script also supports optional **recommendation detail retrieval** (`--get-rec`), **verbose HTTP tracing** (`--verbose`), **environment-variable credentials**, and **secure-by-default SSL verification** (with an explicit opt-out via `-k`/`--insecure`). It runs indefinitely until the user presses **Ctrl+C**, and automatically reconnects if the notification stream is closed by the server.
+The script also supports optional **recommendation detail retrieval** (`--get-rec`), **pretty-printed or verbose HTTP-style output** (`--pretty`, `--verbose`), **environment-variable credentials**, and **secure-by-default SSL verification** (with an explicit opt-out via `-k`/`--insecure`). It runs indefinitely until the user presses **Ctrl+C**, and automatically reconnects if the notification stream is closed by the server.
 
 ## Background: LCM Recommendation Notifications
 
@@ -17,24 +17,25 @@ CNC exposes notification delivery through **RESTCONF notification streams**. The
 | **7.2 and later** | `/crosswork/nbi/optimization/v3/restconf` | POST `sal-remote:create-notification-stream`, then listen on `/streams/json/{uuid}` (Server-Sent Events) |
 | **7.0 and earlier** | `/crosswork/nbi/optima/v2/restconf` | GET stream enable/subscribe endpoints, then listen on `/notif/notification-stream/...` |
 
-`lcm_notify_v2.py` supports both models. By default (`--api auto`), it prefers the **optimization v3** API used on CNC 7.2+ and falls back to the legacy **optima v2** API if stream creation fails.
+`lcm_notify.py` supports both models. By default (`--api auto`), it prefers the **optimization v3** API used on CNC 7.2+ and falls back to the legacy **optima v2** API if stream creation fails.
 
-When `--get-rec` is enabled, the script additionally calls LCM RESTCONF operations on the **optima v2** API to fetch full recommendation and MSL preview details. This is a deliberate cross-API design: notifications are delivered on optimization v3, while LCM retrieval RPCs remain on optima v2 (consistent with the Crosswork OE Postman collection).
+When `--get-rec` is enabled, the script additionally calls LCM RESTCONF operations on the **optimization v3** API to fetch full recommendation and MSL preview details.
 
 For API details, see:
 
 - [Crosswork Optimization Engine RESTCONF Notifications (7.2+)](https://developer.cisco.com/docs/crosswork/network-controller/crosswork-optimization-engine-restconf-notifications/)
 - [Crosswork Optimization Engine RESTCONF Notifications (7.0 and earlier)](https://developer.cisco.com/docs/crosswork/network-controller/7-0/crosswork-optimization-engine-restconf-notifications/)
-- [Retrieve LCM recommendation policies](https://developer.cisco.com/docs/crosswork/network-controller/retrieve-lcm-recommendation-policies/)
+- [Retrieve an LCM recommendation](https://developer.cisco.com/docs/crosswork/network-controller/retrieve-an-lcm-recommendation/)
+- [Preview LCM MSL recommendation](https://developer.cisco.com/docs/crosswork/network-controller/preview-lcm-msl-recommendation/)
 
 ## Script Purpose
 
-`lcm_notify_v2.py`:
+`lcm_notify.py`:
 
 1. **Authenticates** to Crosswork Network Controller via SSO (TGT → JWT)
 2. **Subscribes** to the `lcm-recommendation-event` notification type
 3. **Listens** on a long-lived HTTP stream for incoming events
-4. **Prints** each event to stdout as JSON (with a local timestamp envelope)
+4. **Prints** each event with a local timestamp and `<<<` / `>>>` direction markers
 5. **Optionally fetches** full recommendation and MSL preview details for each event (`--get-rec`)
 6. **Reconnects** automatically if the stream drops, until the user interrupts the process
 
@@ -50,30 +51,31 @@ Typical use cases:
 
 | Feature | Description |
 |---------|-------------|
-| `--get-rec` | On each `lcm-recommendation-event`, calls `get-lcm-recommendation` and `get-lcm-msl-recommendation-preview` via optima v2 |
-| `--verbose` / `-v` | Logs HTTP requests and responses to stderr (Authorization header truncated) |
+| `--get-rec` | On each `lcm-recommendation-event`, calls `get-lcm-recommendation` and `get-lcm-msl-recommendation-preview` via optimization v3 |
+| `--pretty` | Pretty-print notifications and recommendation RPCs to stdout (indented JSON after a single `<<<` line per section) |
+| `--verbose` / `-v` | Log setup API traffic to stderr; show notifications/RPCs in HTTP trace style (or pretty style when combined with `--pretty`) |
 | `-k` / `--insecure` | Opt out of SSL certificate verification (verification is **enabled by default**) |
 | `CW_USERNAME` / `CW_PASSWORD` | Environment variables for credentials; interactive prompt if omitted |
 | `RecommendationClient` | Encapsulates LCM retrieval RPCs and MSL preview fan-out per solution |
-| Structured sections | Code organised into named sections with HTTP adapter classes |
+| Request/response logging | `>>>` for outbound requests, `<<<` for inbound responses and notifications |
 
 ## Script Structure
 
-`lcm_notify_v2.py` is a single self-contained script organised into named sections:
+`lcm_notify.py` is a single self-contained script organised into named sections:
 
 | Section | Contents |
 |---------|----------|
-| **Constants** | Ports, API paths, YANG identifiers, environment variable names, reconnect defaults |
+| **Constants** | Ports, API paths, YANG identifiers, environment variable names, reconnect defaults, log markers (`>>>`, `<<<`) |
 | **Exceptions** | `CrossworkAuthError` |
 | **HTTP adapters and session factory** | `_TimeoutAdapter`, `_VerboseAdapter`, `_create_session()` |
-| **HTTP response helpers** | `response_text()`, `check_response()`, `response_json()`, `stream_log()` |
+| **HTTP response helpers** | `response_text()`, `check_response()`, `response_json()`, `print_exchange()`, `stream_log()`, `stream_chunk_log()` |
 | **Credentials** | `_resolve_credentials()`, `load_token_from_file()` |
 | **Configuration and authentication** | `ClientConfig`, `_get_ticket()`, `_get_token()`, `authenticate()` |
-| **Event parsing** | `ParserMode`, `StreamingEventParser`, `extract_lcm_recommendation_event()`, `format_notification()` |
+| **Event parsing** | `ParserMode`, `StreamingEventParser`, `extract_lcm_recommendation_event()`, `format_notification()`, `emit_notification_event()` |
 | **Notification stream management** | `NotificationStreamClient`, `StreamSession` |
 | **Recommendation retrieval** | `RecommendationClient` |
 | **Notification listener** | `NotificationListener`, `ListenOptions` |
-| **CLI** | `build_parser()`, `_build_config()`, `_obtain_token()`, `_resolve_api_mode()`, `listen_v3()`, `listen_legacy()`, `main()` |
+| **CLI** | `build_parser()`, `_build_config()`, `_obtain_token()`, `_resolve_api_mode()`, `_listen_v3()`, `_listen_legacy()`, `main()` |
 
 ## Script Architecture
 
@@ -83,7 +85,7 @@ The authentication flow matches other CNC API scripts such as `get_plan.py`:
 
 ```
 ┌─────────────────────┐    ┌─────────────────────────────────┐
-│  lcm_notify_v2.py   │───▶│  CNC SSO Endpoint               │
+│  lcm_notify.py      │───▶│  CNC SSO Endpoint               │
 │                     │    │  https://<CNC_HOST>:30603/      │
 │                     │    │  crosswork/sso/v1/tickets       │
 └─────────────────────┘    └─────────────────────────────────┘
@@ -113,7 +115,7 @@ Alternatively, a pre-obtained JWT may be supplied with `--jwt` to skip username/
 
 ```
 ┌─────────────────────┐    ┌──────────────────────────────────────────────┐
-│  lcm_notify_v2.py   │───▶│  CNC Optimization Engine API (v3)            │
+│  lcm_notify.py      │───▶│  CNC Optimization Engine API (v3)            │
 │  (with JWT token)   │    │  /crosswork/nbi/optimization/v3/restconf/    │
 └─────────────────────┘    └──────────────────────────────────────────────┘
          │                              │
@@ -129,7 +131,7 @@ Alternatively, a pre-obtained JWT may be supplied with `--jwt` to skip username/
          │◀─────────────────────────────│
          │  SSE stream (events + pings) │
          ▼
-    [stdout / --output file]
+    [stdout / stderr / --output file]
 ```
 
 If the SSE connection closes, the script waits 3 seconds, creates a **new** notification stream, and resumes listening.
@@ -138,7 +140,7 @@ If the SSE connection closes, the script waits 3 seconds, creates a **new** noti
 
 ```
 ┌─────────────────────┐    ┌──────────────────────────────────────────────┐
-│  lcm_notify_v2.py   │───▶│  CNC Optimization Engine API (v2)            │
+│  lcm_notify.py      │───▶│  CNC Optimization Engine API (v2)            │
 │  (with JWT token)   │    │  /crosswork/nbi/optima/v2/restconf/          │
 └─────────────────────┘    └──────────────────────────────────────────────┘
          │                              │
@@ -154,17 +156,17 @@ If the SSE connection closes, the script waits 3 seconds, creates a **new** noti
          │◀─────────────────────────────│
          │  Chunked JSON notifications  │
          ▼
-    [stdout / --output file]
+    [stdout / stderr / --output file]
 ```
 
 ### Recommendation Retrieval Flow (`--get-rec`)
 
-When `--get-rec` is enabled, each parsed `lcm-recommendation-event` triggers additional RESTCONF RPCs on the **optima v2** API (independent of whether notifications arrive via v3 or legacy):
+When `--get-rec` is enabled, each parsed `lcm-recommendation-event` triggers additional RESTCONF RPCs on the **optimization v3** API:
 
 ```
 ┌─────────────────────┐    ┌──────────────────────────────────────────────┐
-│  lcm_notify_v2.py   │───▶│  CNC Optimization Engine API (v2)            │
-│  RecommendationClient│    │  /crosswork/nbi/optima/v2/restconf/          │
+│  lcm_notify.py      │───▶│  CNC Optimization Engine API (v3)            │
+│  RecommendationClient│    │  /crosswork/nbi/optimization/v3/restconf/    │
 └─────────────────────┘    └──────────────────────────────────────────────┘
          │                              │
          │  1. POST get-lcm-recommendation
@@ -183,6 +185,8 @@ When `--get-rec` is enabled, each parsed `lcm-recommendation-event` triggers add
 ```
 
 If a retrieval call fails, the notification is still emitted; stderr reports the error and `recommendation-details` is omitted for that event.
+
+When `--get-rec` is combined with `--pretty` or `--verbose`, the underlying HTTP adapter suppresses duplicate logging of recommendation RPC traffic (the structured event output already includes those calls).
 
 ### Runtime Flow
 
@@ -213,7 +217,7 @@ The CLI follows the same conventions as `get_plan.py` for CNC connectivity and a
 ### Usage
 
 ```bash
-python lcm_notify_v2.py --ip <CNC_HOST> [options]
+python lcm_notify.py --ip <CNC_HOST> [options]
 ```
 
 ### Arguments
@@ -229,13 +233,20 @@ python lcm_notify_v2.py --ip <CNC_HOST> [options]
 | `--timeout` | HTTP timeout in seconds for auth and setup requests (default: `30`) |
 | `--api` | Notification API variant: `auto`, `v3`, or `legacy` (default: `auto`) |
 | `--stream-id` | Existing optimization v3 stream UUID; skips initial stream creation |
-| `--pretty` | Pretty-print each notification as indented JSON |
+| `--pretty` | Pretty-print notifications and recommendation RPCs to stdout (indented JSON body after a single `<<<` line) |
 | `--output`, `-o` | Append received notifications to this file (one JSON object per line) |
 | `--max-events` | Stop after receiving this many events (default: listen until interrupted) |
 | `--get-rec` | Fetch recommendation details and MSL previews for each LCM event |
-| `--verbose`, `-v` | Print API requests and responses to stderr |
+| `--verbose`, `-v` | Print setup API traffic to stderr; show notifications/RPCs in HTTP trace style |
 
-> **Note**: Status messages (authentication progress, stream identifiers, reconnect notices, verbose HTTP traces) are written to **stderr**. Notification payloads are written to **stdout** prefixed with `<<<< `, making it straightforward to filter event output from diagnostic messages.
+### Output destinations
+
+| Mode | Notifications | Setup / status messages |
+|------|---------------|-------------------------|
+| Default | stdout | stderr |
+| `--pretty` | stdout (structured sections) | stderr |
+| `--verbose` | stderr (HTTP trace style) | stderr (includes setup API traffic) |
+| `--pretty --verbose` | stdout (pretty sections) | stderr (setup API traffic only; recommendation RPCs suppressed from adapter) |
 
 > **Security Note**: Avoid passing real passwords on the command line in shared or production environments (credentials may be visible in process listings). Prefer `--jwt` with a file obtained from `cw_get_jwt.py`, or set `CW_USERNAME` and `CW_PASSWORD` in the environment.
 
@@ -243,31 +254,31 @@ python lcm_notify_v2.py --ip <CNC_HOST> [options]
 
 ```bash
 # Basic usage — listen until Ctrl+C
-python lcm_notify_v2.py --ip <CNC_HOST> -u <USERNAME> -p '<PASSWORD>' -k
+python lcm_notify.py --ip <CNC_HOST> -u <USERNAME> -p '<PASSWORD>' -k
 
 # Use environment variables for credentials
 export CW_USERNAME=<USERNAME>
 export CW_PASSWORD='<PASSWORD>'
-python lcm_notify_v2.py --ip <CNC_HOST> -k
+python lcm_notify.py --ip <CNC_HOST> -k
 
 # Use a saved JWT (from cw_get_jwt.py)
-python lcm_notify_v2.py --ip <CNC_HOST> -j <JWT_FILE> -k
+python lcm_notify.py --ip <CNC_HOST> -j <JWT_FILE> -k
 
 # Fetch full recommendation details on each event
-python lcm_notify_v2.py --ip <CNC_HOST> -u <USERNAME> -p '<PASSWORD>' --get-rec -k
+python lcm_notify.py --ip <CNC_HOST> -u <USERNAME> -p '<PASSWORD>' --get-rec -k
 
 # Pretty-print, save events, and trace HTTP traffic
-python lcm_notify_v2.py --ip <CNC_HOST> -u <USERNAME> -p '<PASSWORD>' \
+python lcm_notify.py --ip <CNC_HOST> -u <USERNAME> -p '<PASSWORD>' \
   --pretty --get-rec --verbose -o lcm_events.jsonl -k
 
 # Capture only the first N events (useful for testing)
-python lcm_notify_v2.py --ip <CNC_HOST> -u <USERNAME> -p '<PASSWORD>' --max-events 5 -k
+python lcm_notify.py --ip <CNC_HOST> -u <USERNAME> -p '<PASSWORD>' --max-events 5 -k
 
 # Force legacy optima v2 API (CNC 7.0 and earlier)
-python lcm_notify_v2.py --ip <CNC_HOST> -u <USERNAME> -p '<PASSWORD>' --api legacy -k
+python lcm_notify.py --ip <CNC_HOST> -u <USERNAME> -p '<PASSWORD>' --api legacy -k
 
 # Reattach to an existing v3 stream
-python lcm_notify_v2.py --ip <CNC_HOST> -j <JWT_FILE> \
+python lcm_notify.py --ip <CNC_HOST> -j <JWT_FILE> \
   --stream-id 'urn:uuid:<STREAM_UUID>' -k
 ```
 
@@ -275,28 +286,49 @@ python lcm_notify_v2.py --ip <CNC_HOST> -j <JWT_FILE> \
 
 ### Example Session Output
 
+Default mode (compact JSON envelope on stdout):
+
 ```
 Authenticating to <CNC_HOST>...
 Creating optimization v3 notification stream...
 Stream identifier: urn:uuid:<STREAM_UUID>
-Recommendation retrieval enabled (get-lcm-recommendation + get-lcm-msl-recommendation-preview).
 Press Ctrl+C to stop.
-<<<< Listening on https://<CNC_HOST>:30603/crosswork/nbi/optimization/v3/restconf/streams/json/urn:uuid:<STREAM_UUID>
-<<<< {"received-at":"<ISO8601_TIMESTAMP>","notification":{...},"recommendation-details":{...}}
+Listening on https://<CNC_HOST>:30603/crosswork/nbi/optimization/v3/restconf/streams/json/urn:uuid:<STREAM_UUID>
+2026-07-21 19:48:01.123 <<< notification
+{"received-at":"2026-07-21 19:48:01.123","notification":{...}}
 ^C
 Received signal 2, stopping...
 Received 1 event(s).
 ```
 
-When no LCM activity is occurring, the v3 SSE stream still stays open. The server sends periodic `: ping` keepalives; these are not printed as events. With `--verbose`, keepalive chunks appear on stderr as `<<<< chunk (8 bytes): : ping`.
+With `--get-rec`:
+
+```
+Recommendation retrieval enabled via optimization v3 (get-lcm-recommendation + get-lcm-msl-recommendation-preview).
+```
+
+When no LCM activity is occurring, the v3 SSE stream still stays open. The server sends periodic `: ping` keepalives; these are not printed as events. With `--verbose`, keepalive chunks appear on stderr as:
+
+```
+2026-07-21 19:48:05.000 <<< chunk (8 bytes): : ping
+```
 
 ## Output Format
+
+### Log markers
+
+All structured output uses direction markers with a millisecond-resolution local timestamp:
+
+- `>>>` — outbound request (HTTP method + URL, optional body)
+- `<<<` — inbound response, notification, or stream chunk
+
+### JSON envelope (default and `--output`)
 
 Each received notification is wrapped in a JSON envelope:
 
 ```json
 {
-  "received-at": "<ISO8601_TIMESTAMP>",
+  "received-at": "2026-07-21 19:48:01.123",
   "notification": {
     "ietf-restconf:notification": {
       "event-time": "<ISO8601_TIMESTAMP>",
@@ -311,38 +343,52 @@ Each received notification is wrapped in a JSON envelope:
 }
 ```
 
-When `--get-rec` is enabled, a `recommendation-details` object is added:
+When `--get-rec` is enabled, a `recommendation-details` object is added with full RPC metadata (request, response, HTTP status, and timestamps):
 
 ```json
 {
-  "received-at": "<ISO8601_TIMESTAMP>",
+  "received-at": "2026-07-21 19:48:01.123",
   "notification": { "...": "..." },
   "recommendation-details": {
     "get-lcm-recommendation": {
-      "cisco-crosswork-optimization-engine-lcm-recommendation-operations:output": {
-        "urgency": "medium",
-        "recommendation-id": "<RECOMMENDATION_UUID>",
-        "response-result": "valid",
-        "solutions": [
-          {
-            "node": "node-2",
-            "interface": "GigabitEthernet0/0/0/6",
-            "recommended-action": "create-set",
-            "lcm-state": "congested"
-          }
-        ]
-      }
+      "request": {
+        "method": "POST",
+        "url": "https://<CNC_HOST>:30603/crosswork/nbi/optimization/v3/restconf/operations/...",
+        "body": { "input": { "domain-id": "<DOMAIN_ID>" } }
+      },
+      "response": {
+        "cisco-crosswork-optimization-engine-lcm-recommendation-operations:output": {
+          "urgency": "medium",
+          "recommendation-id": "<RECOMMENDATION_UUID>",
+          "response-result": "valid",
+          "solutions": [
+            {
+              "node": "node-2",
+              "interface": "GigabitEthernet0/0/0/6",
+              "recommended-action": "create-set",
+              "lcm-state": "congested"
+            }
+          ]
+        }
+      },
+      "status": { "code": 200, "reason": "OK", "size": 1234 },
+      "requested-at": "2026-07-21 19:48:01.200",
+      "responded-at": "2026-07-21 19:48:01.350"
     },
     "get-lcm-msl-recommendation-preview": [
       {
         "lcm-int": { "node": "node-2", "interface": "GigabitEthernet0/0/0/6" },
+        "request": { "method": "POST", "url": "...", "body": { "input": { "...": "..." } } },
         "response": {
           "cisco-crosswork-optimization-engine-lcm-recommendation-operations:output": {
             "rec-id-check": "accepted",
             "response-result": "valid",
             "tte-policy-preview": [ "..." ]
           }
-        }
+        },
+        "status": { "code": 200, "reason": "OK", "size": 567 },
+        "requested-at": "2026-07-21 19:48:01.400",
+        "responded-at": "2026-07-21 19:48:01.500"
       }
     ]
   }
@@ -351,17 +397,71 @@ When `--get-rec` is enabled, a `recommendation-details` object is added:
 
 Field descriptions:
 
-- `received-at` — UTC timestamp when the script received the event locally
+- `received-at` — local timestamp when the script received the event (`YYYY-MM-DD HH:MM:SS.mmm`)
 - `notification` — the raw notification payload from CNC
-- `recommendation-details` — (optional) full recommendation and per-interface MSL previews fetched via optima v2 RPCs
+- `recommendation-details` — (optional) full recommendation and per-interface MSL previews fetched via optimization v3 RPCs, including request/response pairs and HTTP status
 
-Each event line on stdout is prefixed with `<<<< ` to distinguish event output from stderr diagnostics. With `--output`, the same prefixed line is appended (JSONL format), regardless of `--pretty`.
+With `--output`, the envelope is written to the file using the same `<<< notification` line format as console output. Compact JSON is embedded in the line body regardless of `--pretty`.
+
+### Compact console output (default)
+
+```
+2026-07-21 19:48:01.123 <<< notification
+{"received-at":"2026-07-21 19:48:01.123","notification":{...},"recommendation-details":{...}}
+```
+
+### Pretty output (`--pretty`)
+
+Events are printed as labelled sections with indented JSON bodies:
+
+```
+2026-07-21 19:48:01.123 <<< notification
+{
+  "ietf-restconf:notification": {
+    "cisco-crosswork-optimization-engine-lcm-recommendation-operations:lcm-recommendation-event": {
+      "domain-id": "<DOMAIN_ID>",
+      "recommendation-id": "<RECOMMENDATION_UUID>"
+    }
+  }
+}
+
+2026-07-21 19:48:01.200 >>> POST https://<CNC_HOST>:30603/crosswork/nbi/optimization/v3/restconf/operations/...
+{
+  "input": {
+    "domain-id": "<DOMAIN_ID>"
+  }
+}
+
+2026-07-21 19:48:01.350 <<< get-lcm-recommendation
+{
+  "cisco-crosswork-optimization-engine-lcm-recommendation-operations:output": {
+    "response-result": "valid",
+    "recommendation-id": "<RECOMMENDATION_UUID>",
+    "solutions": [ "..." ]
+  }
+}
+
+2026-07-21 19:48:01.500 <<< get-lcm-msl-recommendation-preview (node-2/GigabitEthernet0/0/0/6)
+{
+  "cisco-crosswork-optimization-engine-lcm-recommendation-operations:output": {
+    "rec-id-check": "accepted",
+    "response-result": "valid",
+    "tte-policy-preview": [ "..." ]
+  }
+}
+```
+
+With `--get-rec`, the notification and each RPC are shown as separate sections instead of one nested JSON object.
+
+### Verbose output (`--verbose`)
+
+Setup API calls (authentication, stream creation, legacy subscribe) are logged to stderr with full request/response details. Notification and RPC output follows the HTTP trace style (status code and byte count in the `<<<` headline) unless `--pretty` is also set.
 
 ## Key Functions and Classes
 
 ### `ClientConfig`
 
-Frozen dataclass holding connection settings: `base_url`, `verify_ssl`, `timeout`, `verbose`, and an optional shared `requests.Session`.
+Frozen dataclass holding connection settings: `base_url`, `verify_ssl`, `timeout`, `verbose`, `pretty`, and an optional shared `requests.Session`.
 
 ### `authenticate(config, username, password)`
 
@@ -383,7 +483,7 @@ Encapsulates RESTCONF stream setup for both API variants:
 
 ### `RecommendationClient`
 
-Fetches LCM recommendation details via optima v2 RESTCONF operations:
+Fetches LCM recommendation details via optimization v3 RESTCONF operations:
 
 | Method | Purpose |
 |--------|---------|
@@ -406,13 +506,18 @@ Incrementally parses notification payloads from a chunked HTTP response body:
 
 Extracts the `lcm-recommendation-event` payload from a RESTCONF notification envelope, handling both fully qualified and suffix-matched YANG keys.
 
+### `print_exchange()` / `emit_notification_event()`
+
+Format and print request/response pairs with `>>>` / `<<<` markers and millisecond timestamps. `emit_notification_event()` renders a notification and optional recommendation RPCs as labelled sections.
+
 ### `NotificationListener`
 
 Manages the long-running listen loop:
 
 - Opens a streaming HTTP GET with no read timeout
 - Optionally fetches recommendation details before emitting each event
-- Emits formatted events to stdout and optional output file
+- Emits formatted events to stdout or stderr depending on `--pretty` / `--verbose`
+- Appends envelope JSON to `--output` file when specified
 - Handles SIGINT/SIGTERM via `request_stop()`
 - Reconnects after stream errors or server-side disconnects when an `on_reconnect` callback is provided
 
@@ -460,12 +565,12 @@ Orchestrates the workflow:
 | `/crosswork/nbi/optima/v2/restconf/data/ietf-restconf-monitoring:restconf-state/streams/stream=lcm-recommendation-event/access=JSON/location` | GET | Subscribe to LCM stream |
 | `/crosswork/nbi/optima/v2/restconf/notif/notification-stream/cisco-crosswork-optimization-engine-lcm-recommendation-operations:lcm-recommendation-event/JSON` | GET | Listen for notifications |
 
-### Optima v2 — Recommendation Retrieval (`--get-rec`)
+### Optimization v3 (CNC 7.2+) — Recommendation Retrieval (`--get-rec`)
 
 | Endpoint | Method | Purpose |
 |----------|--------|---------|
-| `/crosswork/nbi/optima/v2/restconf/operations/cisco-crosswork-optimization-engine-lcm-recommendation-operations:get-lcm-recommendation` | POST | Fetch recommendation for a domain |
-| `/crosswork/nbi/optima/v2/restconf/operations/cisco-crosswork-optimization-engine-lcm-recommendation-operations:get-lcm-msl-recommendation-preview` | POST | Fetch MSL/TTE policy preview for an interface |
+| `/crosswork/nbi/optimization/v3/restconf/operations/cisco-crosswork-optimization-engine-lcm-recommendation-operations:get-lcm-recommendation` | POST | Fetch recommendation for a domain |
+| `/crosswork/nbi/optimization/v3/restconf/operations/cisco-crosswork-optimization-engine-lcm-recommendation-operations:get-lcm-msl-recommendation-preview` | POST | Fetch MSL/TTE policy preview for an interface |
 
 **get-lcm-recommendation payload:**
 
@@ -494,7 +599,7 @@ Orchestrates the workflow:
 
 ## Configuration Constants
 
-Defaults are defined at the top of `lcm_notify_v2.py`:
+Defaults are defined at the top of `lcm_notify.py`:
 
 ```python
 BASE_PORT = 30603
@@ -512,7 +617,7 @@ Port, timeout, and SSL verification may be overridden via `--port`, `--timeout`,
 ## Dependencies
 
 - **Python packages**: `requests`, `urllib3`
-- **Standard library**: `argparse`, `getpass`, `json`, `logging`, `os`, `signal`, `sys`, `time`, `datetime`, `dataclasses`, `enum`, `typing`
+- **Standard library**: `argparse`, `getpass`, `json`, `os`, `signal`, `sys`, `time`, `datetime`, `dataclasses`, `enum`, `typing`
 - **External tools**: None
 
 Install dependencies:
@@ -567,8 +672,8 @@ JWT tokens have a finite lifetime. If the stream fails with authentication error
 If the server repeatedly closes the stream, stderr will show:
 
 ```
-<<<< closed by server.
-<<<< reconnecting in 3 second(s)...
+closed by server.
+reconnecting in 3 second(s)...
 Creating new optimization v3 notification stream...
 ```
 
@@ -576,11 +681,11 @@ This is normal behaviour. Investigate CNC platform health and optima-lcm service
 
 ### `--get-rec` fails but notifications still appear
 
-Recommendation retrieval uses optima v2 RPCs independently of the notification API. Verify that the JWT has permissions for `get-lcm-recommendation` and `get-lcm-msl-recommendation-preview`, and that the event contains a valid `domain-id`.
+Recommendation retrieval uses optimization v3 RPCs. Verify that the JWT has permissions for `get-lcm-recommendation` and `get-lcm-msl-recommendation-preview`, and that the event contains a valid `domain-id`.
 
 ### Verbose mode shows no stream body for listen GET
 
-For streaming responses, `--verbose` logs only the HTTP status line (not the full SSE body) to avoid flooding stderr. Use stream chunk logging (`<<<< chunk ...`) which appears when chunks arrive.
+For streaming responses, `--verbose` logs only the HTTP status line (not the full SSE body) to avoid flooding stderr. Stream chunk logging (`<<< chunk ...`) appears on stderr when non-notification chunks arrive.
 
 ## Limitations and Considerations
 
@@ -588,7 +693,7 @@ For streaming responses, `--verbose` logs only the HTTP status line (not the ful
 2. **JWT lifetime**: The script does not refresh JWT tokens automatically during a long listen session.
 3. **Single notification type**: Only `lcm-recommendation-event` is subscribed. Other COE notification types (SR policy, topology, RSVP) require separate stream creation with different notification URIs.
 4. **SSL verification**: Verification is enabled by default. Use `-k`/`--insecure` only for lab or development environments with self-signed certificates.
-5. **Mixed API usage**: With `--get-rec` on CNC 7.2+, notifications arrive via optimization v3 while recommendation fetches use optima v2. Both require a valid JWT with appropriate permissions.
+5. **API version**: On CNC 7.2+, both notifications and recommendation retrieval use optimization v3. Legacy optima v2 is used only for notifications when v3 stream creation fails (`--api auto`) or when `--api legacy` is specified.
 6. **AAA session limits**: Use a dedicated API user for automated listeners to avoid exhausting shared AAA session limits on the controller.
 7. **Event volume**: High LCM activity can produce a large volume of notifications. With `--get-rec`, each event triggers one `get-lcm-recommendation` call plus one `get-lcm-msl-recommendation-preview` call per solution interface. Use `--output` with log rotation in production integrations.
 8. **Orphaned v3 streams**: Reconnect-on-v3 creates a new stream each time. The script does not list or delete old streams.
@@ -605,11 +710,12 @@ For streaming responses, `--verbose` logs only the HTTP status line (not the ful
 
 - [Crosswork Optimization Engine RESTCONF Notifications (7.2+)](https://developer.cisco.com/docs/crosswork/network-controller/crosswork-optimization-engine-restconf-notifications/)
 - [Crosswork Optimization Engine RESTCONF Notifications (7.0 and earlier)](https://developer.cisco.com/docs/crosswork/network-controller/7-0/crosswork-optimization-engine-restconf-notifications/)
-- [Retrieve LCM recommendation policies](https://developer.cisco.com/docs/crosswork/network-controller/retrieve-lcm-recommendation-policies/)
+- [Retrieve an LCM recommendation](https://developer.cisco.com/docs/crosswork/network-controller/retrieve-an-lcm-recommendation/)
+- [Preview LCM MSL recommendation](https://developer.cisco.com/docs/crosswork/network-controller/preview-lcm-msl-recommendation/)
 - [Cisco Crosswork Network Controller API Documentation](https://developer.cisco.com/docs/crosswork/)
 
 ---
 
-*Document Version: 1.0*  
-*Script: lcm_notify_v2.py*  
+*Document Version: 1.1*  
+*Script: lcm_notify.py*  
 *Platform: Cisco Crosswork Network Controller 7.2+ (with legacy 7.0 v2 fallback)*
