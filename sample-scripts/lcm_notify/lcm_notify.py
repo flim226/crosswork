@@ -5,6 +5,8 @@ Subscribe to and listen for LCM Recommendation Events from Crosswork Network Con
 API References:
   https://developer.cisco.com/docs/crosswork/network-controller/crosswork-optimization-engine-restconf-notifications/
   https://developer.cisco.com/docs/crosswork/network-controller/7-0/crosswork-optimization-engine-restconf-notifications/
+  https://developer.cisco.com/docs/crosswork/network-controller/retrieve-an-lcm-recommendation/
+  https://developer.cisco.com/docs/crosswork/network-controller/preview-lcm-msl-recommendation/
 """
 
 from __future__ import annotations
@@ -12,13 +14,12 @@ from __future__ import annotations
 import argparse
 import getpass
 import json
-import logging
 import os
 import signal
 import sys
 import time
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime
 from enum import Enum
 from typing import Callable, Literal, Optional, TextIO
 
@@ -75,6 +76,57 @@ GET_LCM_MSL_PREVIEW_OP = (
     "get-lcm-msl-recommendation-preview"
 )
 
+# --- Output markers ---
+
+LOG_REQUEST_MARKER = ">>>"
+LOG_RESPONSE_MARKER = "<<<"
+
+ExchangeDirection = Literal["request", "response"]
+
+
+def local_timestamp(when: datetime | None = None) -> str:
+    """Format a local date/time for request and response logs."""
+    moment = when or datetime.now().astimezone()
+    return moment.strftime("%Y-%m-%d %H:%M:%S") + f".{moment.microsecond // 1000:03d}"
+
+
+def print_exchange(
+    direction: ExchangeDirection,
+    headline: str,
+    body: str | None = None,
+    *,
+    timestamp: str | None = None,
+    file: TextIO = sys.stdout,
+    leading_blank: bool = False,
+    trailing_blank: bool = False,
+) -> None:
+    """Print one request or response with a single timestamp and direction marker."""
+    if leading_blank:
+        print(file=file)
+    ts = timestamp or local_timestamp()
+    marker = LOG_REQUEST_MARKER if direction == "request" else LOG_RESPONSE_MARKER
+    print(f"{ts} {marker} {headline}", file=file)
+    if body:
+        print(body, file=file)
+    if trailing_blank:
+        print(file=file)
+
+
+def format_exchange_line(
+    direction: ExchangeDirection,
+    headline: str,
+    body: str | None = None,
+    *,
+    timestamp: str | None = None,
+) -> str:
+    """Format one request or response line for file output."""
+    ts = timestamp or local_timestamp()
+    marker = LOG_REQUEST_MARKER if direction == "request" else LOG_RESPONSE_MARKER
+    lines = [f"{ts} {marker} {headline}"]
+    if body:
+        lines.append(body)
+    return "\n".join(lines)
+
 # --- Type aliases ---
 
 ApiMode = Literal["auto", "v3", "legacy"]
@@ -111,38 +163,67 @@ class _TimeoutAdapter(requests.adapters.HTTPAdapter):
 class _VerboseAdapter(_TimeoutAdapter):
     """HTTPAdapter that logs request and response details to stderr."""
 
-    def send(self, request, *args, **kwargs):
-        print(f">>> {request.method} {request.url}", file=sys.stderr)
-        if request.headers:
-            for key, value in request.headers.items():
-                if key.lower() == "authorization":
-                    value = value[:20] + "..." if len(value) > 20 else value
-                print(f">>>   {key}: {value}", file=sys.stderr)
-        if request.body:
-            body = request.body if isinstance(request.body, str) else repr(request.body)
-            if len(body) > 500:
-                body = body[:500] + "..."
-            print(f">>>   Body: {body}", file=sys.stderr)
+    def __init__(
+        self,
+        timeout: int = CONNECT_TIMEOUT,
+        pretty: bool = False,
+        suppress_rec_rpc: bool = False,
+        **kwargs,
+    ):
+        self._pretty = pretty
+        self._suppress_rec_rpc = suppress_rec_rpc
+        super().__init__(timeout=timeout, **kwargs)
 
-        print(file=sys.stderr)
+    def _should_log(self, request: requests.PreparedRequest) -> bool:
+        if not self._suppress_rec_rpc:
+            return True
+        url = request.url or ""
+        return (
+            GET_LCM_RECOMMENDATION_OP not in url
+            and GET_LCM_MSL_PREVIEW_OP not in url
+        )
+
+    def send(self, request, *args, **kwargs):
+        if not self._should_log(request):
+            return super().send(request, *args, **kwargs)
+
+        request_time = datetime.now().astimezone()
+        request_ts = local_timestamp(request_time)
+        request_details = _format_verbose_request_details(request, self._pretty)
+        print_exchange(
+            "request",
+            f"{request.method} {request.url}",
+            request_details or None,
+            timestamp=request_ts,
+            file=sys.stderr,
+        )
 
         stream = kwargs.get("stream", False)
         resp = super().send(request, *args, **kwargs)
+        response_time = datetime.now().astimezone()
+        response_ts = local_timestamp(response_time)
 
         if stream:
-            stream_log(f"HTTP {resp.status_code} {resp.reason}")
-            print(file=sys.stderr)
+            print_exchange(
+                "response",
+                f"HTTP {resp.status_code} {resp.reason}",
+                timestamp=response_ts,
+                file=sys.stderr,
+                leading_blank=True,
+                trailing_blank=True,
+            )
         else:
             content = resp.content
-            print(
-                f"<<< {resp.status_code} {resp.reason} ({len(content)} bytes)",
+            response_body = format_http_log_body(content, pretty=self._pretty)
+            print_exchange(
+                "response",
+                f"{resp.status_code} {resp.reason} ({len(content)} bytes)",
+                response_body,
+                timestamp=response_ts,
                 file=sys.stderr,
+                leading_blank=True,
+                trailing_blank=True,
             )
-            body = content.decode("utf-8", errors="replace")
-            if len(body) > 500:
-                body = body[:500] + "..."
-            print(f"<<<   Body: {body}", file=sys.stderr)
-            print(file=sys.stderr)
         return resp
 
 
@@ -150,14 +231,22 @@ def _create_session(
     verify_ssl: bool = True,
     timeout: int = CONNECT_TIMEOUT,
     verbose: bool = False,
+    pretty: bool = False,
+    suppress_rec_rpc: bool = False,
 ) -> requests.Session:
     """Create an HTTP session with default timeout and configurable SSL verification."""
     if not verify_ssl:
         urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
     session = requests.Session()
     session.verify = verify_ssl
-    adapter_cls = _VerboseAdapter if verbose else _TimeoutAdapter
-    adapter = adapter_cls(timeout=timeout)
+    if verbose:
+        adapter = _VerboseAdapter(
+            timeout=timeout,
+            pretty=pretty,
+            suppress_rec_rpc=suppress_rec_rpc,
+        )
+    else:
+        adapter = _TimeoutAdapter(timeout=timeout)
     session.mount("https://", adapter)
     session.mount("http://", adapter)
     return session
@@ -204,13 +293,89 @@ def response_json(resp: requests.Response, context: str) -> dict:
 
 
 def stream_log(message: str, *, file: TextIO = sys.stderr) -> None:
-    """Log a notification-stream status message."""
-    print(f"<<<< {message}", file=file)
+    """Log a notification-stream status message without request/response markers."""
+    print(message, file=file)
 
 
-def stream_chunk_log(chunk: bytes, text: str, *, file: TextIO = sys.stderr) -> None:
-    """Log a raw notification-stream HTTP body chunk."""
-    print(f"<<<< chunk ({len(chunk)} bytes): {text}", file=file)
+def _parse_stream_chunk_payload(text: str) -> Optional[object]:
+    """Extract JSON payload from an SSE data chunk or raw JSON stream chunk."""
+    data_parts: list[str] = []
+    for line in text.splitlines():
+        if line.startswith("data:"):
+            data_parts.append(line[5:].lstrip())
+
+    if data_parts:
+        return json.loads("\n".join(data_parts))
+
+    stripped = text.strip()
+    if stripped.startswith("{"):
+        return json.loads(stripped)
+    return None
+
+
+def stream_chunk_log(
+    chunk: bytes,
+    text: str,
+    *,
+    file: TextIO = sys.stderr,
+    when: datetime | None = None,
+) -> None:
+    """Log a non-notification stream chunk (for example SSE keepalive pings)."""
+    print_exchange(
+        "response",
+        f"chunk ({len(chunk)} bytes): {text.strip()}",
+        timestamp=local_timestamp(when),
+        file=file,
+    )
+
+
+def serialize_rest_body(data: object, *, pretty: bool) -> str:
+    """Serialize a RESTCONF payload for display."""
+    if pretty:
+        return format_rest_body(data)
+    text = json.dumps(data, separators=(",", ":"), sort_keys=False)
+    if len(text) > 500:
+        text = text[:500] + "..."
+    return text
+
+
+def format_rest_body(data: object) -> str:
+    """Serialize a RESTCONF payload as indented JSON for display."""
+    return json.dumps(data, indent=2, sort_keys=False)
+
+
+def format_http_log_body(raw: str | bytes, *, pretty: bool) -> str:
+    """Format an HTTP request/response body for verbose logging."""
+    if isinstance(raw, bytes):
+        text = raw.decode("utf-8", errors="replace")
+    else:
+        text = raw
+
+    if pretty:
+        try:
+            return format_rest_body(json.loads(text))
+        except json.JSONDecodeError:
+            pass
+
+    if len(text) > 500:
+        text = text[:500] + "..."
+    return text
+
+
+def _format_verbose_request_details(
+    request: requests.PreparedRequest,
+    pretty: bool,
+) -> str:
+    """Format request headers and body for a single verbose request block."""
+    lines: list[str] = []
+    if request.headers:
+        for key, value in request.headers.items():
+            if key.lower() == "authorization":
+                value = value[:20] + "..." if len(value) > 20 else value
+            lines.append(f"{key}: {value}")
+    if request.body:
+        lines.append(format_http_log_body(request.body, pretty=pretty))
+    return "\n".join(lines)
 
 
 # ===========================================================================
@@ -250,6 +415,7 @@ class ClientConfig:
     verify_ssl: bool = True
     timeout: int = DEFAULT_AUTH_TIMEOUT
     verbose: bool = False
+    pretty: bool = False
     session: requests.Session | None = None
 
     def get_session(self) -> requests.Session:
@@ -403,19 +569,92 @@ def _unwrap_lcm_output(response: dict) -> dict:
 def format_notification(
     notification: dict,
     *,
-    pretty: bool,
     recommendation_details: Optional[dict] = None,
 ) -> str:
-    """Wrap a notification in a timestamped envelope and serialize to JSON."""
+    """Wrap a notification in a timestamped envelope and serialize to compact JSON."""
     envelope: dict = {
-        "received-at": datetime.now(timezone.utc).isoformat(),
+        "received-at": local_timestamp(),
         "notification": notification,
     }
     if recommendation_details is not None:
         envelope["recommendation-details"] = recommendation_details
-    if pretty:
-        return json.dumps(envelope, indent=2, sort_keys=False)
     return json.dumps(envelope, separators=(",", ":"), sort_keys=False)
+
+
+def emit_notification_event(
+    notification: dict,
+    *,
+    recommendation_details: Optional[dict] = None,
+    pretty: bool = False,
+    file: TextIO = sys.stdout,
+) -> None:
+    """Print a notification and optional recommendation RPCs once in REST API style."""
+    received_at = local_timestamp()
+    print_exchange(
+        "response",
+        "notification",
+        serialize_rest_body(notification, pretty=pretty),
+        timestamp=received_at,
+        file=file,
+    )
+
+    if recommendation_details is None:
+        return
+
+    recommendation = recommendation_details.get("get-lcm-recommendation")
+    if recommendation is not None:
+        _emit_rpc_exchange(
+            recommendation,
+            label="get-lcm-recommendation",
+            pretty=pretty,
+            file=file,
+        )
+
+    for preview in recommendation_details.get("get-lcm-msl-recommendation-preview", []):
+        lcm_int = preview.get("lcm-int", {})
+        node = lcm_int.get("node", "?")
+        interface = lcm_int.get("interface", "?")
+        label = f"get-lcm-msl-recommendation-preview ({node}/{interface})"
+        _emit_rpc_exchange(preview, label=label, pretty=pretty, file=file)
+
+
+def _emit_rpc_exchange(
+    call: dict,
+    *,
+    label: str,
+    pretty: bool,
+    file: TextIO,
+) -> None:
+    """Print one RPC request/response pair."""
+    request = call.get("request")
+    response = call.get("response", call)
+    status = call.get("status")
+
+    if request is not None:
+        print_exchange(
+            "request",
+            f"{request['method']} {request['url']}",
+            serialize_rest_body(request["body"], pretty=pretty),
+            timestamp=call.get("requested-at"),
+            file=file,
+        )
+
+    if pretty:
+        headline = label
+    elif status is not None:
+        headline = f"{status['code']} {status['reason']} ({status['size']} bytes)"
+    else:
+        headline = label
+
+    print_exchange(
+        "response",
+        headline,
+        serialize_rest_body(response, pretty=pretty),
+        timestamp=call.get("responded-at"),
+        file=file,
+        leading_blank=request is not None,
+        trailing_blank=True,
+    )
 
 
 # ===========================================================================
@@ -516,22 +755,37 @@ class NotificationStreamClient:
 
 
 class RecommendationClient:
-    """Fetch LCM recommendation details via optima v2 RESTCONF operations."""
+    """Fetch LCM recommendation details via optimization v3 RESTCONF operations."""
 
     def __init__(self, config: ClientConfig, token: str):
         self.config = config
         self.token = token
 
+    def _operation_url(self, operation: str) -> str:
+        return f"{self.config.base_url}{OPTIMIZATION_V3_BASE}/operations/{operation}"
+
     def _post_operation(self, operation: str, payload: dict, context: str) -> dict:
         """Execute a RESTCONF operation (RPC) via POST."""
-        url = f"{self.config.base_url}{OPTIMA_V2_BASE}/operations/{operation}"
+        url = self._operation_url(operation)
         headers = {
             **restconf_headers(self.token),
             "Content-Type": "application/yang-data+json",
             "Cache-Control": "no-cache",
         }
+        requested_at = local_timestamp()
         resp = self.config.get_session().post(url, headers=headers, json=payload)
-        return response_json(resp, context)
+        responded_at = local_timestamp()
+        return {
+            "request": {"method": "POST", "url": url, "body": payload},
+            "response": response_json(resp, context),
+            "status": {
+                "code": resp.status_code,
+                "reason": resp.reason or "",
+                "size": len(resp.content),
+            },
+            "requested-at": requested_at,
+            "responded-at": responded_at,
+        }
 
     def get_recommendation(self, domain_id: str) -> dict:
         """Retrieve the LCM recommendation for a given domain."""
@@ -567,8 +821,8 @@ class RecommendationClient:
         if not domain_id:
             raise CrossworkAuthError("lcm-recommendation-event missing domain-id")
 
-        recommendation_response = self.get_recommendation(domain_id)
-        output = _unwrap_lcm_output(recommendation_response)
+        recommendation_call = self.get_recommendation(domain_id)
+        output = _unwrap_lcm_output(recommendation_call["response"])
         recommendation_id = str(
             output.get("recommendation-id", event.get("recommendation-id", ""))
         )
@@ -579,7 +833,7 @@ class RecommendationClient:
             interface = solution.get("interface")
             if not node or not interface:
                 continue
-            preview_response = self.get_msl_preview(
+            preview_call = self.get_msl_preview(
                 domain_id,
                 recommendation_id,
                 str(node),
@@ -588,12 +842,16 @@ class RecommendationClient:
             previews.append(
                 {
                     "lcm-int": {"node": node, "interface": interface},
-                    "response": preview_response,
+                    "request": preview_call["request"],
+                    "response": preview_call["response"],
+                    "status": preview_call["status"],
+                    "requested-at": preview_call["requested-at"],
+                    "responded-at": preview_call["responded-at"],
                 }
             )
 
         return {
-            "get-lcm-recommendation": recommendation_response,
+            "get-lcm-recommendation": recommendation_call,
             "get-lcm-msl-recommendation-preview": previews,
         }
 
@@ -608,9 +866,20 @@ class ListenOptions:
     """Options controlling how notifications are emitted."""
 
     pretty: bool = False
+    verbose: bool = False
     output_file: Optional[str] = None
     max_events: Optional[int] = None
     get_rec: bool = False
+
+    @property
+    def show_events(self) -> bool:
+        """Whether notifications and recommendation RPCs are printed structurally."""
+        return self.pretty or self.verbose
+
+    @property
+    def event_output(self) -> TextIO:
+        """Destination for structured notification/RPC output."""
+        return sys.stdout if self.pretty else sys.stderr
 
 
 class NotificationListener:
@@ -701,9 +970,16 @@ class NotificationListener:
 
                     if self.config.verbose:
                         text = chunk.decode("utf-8", errors="replace")
-                        if len(text) > 500:
-                            text = text[:500] + "..."
-                        stream_chunk_log(chunk, text)
+                        try:
+                            payload = _parse_stream_chunk_payload(text)
+                        except json.JSONDecodeError:
+                            payload = None
+                        if payload is None:
+                            stream_chunk_log(
+                                chunk,
+                                text,
+                                when=datetime.now().astimezone(),
+                            )
 
                     for notification in parser.feed(chunk):
                         if self._stop_requested:
@@ -757,13 +1033,31 @@ class NotificationListener:
 
         line = format_notification(
             notification,
-            pretty=options.pretty,
             recommendation_details=recommendation_details,
         )
-        output = f"<<<< {line}"
-        print(output)
+        if options.show_events:
+            emit_notification_event(
+                notification,
+                recommendation_details=recommendation_details,
+                pretty=options.pretty,
+                file=options.event_output,
+            )
+            if options.pretty:
+                print()
+        else:
+            received_at = local_timestamp()
+            print_exchange(
+                "response",
+                "notification",
+                line,
+                timestamp=received_at,
+            )
         if outfile:
-            outfile.write(output + "\n")
+            received_at = local_timestamp()
+            outfile.write(
+                format_exchange_line("response", "notification", line, timestamp=received_at)
+                + "\n"
+            )
             outfile.flush()
 
     @staticmethod
@@ -828,7 +1122,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--pretty",
         action="store_true",
-        help="Pretty-print each notification as indented JSON",
+        help=(
+            "Pretty-print notifications and recommendation RPCs to stdout "
+            "(indented JSON body after a single <<< line)"
+        ),
     )
     parser.add_argument(
         "--output", "-o",
@@ -847,13 +1144,17 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help=(
             "On lcm-recommendation-event, fetch recommendation details via "
-            "get-lcm-recommendation and get-lcm-msl-recommendation-preview"
+            "optimization v3 get-lcm-recommendation and "
+            "get-lcm-msl-recommendation-preview"
         ),
     )
     parser.add_argument(
         "--verbose", "-v",
         action="store_true",
-        help="Print API requests and responses to stderr",
+        help=(
+            "Print setup API traffic to stderr and show notifications/RPCs once "
+            "in HTTP trace style (or pretty style when combined with --pretty)"
+        ),
     )
 
     return parser
@@ -874,12 +1175,15 @@ def _build_config(args: argparse.Namespace) -> ClientConfig:
         verify_ssl=verify_ssl,
         timeout=args.timeout,
         verbose=args.verbose,
+        pretty=args.pretty,
+        suppress_rec_rpc=args.get_rec and (args.pretty or args.verbose),
     )
     return ClientConfig(
         base_url=f"https://{args.ip}:{args.port}",
         verify_ssl=verify_ssl,
         timeout=args.timeout,
         verbose=args.verbose,
+        pretty=args.pretty,
         session=session,
     )
 
@@ -980,6 +1284,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     config = _build_config(args)
     options = ListenOptions(
         pretty=args.pretty,
+        verbose=args.verbose,
         output_file=args.output,
         max_events=args.max_events,
         get_rec=args.get_rec,
@@ -997,7 +1302,7 @@ def main(argv: Optional[list[str]] = None) -> int:
 
         if args.get_rec:
             print(
-                "Recommendation retrieval enabled "
+                "Recommendation retrieval enabled via optimization v3 "
                 "(get-lcm-recommendation + get-lcm-msl-recommendation-preview).",
                 file=sys.stderr,
             )
