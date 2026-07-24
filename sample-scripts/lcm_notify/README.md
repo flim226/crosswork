@@ -4,7 +4,7 @@
 
 This application note describes `lcm_notify.py`, a single-file Python script that subscribes to and listens for **LCM Recommendation Events** from **Cisco Crosswork Network Controller (CNC)**. The script authenticates via CNC SSO, creates a RESTCONF notification stream for LCM recommendation events, and prints each notification as it arrives. It is intended for operators and integrators who need real-time visibility into Link Capacity Management (LCM) recommendation activity—such as new recommendations, updates, or lifecycle changes—without polling the CNC REST API.
 
-The script also supports optional **recommendation detail retrieval** (`--get-rec`), **pretty-printed or verbose HTTP-style output** (`--pretty`, `--verbose`), **environment-variable credentials**, and **secure-by-default SSL verification** (with an explicit opt-out via `-k`/`--insecure`). It runs indefinitely until the user presses **Ctrl+C**, and automatically reconnects if the notification stream is closed by the server.
+The script also supports optional **recommendation detail retrieval** (`--get-rec`), **pretty-printed or verbose HTTP-style output** (`--pretty`, `--verbose`), **environment-variable credentials**, **HTTP/HTTPS proxy servers** via `http_proxy` and `https_proxy`, and **secure-by-default SSL verification** (with an explicit opt-out via `-k`/`--insecure`). It runs indefinitely until the user presses **Ctrl+C**, and automatically reconnects if the notification stream is closed by the server.
 
 ## Background: LCM Recommendation Notifications
 
@@ -56,6 +56,7 @@ Typical use cases:
 | `--verbose` / `-v` | Log setup API traffic to stderr; show notifications/RPCs in HTTP trace style (or pretty style when combined with `--pretty`) |
 | `-k` / `--insecure` | Opt out of SSL certificate verification (verification is **enabled by default**) |
 | `CW_USERNAME` / `CW_PASSWORD` | Environment variables for credentials; interactive prompt if omitted |
+| `http_proxy` / `https_proxy` | Environment variables for HTTP/HTTPS proxy servers (uppercase variants also supported) |
 | `RecommendationClient` | Encapsulates LCM retrieval RPCs and MSL preview fan-out per solution |
 | Request/response logging | `>>>` for outbound requests, `<<<` for inbound responses and notifications |
 
@@ -67,7 +68,7 @@ Typical use cases:
 |---------|----------|
 | **Constants** | Ports, API paths, YANG identifiers, environment variable names, reconnect defaults, log markers (`>>>`, `<<<`) |
 | **Exceptions** | `CrossworkAuthError` |
-| **HTTP adapters and session factory** | `_TimeoutAdapter`, `_VerboseAdapter`, `_create_session()` |
+| **HTTP adapters and session factory** | `_TimeoutAdapter`, `_VerboseAdapter`, `_apply_proxy_config()`, `_create_session()` |
 | **HTTP response helpers** | `response_text()`, `check_response()`, `response_json()`, `print_exchange()`, `stream_log()`, `stream_chunk_log()` |
 | **Credentials** | `_resolve_credentials()`, `load_token_from_file()` |
 | **Configuration and authentication** | `ClientConfig`, `_get_ticket()`, `_get_token()`, `authenticate()` |
@@ -110,6 +111,27 @@ Credentials are resolved in this order:
 4. Interactive prompt (`Username:` / `Password:` via `getpass`)
 
 Alternatively, a pre-obtained JWT may be supplied with `--jwt` to skip username/password authentication. The companion script `cw_get_jwt.py` can be used to obtain and save a JWT file.
+
+### Proxy Configuration
+
+When CNC is reachable only through a corporate or lab HTTP proxy, set standard proxy environment variables before running the script. All HTTP traffic—SSO authentication, stream setup, the long-lived notification listen connection, and optional recommendation RPCs—uses the configured proxies.
+
+| Variable | Purpose |
+|----------|---------|
+| `http_proxy` | Proxy URL for HTTP traffic (also used for HTTPS when `https_proxy` is unset) |
+| `https_proxy` | Proxy URL for HTTPS traffic to CNC |
+| `HTTP_PROXY` / `HTTPS_PROXY` | Uppercase variants; used when lowercase names are not set |
+| `no_proxy` / `NO_PROXY` | Comma-separated hosts or CIDR ranges to reach directly (honoured via `requests` environment handling) |
+
+Proxy URLs use the usual form, for example `http://proxy.example.com:8080` or `http://user:pass@proxy.example.com:8080`.
+
+With `--verbose`, the script prints the effective proxy configuration to stderr at startup:
+
+```
+Using proxy: http_proxy=http://proxy.example.com:8080, https (via http_proxy)=http://proxy.example.com:8080
+```
+
+If no proxy variables are set, verbose mode reports `Using proxy: none (direct connection)`.
 
 ### Notification Flow (CNC 7.2+ / Optimization v3)
 
@@ -261,6 +283,11 @@ export CW_USERNAME=<USERNAME>
 export CW_PASSWORD='<PASSWORD>'
 python lcm_notify.py --ip <CNC_HOST> -k
 
+# Connect via an HTTP/HTTPS proxy
+export http_proxy=http://proxy.example.com:8080
+export https_proxy=http://proxy.example.com:8080
+python lcm_notify.py --ip <CNC_HOST> -u <USERNAME> -p '<PASSWORD>' --verbose -k
+
 # Use a saved JWT (from cw_get_jwt.py)
 python lcm_notify.py --ip <CNC_HOST> -j <JWT_FILE> -k
 
@@ -305,6 +332,13 @@ With `--get-rec`:
 
 ```
 Recommendation retrieval enabled via optimization v3 (get-lcm-recommendation + get-lcm-msl-recommendation-preview).
+```
+
+With `--verbose` and proxy environment variables set:
+
+```
+Using proxy: http_proxy=http://proxy.example.com:8080, https_proxy=http://proxy.example.com:8080
+Authenticating to <CNC_HOST>...
 ```
 
 When no LCM activity is occurring, the v3 SSE stream still stays open. The server sends periodic `: ping` keepalives; these are not printed as events. With `--verbose`, keepalive chunks appear on stderr as:
@@ -455,7 +489,7 @@ With `--get-rec`, the notification and each RPC are shown as separate sections i
 
 ### Verbose output (`--verbose`)
 
-Setup API calls (authentication, stream creation, legacy subscribe) are logged to stderr with full request/response details. Notification and RPC output follows the HTTP trace style (status code and byte count in the `<<<` headline) unless `--pretty` is also set.
+At startup, verbose mode prints the configured proxy servers (or `Using proxy: none (direct connection)` when unset). Setup API calls (authentication, stream creation, legacy subscribe) are then logged to stderr with full request/response details. Notification and RPC output follows the HTTP trace style (status code and byte count in the `<<<` headline) unless `--pretty` is also set.
 
 ## Key Functions and Classes
 
@@ -610,9 +644,11 @@ CHUNK_SIZE = 4096
 
 ENV_USERNAME = "CW_USERNAME"
 ENV_PASSWORD = "CW_PASSWORD"
+ENV_HTTP_PROXY = "http_proxy"
+ENV_HTTPS_PROXY = "https_proxy"
 ```
 
-Port, timeout, and SSL verification may be overridden via `--port`, `--timeout`, and `-k`/`--insecure` on the command line. SSL verification is **enabled by default**; use `-k` for self-signed lab certificates.
+Port, timeout, and SSL verification may be overridden via `--port`, `--timeout`, and `-k`/`--insecure` on the command line. SSL verification is **enabled by default**; use `-k` for self-signed lab certificates. Proxy servers are configured only through environment variables (there is no `--proxy` CLI flag).
 
 ## Dependencies
 
@@ -687,6 +723,14 @@ Recommendation retrieval uses optimization v3 RPCs. Verify that the JWT has perm
 
 For streaming responses, `--verbose` logs only the HTTP status line (not the full SSE body) to avoid flooding stderr. Stream chunk logging (`<<< chunk ...`) appears on stderr when non-notification chunks arrive.
 
+### Proxy connection failures
+
+If CNC is unreachable through the proxy, authentication or stream setup fails with connection or proxy errors. Verify `http_proxy` / `https_proxy` values, ensure the proxy allows long-lived HTTPS CONNECT tunnels (required for the notification stream), and confirm CNC is not listed in `no_proxy` when it should be proxied.
+
+```
+Error: ... ProxyError ... Cannot connect to proxy ...
+```
+
 ## Limitations and Considerations
 
 1. **Long-running process**: The script is designed to run as a foreground listener, not as a daemon. Use `systemd`, `screen`, or `tmux` for persistent background operation.
@@ -698,6 +742,7 @@ For streaming responses, `--verbose` logs only the HTTP status line (not the ful
 7. **Event volume**: High LCM activity can produce a large volume of notifications. With `--get-rec`, each event triggers one `get-lcm-recommendation` call plus one `get-lcm-msl-recommendation-preview` call per solution interface. Use `--output` with log rotation in production integrations.
 8. **Orphaned v3 streams**: Reconnect-on-v3 creates a new stream each time. The script does not list or delete old streams.
 9. **v3 SSE framing**: The script assumes Server-Sent Events framing on v3 listen endpoints. This is consistent with observed controller behaviour but is not explicitly documented for LCM streams.
+10. **Proxy configuration**: Proxies are read from environment variables only. Long-lived SSE streams require a proxy that supports persistent HTTPS tunneling; some proxies may time out idle connections and trigger reconnect loops.
 
 ## Relationship to Other Scripts
 
@@ -716,6 +761,6 @@ For streaming responses, `--verbose` logs only the HTTP status line (not the ful
 
 ---
 
-*Document Version: 1.1*  
+*Document Version: 1.2*  
 *Script: lcm_notify.py*  
 *Platform: Cisco Crosswork Network Controller 7.2+ (with legacy 7.0 v2 fallback)*

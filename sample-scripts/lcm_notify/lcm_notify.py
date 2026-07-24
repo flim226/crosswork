@@ -25,6 +25,7 @@ from typing import Callable, Literal, Optional, TextIO
 
 import requests
 import urllib3
+from requests.utils import getproxies_environment
 
 # ===========================================================================
 # Constants
@@ -42,6 +43,8 @@ CHUNK_SIZE = 4096
 
 ENV_USERNAME = "CW_USERNAME"
 ENV_PASSWORD = "CW_PASSWORD"
+ENV_HTTP_PROXY = "http_proxy"
+ENV_HTTPS_PROXY = "https_proxy"
 
 # --- RESTCONF API base paths ---
 
@@ -227,18 +230,75 @@ class _VerboseAdapter(_TimeoutAdapter):
         return resp
 
 
+def _read_env_proxy(name: str) -> str | None:
+    """Read a proxy URL from the environment, preferring lowercase names."""
+    value = os.environ.get(name)
+    if value:
+        return value
+    return os.environ.get(name.upper()) or None
+
+
+def _configured_proxies() -> dict[str, str]:
+    """Return http/https proxy URLs from http_proxy and https_proxy env vars."""
+    proxies: dict[str, str] = {}
+    http_proxy = _read_env_proxy(ENV_HTTP_PROXY)
+    if http_proxy:
+        proxies["http"] = http_proxy
+    https_proxy = _read_env_proxy(ENV_HTTPS_PROXY)
+    if https_proxy:
+        proxies["https"] = https_proxy
+    return proxies
+
+
+def _apply_proxy_config(session: requests.Session) -> dict[str, str]:
+    """Apply proxy settings from the environment to a requests session."""
+    session.trust_env = True
+    proxies = _configured_proxies()
+    if not proxies:
+        # Fall back to requests' broader *_proxy environment discovery.
+        proxies = {
+            scheme: url
+            for scheme, url in getproxies_environment().items()
+            if scheme in ("http", "https") and url
+        }
+    if proxies:
+        session.proxies.update(proxies)
+    return proxies
+
+
+def _log_proxy_config(proxies: dict[str, str], *, base_url: str | None = None) -> None:
+    """Log configured proxy servers to stderr for verbose mode."""
+    parts: list[str] = []
+    http_proxy = proxies.get("http")
+    https_proxy = proxies.get("https")
+    if http_proxy:
+        parts.append(f"http_proxy={http_proxy}")
+    if https_proxy:
+        parts.append(f"https_proxy={https_proxy}")
+    elif http_proxy and base_url and base_url.startswith("https:"):
+        parts.append(f"https (via {ENV_HTTP_PROXY})={http_proxy}")
+    if parts:
+        print(f"Using proxy: {', '.join(parts)}", file=sys.stderr)
+    else:
+        print("Using proxy: none (direct connection)", file=sys.stderr)
+
+
 def _create_session(
     verify_ssl: bool = True,
     timeout: int = CONNECT_TIMEOUT,
     verbose: bool = False,
     pretty: bool = False,
     suppress_rec_rpc: bool = False,
+    base_url: str | None = None,
 ) -> requests.Session:
     """Create an HTTP session with default timeout and configurable SSL verification."""
     if not verify_ssl:
         urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
     session = requests.Session()
     session.verify = verify_ssl
+    proxies = _apply_proxy_config(session)
+    if verbose:
+        _log_proxy_config(proxies, base_url=base_url)
     if verbose:
         adapter = _VerboseAdapter(
             timeout=timeout,
@@ -1171,15 +1231,17 @@ def _build_config(args: argparse.Namespace) -> ClientConfig:
     if args.insecure:
         print("WARNING: SSL verification disabled", file=sys.stderr)
 
+    base_url = f"https://{args.ip}:{args.port}"
     session = _create_session(
         verify_ssl=verify_ssl,
         timeout=args.timeout,
         verbose=args.verbose,
         pretty=args.pretty,
         suppress_rec_rpc=args.get_rec and (args.pretty or args.verbose),
+        base_url=base_url,
     )
     return ClientConfig(
-        base_url=f"https://{args.ip}:{args.port}",
+        base_url=base_url,
         verify_ssl=verify_ssl,
         timeout=args.timeout,
         verbose=args.verbose,
