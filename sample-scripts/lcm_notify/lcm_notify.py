@@ -325,11 +325,27 @@ def response_text(resp: requests.Response, limit: int = 500) -> str:
     return body or "<empty response body>"
 
 
-def check_response(resp: requests.Response, context: str) -> None:
+LEGACY_V2_UNAVAILABLE_HINT = (
+    "The legacy optima v2 notification API is not available on this CNC release "
+    "(typical on CNC 7.2+). Use --api v3 or --api auto instead of --api legacy."
+)
+
+
+def _legacy_v2_unavailable_hint(resp: requests.Response) -> str | None:
+    """Return guidance when the v2 streams model is missing on newer controllers."""
+    if resp.status_code != 409:
+        return None
+    body = resp.content.decode("utf-8", errors="replace")
+    if "data-missing" in body:
+        return LEGACY_V2_UNAVAILABLE_HINT
+    return None
+
+
+def check_response(resp: requests.Response, context: str, *, hint: str | None = None) -> None:
     """Raise CrossworkAuthError if the response indicates failure."""
     if resp.ok:
         return
-    body = (resp.text or "").strip()
+    body = resp.content.decode("utf-8", errors="replace").strip()
     if len(body) > 500:
         body = body[:500] + "..."
     if not body:
@@ -338,7 +354,10 @@ def check_response(resp: requests.Response, context: str) -> None:
     status = f"HTTP {resp.status_code}"
     if reason:
         status = f"{status} {reason}"
-    raise CrossworkAuthError(f"{context} returned {status}: {body}")
+    message = f"{context} returned {status}: {body}"
+    if hint:
+        message = f"{message}\nHint: {hint}"
+    raise CrossworkAuthError(message)
 
 
 def response_json(resp: requests.Response, context: str) -> dict:
@@ -787,7 +806,11 @@ class NotificationStreamClient:
             streams_url,
             headers=restconf_headers(self.token),
         )
-        check_response(resp, "enable_notification_stream_v2")
+        check_response(
+            resp,
+            "enable_notification_stream_v2",
+            hint=_legacy_v2_unavailable_hint(resp),
+        )
 
         subscribe_url = (
             f"{self.config.base_url}{OPTIMA_V2_BASE}/data/"
@@ -798,7 +821,11 @@ class NotificationStreamClient:
             subscribe_url,
             headers=restconf_headers(self.token),
         )
-        check_response(resp, "subscribe_notification_stream_v2")
+        check_response(
+            resp,
+            "subscribe_notification_stream_v2",
+            hint=_legacy_v2_unavailable_hint(resp),
+        )
 
     def v2_listen_session(self) -> StreamSession:
         """Set up and return a StreamSession for the legacy v2 stream."""
