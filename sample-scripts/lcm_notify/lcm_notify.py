@@ -7,6 +7,7 @@ API References:
   https://developer.cisco.com/docs/crosswork/network-controller/7-0/crosswork-optimization-engine-restconf-notifications/
   https://developer.cisco.com/docs/crosswork/network-controller/retrieve-an-lcm-recommendation/
   https://developer.cisco.com/docs/crosswork/network-controller/preview-lcm-msl-recommendation/
+  https://developer.cisco.com/docs/crosswork/network-controller/7-2/preview-an-lcm-recommendation-will-be-deprecated/
 """
 
 from __future__ import annotations
@@ -77,6 +78,10 @@ GET_LCM_RECOMMENDATION_OP = (
 GET_LCM_MSL_PREVIEW_OP = (
     "cisco-crosswork-optimization-engine-lcm-recommendation-operations:"
     "get-lcm-msl-recommendation-preview"
+)
+GET_LCM_PREVIEW_OP = (
+    "cisco-crosswork-optimization-engine-lcm-recommendation-operations:"
+    "get-lcm-recommendation-preview"
 )
 
 # --- Output markers ---
@@ -184,6 +189,7 @@ class _VerboseAdapter(_TimeoutAdapter):
         return (
             GET_LCM_RECOMMENDATION_OP not in url
             and GET_LCM_MSL_PREVIEW_OP not in url
+            and GET_LCM_PREVIEW_OP not in url
         )
 
     def send(self, request, *args, **kwargs):
@@ -339,6 +345,27 @@ def _legacy_v2_unavailable_hint(resp: requests.Response) -> str | None:
     if "data-missing" in body:
         return LEGACY_V2_UNAVAILABLE_HINT
     return None
+
+
+def _operation_unavailable(response: dict, status_code: int, operation: str) -> bool:
+    """Return True when RESTCONF reports an RPC is absent from the YANG schema."""
+    if status_code != 409:
+        return False
+
+    errors = response.get("errors", {}).get("error", [])
+    if isinstance(errors, dict):
+        errors = [errors]
+    for error in errors:
+        if not isinstance(error, dict):
+            continue
+        if error.get("error-tag") != "data-missing":
+            continue
+        error_info = str(error.get("error-info", ""))
+        if operation in error_info:
+            return True
+
+    serialized = json.dumps(response, separators=(",", ":"))
+    return "data-missing" in serialized and operation in serialized
 
 
 def check_response(resp: requests.Response, context: str, *, hint: str | None = None) -> None:
@@ -689,12 +716,22 @@ def emit_notification_event(
             file=file,
         )
 
-    for preview in recommendation_details.get("get-lcm-msl-recommendation-preview", []):
-        lcm_int = preview.get("lcm-int", {})
-        node = lcm_int.get("node", "?")
-        interface = lcm_int.get("interface", "?")
-        label = f"get-lcm-msl-recommendation-preview ({node}/{interface})"
+    previews = recommendation_details.get("previews")
+    if previews is None:
+        previews = recommendation_details.get("get-lcm-msl-recommendation-preview", [])
+    for preview in previews:
+        label = _preview_exchange_label(preview)
         _emit_rpc_exchange(preview, label=label, pretty=pretty, file=file)
+
+
+def _preview_exchange_label(preview: dict) -> str:
+    """Build a display label for a recommendation preview RPC."""
+    operation = preview.get("preview-operation", GET_LCM_MSL_PREVIEW_OP)
+    operation_name = operation.rsplit(":", 1)[-1]
+    lcm_int = preview.get("lcm-int", {})
+    node = lcm_int.get("node", "?")
+    interface = lcm_int.get("interface", "?")
+    return f"{operation_name} ({node}/{interface})"
 
 
 def _emit_rpc_exchange(
@@ -847,13 +884,52 @@ class RecommendationClient:
     def __init__(self, config: ClientConfig, token: str):
         self.config = config
         self.token = token
+        self._legacy_preview_fallback_warned = False
 
-    def _operation_url(self, operation: str) -> str:
-        return f"{self.config.base_url}{OPTIMIZATION_V3_BASE}/operations/{operation}"
+    def _operation_url(
+        self,
+        operation: str,
+        *,
+        base_path: str = OPTIMIZATION_V3_BASE,
+    ) -> str:
+        return f"{self.config.base_url}{base_path}/operations/{operation}"
 
-    def _post_operation(self, operation: str, payload: dict, context: str) -> dict:
+    def _parse_operation_response(
+        self,
+        resp: requests.Response,
+        context: str,
+        *,
+        raise_on_error: bool,
+    ) -> dict:
+        if not resp.content:
+            if raise_on_error:
+                check_response(resp, context)
+            return {}
+
+        try:
+            body = json.loads(resp.content)
+        except json.JSONDecodeError as exc:
+            if raise_on_error and resp.ok:
+                raise CrossworkAuthError(
+                    f"{context} returned invalid JSON: {response_text(resp)}"
+                ) from exc
+            return {"_raw": response_text(resp, limit=5000)}
+
+        if raise_on_error:
+            check_response(resp, context)
+        return body
+
+    def _post_operation(
+        self,
+        operation: str,
+        payload: dict,
+        context: str,
+        *,
+        base_path: str = OPTIMIZATION_V3_BASE,
+        raise_on_error: bool = True,
+    ) -> dict:
         """Execute a RESTCONF operation (RPC) via POST."""
-        url = self._operation_url(operation)
+        url = self._operation_url(operation, base_path=base_path)
         headers = {
             **restconf_headers(self.token),
             "Content-Type": "application/yang-data+json",
@@ -864,7 +940,11 @@ class RecommendationClient:
         responded_at = local_timestamp()
         return {
             "request": {"method": "POST", "url": url, "body": payload},
-            "response": response_json(resp, context),
+            "response": self._parse_operation_response(
+                resp,
+                context,
+                raise_on_error=raise_on_error,
+            ),
             "status": {
                 "code": resp.status_code,
                 "reason": resp.reason or "",
@@ -874,6 +954,26 @@ class RecommendationClient:
             "responded-at": responded_at,
         }
 
+    def _raise_operation_error(self, call: dict, context: str) -> None:
+        status = call["status"]
+        body = serialize_rest_body(call["response"], pretty=False)
+        reason = status.get("reason", "")
+        status_text = f"HTTP {status['code']}"
+        if reason:
+            status_text = f"{status_text} {reason}"
+        raise CrossworkAuthError(f"{context} returned {status_text}: {body}")
+
+    def _warn_legacy_preview_fallback(self, *, via_optima_v2: bool = False) -> None:
+        if self._legacy_preview_fallback_warned:
+            return
+        self._legacy_preview_fallback_warned = True
+        target = "optima v2" if via_optima_v2 else "optimization v3"
+        print(
+            "get-lcm-msl-recommendation-preview is unavailable on this controller; "
+            f"falling back to legacy get-lcm-recommendation-preview via {target}.",
+            file=sys.stderr,
+        )
+
     def get_recommendation(self, domain_id: str) -> dict:
         """Retrieve the LCM recommendation for a given domain."""
         return self._post_operation(
@@ -882,25 +982,73 @@ class RecommendationClient:
             "get_lcm_recommendation",
         )
 
-    def get_msl_preview(
+    def get_preview(
         self,
         domain_id: str,
         recommendation_id: str,
         node: str,
         interface: str,
     ) -> dict:
-        """Retrieve a MSL preview for a specific interface in a recommendation."""
-        return self._post_operation(
+        """Retrieve a preview for a specific interface, with legacy RPC fallback."""
+        payload = {
+            "input": {
+                "domain-id": domain_id,
+                "recommendation-id": recommendation_id,
+                "lcm-int": {"node": node, "interface": interface},
+            }
+        }
+
+        msl_call = self._post_operation(
             GET_LCM_MSL_PREVIEW_OP,
-            {
-                "input": {
-                    "domain-id": domain_id,
-                    "recommendation-id": recommendation_id,
-                    "lcm-int": {"node": node, "interface": interface},
-                }
-            },
+            payload,
             "get_lcm_msl_recommendation_preview",
+            raise_on_error=False,
         )
+        if msl_call["status"]["code"] < 400:
+            return {**msl_call, "preview-operation": GET_LCM_MSL_PREVIEW_OP}
+
+        if not _operation_unavailable(
+            msl_call["response"],
+            msl_call["status"]["code"],
+            "get-lcm-msl-recommendation-preview",
+        ):
+            self._raise_operation_error(msl_call, "get_lcm_msl_recommendation_preview")
+
+        legacy_call = self._post_operation(
+            GET_LCM_PREVIEW_OP,
+            payload,
+            "get_lcm_recommendation_preview",
+            raise_on_error=False,
+        )
+        if legacy_call["status"]["code"] < 400:
+            self._warn_legacy_preview_fallback()
+            return {**legacy_call, "preview-operation": GET_LCM_PREVIEW_OP}
+
+        if _operation_unavailable(
+            legacy_call["response"],
+            legacy_call["status"]["code"],
+            "get-lcm-recommendation-preview",
+        ):
+            legacy_v2_call = self._post_operation(
+                GET_LCM_PREVIEW_OP,
+                payload,
+                "get_lcm_recommendation_preview",
+                base_path=OPTIMA_V2_BASE,
+                raise_on_error=False,
+            )
+            if legacy_v2_call["status"]["code"] < 400:
+                self._warn_legacy_preview_fallback(via_optima_v2=True)
+                return {
+                    **legacy_v2_call,
+                    "preview-operation": GET_LCM_PREVIEW_OP,
+                }
+            self._raise_operation_error(
+                legacy_v2_call,
+                "get_lcm_recommendation_preview",
+            )
+
+        self._raise_operation_error(legacy_call, "get_lcm_recommendation_preview")
+        raise AssertionError("unreachable")
 
     def fetch_details_for_event(self, event: dict) -> dict:
         """Fetch full recommendation + MSL previews for an LCM event."""
@@ -920,7 +1068,7 @@ class RecommendationClient:
             interface = solution.get("interface")
             if not node or not interface:
                 continue
-            preview_call = self.get_msl_preview(
+            preview_call = self.get_preview(
                 domain_id,
                 recommendation_id,
                 str(node),
@@ -929,6 +1077,7 @@ class RecommendationClient:
             previews.append(
                 {
                     "lcm-int": {"node": node, "interface": interface},
+                    "preview-operation": preview_call["preview-operation"],
                     "request": preview_call["request"],
                     "response": preview_call["response"],
                     "status": preview_call["status"],
@@ -939,6 +1088,7 @@ class RecommendationClient:
 
         return {
             "get-lcm-recommendation": recommendation_call,
+            "previews": previews,
             "get-lcm-msl-recommendation-preview": previews,
         }
 
@@ -1231,8 +1381,9 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help=(
             "On lcm-recommendation-event, fetch recommendation details via "
-            "optimization v3 get-lcm-recommendation and "
-            "get-lcm-msl-recommendation-preview"
+            "optimization v3 get-lcm-recommendation and preview RPCs "
+            "(get-lcm-msl-recommendation-preview, with legacy "
+            "get-lcm-recommendation-preview fallback)"
         ),
     )
     parser.add_argument(
@@ -1392,7 +1543,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         if args.get_rec:
             print(
                 "Recommendation retrieval enabled via optimization v3 "
-                "(get-lcm-recommendation + get-lcm-msl-recommendation-preview).",
+                "(get-lcm-recommendation + preview RPC with legacy fallback).",
                 file=sys.stderr,
             )
 
