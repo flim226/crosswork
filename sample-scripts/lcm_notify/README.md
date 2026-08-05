@@ -17,9 +17,9 @@ CNC exposes notification delivery through **RESTCONF notification streams**. The
 | **7.2 and later** | `/crosswork/nbi/optimization/v3/restconf` | POST `sal-remote:create-notification-stream`, then listen on `/streams/json/{uuid}` (Server-Sent Events) |
 | **7.0 and earlier** | `/crosswork/nbi/optima/v2/restconf` | GET stream enable/subscribe endpoints, then listen on `/notif/notification-stream/...` |
 
-`lcm_notify.py` supports both models. By default (`--api auto`), it prefers the **optimization v3** API used on CNC 7.2+ and falls back to the legacy **optima v2** API if stream creation fails.
+`lcm_notify.py` supports both models. By default (`--api auto`), it prefers the **optimization v3** API used on CNC 7.2+ and falls back to the legacy **optima v2** API only when v3 stream creation fails for reasons other than authorization (for example, the v3 RPC is absent). **HTTP 401/403 responses are not treated as API-unavailable**; they indicate insufficient RBAC and the script exits with a clear hint instead of attempting the v2 fallback.
 
-When `--get-rec` is enabled, the script additionally calls LCM RESTCONF operations on the **optimization v3** API to fetch full recommendation and MSL preview details.
+When `--get-rec` is enabled, the script additionally calls LCM RESTCONF operations on the **optimization v3** API to fetch full recommendation and preview details. Preview retrieval tries `get-lcm-msl-recommendation-preview` first and falls back to legacy `get-lcm-recommendation-preview` when the MSL RPC is not registered (typical on CNC 7.1).
 
 For API details, see:
 
@@ -27,6 +27,9 @@ For API details, see:
 - [Crosswork Optimization Engine RESTCONF Notifications (7.0 and earlier)](https://developer.cisco.com/docs/crosswork/network-controller/7-0/crosswork-optimization-engine-restconf-notifications/)
 - [Retrieve an LCM recommendation](https://developer.cisco.com/docs/crosswork/network-controller/retrieve-an-lcm-recommendation/)
 - [Preview LCM MSL recommendation](https://developer.cisco.com/docs/crosswork/network-controller/preview-lcm-msl-recommendation/)
+- [Preview an LCM recommendation (deprecated)](https://developer.cisco.com/docs/crosswork/network-controller/7-2/preview-an-lcm-recommendation-will-be-deprecated/)
+
+For a detailed comparison of CNC 7.1 vs 7.2 notification, recommendation, and preview behaviour, see `lcm-notify-cnc7.1-cnc7.2.md`.
 
 ## Script Purpose
 
@@ -51,13 +54,14 @@ Typical use cases:
 
 | Feature | Description |
 |---------|-------------|
-| `--get-rec` | On each `lcm-recommendation-event`, calls `get-lcm-recommendation` and `get-lcm-msl-recommendation-preview` via optimization v3 |
+| `--get-rec` | On each `lcm-recommendation-event`, calls `get-lcm-recommendation` and preview RPCs via optimization v3 (`get-lcm-msl-recommendation-preview`, with legacy `get-lcm-recommendation-preview` fallback on CNC 7.1) |
 | `--pretty` | Pretty-print notifications and recommendation RPCs to stdout (indented JSON after a single `<<<` line per section) |
 | `--verbose` / `-v` | Log setup API traffic to stderr; show notifications/RPCs in HTTP trace style (or pretty style when combined with `--pretty`) |
 | `-k` / `--insecure` | Opt out of SSL certificate verification (verification is **enabled by default**) |
 | `CW_USERNAME` / `CW_PASSWORD` | Environment variables for credentials; interactive prompt if omitted |
 | `http_proxy` / `https_proxy` | Environment variables for HTTP/HTTPS proxy servers (uppercase variants also supported) |
-| `RecommendationClient` | Encapsulates LCM retrieval RPCs and MSL preview fan-out per solution |
+| `RecommendationClient` | Encapsulates LCM retrieval RPCs and per-solution preview fan-out with MSL/legacy fallback |
+| RBAC-aware stream setup | HTTP 401/403 on v3 stream creation raises `CrossworkAccessDeniedError` with policy guidance; no v2 fallback |
 | Request/response logging | `>>>` for outbound requests, `<<<` for inbound responses and notifications |
 
 ## Script Structure
@@ -67,9 +71,10 @@ Typical use cases:
 | Section | Contents |
 |---------|----------|
 | **Constants** | Ports, API paths, YANG identifiers, environment variable names, reconnect defaults, log markers (`>>>`, `<<<`) |
-| **Exceptions** | `CrossworkAuthError` |
+| **Output formatting** | `ExchangeDisplay`, `local_timestamp()`, `print_exchange()`, `format_exchange_line()` |
+| **Exceptions** | `CrossworkAuthError`, `CrossworkAccessDeniedError` |
 | **HTTP adapters and session factory** | `_TimeoutAdapter`, `_VerboseAdapter`, `_apply_proxy_config()`, `_create_session()` |
-| **HTTP response helpers** | `response_text()`, `check_response()`, `response_json()`, `print_exchange()`, `stream_log()`, `stream_chunk_log()` |
+| **HTTP response helpers** | `response_text()`, `check_response()`, `response_json()`, `stream_log()`, `stream_chunk_log()` |
 | **Credentials** | `_resolve_credentials()`, `load_token_from_file()` |
 | **Configuration and authentication** | `ClientConfig`, `_get_ticket()`, `_get_token()`, `authenticate()` |
 | **Event parsing** | `ParserMode`, `StreamingEventParser`, `extract_lcm_recommendation_event()`, `format_notification()`, `emit_notification_event()` |
@@ -199,12 +204,22 @@ When `--get-rec` is enabled, each parsed `lcm-recommendation-event` triggers add
          │                              │
          │  2. POST get-lcm-msl-        │
          │     recommendation-preview   │
-         │     (once per solution)      │
+         │     (once per solution;      │
+         │     legacy preview fallback  │
+         │     on CNC 7.1)              │
          │◀─────────────────────────────│
          │     TTE policy preview       │
          ▼
     [recommendation-details in output envelope]
 ```
+
+**Preview RPC fallback** (`RecommendationClient.get_preview()`):
+
+1. Try `get-lcm-msl-recommendation-preview` on optimization v3 (CNC 7.2+)
+2. On HTTP 409 `data-missing`, fall back to `get-lcm-recommendation-preview` on optimization v3 (CNC 7.1)
+3. If that is also missing, try `get-lcm-recommendation-preview` on optima v2 as a last resort
+
+A one-time stderr warning is emitted when legacy preview fallback is used. Each preview response records the operation actually used in `preview-operation`.
 
 If a retrieval call fails, the notification is still emitted; stderr reports the error and `recommendation-details` is omitted for that event.
 
@@ -258,7 +273,7 @@ python lcm_notify.py --ip <CNC_HOST> [options]
 | `--pretty` | Pretty-print notifications and recommendation RPCs to stdout (indented JSON body after a single `<<<` line) |
 | `--output`, `-o` | Append received notifications to this file (one JSON object per line) |
 | `--max-events` | Stop after receiving this many events (default: listen until interrupted) |
-| `--get-rec` | Fetch recommendation details and MSL previews for each LCM event |
+| `--get-rec` | Fetch recommendation details and per-interface previews for each LCM event (MSL preview with legacy fallback) |
 | `--verbose`, `-v` | Print setup API traffic to stderr; show notifications/RPCs in HTTP trace style |
 
 ### Output destinations
@@ -331,7 +346,13 @@ Received 1 event(s).
 With `--get-rec`:
 
 ```
-Recommendation retrieval enabled via optimization v3 (get-lcm-recommendation + get-lcm-msl-recommendation-preview).
+Recommendation retrieval enabled via optimization v3 (get-lcm-recommendation + preview RPC with legacy fallback).
+```
+
+On CNC 7.1, preview fallback may also print:
+
+```
+get-lcm-msl-recommendation-preview is unavailable on this controller; falling back to legacy get-lcm-recommendation-preview via optimization v3.
 ```
 
 With `--verbose` and proxy environment variables set:
@@ -412,6 +433,7 @@ When `--get-rec` is enabled, a `recommendation-details` object is added with ful
     "get-lcm-msl-recommendation-preview": [
       {
         "lcm-int": { "node": "node-2", "interface": "GigabitEthernet0/0/0/6" },
+        "preview-operation": "cisco-crosswork-optimization-engine-lcm-recommendation-operations:get-lcm-msl-recommendation-preview",
         "request": { "method": "POST", "url": "...", "body": { "input": { "...": "..." } } },
         "response": {
           "cisco-crosswork-optimization-engine-lcm-recommendation-operations:output": {
@@ -433,7 +455,9 @@ Field descriptions:
 
 - `received-at` — local timestamp when the script received the event (`YYYY-MM-DD HH:MM:SS.mmm`)
 - `notification` — the raw notification payload from CNC
-- `recommendation-details` — (optional) full recommendation and per-interface MSL previews fetched via optimization v3 RPCs, including request/response pairs and HTTP status
+- `recommendation-details` — (optional) full recommendation and per-interface previews fetched via optimization v3 RPCs, including request/response pairs, HTTP status, timestamps, and `preview-operation` (MSL or legacy)
+
+On CNC 7.2+, preview responses use the MSL schema (`tte-policy-preview[].segment-list[]`). On CNC 7.1, legacy preview responses use a flat schema (`tte-policy-preview[].segment-list-hop[]`). See `lcm-notify-cnc7.1-cnc7.2.md` for examples.
 
 With `--output`, the envelope is written to the file using the same `<<< notification` line format as console output. Compact JSON is embedded in the line body regardless of `--pretty`.
 
@@ -485,6 +509,8 @@ Events are printed as labelled sections with indented JSON bodies:
 }
 ```
 
+The preview section label reflects the operation used (`get-lcm-msl-recommendation-preview` or `get-lcm-recommendation-preview`) and the target interface.
+
 With `--get-rec`, the notification and each RPC are shown as separate sections instead of one nested JSON object.
 
 ### Verbose output (`--verbose`)
@@ -495,7 +521,18 @@ At startup, verbose mode prints the configured proxy servers (or `Using proxy: n
 
 ### `ClientConfig`
 
-Frozen dataclass holding connection settings: `base_url`, `verify_ssl`, `timeout`, `verbose`, `pretty`, and an optional shared `requests.Session`.
+Frozen dataclass holding connection settings: `base_url`, `verify_ssl`, `timeout`, `verbose`, `pretty`, `suppress_rec_rpc`, and an optional shared `requests.Session`.
+
+- `suppress_rec_rpc` — when `True` (set automatically with `--get-rec --pretty` or `--get-rec --verbose`), the verbose HTTP adapter skips duplicate logging of recommendation/preview RPC traffic because structured event output already includes those calls
+- `get_session()` — returns the configured session or creates one via `_create_session()`
+
+### `ExchangeDisplay` / `print_exchange()`
+
+`ExchangeDisplay` groups formatting options (timestamp, output file, leading/trailing blank lines) for `print_exchange()` and related helpers. All structured log output uses `>>>` / `<<<` markers with millisecond-resolution local timestamps.
+
+### `CrossworkAccessDeniedError`
+
+Subclass of `CrossworkAuthError` raised when authentication succeeded but the user lacks permission for an API call (HTTP 401/403). Stream creation failures with this exception do not trigger legacy v2 fallback in `--api auto` mode.
 
 ### `authenticate(config, username, password)`
 
@@ -510,7 +547,7 @@ Encapsulates RESTCONF stream setup for both API variants:
 
 | Method | Purpose |
 |--------|---------|
-| `create_v3_stream()` | POST `sal-remote:create-notification-stream` for LCM events |
+| `create_v3_stream()` | POST `sal-remote:create-notification-stream` for LCM events; raises `CrossworkAccessDeniedError` on HTTP 401/403 |
 | `v3_listen_session(stream_id)` | Build SSE listen URL and headers |
 | `_setup_v2_stream()` | Legacy enable/subscribe GET sequence |
 | `v2_listen_session()` | Build legacy listen URL and headers |
@@ -522,8 +559,8 @@ Fetches LCM recommendation details via optimization v3 RESTCONF operations:
 | Method | Purpose |
 |--------|---------|
 | `get_recommendation(domain_id)` | POST `get-lcm-recommendation` for a domain |
-| `get_msl_preview(domain_id, recommendation_id, node, interface)` | POST `get-lcm-msl-recommendation-preview` for one interface |
-| `fetch_details_for_event(event)` | Orchestrates recommendation fetch + MSL preview fan-out per solution |
+| `get_preview(domain_id, recommendation_id, node, interface)` | POST preview RPC for one interface, with MSL → legacy v3 → legacy v2 fallback |
+| `fetch_details_for_event(event)` | Orchestrates recommendation fetch + preview fan-out per solution |
 
 ### `StreamSession`
 
@@ -535,14 +572,15 @@ Incrementally parses notification payloads from a chunked HTTP response body:
 
 - **`ParserMode.SSE`** — parses Server-Sent Events (`data:` lines), ignores `: ping` comments
 - **`ParserMode.JSON`** — parses concatenated JSON objects (legacy v2 streams)
+- **`reset()`** — discards buffered partial stream data
 
 ### `extract_lcm_recommendation_event(notification)`
 
 Extracts the `lcm-recommendation-event` payload from a RESTCONF notification envelope, handling both fully qualified and suffix-matched YANG keys.
 
-### `print_exchange()` / `emit_notification_event()`
+### `emit_notification_event()`
 
-Format and print request/response pairs with `>>>` / `<<<` markers and millisecond timestamps. `emit_notification_event()` renders a notification and optional recommendation RPCs as labelled sections.
+Renders a notification and optional recommendation RPCs as labelled `>>>` / `<<<` sections. Preview section labels include the operation name and target interface (for example, `get-lcm-msl-recommendation-preview (node-2/GigabitEthernet0/0/0/6)`).
 
 ### `NotificationListener`
 
@@ -551,7 +589,7 @@ Manages the long-running listen loop:
 - Opens a streaming HTTP GET with no read timeout
 - Optionally fetches recommendation details before emitting each event
 - Emits formatted events to stdout or stderr depending on `--pretty` / `--verbose`
-- Appends envelope JSON to `--output` file when specified
+- Appends envelope JSON to `--output` file via a context-managed append handle when specified
 - Handles SIGINT/SIGTERM via `request_stop()`
 - Reconnects after stream errors or server-side disconnects when an `on_reconnect` callback is provided
 
@@ -604,7 +642,8 @@ Orchestrates the workflow:
 | Endpoint | Method | Purpose |
 |----------|--------|---------|
 | `/crosswork/nbi/optimization/v3/restconf/operations/cisco-crosswork-optimization-engine-lcm-recommendation-operations:get-lcm-recommendation` | POST | Fetch recommendation for a domain |
-| `/crosswork/nbi/optimization/v3/restconf/operations/cisco-crosswork-optimization-engine-lcm-recommendation-operations:get-lcm-msl-recommendation-preview` | POST | Fetch MSL/TTE policy preview for an interface |
+| `/crosswork/nbi/optimization/v3/restconf/operations/cisco-crosswork-optimization-engine-lcm-recommendation-operations:get-lcm-msl-recommendation-preview` | POST | Fetch MSL/TTE policy preview for an interface (CNC 7.2+) |
+| `/crosswork/nbi/optimization/v3/restconf/operations/cisco-crosswork-optimization-engine-lcm-recommendation-operations:get-lcm-recommendation-preview` | POST | Legacy preview fallback (CNC 7.1; deprecated) |
 
 **get-lcm-recommendation payload:**
 
@@ -653,7 +692,7 @@ Port, timeout, and SSL verification may be overridden via `--port`, `--timeout`,
 ## Dependencies
 
 - **Python packages**: `requests`, `urllib3`
-- **Standard library**: `argparse`, `getpass`, `json`, `os`, `signal`, `sys`, `time`, `datetime`, `dataclasses`, `enum`, `typing`
+- **Standard library**: `argparse`, `contextlib`, `getpass`, `json`, `os`, `signal`, `sys`, `time`, `datetime`, `dataclasses`, `enum`, `typing`
 - **External tools**: None
 
 Install dependencies:
@@ -667,11 +706,12 @@ pip install requests urllib3
 The script handles common error scenarios:
 
 - **HTTP errors**: Authentication failures, stream creation failures, listen endpoint errors — reported with HTTP status and response body snippet
+- **Authorization errors (HTTP 401/403)**: Raised as `CrossworkAccessDeniedError` with an RBAC hint; **not** treated as API-unavailable in `--api auto` mode
 - **Connection errors**: Network unreachability, stream disconnects — triggers automatic reconnection (v3 and legacy modes)
 - **Recommendation fetch errors** (`--get-rec`): Logged to stderr; the notification is still emitted without `recommendation-details`
 - **JSON parse errors**: Malformed notification payloads raise `json.JSONDecodeError` and terminate the script with exit code `1`
 - **Signal handling**: SIGINT (Ctrl+C) and SIGTERM set a stop flag on `NotificationListener`; the script exits cleanly after the current read completes
-- **API fallback**: In `--api auto` mode, failure to create a v3 stream falls back to legacy v2 with a stderr warning
+- **API fallback (`--api auto`)**: Failure to create a v3 stream falls back to legacy v2 with a stderr warning, **except** for `CrossworkAccessDeniedError` (insufficient RBAC)
 
 ## Troubleshooting
 
@@ -683,6 +723,19 @@ CNC lab deployments often use self-signed certificates. Either install the contr
 Error: ... SSLError ... certificate verify failed
 ```
 
+### HTTP 403 Forbidden on v3 stream creation
+
+Authentication succeeded but the user lacks permission to call `sal-remote:create-notification-stream`. The script exits immediately with `CrossworkAccessDeniedError` and does **not** fall back to optima v2.
+
+```
+Error: create_notification_stream_v3 returned HTTP 403 Forbidden: ...
+Hint: The authenticated user lacks permission to create optimization v3 notification
+streams (sal-remote:create-notification-stream). Grant RESTCONF notification-stream
+access in the user's CNC policy, or use an account with sufficient RBAC.
+```
+
+Grant the CNC policy permissions required for optimization v3 RESTCONF notification streams, or authenticate with an account that has them (for example, `admin` rather than a read-only NOC role). On CNC 7.2+, legacy v2 fallback will not help because the v2 streams model is typically absent.
+
 ### Script exits immediately with HTTP 404 on listen (v2 path)
 
 The target CNC likely requires the **optimization v3** API. Use `--api v3` or leave `--api` at the default `auto` value.
@@ -693,7 +746,17 @@ Error: listen_notification_stream returned HTTP 404 Not Found: ...
 
 ### Script exits immediately with HTTP 409 on streams (v2 enable)
 
-A `data-missing` (HTTP 409) response on the v2 streams endpoint indicates the legacy monitoring model is not populated on this CNC release. The v3 API should be used instead.
+A `data-missing` (HTTP 409) response on the v2 streams endpoint indicates the legacy monitoring model is not populated on this CNC release (typical on CNC 7.2+). Use `--api v3` with an account that has v3 notification-stream permissions. If v3 stream creation previously failed with HTTP 403, fix RBAC first — v2 fallback cannot substitute for missing authorization.
+
+### `--get-rec` preview fallback warning (CNC 7.1)
+
+On CNC 7.1, stderr may show:
+
+```
+get-lcm-msl-recommendation-preview is unavailable on this controller; falling back to legacy get-lcm-recommendation-preview via optimization v3.
+```
+
+This is expected. Preview responses use the legacy flat schema; see `lcm-notify-cnc7.1-cnc7.2.md`.
 
 ### No events received, but script keeps running
 
@@ -737,12 +800,13 @@ Error: ... ProxyError ... Cannot connect to proxy ...
 2. **JWT lifetime**: The script does not refresh JWT tokens automatically during a long listen session.
 3. **Single notification type**: Only `lcm-recommendation-event` is subscribed. Other COE notification types (SR policy, topology, RSVP) require separate stream creation with different notification URIs.
 4. **SSL verification**: Verification is enabled by default. Use `-k`/`--insecure` only for lab or development environments with self-signed certificates.
-5. **API version**: On CNC 7.2+, both notifications and recommendation retrieval use optimization v3. Legacy optima v2 is used only for notifications when v3 stream creation fails (`--api auto`) or when `--api legacy` is specified.
-6. **AAA session limits**: Use a dedicated API user for automated listeners to avoid exhausting shared AAA session limits on the controller.
-7. **Event volume**: High LCM activity can produce a large volume of notifications. With `--get-rec`, each event triggers one `get-lcm-recommendation` call plus one `get-lcm-msl-recommendation-preview` call per solution interface. Use `--output` with log rotation in production integrations.
-8. **Orphaned v3 streams**: Reconnect-on-v3 creates a new stream each time. The script does not list or delete old streams.
-9. **v3 SSE framing**: The script assumes Server-Sent Events framing on v3 listen endpoints. This is consistent with observed controller behaviour but is not explicitly documented for LCM streams.
-10. **Proxy configuration**: Proxies are read from environment variables only. Long-lived SSE streams require a proxy that supports persistent HTTPS tunneling; some proxies may time out idle connections and trigger reconnect loops.
+5. **API version**: On CNC 7.2+, both notifications and recommendation retrieval use optimization v3. Legacy optima v2 is used only for notifications when v3 stream creation fails for non-authorization reasons (`--api auto`) or when `--api legacy` is specified. HTTP 401/403 on v3 stream creation always fails fast with an RBAC hint.
+6. **Preview schema**: CNC 7.2+ returns MSL previews with `segment-list[]`; CNC 7.1 uses legacy preview with flat `segment-list-hop[]`. Integrations should handle both shapes or inspect `preview-operation`.
+7. **AAA session limits**: Use a dedicated API user for automated listeners to avoid exhausting shared AAA session limits on the controller.
+8. **Event volume**: High LCM activity can produce a large volume of notifications. With `--get-rec`, each event triggers one `get-lcm-recommendation` call plus one preview call per solution interface. Use `--output` with log rotation in production integrations.
+9. **Orphaned v3 streams**: Reconnect-on-v3 creates a new stream each time. The script does not list or delete old streams.
+10. **v3 SSE framing**: The script assumes Server-Sent Events framing on v3 listen endpoints. This is consistent with observed controller behaviour but is not explicitly documented for LCM streams.
+11. **Proxy configuration**: Proxies are read from environment variables only. Long-lived SSE streams require a proxy that supports persistent HTTPS tunneling; some proxies may time out idle connections and trigger reconnect loops.
 
 ## Relationship to Other Scripts
 
@@ -750,6 +814,7 @@ Error: ... ProxyError ... Cannot connect to proxy ...
 |--------|--------------|
 | `get_plan.py` | Shares the same SSO authentication flow and CLI conventions (`--ip`, `-u`, `-p`, `-j`) |
 | `cw_get_jwt.py` | Can be used to obtain a JWT file for `--jwt` authentication |
+| `lcm-notify-cnc7.1-cnc7.2.md` | Application note comparing CNC 7.1 vs 7.2 LCM notify and preview behaviour |
 
 ## References
 
@@ -757,10 +822,11 @@ Error: ... ProxyError ... Cannot connect to proxy ...
 - [Crosswork Optimization Engine RESTCONF Notifications (7.0 and earlier)](https://developer.cisco.com/docs/crosswork/network-controller/7-0/crosswork-optimization-engine-restconf-notifications/)
 - [Retrieve an LCM recommendation](https://developer.cisco.com/docs/crosswork/network-controller/retrieve-an-lcm-recommendation/)
 - [Preview LCM MSL recommendation](https://developer.cisco.com/docs/crosswork/network-controller/preview-lcm-msl-recommendation/)
+- [Preview an LCM recommendation (deprecated)](https://developer.cisco.com/docs/crosswork/network-controller/7-2/preview-an-lcm-recommendation-will-be-deprecated/)
 - [Cisco Crosswork Network Controller API Documentation](https://developer.cisco.com/docs/crosswork/)
 
 ---
 
-*Document Version: 1.2*  
+*Document Version: 1.3*  
 *Script: lcm_notify.py*  
-*Platform: Cisco Crosswork Network Controller 7.2+ (with legacy 7.0 v2 fallback)*
+*Platform: Cisco Crosswork Network Controller 7.2+ (with legacy 7.0 v2 fallback for notifications; legacy preview fallback for `--get-rec` on CNC 7.1)*

@@ -19,10 +19,11 @@ import os
 import signal
 import sys
 import time
-from dataclasses import dataclass
+from contextlib import contextmanager
+from dataclasses import dataclass, replace
 from datetime import datetime
 from enum import Enum
-from typing import Callable, Literal, Optional, TextIO
+from typing import Callable, Iterator, Literal, Optional, TextIO
 
 import requests
 import urllib3
@@ -92,6 +93,16 @@ LOG_RESPONSE_MARKER = "<<<"
 ExchangeDirection = Literal["request", "response"]
 
 
+@dataclass(frozen=True)
+class ExchangeDisplay:
+    """Formatting options for request/response log output."""
+
+    timestamp: str | None = None
+    file: TextIO = sys.stdout
+    leading_blank: bool = False
+    trailing_blank: bool = False
+
+
 def local_timestamp(when: datetime | None = None) -> str:
     """Format a local date/time for request and response logs."""
     moment = when or datetime.now().astimezone()
@@ -103,21 +114,19 @@ def print_exchange(
     headline: str,
     body: str | None = None,
     *,
-    timestamp: str | None = None,
-    file: TextIO = sys.stdout,
-    leading_blank: bool = False,
-    trailing_blank: bool = False,
+    display: ExchangeDisplay | None = None,
 ) -> None:
     """Print one request or response with a single timestamp and direction marker."""
-    if leading_blank:
-        print(file=file)
-    ts = timestamp or local_timestamp()
+    opts = display or ExchangeDisplay()
+    if opts.leading_blank:
+        print(file=opts.file)
+    ts = opts.timestamp or local_timestamp()
     marker = LOG_REQUEST_MARKER if direction == "request" else LOG_RESPONSE_MARKER
-    print(f"{ts} {marker} {headline}", file=file)
+    print(f"{ts} {marker} {headline}", file=opts.file)
     if body:
-        print(body, file=file)
-    if trailing_blank:
-        print(file=file)
+        print(body, file=opts.file)
+    if opts.trailing_blank:
+        print(file=opts.file)
 
 
 def format_exchange_line(
@@ -150,6 +159,10 @@ class CrossworkAuthError(RuntimeError):
     """Raised when authentication or API calls fail."""
 
 
+class CrossworkAccessDeniedError(CrossworkAuthError):
+    """Raised when authentication succeeded but the user lacks API permission."""
+
+
 # ===========================================================================
 # HTTP adapters and session factory
 # ===========================================================================
@@ -162,10 +175,25 @@ class _TimeoutAdapter(requests.adapters.HTTPAdapter):
         self._timeout = timeout
         super().__init__(**kwargs)
 
-    def send(self, *args, **kwargs):
-        if kwargs.get("timeout") is None:
-            kwargs["timeout"] = self._timeout
-        return super().send(*args, **kwargs)
+    def send(  # pylint: disable=too-many-arguments,too-many-positional-arguments
+        self,
+        request,
+        stream: bool = False,
+        timeout: float | tuple[float, float] | None = None,
+        verify: bool = True,
+        cert: str | tuple[str, str] | None = None,
+        proxies: dict | None = None,
+    ):
+        if timeout is None:
+            timeout = self._timeout
+        return super().send(
+            request,
+            stream=stream,
+            timeout=timeout,
+            verify=verify,
+            cert=cert,
+            proxies=proxies,
+        )
 
 
 class _VerboseAdapter(_TimeoutAdapter):
@@ -192,47 +220,71 @@ class _VerboseAdapter(_TimeoutAdapter):
             and GET_LCM_PREVIEW_OP not in url
         )
 
-    def send(self, request, *args, **kwargs):
-        if not self._should_log(request):
-            return super().send(request, *args, **kwargs)
+    def _log_verbose_exchange_response(
+        self,
+        resp: requests.Response,
+        *,
+        stream: bool,
+        response_ts: str,
+    ) -> None:
+        response_display = ExchangeDisplay(
+            timestamp=response_ts,
+            file=sys.stderr,
+            leading_blank=True,
+            trailing_blank=True,
+        )
+        if stream:
+            headline = f"HTTP {resp.status_code} {resp.reason}"
+            body = None
+        else:
+            content = resp.content
+            headline = f"{resp.status_code} {resp.reason} ({len(content)} bytes)"
+            body = format_http_log_body(content, pretty=self._pretty)
+        print_exchange("response", headline, body, display=response_display)
 
-        request_time = datetime.now().astimezone()
-        request_ts = local_timestamp(request_time)
+    def send(  # pylint: disable=too-many-arguments,too-many-positional-arguments
+        self,
+        request,
+        stream: bool = False,
+        timeout: float | tuple[float, float] | None = None,
+        verify: bool = True,
+        cert: str | tuple[str, str] | None = None,
+        proxies: dict | None = None,
+    ):
+        if not self._should_log(request):
+            return super().send(
+                request,
+                stream=stream,
+                timeout=timeout,
+                verify=verify,
+                cert=cert,
+                proxies=proxies,
+            )
+
+        request_ts = local_timestamp(datetime.now().astimezone())
         request_details = _format_verbose_request_details(request, self._pretty)
         print_exchange(
             "request",
             f"{request.method} {request.url}",
             request_details or None,
-            timestamp=request_ts,
-            file=sys.stderr,
+            display=ExchangeDisplay(timestamp=request_ts, file=sys.stderr),
         )
 
-        stream = kwargs.get("stream", False)
-        resp = super().send(request, *args, **kwargs)
-        response_time = datetime.now().astimezone()
-        response_ts = local_timestamp(response_time)
-
-        if stream:
-            print_exchange(
-                "response",
-                f"HTTP {resp.status_code} {resp.reason}",
-                timestamp=response_ts,
-                file=sys.stderr,
-                leading_blank=True,
-                trailing_blank=True,
-            )
-        else:
-            content = resp.content
-            response_body = format_http_log_body(content, pretty=self._pretty)
-            print_exchange(
-                "response",
-                f"{resp.status_code} {resp.reason} ({len(content)} bytes)",
-                response_body,
-                timestamp=response_ts,
-                file=sys.stderr,
-                leading_blank=True,
-                trailing_blank=True,
-            )
+        if timeout is None:
+            timeout = self._timeout
+        resp = super().send(
+            request,
+            stream=stream,
+            timeout=timeout,
+            verify=verify,
+            cert=cert,
+            proxies=proxies,
+        )
+        self._log_verbose_exchange_response(
+            resp,
+            stream=stream,
+            response_ts=local_timestamp(datetime.now().astimezone()),
+        )
         return resp
 
 
@@ -289,35 +341,6 @@ def _log_proxy_config(proxies: dict[str, str], *, base_url: str | None = None) -
         print("Using proxy: none (direct connection)", file=sys.stderr)
 
 
-def _create_session(
-    verify_ssl: bool = True,
-    timeout: int = CONNECT_TIMEOUT,
-    verbose: bool = False,
-    pretty: bool = False,
-    suppress_rec_rpc: bool = False,
-    base_url: str | None = None,
-) -> requests.Session:
-    """Create an HTTP session with default timeout and configurable SSL verification."""
-    if not verify_ssl:
-        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-    session = requests.Session()
-    session.verify = verify_ssl
-    proxies = _apply_proxy_config(session)
-    if verbose:
-        _log_proxy_config(proxies, base_url=base_url)
-    if verbose:
-        adapter = _VerboseAdapter(
-            timeout=timeout,
-            pretty=pretty,
-            suppress_rec_rpc=suppress_rec_rpc,
-        )
-    else:
-        adapter = _TimeoutAdapter(timeout=timeout)
-    session.mount("https://", adapter)
-    session.mount("http://", adapter)
-    return session
-
-
 # ===========================================================================
 # HTTP response helpers
 # ===========================================================================
@@ -336,6 +359,13 @@ LEGACY_V2_UNAVAILABLE_HINT = (
     "(typical on CNC 7.2+). Use --api v3 or --api auto instead of --api legacy."
 )
 
+V3_STREAM_RBAC_HINT = (
+    "The authenticated user lacks permission to create optimization v3 notification "
+    "streams (sal-remote:create-notification-stream). Grant RESTCONF notification-"
+    "stream access in the user's CNC policy, or use an account with sufficient RBAC. "
+    "Do not fall back to the legacy optima v2 API for authorization failures."
+)
+
 
 def _legacy_v2_unavailable_hint(resp: requests.Response) -> str | None:
     """Return guidance when the v2 streams model is missing on newer controllers."""
@@ -345,6 +375,25 @@ def _legacy_v2_unavailable_hint(resp: requests.Response) -> str | None:
     if "data-missing" in body:
         return LEGACY_V2_UNAVAILABLE_HINT
     return None
+
+
+def _access_denied_response(resp: requests.Response) -> bool:
+    """Return True when the server rejected the call for lack of permission."""
+    return resp.status_code in (401, 403)
+
+
+def _raise_access_denied(resp: requests.Response, context: str, *, hint: str) -> None:
+    """Raise CrossworkAccessDeniedError for HTTP 401/403 responses."""
+    body = resp.content.decode("utf-8", errors="replace").strip()
+    if len(body) > 500:
+        body = body[:500] + "..."
+    if not body:
+        body = "<empty response body>"
+    reason = getattr(resp, "reason", "")
+    status = f"HTTP {resp.status_code}"
+    if reason:
+        status = f"{status} {reason}"
+    raise CrossworkAccessDeniedError(f"{context} returned {status}: {body}\nHint: {hint}")
 
 
 def _operation_unavailable(response: dict, status_code: int, operation: str) -> bool:
@@ -430,8 +479,7 @@ def stream_chunk_log(
     print_exchange(
         "response",
         f"chunk ({len(chunk)} bytes): {text.strip()}",
-        timestamp=local_timestamp(when),
-        file=file,
+        display=ExchangeDisplay(timestamp=local_timestamp(when), file=file),
     )
 
 
@@ -522,12 +570,35 @@ class ClientConfig:
     timeout: int = DEFAULT_AUTH_TIMEOUT
     verbose: bool = False
     pretty: bool = False
+    suppress_rec_rpc: bool = False
     session: requests.Session | None = None
 
     def get_session(self) -> requests.Session:
+        """Return the configured session, creating one if needed."""
         if self.session is not None:
             return self.session
-        return _create_session(verify_ssl=self.verify_ssl, timeout=self.timeout)
+        return _create_session(self)
+
+
+def _create_session(config: ClientConfig) -> requests.Session:
+    """Create an HTTP session from a Crosswork client configuration."""
+    if not config.verify_ssl:
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+    session = requests.Session()
+    session.verify = config.verify_ssl
+    proxies = _apply_proxy_config(session)
+    if config.verbose:
+        _log_proxy_config(proxies, base_url=config.base_url)
+        adapter = _VerboseAdapter(
+            timeout=config.timeout,
+            pretty=config.pretty,
+            suppress_rec_rpc=config.suppress_rec_rpc,
+        )
+    else:
+        adapter = _TimeoutAdapter(timeout=config.timeout)
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
+    return session
 
 
 def restconf_headers(token: str, *, accept: str = "application/yang-data+json") -> dict[str, str]:
@@ -618,6 +689,10 @@ class StreamingEventParser:
             return self._feed_sse()
         return self._feed_json()
 
+    def reset(self) -> None:
+        """Discard any buffered partial stream data."""
+        self.buffer = ""
+
     def _feed_sse(self) -> list[dict]:
         events: list[dict] = []
         while "\n\n" in self.buffer:
@@ -700,8 +775,7 @@ def emit_notification_event(
         "response",
         "notification",
         serialize_rest_body(notification, pretty=pretty),
-        timestamp=received_at,
-        file=file,
+        display=ExchangeDisplay(timestamp=received_at, file=file),
     )
 
     if recommendation_details is None:
@@ -751,8 +825,7 @@ def _emit_rpc_exchange(
             "request",
             f"{request['method']} {request['url']}",
             serialize_rest_body(request["body"], pretty=pretty),
-            timestamp=call.get("requested-at"),
-            file=file,
+            display=ExchangeDisplay(timestamp=call.get("requested-at"), file=file),
         )
 
     if pretty:
@@ -766,10 +839,12 @@ def _emit_rpc_exchange(
         "response",
         headline,
         serialize_rest_body(response, pretty=pretty),
-        timestamp=call.get("responded-at"),
-        file=file,
-        leading_blank=request is not None,
-        trailing_blank=True,
+        display=ExchangeDisplay(
+            timestamp=call.get("responded-at"),
+            file=file,
+            leading_blank=request is not None,
+            trailing_blank=True,
+        ),
     )
 
 
@@ -812,6 +887,12 @@ class NotificationStreamClient:
             }
         }
         resp = self.config.get_session().post(url, headers=headers, json=payload)
+        if _access_denied_response(resp):
+            _raise_access_denied(
+                resp,
+                "create_notification_stream_v3",
+                hint=V3_STREAM_RBAC_HINT,
+            )
         data = response_json(resp, "create_notification_stream_v3")
         output = data.get("sal-remote:output", data.get("output", {}))
         stream_id = output.get("notification-stream-identifier", "")
@@ -1136,6 +1217,16 @@ class NotificationListener:
         self._stop_requested = True
         print(f"\nReceived signal {signum}, stopping...", file=sys.stderr)
 
+    @staticmethod
+    @contextmanager
+    def _append_output_file(path: str | None) -> Iterator[Optional[TextIO]]:
+        """Open an append-only output file when a path is configured."""
+        if path is None:
+            yield None
+        else:
+            with open(path, "a", encoding="utf-8") as handle:
+                yield handle
+
     def listen(
         self,
         session: StreamSession,
@@ -1148,12 +1239,8 @@ class NotificationListener:
         print("Press Ctrl+C to stop.", file=sys.stderr)
 
         event_count = 0
-        outfile: Optional[TextIO] = None
-        if options.output_file:
-            outfile = open(options.output_file, "a", encoding="utf-8")
-
         current_session = session
-        try:
+        with self._append_output_file(options.output_file) as outfile:
             while not self._stop_requested:
                 if self._reached_max(event_count, options.max_events):
                     break
@@ -1172,9 +1259,6 @@ class NotificationListener:
                     break
 
                 current_session = self._reconnect(on_reconnect)
-        finally:
-            if outfile:
-                outfile.close()
 
         return event_count
 
@@ -1287,7 +1371,7 @@ class NotificationListener:
                 "response",
                 "notification",
                 line,
-                timestamp=received_at,
+                display=ExchangeDisplay(timestamp=received_at),
             )
         if outfile:
             received_at = local_timestamp()
@@ -1410,22 +1494,15 @@ def _build_config(args: argparse.Namespace) -> ClientConfig:
         print("WARNING: SSL verification disabled", file=sys.stderr)
 
     base_url = f"https://{args.ip}:{args.port}"
-    session = _create_session(
+    config = ClientConfig(
+        base_url=base_url,
         verify_ssl=verify_ssl,
         timeout=args.timeout,
         verbose=args.verbose,
         pretty=args.pretty,
         suppress_rec_rpc=args.get_rec and (args.pretty or args.verbose),
-        base_url=base_url,
     )
-    return ClientConfig(
-        base_url=base_url,
-        verify_ssl=verify_ssl,
-        timeout=args.timeout,
-        verbose=args.verbose,
-        pretty=args.pretty,
-        session=session,
-    )
+    return replace(config, session=_create_session(config))
 
 
 def _obtain_token(args: argparse.Namespace, config: ClientConfig) -> str:
@@ -1457,6 +1534,8 @@ def _resolve_api_mode(
         new_stream_id = stream_client.create_v3_stream()
         print(f"Stream identifier: {new_stream_id}", file=sys.stderr)
         return "v3", new_stream_id
+    except CrossworkAccessDeniedError:
+        raise
     except CrossworkAuthError as exc:
         if requested == "v3":
             raise
