@@ -21,6 +21,8 @@ CNC exposes notification delivery through **RESTCONF notification streams**. The
 
 When `--get-rec` is enabled, the script additionally calls LCM RESTCONF operations on the **optimization v3** API to fetch full recommendation and preview details. Preview retrieval tries `get-lcm-msl-recommendation-preview` first and falls back to legacy `get-lcm-recommendation-preview` when the MSL RPC is not registered (typical on CNC 7.1).
 
+**Note: The role associated with the apiuser must have write permissions for Crosswork Optimization Engine > Optimization Engine RESTCONF to subscribe to the RESTCONF notification streams**
+
 For API details, see:
 
 - [Crosswork Optimization Engine RESTCONF Notifications (7.2+)](https://developer.cisco.com/docs/crosswork/network-controller/crosswork-optimization-engine-restconf-notifications/)
