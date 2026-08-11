@@ -1849,22 +1849,6 @@ For a shared remote MCP service, use `--transport http --allow-remote` behind a 
 
 ---
 
-## Related files and documentation
-
-### Files in this repo
-
-| File | Purpose |
-|------|---------|
-| [`cp_sample_mcp.py`](cp_sample_mcp.py) | MCP server (this document) |
-| [`.pylintrc`](.pylintrc) | Pylint config for MCP server lint/refactor |
-| [`run_route_simulation_opm.py`](run_route_simulation_opm.py) | CLI equivalent — route sim |
-| [`run_sim_analysis_opm.py`](run_sim_analysis_opm.py) | CLI equivalent — simulation analysis |
-| [`run_traffic_growth_opm.py`](run_traffic_growth_opm.py) | CLI equivalent — growth plans |
-| [`setup_opm_design_auth.py`](setup_opm_design_auth.py) | Cert onboarding helper |
-| [`working.md`](working.md) | Lab checkpoint and verification results |
-| [`working_mcp.md`](working_mcp.md) | OPM patterns and Build 385 growth-plan notes |
-| [`Certificate_generation.md`](Certificate_generation.md) | CP 8.0 cert generation details |
-
 ### External documentation
 
 - [Crosswork Planning Design/OPM Library Package (DevNet)](https://developer.cisco.com/docs/crosswork/planning/customization-scripts-using-crosswork-planning-designopm-library-package/)
