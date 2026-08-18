@@ -249,7 +249,7 @@ class DeletePlanArgs(_StrictModel):
 
 
 class SimulationAnalysisArgs(_StrictModel):
-    """Validated arguments for run_simulation_analysis."""
+    """Validated arguments for get_wc_traffic."""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -1029,7 +1029,12 @@ def _create_mcp_server() -> FastMCP:
             "plan://{plan_id}/summary). "
             "Mutations and simulation: use tools. "
             "Always upload_plan first when the user provides a plan file, "
-            "then pass the returned plan_id as plan_ref to simulation tools."
+            "then pass the returned plan_id as plan_ref to simulation tools. "
+            "Tool routing: for worst-case traffic or Simulation Analysis "
+            "(e.g. 'worst case under circuit failures', 'most at-risk links'), "
+            "call get_wc_traffic only — do not call failure_sim. "
+            "Use failure_sim only for a specific what-if (one known failed link "
+            "or circuit list) with reroute and per-interface delta detail."
         ),
         auth=_build_auth_provider(),
         middleware=_build_middleware(),
@@ -1217,9 +1222,9 @@ def link_failure_workflow(node_a: str, node_b: str) -> str:
         "Crosswork link failure analysis workflow:\n"
         "1. upload_plan if the user provided a new plan file\n"
         "2. Read plan://{plan_id}/circuits or list_circuits with node_filter\n"
-        f"3. simulate_link_failure(node_a={node_a!r}, node_b={node_b!r})\n"
+        f"3. failure_sim(node_a={node_a!r}, node_b={node_b!r})\n"
         "4. Review sample_reroutes and new_oversubscribed in the response\n"
-        "5. simulate_demand_route for affected source/destination pairs"
+        "5. get_demand_path for affected source/destination pairs"
     )
 
 
@@ -1230,8 +1235,9 @@ def capacity_planning_workflow(growth_percent: float = 33.0) -> str:
         "Crosswork capacity planning workflow:\n"
         "1. upload_plan if needed\n"
         "2. Read plan://{plan_id}/summary for baseline counts\n"
-        f"3. analyze_traffic_growth(growth_percent={growth_percent})\n"
-        "4. run_simulation_analysis(failure_sets=['circuits']) for worst-case failures\n"
+        f"3. get_traffic_growth(growth_percent={growth_percent})\n"
+        "4. get_wc_traffic(failure_sets=['circuits']) for worst-case failures "
+        "(do not call failure_sim for this step)\n"
         "5. Summarize oversubscribed and near_capacity circuits for the user"
     )
 
@@ -1348,7 +1354,7 @@ def delete_uploaded_plan(plan_id: str, confirm: bool = False) -> dict[str, Any]:
 
 
 @mcp.tool
-def health_check(plan_ref: str | None = None) -> dict[str, Any]:
+def designapi_health_check(plan_ref: str | None = None) -> dict[str, Any]:
     """Verify MCP server config, OPM certs, and DesignAPI connectivity. Prefer server://health."""
     payload = _health_payload(plan_ref)
     if payload.get("ok"):
@@ -1395,7 +1401,7 @@ def list_demands(
 
 
 @mcp.tool
-def simulate_demand_route(
+def get_demand_path(
     source: str,
     destination: str,
     plan_ref: str | None = None,
@@ -1404,7 +1410,7 @@ def simulate_demand_route(
 ) -> dict[str, Any]:
     """Simulate how a demand is routed (baseline, no failures).
 
-    Returns path interfaces, metrics, and latency. Use before simulate_link_failure
+    Returns path interfaces, metrics, and latency. Use before failure_sim
     to understand normal routing.
     """
     try:
@@ -1454,7 +1460,7 @@ def simulate_demand_route(
 
 
 @mcp.tool
-def simulate_igp_shortest_path(
+def get_igp_path(
     source: str,
     destination: str,
     plan_ref: str | None = None,
@@ -1487,7 +1493,7 @@ def simulate_igp_shortest_path(
 
 
 @mcp.tool
-def simulate_link_failure(
+def failure_sim(
     plan_ref: str | None = None,
     node_a: str | None = None,
     node_b: str | None = None,
@@ -1496,7 +1502,11 @@ def simulate_link_failure(
     min_traffic_delta_mbps: float = 1.0,
     sample_reroutes: int = 5,
 ) -> dict[str, Any]:
-    """Simulate circuit failure(s) and report routing + interface traffic changes.
+    """Simulate a specific circuit failure and report routing + traffic deltas.
+
+    Use this for a deterministic what-if on one known failure (by node pair or
+    circuit id). Do not use for worst-case traffic or Simulation Analysis
+    questions — those must call get_wc_traffic only.
 
     Provide either failed_circuits or node_a+node_b (e.g. cr1.sjc and cr1.kcy).
     Compares baseline vs failure traffic simulation on all interfaces.
@@ -1551,7 +1561,7 @@ def simulate_link_failure(
 
 
 @mcp.tool
-def run_simulation_analysis(
+def get_wc_traffic(
     plan_ref: str | None = None,
     failure_sets: str | list[str] = "nodes,circuits",
     max_fail_per_int: int = 10,
@@ -1559,8 +1569,12 @@ def run_simulation_analysis(
 ) -> dict[str, Any]:
     """Run Simulation Analysis — worst-case interface utilization across failure scenarios.
 
+    Use this tool alone when the user asks for worst-case traffic, oversubscription
+    risk under failures, or Simulation Analysis. Do not also call failure_sim.
+
     Equivalent to Design UI Simulation Analysis / CLI sim_analysis.
     failure_sets: list of failure types or comma-separated string (nodes, circuits, ...).
+    For circuit-failure worst case only, pass failure_sets='circuits'.
     """
     try:
         parsed_sets = _parse_failure_sets(failure_sets)
@@ -1604,7 +1618,7 @@ def run_simulation_analysis(
 
 
 @mcp.tool
-def analyze_traffic_growth(
+def get_traffic_growth(
     plan_ref: str | None = None,
     growth_percent: float = 33.0,
     num_periods: int = 1,
