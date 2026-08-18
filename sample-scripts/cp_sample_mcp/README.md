@@ -47,7 +47,7 @@ This MCP server lets an LLM:
 - **Run Simulation Analysis** (worst-case failure scenarios)
 - **Forecast traffic growth** via Create Growth Plans and find oversubscribed circuits
 
-All simulation runs against the **Crosswork Planning DesignAPI** (port **30744**, mTLS) using the OPM Python library — the same engine as the Design GUI and the existing `run_*_opm.py` scripts in this repo.
+All simulation runs against the **Crosswork Planning DesignAPI** (port **30744**, mTLS) using the OPM Python library — the same engine as the Design GUI.
 
 This guide provides a complete end-to-end workflow in four parts:
 
@@ -77,7 +77,7 @@ The same library powers external scripts in the Crosswork Planning Collector fra
 
 ### What Is DesignAPI?
 
-DesignAPI (`designapid`) is the IceSSL/mTLS service on the Crosswork Planning VM that executes Design RPC and OPM operations remotely. External Python scripts on a Linux host connect to it at:
+DesignAPI (`designapid`) is the IceSSL/mTLS service on the Crosswork Planning VM that executes Design RPC and OPM operations remotely. The OPM Python library on a Linux host connects to it at:
 
 | Setting | Typical value |
 |---------|---------------|
@@ -91,7 +91,7 @@ Authentication uses **client certificates** onboarded through the OPM REST API (
 
 ### What Is MCP and Why Use It with Crosswork Planning?
 
-MCP defines how AI clients discover and invoke **tools** (functions with JSON schemas) over a standard transport. The server also exposes **resources** (read-only data such as plan summaries) and **prompts** (workflow templates). An MCP server advertises tools such as `simulate_link_failure` and `run_simulation_analysis`; the LLM client decides when to call them based on the user's question.
+MCP defines how AI clients discover and invoke **tools** (functions with JSON schemas) over a standard transport. The server also exposes **resources** (read-only data such as plan summaries) and **prompts** (workflow templates). An MCP server advertises tools such as `failure_sim` and `get_wc_traffic`; the LLM client decides when to call them based on the user's question.
 
 ### What Is stdio (Stream-Based) MCP Transport?
 
@@ -104,7 +104,7 @@ MCP supports several transports. The recommended pattern for Cursor uses **stdio
 
 stdio is the recommended pattern for Cursor: the IDE manages the server lifecycle, credentials stay on your workstation, and you avoid exposing an HTTP endpoint on the network.
 
-Compared to ad-hoc Python scripts or REST batch jobs:
+Compared to ad-hoc OPM automation or REST batch jobs:
 
 | Approach | Strength | Limitation |
 |----------|----------|------------|
@@ -122,7 +122,7 @@ Manually, this requires opening the plan in Design, configuring a failure set, r
 
 1. The user asks Cursor: *"Upload my plan and simulate failure of the SJC–KCY link."*
 2. The LLM calls `upload_plan` with the plan content from the workspace.
-3. The LLM calls `simulate_link_failure(node_a="cr1.sjc", node_b="cr1.kcy")`.
+3. The LLM calls `failure_sim(node_a="cr1.sjc", node_b="cr1.kcy")`.
 4. The tool returns structured JSON: reroute count, interface traffic deltas, and newly oversubscribed links.
 
 Verified result on `us_wan.txt`: **10 reroutes**; **cr2.wdc:to_cr1.nyc** reaches **113.39%** utilization.
@@ -152,7 +152,7 @@ Verified result on `us_wan.txt`: **10 reroutes**; **cr2.wdc:to_cr1.nyc** reaches
                                        └──────────────────────┘
 ```
 
-When you send a message in Cursor, the client launches (or reuses) the Python process, calls tools such as `upload_plan` or `simulate_link_failure`, and reads JSON responses from stdout. Diagnostic startup lines go to **stderr** so they do not interfere with the MCP protocol stream.
+When you send a message in Cursor, the client launches (or reuses) the Python process, calls tools such as `upload_plan` or `failure_sim`, and reads JSON responses from stdout. Diagnostic startup lines go to **stderr** so they do not interfere with the MCP protocol stream.
 
 ### HTTP (remote — optional)
 
@@ -210,7 +210,7 @@ Before you begin, ensure you have:
 | Requirement | Notes |
 |-------------|-------|
 | DesignAPI running | `POST /cp/opm-service/api/v1/start` |
-| Client cert onboarded | `cert` + `ca_cert` + `title` via OPM REST (see `setup_opm_design_auth.py`) |
+| Client cert onboarded | `cert` + `ca_cert` + `title` via OPM REST ([Step 4](#step-4-onboard-certificates-on-crosswork)) |
 | Lab defaults | Host `198.18.134.229`, DesignAPI `30744` |
 
 ### Certificate files (local)
@@ -224,18 +224,14 @@ cw-planning/etc/certs/
 └── ca_cert.pem
 ```
 
-Lab source: `opm-certs-test/` synced per [`working.md`](working.md) §15–§17.
+Lab source: copy CA-signed files from `opm-certs-test/` into `cw-planning/etc/certs/` ([Step 3](#step-3-generate-ca-signed-client-certificates-cp-80) and [Step 5](#step-5-sync-local-certificate-files)).
 
-Optional but recommended:
-
-- [`cw_get_jwt.py`](cw_get_jwt.py) — obtain JWT for OPM REST calls
-- [`Certificate_generation.md`](Certificate_generation.md) — detailed OpenSSL CA workflow
-
+For the full OpenSSL CA workflow, see [Step 3: Generate CA-signed client certificates](#step-3-generate-ca-signed-client-certificates-cp-80).
 ---
 
 ## Part 1 — Establish OPM/Python Library connectivity
 
-This section connects an external Linux host to a running Crosswork Planning instance so Python scripts can open plans and run simulations via DesignAPI.
+This section connects an external Linux host to a running Crosswork Planning instance so the OPM library can open plans and run simulations via DesignAPI.
 
 ### OPM connectivity architecture
 
@@ -255,11 +251,10 @@ This section connects an external Linux host to a running Crosswork Planning ins
 
 ### Step 1: Verify Crosswork Planning and DesignAPI
 
-Log in to the Crosswork Planning UI and confirm the deployment is healthy. Obtain a JWT for OPM REST management:
+Log in to the Crosswork Planning UI and confirm the deployment is healthy. Obtain a JWT bearer token from Crosswork SSO (via the UI or your organization's token workflow), then configure OPM REST access:
 
 ```bash
-python3 cw_get_jwt.py <CW_HOST> -u admin -p "$CW_PASSWORD" -k -f /tmp/cw_test.jwt
-export TOKEN=$(cat /tmp/cw_test.jwt)
+export TOKEN=<your-jwt-bearer-token>
 export OPM="https://<CW_HOST>:30603/cp/opm-service/api/v1"
 ```
 
@@ -426,7 +421,7 @@ cw-planning/etc/certs/
 
 ### Step 6: Configure Shell Environment
 
-Set these variables before running any OPM Python script:
+Set these variables before running the MCP server or any direct OPM library calls:
 
 ```bash
 export CARIDEN_HOME=/path/to/cw-planning
@@ -439,46 +434,22 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CARIDEN_HOME/lib:$CARIDEN_HOME/lib/pyth
 
 The MCP server sets these automatically via `_bootstrap_opm_env()` on startup.
 
-### Step 7: Verify Connectivity with a Minimal Python Script
+### Step 7: Verify Connectivity
 
-Save as **`verify_opm_connect.py`**:
-
-```python
-#!/usr/bin/env python3
-"""Verify OPM Python Library connectivity to DesignAPI."""
-import os
-import sys
-
-CARIDEN_HOME = os.environ.get("CARIDEN_HOME", "./cw-planning")
-sys.path.insert(0, f"{CARIDEN_HOME}/lib/python")
-
-from com.cisco.wae.opm.network import open_plan
-
-HOST = os.environ.get("CW_HOST", "198.18.134.229")
-PORT = int(os.environ.get("CW_DESIGN_API_PORT", "30744"))
-PLAN = sys.argv[1] if len(sys.argv) > 1 else "us_wan.txt"
-
-with open_plan(PLAN, HOST, PORT, "ssl") as network:
-    model = network.model
-    nodes = len(list(model.nodes))
-    circuits = len(list(model.circuits))
-    demands = len(list(model.demands))
-    print(f"OK — opened {PLAN}")
-    print(f"  nodes={nodes} circuits={circuits} demands={demands}")
-```
-
-Run:
+From your MCP server directory, confirm DesignAPI reachability with the built-in health tool:
 
 ```bash
-python3 verify_opm_connect.py us_wan.txt
+cd ~/crosswork-mcp
+export CARIDEN_HOME=$PWD/cw-planning
+export CW_HOST=198.18.134.229
+
+python3 -c "
+import cp_sample_mcp as m
+print(m.designapi_health_check())
+"
 ```
 
-Expected output:
-
-```
-OK — opened us_wan.txt
-  nodes=33 circuits=50 demands=95
-```
+Expected output includes `certs_ok: true`, `design_api_reachable: true`, and node/circuit/demand counts when a default plan is available (for example `us_wan.txt` next to the server).
 
 You may see benign IceSSL deprecation warnings; they do not affect simulation results.
 
@@ -750,14 +721,14 @@ Register **prompts** as workflow templates the LLM can pull into context:
 ```python
 @mcp.prompt
 def link_failure_workflow(node_a: str, node_b: str) -> str:
-    return "1. upload_plan … 2. simulate_link_failure …"
+    return "1. upload_plan … 2. failure_sim …"
 ```
 
 Register tools with `@mcp.tool`. FastMCP derives JSON schema from type hints and docstrings:
 
 ```python
 @mcp.tool
-def health_check(plan_ref: str | None = None) -> dict[str, Any]:
+def designapi_health_check(plan_ref: str | None = None) -> dict[str, Any]:
     """Verify MCP server config, OPM certs, and DesignAPI connectivity. Prefer server://health."""
     payload = _health_payload(plan_ref)
     if payload.get("ok"):
@@ -776,11 +747,9 @@ Each `@mcp.tool` function follows the same template:
 
 #### Example — baseline demand routing
 
-Ported from CLI scripts such as `run_route_simulation_opm.py`:
-
 ```python
 @mcp.tool
-def simulate_demand_route(
+def get_demand_path(
     source: str,
     destination: str,
     plan_ref: str | None = None,
@@ -822,7 +791,7 @@ The failure tool runs simulation **twice** — baseline, then with `model.route_
 
 ```python
 @mcp.tool
-def simulate_link_failure(
+def failure_sim(
     plan_ref: str | None = None,
     node_a: str | None = None,
     node_b: str | None = None,
@@ -858,11 +827,11 @@ def simulate_link_failure(
 | `upload_plan` | `PlanRegistry` + Pydantic validation; `confirm=true` for uploads >10 MiB |
 | `delete_uploaded_plan` | `PlanRegistry.delete()`; requires `confirm=true` |
 | `get_plan_summary`, `list_circuits`, `list_demands` | Iterate `model.*`; prefer matching `plan://` resources for unfiltered reads |
-| `simulate_igp_shortest_path` | `model.route_simulation.shortest_path(src, dst, metric)` |
-| `run_simulation_analysis` | `SimulationAnalysis(model, failure_types=[...])`; `failure_sets` as list or comma-separated string |
-| `analyze_traffic_growth` | `demand.growth_percent` + GenericTool `create_growth_plans` + compound fallback |
+| `get_igp_path` | `model.route_simulation.shortest_path(src, dst, metric)` |
+| `get_wc_traffic` | `SimulationAnalysis(model, failure_types=[...])`; `failure_sets` as list or comma-separated string |
+| `get_traffic_growth` | `demand.growth_percent` + GenericTool `create_growth_plans` + compound fallback |
 
-See [`working_mcp.md`](working_mcp.md) for OPM patterns and Build 385 growth-plan limitations.
+See [How OPM Simulation Works](#how-opm-simulation-works) and [`get_traffic_growth`](#get_traffic_growth) for OPM patterns and Build 385 growth-plan limitations.
 
 ### Step 8: Wire transport in `main()`
 
@@ -897,7 +866,7 @@ For optional **remote HTTP** deployment, set `MCP_API_TOKEN` and run with `--tra
 
 ### Step 9: Test tools without Cursor
 
-Before wiring Cursor, verify tools via direct Python import (same pattern as Part 1's OPM check):
+Before wiring Cursor, verify tools via direct Python import (same pattern as Part 1's connectivity check):
 
 ```bash
 cd ~/crosswork-mcp
@@ -908,8 +877,8 @@ python3 -c "
 import cp_sample_mcp as m
 up = m.upload_plan('us_wan.txt', open('us_wan.txt').read())
 print('upload:', up)
-print('health:', m.health_check(plan_ref=up['plan_id']))
-print('failure:', m.simulate_link_failure(
+print('health:', m.designapi_health_check(plan_ref=up['plan_id']))
+print('failure:', m.failure_sim(
     plan_ref=up['plan_id'], node_a='cr1.sjc', node_b='cr1.kcy'))
 "
 ```
@@ -920,7 +889,7 @@ Expected: `upload` returns 33/50/95 counts; link failure returns `rerouted_count
 
 To add a new capability:
 
-1. Prove the OPM logic in a standalone script (or the Python REPL with `open_plan`)
+1. Prove the OPM logic in the Python REPL with `open_plan`, or add a draft `@mcp.tool` and test via direct import
 2. Add a `@mcp.tool` function (or `@mcp.resource` for read-only data) with typed parameters and a clear docstring
 3. Use Pydantic models for complex or security-sensitive inputs
 4. Use `_resolve_plan_ref` + `_open_model` inside `try/except`; call `_fail(...)` on errors
@@ -934,11 +903,11 @@ To add a new capability:
 |------|-----------|
 | OPM bootstrap before imports | `import com.cisco.wae...` succeeds on a clean shell |
 | Dependencies installed | `pip install -r requirements-mcp.txt` succeeds |
-| Certs in `cw-planning/etc/certs/` | `health_check()` or `server://health` → `certs_ok: true` |
-| DesignAPI reachable | `health_check()` → `design_api_reachable: true` |
+| Certs in `cw-planning/etc/certs/` | `designapi_health_check()` or `server://health` → `certs_ok: true` |
+| DesignAPI reachable | `designapi_health_check()` → `design_api_reachable: true` |
 | Upload path works | `upload_plan` returns `plan_id` and node counts |
-| Baseline routing | `simulate_demand_route` returns hops and metric |
-| Failure simulation | `simulate_link_failure` returns reroutes and oversubscription |
+| Baseline routing | `get_demand_path` returns hops and metric |
+| Failure simulation | `failure_sim` returns reroutes and oversubscription |
 | Resources available | `plan://uploads` and `server://health` readable in MCP client |
 | stdio transport | Cursor spawns process; 12 tools + 5 resources + 2 prompts appear in MCP panel |
 
@@ -1009,7 +978,7 @@ Configuration is **embedded** in `cp_sample_mcp.py` (`CONFIG` dict) and overridd
 | Crosswork host | `198.18.134.229` |
 | DesignAPI port | `30744` |
 | Protocol | `ssl` (mTLS) |
-| CARIDEN_HOME | `./cw-planning` (next to script) |
+| CARIDEN_HOME | `./cw-planning` (next to the MCP server) |
 | MCP listen (HTTP) | `127.0.0.1:8080/mcp` (use `--allow-remote` for `0.0.0.0`) |
 | Default transport | `stdio` |
 | Max upload size | 50 MB |
@@ -1181,7 +1150,7 @@ transport = StdioTransport(
 
 async def main():
     async with Client(transport) as client:
-        result = await client.call_tool("health_check", {})
+        result = await client.call_tool("designapi_health_check", {})
         print(result)
 
 asyncio.run(main())
@@ -1193,7 +1162,7 @@ asyncio.run(main())
 from fastmcp import Client
 
 async with Client("http://127.0.0.1:8080/mcp") as client:
-    result = await client.call_tool("health_check", {})
+    result = await client.call_tool("designapi_health_check", {})
     print(result)
 ```
 
@@ -1201,7 +1170,7 @@ async with Client("http://127.0.0.1:8080/mcp") as client:
 
 #### In Cursor
 
-Open the MCP tools panel (or ask the agent): *"Run health_check on the cp-sample-mcp server."*
+Open the MCP tools panel (or ask the agent): *"Run designapi_health_check on the cp-sample-mcp server."*
 
 Expected response (abbreviated):
 
@@ -1226,11 +1195,11 @@ export CARIDEN_HOME=$PWD/cw-planning
 export CW_HOST=198.18.134.229
 python3 -c "
 import cp_sample_mcp as m
-print(m.health_check())
+print(m.designapi_health_check())
 "
 ```
 
-If `health_check` succeeds here but Cursor shows no tools, check absolute paths and `--transport stdio` in `.cursor/mcp.json`.
+If `designapi_health_check` succeeds here but Cursor shows no tools, check absolute paths and `--transport stdio` in `.cursor/mcp.json`.
 
 ---
 
@@ -1345,7 +1314,7 @@ Pass `plan_ref` as the plan id (with or without `upload:` prefix):
 
 ```json
 {
-  "tool": "simulate_link_failure",
+  "tool": "failure_sim",
   "arguments": {
     "plan_ref": "a1b2c3d4e5f6",
     "node_a": "cr1.sjc",
@@ -1389,12 +1358,12 @@ Successful tool calls return JSON with `"ok": true`. On failure, the server rais
 | Catalog | `get_plan_summary` | Node/circuit/demand counts (prefer `plan://{plan_id}/summary`) |
 | | `list_circuits` | Filter circuits by node name (prefer `plan://{plan_id}/circuits`) |
 | | `list_demands` | Filter demands by source/destination (prefer `plan://{plan_id}/demands`) |
-| Route simulation | `simulate_demand_route` | Baseline demand path |
-| | `simulate_igp_shortest_path` | IGP/BGP/TE/latency shortest path |
-| | `simulate_link_failure` | Failure + traffic delta report |
-| Analysis | `run_simulation_analysis` | Worst-case failure scenarios |
-| | `analyze_traffic_growth` | Growth forecast + oversubscription |
-| Health | `health_check` | Certs, config, DesignAPI reachability (prefer `server://health`) |
+| Route simulation | `get_demand_path` | Baseline demand path |
+| | `get_igp_path` | IGP/BGP/TE/latency shortest path |
+| | `failure_sim` | Failure + traffic delta report |
+| Analysis | `get_wc_traffic` | Worst-case failure scenarios |
+| | `get_traffic_growth` | Growth forecast + oversubscription |
+| Health | `designapi_health_check` | Certs, config, DesignAPI reachability (prefer `server://health`) |
 
 All simulation tools accept optional `plan_ref` (the `plan_id` from `upload_plan`).
 
@@ -1436,7 +1405,7 @@ List all staged uploaded plans.
 
 ### Health & catalog
 
-#### `health_check`
+#### `designapi_health_check`
 
 Verify certs, config, and DesignAPI connectivity.
 
@@ -1481,7 +1450,7 @@ Verify certs, config, and DesignAPI connectivity.
 
 ### Route simulation
 
-#### `simulate_demand_route`
+#### `get_demand_path`
 
 Baseline demand routing (no failures).
 
@@ -1499,7 +1468,7 @@ Baseline demand routing (no failures).
 
 ---
 
-#### `simulate_igp_shortest_path`
+#### `get_igp_path`
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
@@ -1510,7 +1479,7 @@ Baseline demand routing (no failures).
 
 ---
 
-#### `simulate_link_failure`
+#### `failure_sim`
 
 Simulate one or more circuit failures; compare baseline vs failure traffic sim.
 
@@ -1534,7 +1503,7 @@ Simulate one or more circuit failures; compare baseline vs failure traffic sim.
 
 ### Simulation analysis
 
-#### `run_simulation_analysis`
+#### `get_wc_traffic`
 
 Worst-case interface utilization across failure scenarios (Design UI Simulation Analysis).
 
@@ -1553,7 +1522,7 @@ Worst-case interface utilization across failure scenarios (Design UI Simulation 
 
 ### Traffic growth
 
-#### `analyze_traffic_growth`
+#### `get_traffic_growth`
 
 Create Growth Plans + oversubscription report.
 
@@ -1607,10 +1576,10 @@ Create Growth Plans + oversubscription report.
 2. list_circuits(plan_ref="abc123", node_filter="sjc")
    → find cr1.sjc ↔ cr1.kcy circuit
 
-3. simulate_link_failure(plan_ref="abc123", node_a="cr1.sjc", node_b="cr1.kcy")
+3. failure_sim(plan_ref="abc123", node_a="cr1.sjc", node_b="cr1.kcy")
    → rerouted_count: 10, new_oversubscribed: [cr2.wdc:to_cr1.nyc 113.39%, ...]
 
-4. simulate_demand_route(plan_ref="abc123", source="er1.sjc", destination="er1.mia")
+4. get_demand_path(plan_ref="abc123", source="er1.sjc", destination="er1.mia")
    → baseline path via KCY
 
 5. (After failure context from step 3 sample_reroutes)
@@ -1640,7 +1609,7 @@ Verified baseline routing: **6 hops**, path metric **2169**, latency **~33.4 ms*
 
 ```json
 {
-  "tool": "run_simulation_analysis",
+  "tool": "get_wc_traffic",
   "arguments": {
     "plan_ref": "a1b2c3d4e5f6",
     "failure_sets": "circuits",
@@ -1665,7 +1634,7 @@ Verified on `us_wan.txt`:
 
 ```json
 {
-  "tool": "analyze_traffic_growth",
+  "tool": "get_traffic_growth",
   "arguments": {
     "plan_ref": "a1b2c3d4e5f6",
     "growth_percent": 33.0,
@@ -1687,9 +1656,9 @@ Verified on `us_wan.txt`: NYC–WDC reaches **113.83%** after 33% compound growt
 
 ```
 1. upload_plan(...)
-2. analyze_traffic_growth(plan_ref="abc123", growth_percent=33, num_periods=1)
+2. get_traffic_growth(plan_ref="abc123", growth_percent=33, num_periods=1)
    → after_growth.oversubscribed: NYC–WDC 113.83%
-3. run_simulation_analysis(plan_ref="abc123", failure_sets="circuits")
+3. get_wc_traffic(plan_ref="abc123", failure_sets="circuits")
    → worst-case under any single circuit failure
 ```
 
@@ -1704,9 +1673,9 @@ User:  I have us_wan.txt in my workspace. Upload it and tell me what happens
        if the SJC-KCY link fails. Also run simulation analysis on circuits.
 
 Agent: 1. upload_plan(us_wan.txt) → plan_id abc123, 33/50/95
-       2. simulate_link_failure(node_a=cr1.sjc, node_b=cr1.kcy)
+       2. failure_sim(node_a=cr1.sjc, node_b=cr1.kcy)
           → 10 reroutes; cr2.wdc:to_cr1.nyc oversubscribed at 113.39%
-       3. run_simulation_analysis(failure_sets=circuits)
+       3. get_wc_traffic(failure_sets=circuits)
           → 29 scenarios; same NYC-WDC link worst-case 113.39%
        4. Summarize findings for the user
 ```
@@ -1718,7 +1687,7 @@ The LLM chooses tool order and parameters; you validate the structured JSON resu
 ### Example 6: Quick health check
 
 ```
-health_check()
+designapi_health_check()
 → design_api_reachable: true, certs_ok: true, nodes: 33
 ```
 
@@ -1730,10 +1699,10 @@ Cross-check MCP tool output against Crosswork Planning Design UI:
 
 | MCP tool | Design UI equivalent |
 |----------|---------------------|
-| `simulate_demand_route` | Design → Simulate → Demand routing |
-| `simulate_link_failure` | Design → Simulate → Failure simulation (circuit) |
-| `run_simulation_analysis` | Design → Simulation Analysis |
-| `analyze_traffic_growth` | Design → Create Growth Plans |
+| `get_demand_path` | Design → Simulate → Demand routing |
+| `failure_sim` | Design → Simulate → Failure simulation (circuit) |
+| `get_wc_traffic` | Design → Simulation Analysis |
+| `get_traffic_growth` | Design → Create Growth Plans |
 
 For the SJC–KCY scenario, confirm in Design:
 
@@ -1821,7 +1790,7 @@ For a shared remote MCP service, use `--transport http --allow-remote` behind a 
 | `ImportError` / `lib*.so` not found | Set `LD_LIBRARY_PATH` (Linux) or `DYLD_LIBRARY_PATH` (macOS) in `env` |
 | `ModuleNotFoundError: pydantic` or `fastmcp` | `pip install -r requirements-mcp.txt` in the Python env used by `command` |
 | `CARIDEN_HOME not found or invalid` | Set `CARIDEN_HOME` in MCP config `env`; ensure `cw-planning/lib/python` exists |
-| `Missing mTLS certificate files` | Sync certs from `opm-certs-test/` to `cw-planning/etc/certs/`; run `setup_opm_design_auth.py` |
+| `Missing mTLS certificate files` | Sync certs from `opm-certs-test/` to `cw-planning/etc/certs/`; onboard via OPM REST ([Step 4](#step-4-onboard-certificates-on-crosswork)) |
 | `design_api_reachable: false` | Confirm DesignAPI is running: `POST .../opm-service/api/v1/start`; check firewall to `:30744`; restart after cert change |
 | `POST /certs` HTTP 422 | Missing `ca_cert` field (CP 8.0) |
 | `POST /certs` HTTP 400 self-signed | Use CA-signed client cert, not SDK `generate_client_certs` |
@@ -1829,7 +1798,7 @@ For a shared remote MCP service, use `--transport http --allow-remote` behind a 
 | `plan_id not found or not authorized` | Plan owned by another HTTP client; re-upload or use correct Bearer token |
 | Upload returns `confirm_required: true` | Re-call `upload_plan` with `confirm=true` (plans >10 MiB) |
 | Delete returns preview without deleting | Re-call `delete_uploaded_plan` with `confirm=true` |
-| IceSSL warnings (safe to ignore) | Benign per Cisco DevNet — see [`working.md`](working.md) §17 |
+| IceSSL warnings (safe to ignore) | Benign per Cisco DevNet — deprecated IceSSL property warnings do not affect simulation results |
 | Slow SA/growth responses | Normal (10–30s) — simulation runs on DesignAPI |
 | Growth traffic unchanged | Build 385 limitation; check `compound_fallback_applied: true` |
 
@@ -1848,6 +1817,15 @@ For a shared remote MCP service, use `--transport http --allow-remote` behind a 
 | HTTP transport | Requires `MCP_API_TOKEN`; never expose unauthenticated HTTP to the network |
 
 ---
+
+## Related files and documentation
+
+### Files in this repo
+
+| File | Purpose |
+|------|---------|
+| [`cp_sample_mcp.py`](cp_sample_mcp.py) | MCP server (this document) |
+| [`requirements-mcp.txt`](requirements-mcp.txt) | Python dependencies (`fastmcp`, etc.) |
 
 ### External documentation
 
