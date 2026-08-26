@@ -31,7 +31,8 @@ The network model can be exported as a **plan file** using the Optimization Engi
 
 1. **Authenticates** to Crosswork Network Controller using SSO (Single Sign-On)
 2. **Retrieves** the current network plan file via the CNC RESTCONF API
-3. **Saves** the plan file locally in the specified format (`.pln` or `.txt`)
+3. Optionally queries DLM Inventory to add node longitude and latitude to a text plan
+4. **Saves** the plan file locally in the specified format (`.pln` or `.txt`)
 
 This enables network operators and planning engineers to:
 
@@ -106,6 +107,7 @@ python get_plan.py --ip <CNC_IP> --username <USER> --password <PASS> --planfile 
 | `--jwt` | `-j` | No | Path to a JWT file. When `--username`, `--password`, and `--jwt` are omitted, the script uses `~/.crosswork/<ip>.jwt` if it exists. |
 | `--planfile` | `-f` | Yes | Output file name (must end with `.txt` or `.pln`) |
 | `--version` | `-v` | No | Planfile schema version (default: `7.10`) |
+| `--geoloc` | | No | Query DLM Inventory and populate the `Longitude` and `Latitude` columns in the text plan's `<Nodes>` table. Requires a `.txt` plan file. |
 
 ### Output Format Selection
 
@@ -130,7 +132,12 @@ python get_plan.py --ip 198.18.134.219 -u admin -p mypassword -f network.pln -v 
 
 # Use the default JWT created by cw_get_jwt.py
 python get_plan.py --ip 198.18.134.219 -f network.pln
+
+# Retrieve a text plan and add node coordinates from DLM Inventory
+python get_plan.py --ip 198.18.134.219 -f network.txt --geoloc
 ```
+
+When `--geoloc` is specified, the script calls `POST /crosswork/inventory/v1/nodes/query` after retrieving the plan. It matches each plan node's `Name` to DLM Inventory's `host_name` (case-insensitively) and writes the returned `geo_info.coordinates.longitude.value` and `latitude.value` into the plan's `<Nodes>` table. Nodes without a matching inventory record or without both coordinates are unchanged. Binary `.pln` files are not supported because their table data cannot be edited safely in place.
 
 ### Sample Output
 

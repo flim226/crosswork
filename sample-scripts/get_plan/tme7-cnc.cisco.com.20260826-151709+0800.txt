@@ -1,0 +1,1192 @@
+<Network>
+Property	Value
+Title	
+Version	8.0.-1
+
+<NetworkOptions>
+Option	Value
+EnforceAdjSIDLocalization	TRUE
+IGP_Protocol	ISIS
+SegmentRoutingSIDValidation	TRUE
+
+<AS>
+ASN	Name	Type	ExternalMesh	IGPProtocol	Description	Tags
+65000		internal	exclude	isis		
+
+<Nodes>
+Name	Site	Function	Protected	Active	Type	ISISArea	AS	BGPID	AvoidTransit	SRCapable	PCEPInstantiation	IPAddress	IPV6Address	Description	UUID	Vendor	Model	OS	IPManage	CostInitial	CostPerPeriod	LastTemplateUpdate	Longitude	Latitude	Failed	Tags	MaximumSIDDepth	NetIntSNMP_Error	NetIntSource	NetIntRE0CPU1m	NetIntRE0CPU5m	NetIntRE0Mem	NetIntRE1CPU1m	NetIntRE1CPU5m	NetIntRE1Mem
+node-7		core	F	T	physical		65000		No	T	T	198.19.1.7	2010::7		501014e2-aa80-448d-aaa9-7838797e45a9					0.0	0.0		-95.3676974	29.7589	F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;reach-check;snmp;te-tunnel-id	10								
+node-3		core	F	T	physical		65000		No	T	T	198.19.1.3	2010::3		65807238-000c-449e-9f5c-6a275770ec79					0.0	0.0		-84.3901849	33.749	F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;reach-check;snmp;te-tunnel-id	10								
+node-8		core	F	T	physical		65000		No	T	T	198.19.1.8	2010::8		d6e3c1e0-354f-4d45-bbb1-7b967cd8262b					0.0	0.0		-104.9848623	39.7392	F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;reach-check;snmp;te-tunnel-id	10								
+node-4		core	F	T	physical		65000		No	T	T	198.19.1.4	2010::4		f9dec0b6-5d3a-43b1-a771-7a32e7a775df					0.0	0.0		-80.1936589	25.77426	F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;reach-check;snmp;te-tunnel-id	10								
+node-5		core	F	T	physical		65000		No	T	T	198.19.1.5	2010::5		df9f7fa8-e491-4d85-a0aa-02e205a7ffe7					0.0	0.0		-122.3300624	47.6038	F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;reach-check;snmp;te-tunnel-id	10								
+node-1		core	F	T	physical		65000		No	T	T	198.19.1.1	2010::1		2579405a-a14d-40fc-834b-ecad223e98a7					0.0	0.0		-87.6244212	41.8755	F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;reach-check;snmp;te-tunnel-id	10								
+node-2		core	F	T	physical		65000		No	T	T	198.19.1.2	2010::2		af42d7f7-4a46-4ced-a279-3ad8a1e665ef					0.0	0.0		-73	40	F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;reach-check;snmp;te-tunnel-id	10								
+
+<NodeSIDs>
+Node	SID	Type	SRAlgorithm	Protected	IPV6
+node-7	16007	REGULAR	0	T	F
+node-7	17007	STRICT	1	T	F
+node-7	17207	FLEX-ALGO	128	T	F
+node-7	17307	FLEX-ALGO	129	T	F
+node-7	17407	FLEX-ALGO	130	T	F
+node-3	16003	REGULAR	0	T	F
+node-3	17003	STRICT	1	T	F
+node-3	17203	FLEX-ALGO	128	T	F
+node-3	17303	FLEX-ALGO	129	T	F
+node-3	17403	FLEX-ALGO	130	T	F
+node-8	16008	REGULAR	0	T	F
+node-8	17008	STRICT	1	T	F
+node-8	17208	FLEX-ALGO	128	T	F
+node-8	17308	FLEX-ALGO	129	T	F
+node-8	17408	FLEX-ALGO	130	T	F
+node-4	16004	REGULAR	0	T	F
+node-4	17004	STRICT	1	T	F
+node-4	17204	FLEX-ALGO	128	T	F
+node-4	17304	FLEX-ALGO	129	T	F
+node-4	17404	FLEX-ALGO	130	T	F
+node-5	16005	REGULAR	0	T	F
+node-5	17005	STRICT	1	T	F
+node-5	17205	FLEX-ALGO	128	T	F
+node-5	17305	FLEX-ALGO	129	T	F
+node-5	17405	FLEX-ALGO	130	T	F
+node-1	16001	REGULAR	0	T	F
+node-1	17001	STRICT	1	T	F
+node-1	17201	FLEX-ALGO	128	T	F
+node-1	17301	FLEX-ALGO	129	T	F
+node-1	17401	FLEX-ALGO	130	T	F
+node-2	16002	REGULAR	0	T	F
+node-2	17002	STRICT	1	T	F
+node-2	17202	FLEX-ALGO	128	T	F
+node-2	17302	FLEX-ALGO	129	T	F
+node-2	17402	FLEX-ALGO	130	T	F
+
+<SRv6NodeSIDs>
+Node	SID	SRAlgorithm	Protected
+node-7	fcbb:0:7::/48	0	T
+node-7	fcbb:3:7::/48	130	T
+node-7	fcbb:1:7::/48	128	T
+node-7	fcbb:2:7::/48	129	T
+node-3	fcbb:0:3::/48	0	T
+node-3	fcbb:3:3::/48	130	T
+node-3	fcbb:2:3::/48	129	T
+node-3	fcbb:1:3::/48	128	T
+node-8	fcbb:0:8::/48	0	T
+node-8	fcbb:2:8::/48	129	T
+node-8	fcbb:1:8::/48	128	T
+node-4	fcbb:0:4::/48	0	T
+node-4	fcbb:3:4::/48	130	T
+node-4	fcbb:2:4::/48	129	T
+node-4	fcbb:1:4::/48	128	T
+node-5	fcbb:0:5::/48	0	T
+node-5	fcbb:3:5::/48	130	T
+node-5	fcbb:1:5::/48	128	T
+node-5	fcbb:2:5::/48	129	T
+node-1	fcbb:0:1::/48	0	T
+node-1	fcbb:3:1::/48	130	T
+node-1	fcbb:2:1::/48	129	T
+node-1	fcbb:1:1::/48	128	T
+node-2	fcbb:0:2::/48	0	T
+node-2	fcbb:3:2::/48	130	T
+node-2	fcbb:2:2::/48	129	T
+node-2	fcbb:1:2::/48	128	T
+
+<NodePrefixLoopbacks>
+Node	IPAddress	IGPProcessID	OSPFArea	ISISLevel
+node-7	198.19.1.7	0		Level2
+node-3	198.19.1.3	0		Level2
+node-8	198.19.1.8	0		Level2
+node-4	198.19.1.4	0		Level2
+node-5	198.19.1.5	0		Level2
+node-1	198.19.1.1	0		Level2
+node-2	198.19.1.2	0		Level2
+
+<NodeSIDPrefixLoopbacks>
+Node	SID	IPAddress	IGPProcessID
+node-7	16007	198.19.1.7	0
+node-7	17007	198.19.1.7	0
+node-7	17207	198.19.1.7	0
+node-7	17307	198.19.1.7	0
+node-7	17407	198.19.1.7	0
+node-3	16003	198.19.1.3	0
+node-3	17003	198.19.1.3	0
+node-3	17203	198.19.1.3	0
+node-3	17303	198.19.1.3	0
+node-3	17403	198.19.1.3	0
+node-8	16008	198.19.1.8	0
+node-8	17008	198.19.1.8	0
+node-8	17208	198.19.1.8	0
+node-8	17308	198.19.1.8	0
+node-8	17408	198.19.1.8	0
+node-4	16004	198.19.1.4	0
+node-4	17004	198.19.1.4	0
+node-4	17204	198.19.1.4	0
+node-4	17304	198.19.1.4	0
+node-4	17404	198.19.1.4	0
+node-5	16005	198.19.1.5	0
+node-5	17005	198.19.1.5	0
+node-5	17205	198.19.1.5	0
+node-5	17305	198.19.1.5	0
+node-5	17405	198.19.1.5	0
+node-1	16001	198.19.1.1	0
+node-1	17001	198.19.1.1	0
+node-1	17201	198.19.1.1	0
+node-1	17301	198.19.1.1	0
+node-1	17401	198.19.1.1	0
+node-2	16002	198.19.1.2	0
+node-2	17002	198.19.1.2	0
+node-2	17202	198.19.1.2	0
+node-2	17302	198.19.1.2	0
+node-2	17402	198.19.1.2	0
+
+<NodeFlexAlgorithms>
+Node	FlexAlgo	IGPProcessID
+node-7	128	0
+node-7	129	0
+node-7	130	0
+node-3	128	0
+node-3	129	0
+node-3	130	0
+node-8	128	0
+node-8	129	0
+node-8	130	0
+node-4	128	0
+node-4	129	0
+node-4	130	0
+node-5	128	0
+node-5	129	0
+node-5	130	0
+node-1	128	0
+node-1	129	0
+node-1	130	0
+node-2	128	0
+node-2	129	0
+node-2	130	0
+
+<IPv6NodePrefixes>
+Node	IPv6Prefix	IGPProcessID	ISISLevel	Redistributed	Leaked	AdvNode	SRv6Locator	Metric	SRAlgorithm
+node-7	fcbb:3:7::/48	0	Level2	F	F	F	T	1	130
+node-7	fcbb:2:7::/48	0	Level2	F	F	F	T	1	129
+node-7	fcbb:0:7::/48	0	Level2	F	F	F	T	1	0
+node-7	fcbb:1:7::/48	0	Level2	F	F	F	T	1	128
+node-7	2010::7/128	0	Level2	F	F	T	F	0	0
+node-7	2011::7/128	0	Level2	F	F	T	F	0	0
+node-3	fcbb:3:3::/48	0	Level2	F	F	F	T	1	130
+node-3	fcbb:2:3::/48	0	Level2	F	F	F	T	1	129
+node-3	fcbb:1:3::/48	0	Level2	F	F	F	T	1	128
+node-3	fcbb:0:3::/48	0	Level2	F	F	F	T	1	0
+node-3	2011::3/128	0	Level2	F	F	T	F	0	0
+node-3	2010::3/128	0	Level2	F	F	T	F	0	0
+node-8	fcbb:3:8::/48	0	Level2	F	F	F	T	1	130
+node-8	fcbb:2:8::/48	0	Level2	F	F	F	T	1	129
+node-8	fcbb:1:8::/48	0	Level2	F	F	F	T	1	128
+node-8	fcbb:0:8::/48	0	Level2	F	F	F	T	1	0
+node-8	2011::8/128	0	Level2	F	F	T	F	0	0
+node-8	2010::8/128	0	Level2	F	F	T	F	0	0
+node-4	fcbb:3:4::/48	0	Level2	F	F	F	T	1	130
+node-4	fcbb:2:4::/48	0	Level2	F	F	F	T	1	129
+node-4	fcbb:0:4::/48	0	Level2	F	F	F	T	1	0
+node-4	fcbb:1:4::/48	0	Level2	F	F	F	T	1	128
+node-4	2010::4/128	0	Level2	F	F	T	F	0	0
+node-4	2011::4/128	0	Level2	F	F	T	F	0	0
+node-5	fcbb:1:5::/48	0	Level2	F	F	F	T	1	128
+node-5	fcbb:2:5::/48	0	Level2	F	F	F	T	1	129
+node-5	fcbb:0:5::/48	0	Level2	F	F	F	T	1	0
+node-5	fcbb:3:5::/48	0	Level2	F	F	F	T	1	130
+node-5	2011::5/128	0	Level2	F	F	T	F	0	0
+node-5	2010::5/128	0	Level2	F	F	T	F	0	0
+node-1	fcbb:3:1::/48	0	Level2	F	F	F	T	1	130
+node-1	fcbb:2:1::/48	0	Level2	F	F	F	T	1	129
+node-1	fcbb:1:1::/48	0	Level2	F	F	F	T	1	128
+node-1	fcbb:0:1::/48	0	Level2	F	F	F	T	1	0
+node-1	2011::1/128	0	Level2	F	F	T	F	0	0
+node-1	2010::1/128	0	Level2	F	F	T	F	0	0
+node-2	fcbb:3:2::/48	0	Level2	F	F	F	T	1	130
+node-2	fcbb:2:2::/48	0	Level2	F	F	F	T	1	129
+node-2	fcbb:1:2::/48	0	Level2	F	F	F	T	1	128
+node-2	fcbb:0:2::/48	0	Level2	F	F	F	T	1	0
+node-2	2010::2/128	0	Level2	F	F	T	F	0	0
+node-2	2011::2/128	0	Level2	F	F	T	F	0	0
+
+<Circuits>
+Name	NodeA	InterfaceA	NodeB	InterfaceB	Capacity	Delay	Distance	L1CircuitNodeA	L1CircuitPortA	L1CircuitNodeB	L1CircuitPortB	Protected	Active	Failed	CostInitial	CostPerPeriod	ParallelGroupName	LastTemplateUpdate	Tags
+	node-3	HundredGigE0/0/0/0	node-1	HundredGigE0/0/0/4								F	T	F	0.0	0.0			
+	node-1	HundredGigE0/0/0/2	node-7	GigabitEthernet0/0/0/2								F	T	F	0.0	0.0			
+	node-7	GigabitEthernet0/0/0/4	node-3	HundredGigE0/0/0/1								F	T	F	0.0	0.0			
+	node-4	HundredGigE0/0/0/2	node-3	HundredGigE0/0/0/3								F	T	F	0.0	0.0			
+	node-2	GigabitEthernet0/0/0/1	node-3	HundredGigE0/0/0/2								F	T	F	0.0	0.0			
+	node-4	HundredGigE0/0/0/4	node-2	GigabitEthernet0/0/0/2								F	T	F	0.0	0.0			
+	node-1	HundredGigE0/0/0/6	node-2	GigabitEthernet0/0/0/0								F	T	F	0.0	0.0			
+	node-1	HundredGigE0/0/0/0	node-5	HundredGigE0/0/0/0								F	T	F	0.0	0.0			
+	node-4	HundredGigE0/0/0/0	node-7	GigabitEthernet0/0/0/1								F	T	F	0.0	0.0			
+	node-8	GigabitEthernet0/0/0/3	node-7	GigabitEthernet0/0/0/3								F	T	F	0.0	0.0			
+	node-8	GigabitEthernet0/0/0/2	node-1	HundredGigE0/0/0/3								F	T	F	0.0	0.0			
+	node-7	GigabitEthernet0/0/0/6	node-5	HundredGigE0/0/0/4								F	T	F	0.0	0.0			
+	node-8	GigabitEthernet0/0/0/0	node-5	HundredGigE0/0/0/2								F	T	F	0.0	0.0			
+
+<IGPProcessProtocols>
+IGPProcessID	IGPProtocol
+0	isis
+
+<Interfaces>
+Node	Interface	IGPMetric	MetricISISLevel1	Capacity	PolicyGroup	TEMetric	TEEnabled	IPv6IGPMetric	IPv6TEMetric	ASLATEMetric	ASLADelay	SRv6ASLATEMetric	SRv6ASLADelay	ResvBW	ResvBWPercent	PCMinLinks	PCMinBW	FRREnabled	SRFRREnabled	Area	ISISLevel	IGPProcessID	Affinities	FlexAlgoAffinities	Description	UUID	LocalAddress	UnnumberedIndex	NetIntIndex	NetIntContainerIndex	NetIntType	NetIntAdminStatus	NetIntOperStatus	NetIntSubnet	EIGRPDelay	Delay	Tags	NetIntIGPProcessIDs
+node-3	HundredGigE0/0/0/0	10		10.0	Default	10	T	10			11.0		11.0					T	T		Level2	0		101		cfda1e0d-519e-4f1f-a669-19e91bd4e3f3										11.0		
+node-1	HundredGigE0/0/0/4	10		10.0	Default	10	T	10			11.0		11.0					T	T		Level2	0		101		83fc06ee-c8da-449d-940b-8784a1cbb154										11.0		
+node-1	HundredGigE0/0/0/2	10		10.0	Default	10	T	10	10		1.0		1.0					T	T		Level2	0	10			347ab356-bb43-46bf-b459-4de8766f2e62										1.0		
+node-7	GigabitEthernet0/0/0/2	10		10.0	Default	10	T	10	10		1.0		1.0					T	T		Level2	0	10			2f15c5bf-d9f3-4e60-bef1-9aaf321351ac										1.0		
+node-7	GigabitEthernet0/0/0/4	10		10.0	Default	10	T	10	10		1.0		1.0					T	T		Level2	0	10			8db7eaf7-5398-423e-9559-d9a239449520										1.0		
+node-3	HundredGigE0/0/0/1	10		10.0	Default	10	T	10	10		1.0		1.0					T	T		Level2	0	10			7490ca59-149b-4413-9c40-e220fba11f9b										1.0		
+node-4	HundredGigE0/0/0/2	11		10.0	Default	11	T	11			1.0		1.0					T	T		Level2	0		101		23faf19e-0d76-4a69-88e8-cfa84b5d3cd4										1.0		
+node-3	HundredGigE0/0/0/3	11		10.0	Default	11	T	11	11		1.0		1.0					T	T		Level2	0	10	101		82839e40-2653-4818-9390-8ea179440c0a										1.0		
+node-2	GigabitEthernet0/0/0/1	10		10.0	Default	10	T	10			1.0		1.0					T	T		Level2	0		102		1a8b0b08-a147-47c3-8a43-002c92b0e29c										1.0		
+node-3	HundredGigE0/0/0/2	10		10.0	Default		T	10										T	T		Level2	0				c9e53e98-97bf-4da5-a6f2-f3c038bd32e3										10.0		
+node-4	HundredGigE0/0/0/4	100		10.0	Default		T	100										T	T		Level2	0		101		e16e5ad5-7e71-4356-b990-a3859cf20af9										100.0		
+node-2	GigabitEthernet0/0/0/2	100		10.0	Default	100	T	100	100		1.0		1.0					T	T		Level2	0	10			82f92e85-aa87-4c83-8a66-d385a27536ab										1.0		
+node-1	HundredGigE0/0/0/6	100		10.0	Default	10	T	100			10.0		10.0					T	T		Level2	0		101		c43b4933-3d2c-49ce-9433-a625394500e5										10.0		
+node-2	GigabitEthernet0/0/0/0	100		10.0	Default	10	T	100			10.0		10.0					T	T		Level2	0		101		f26b59e9-32c8-4953-92df-ab8b5e164e4a										10.0		
+node-1	HundredGigE0/0/0/0	100		10.0	Default	10	T	100			1.0		1.0					T	T		Level2	0		101		f287b023-a26e-4cf9-a067-566cdf234ec7										1.0		
+node-5	HundredGigE0/0/0/0	100		10.0	Default	10	T	100			1.0		1.0					T	T		Level2	0		101		03f92a8b-ec30-4a6f-9f5c-72494e4f4721										1.0		
+node-4	HundredGigE0/0/0/0	100		10.0	Default	10	T	100			1.0		1.0					T	T		Level2	0		102		3caf74a3-10d9-4946-8b8b-ace68ec455cb										1.0		
+node-7	GigabitEthernet0/0/0/1	100		10.0	Default	10	T	100			1.0		1.0					T	T		Level2	0		102		76495bda-de4c-4aea-af07-b594bc9217a5										1.0		
+node-8	GigabitEthernet0/0/0/3	10		10.0	Default	10	T	10			1.0		1.0					T	T		Level2	0		102		638938be-4165-4a2c-8471-9dbec7a8e7f3										1.0		
+node-7	GigabitEthernet0/0/0/3	10		10.0	Default	10	T	10			1.0		1.0					T	T		Level2	0		102		c5c65a1e-ded6-4dc3-a6d1-7d17a10c6da2										1.0		
+node-8	GigabitEthernet0/0/0/2	10		10.0	Default	10	T	10	10		1.0		1.0					T	T		Level2	0	10			31ce7e7f-ef8d-4355-86e9-7bd4f04521df										1.0		
+node-1	HundredGigE0/0/0/3	10		10.0	Default	10	T	10	10		1.0		1.0					T	T		Level2	0	10			00c6288c-4349-4878-87f1-462a793ed5fb										1.0		
+node-7	GigabitEthernet0/0/0/6	100		10.0	Default	100	T	100			30.0		30.0					T	T		Level2	0		102		677e19d3-4e09-4222-9e39-618b7b53b30a										30.0		
+node-5	HundredGigE0/0/0/4	100		10.0	Default	100	T	100										T	T		Level2	0		102		46a58dc3-501e-489f-8e78-4fd25796f449										100.0		
+node-8	GigabitEthernet0/0/0/0	10		10.0	Default	10	T	10	10		1.0		1.0					T	T		Level2	0	10	102		5302a173-1f5c-43e2-8f8c-e35d79fe9527										1.0		
+node-5	HundredGigE0/0/0/2	10		10.0	Default	10	T	10	10		1.0		1.0					T	T		Level2	0	10	102		2f80c5cb-524e-4dcd-9640-27bcb7b5020e										1.0		
+
+<InterfaceSIDs>
+Node	Interface	SID	Type	Protected	Persistent	ISISLevel	IPV6
+node-3	HundredGigE0/0/0/0	80007	ADJ	T	F	Level2	F
+node-3	HundredGigE0/0/0/0	80008	ADJ	F	F	Level2	F
+node-1	HundredGigE0/0/0/4	80005	ADJ	T	F	Level2	F
+node-1	HundredGigE0/0/0/4	80006	ADJ	F	F	Level2	F
+node-1	HundredGigE0/0/0/2	80011	ADJ	T	F	Level2	F
+node-1	HundredGigE0/0/0/2	80012	ADJ	F	F	Level2	F
+node-7	GigabitEthernet0/0/0/2	80007	ADJ	T	F	Level2	F
+node-7	GigabitEthernet0/0/0/2	80008	ADJ	F	F	Level2	F
+node-7	GigabitEthernet0/0/0/4	80001	ADJ	T	F	Level2	F
+node-7	GigabitEthernet0/0/0/4	80002	ADJ	F	F	Level2	F
+node-3	HundredGigE0/0/0/1	80005	ADJ	T	F	Level2	F
+node-3	HundredGigE0/0/0/1	80006	ADJ	F	F	Level2	F
+node-4	HundredGigE0/0/0/2	80007	ADJ	T	F	Level2	F
+node-4	HundredGigE0/0/0/2	80008	ADJ	F	F	Level2	F
+node-3	HundredGigE0/0/0/3	80001	ADJ	T	F	Level2	F
+node-3	HundredGigE0/0/0/3	80002	ADJ	F	F	Level2	F
+node-2	GigabitEthernet0/0/0/1	80003	ADJ	T	F	Level2	F
+node-2	GigabitEthernet0/0/0/1	80004	ADJ	F	F	Level2	F
+node-3	HundredGigE0/0/0/2	80003	ADJ	T	F	Level2	F
+node-3	HundredGigE0/0/0/2	80004	ADJ	F	F	Level2	F
+node-4	HundredGigE0/0/0/4	80005	ADJ	T	F	Level2	F
+node-4	HundredGigE0/0/0/4	80006	ADJ	F	F	Level2	F
+node-2	GigabitEthernet0/0/0/2	80001	ADJ	T	F	Level2	F
+node-2	GigabitEthernet0/0/0/2	80002	ADJ	F	F	Level2	F
+node-1	HundredGigE0/0/0/6	80007	ADJ	T	F	Level2	F
+node-1	HundredGigE0/0/0/6	80008	ADJ	F	F	Level2	F
+node-2	GigabitEthernet0/0/0/0	80005	ADJ	T	F	Level2	F
+node-2	GigabitEthernet0/0/0/0	80006	ADJ	F	F	Level2	F
+node-1	HundredGigE0/0/0/0	80013	ADJ	T	F	Level2	F
+node-1	HundredGigE0/0/0/0	80014	ADJ	F	F	Level2	F
+node-5	HundredGigE0/0/0/0	80009	ADJ	T	F	Level2	F
+node-5	HundredGigE0/0/0/0	80010	ADJ	F	F	Level2	F
+node-4	HundredGigE0/0/0/0	80009	ADJ	T	F	Level2	F
+node-4	HundredGigE0/0/0/0	80010	ADJ	F	F	Level2	F
+node-7	GigabitEthernet0/0/0/1	80005	ADJ	T	F	Level2	F
+node-7	GigabitEthernet0/0/0/1	80006	ADJ	F	F	Level2	F
+node-8	GigabitEthernet0/0/0/3	80001	ADJ	T	F	Level2	F
+node-8	GigabitEthernet0/0/0/3	80002	ADJ	F	F	Level2	F
+node-7	GigabitEthernet0/0/0/3	80003	ADJ	T	F	Level2	F
+node-7	GigabitEthernet0/0/0/3	80004	ADJ	F	F	Level2	F
+node-8	GigabitEthernet0/0/0/2	80003	ADJ	T	F	Level2	F
+node-8	GigabitEthernet0/0/0/2	80004	ADJ	F	F	Level2	F
+node-1	HundredGigE0/0/0/3	80009	ADJ	T	F	Level2	F
+node-1	HundredGigE0/0/0/3	80010	ADJ	F	F	Level2	F
+node-7	GigabitEthernet0/0/0/6	80009	ADJ	T	F	Level2	F
+node-7	GigabitEthernet0/0/0/6	80010	ADJ	F	F	Level2	F
+node-5	HundredGigE0/0/0/4	80007	ADJ	T	F	Level2	F
+node-5	HundredGigE0/0/0/4	80008	ADJ	F	F	Level2	F
+node-8	GigabitEthernet0/0/0/0	80005	ADJ	T	F	Level2	F
+node-8	GigabitEthernet0/0/0/0	80006	ADJ	F	F	Level2	F
+node-5	HundredGigE0/0/0/2	80005	ADJ	T	F	Level2	F
+node-5	HundredGigE0/0/0/2	80006	ADJ	F	F	Level2	F
+
+<SRv6InterfaceSIDs>
+Node	Interface	SID	SRAlgorithm	Protected	ISISLevel
+node-3	HundredGigE0/0/0/0	fcbb:0:3:e006::/64	0	T	Level2
+node-3	HundredGigE0/0/0/0	fcbb:0:3:e007::/64	0	F	Level2
+node-3	HundredGigE0/0/0/0	fcbb:1:3:e006::/64	128	T	Level2
+node-3	HundredGigE0/0/0/0	fcbb:1:3:e007::/64	128	F	Level2
+node-3	HundredGigE0/0/0/0	fcbb:2:3:e006::/64	129	T	Level2
+node-3	HundredGigE0/0/0/0	fcbb:2:3:e007::/64	129	F	Level2
+node-3	HundredGigE0/0/0/0	fcbb:3:3:e007::/64	130	F	Level2
+node-3	HundredGigE0/0/0/0	fcbb:3:3:e006::/64	130	T	Level2
+node-1	HundredGigE0/0/0/4	fcbb:0:1:e005::/64	0	F	Level2
+node-1	HundredGigE0/0/0/4	fcbb:0:1:e004::/64	0	T	Level2
+node-1	HundredGigE0/0/0/4	fcbb:1:1:e005::/64	128	F	Level2
+node-1	HundredGigE0/0/0/4	fcbb:1:1:e004::/64	128	T	Level2
+node-1	HundredGigE0/0/0/4	fcbb:2:1:e004::/64	129	T	Level2
+node-1	HundredGigE0/0/0/4	fcbb:2:1:e005::/64	129	F	Level2
+node-1	HundredGigE0/0/0/4	fcbb:3:1:e005::/64	130	F	Level2
+node-1	HundredGigE0/0/0/4	fcbb:3:1:e004::/64	130	T	Level2
+node-1	HundredGigE0/0/0/2	fcbb:0:1:e000::/64	0	T	Level2
+node-1	HundredGigE0/0/0/2	fcbb:0:1:e001::/64	0	F	Level2
+node-1	HundredGigE0/0/0/2	fcbb:1:1:e000::/64	128	T	Level2
+node-1	HundredGigE0/0/0/2	fcbb:1:1:e001::/64	128	F	Level2
+node-1	HundredGigE0/0/0/2	fcbb:2:1:e000::/64	129	T	Level2
+node-1	HundredGigE0/0/0/2	fcbb:2:1:e001::/64	129	F	Level2
+node-1	HundredGigE0/0/0/2	fcbb:3:1:e000::/64	130	T	Level2
+node-1	HundredGigE0/0/0/2	fcbb:3:1:e001::/64	130	F	Level2
+node-7	GigabitEthernet0/0/0/2	fcbb:0:7:e007::/64	0	F	Level2
+node-7	GigabitEthernet0/0/0/2	fcbb:0:7:e006::/64	0	T	Level2
+node-7	GigabitEthernet0/0/0/2	fcbb:1:7:e006::/64	128	T	Level2
+node-7	GigabitEthernet0/0/0/2	fcbb:1:7:e007::/64	128	F	Level2
+node-7	GigabitEthernet0/0/0/2	fcbb:2:7:e006::/64	129	T	Level2
+node-7	GigabitEthernet0/0/0/2	fcbb:2:7:e007::/64	129	F	Level2
+node-7	GigabitEthernet0/0/0/2	fcbb:3:7:e007::/64	130	F	Level2
+node-7	GigabitEthernet0/0/0/2	fcbb:3:7:e006::/64	130	T	Level2
+node-7	GigabitEthernet0/0/0/4	fcbb:0:7:e002::/64	0	T	Level2
+node-7	GigabitEthernet0/0/0/4	fcbb:0:7:e003::/64	0	F	Level2
+node-7	GigabitEthernet0/0/0/4	fcbb:1:7:e003::/64	128	F	Level2
+node-7	GigabitEthernet0/0/0/4	fcbb:1:7:e002::/64	128	T	Level2
+node-7	GigabitEthernet0/0/0/4	fcbb:2:7:e002::/64	129	T	Level2
+node-7	GigabitEthernet0/0/0/4	fcbb:2:7:e003::/64	129	F	Level2
+node-7	GigabitEthernet0/0/0/4	fcbb:3:7:e002::/64	130	T	Level2
+node-7	GigabitEthernet0/0/0/4	fcbb:3:7:e003::/64	130	F	Level2
+node-3	HundredGigE0/0/0/1	fcbb:0:3:e003::/64	0	F	Level2
+node-3	HundredGigE0/0/0/1	fcbb:0:3:e002::/64	0	T	Level2
+node-3	HundredGigE0/0/0/1	fcbb:1:3:e003::/64	128	F	Level2
+node-3	HundredGigE0/0/0/1	fcbb:1:3:e002::/64	128	T	Level2
+node-3	HundredGigE0/0/0/1	fcbb:2:3:e002::/64	129	T	Level2
+node-3	HundredGigE0/0/0/1	fcbb:2:3:e003::/64	129	F	Level2
+node-3	HundredGigE0/0/0/1	fcbb:3:3:e002::/64	130	T	Level2
+node-3	HundredGigE0/0/0/1	fcbb:3:3:e003::/64	130	F	Level2
+node-4	HundredGigE0/0/0/2	fcbb:0:4:e002::/64	0	T	Level2
+node-4	HundredGigE0/0/0/2	fcbb:0:4:e003::/64	0	F	Level2
+node-4	HundredGigE0/0/0/2	fcbb:1:4:e002::/64	128	T	Level2
+node-4	HundredGigE0/0/0/2	fcbb:1:4:e003::/64	128	F	Level2
+node-4	HundredGigE0/0/0/2	fcbb:2:4:e002::/64	129	T	Level2
+node-4	HundredGigE0/0/0/2	fcbb:2:4:e003::/64	129	F	Level2
+node-4	HundredGigE0/0/0/2	fcbb:3:4:e003::/64	130	F	Level2
+node-4	HundredGigE0/0/0/2	fcbb:3:4:e002::/64	130	T	Level2
+node-3	HundredGigE0/0/0/3	fcbb:0:3:e004::/64	0	T	Level2
+node-3	HundredGigE0/0/0/3	fcbb:0:3:e005::/64	0	F	Level2
+node-3	HundredGigE0/0/0/3	fcbb:1:3:e004::/64	128	T	Level2
+node-3	HundredGigE0/0/0/3	fcbb:1:3:e005::/64	128	F	Level2
+node-3	HundredGigE0/0/0/3	fcbb:2:3:e004::/64	129	T	Level2
+node-3	HundredGigE0/0/0/3	fcbb:2:3:e005::/64	129	F	Level2
+node-3	HundredGigE0/0/0/3	fcbb:3:3:e004::/64	130	T	Level2
+node-3	HundredGigE0/0/0/3	fcbb:3:3:e005::/64	130	F	Level2
+node-2	GigabitEthernet0/0/0/1	fcbb:0:2:e001::/64	0	F	Level2
+node-2	GigabitEthernet0/0/0/1	fcbb:0:2:e000::/64	0	T	Level2
+node-2	GigabitEthernet0/0/0/1	fcbb:1:2:e001::/64	128	F	Level2
+node-2	GigabitEthernet0/0/0/1	fcbb:1:2:e000::/64	128	T	Level2
+node-2	GigabitEthernet0/0/0/1	fcbb:2:2:e000::/64	129	T	Level2
+node-2	GigabitEthernet0/0/0/1	fcbb:2:2:e001::/64	129	F	Level2
+node-2	GigabitEthernet0/0/0/1	fcbb:3:2:e000::/64	130	T	Level2
+node-2	GigabitEthernet0/0/0/1	fcbb:3:2:e001::/64	130	F	Level2
+node-3	HundredGigE0/0/0/2	fcbb:0:3:e000::/64	0	T	Level2
+node-3	HundredGigE0/0/0/2	fcbb:0:3:e001::/64	0	F	Level2
+node-3	HundredGigE0/0/0/2	fcbb:1:3:e000::/64	128	T	Level2
+node-3	HundredGigE0/0/0/2	fcbb:1:3:e001::/64	128	F	Level2
+node-3	HundredGigE0/0/0/2	fcbb:2:3:e000::/64	129	T	Level2
+node-3	HundredGigE0/0/0/2	fcbb:2:3:e001::/64	129	F	Level2
+node-3	HundredGigE0/0/0/2	fcbb:3:3:e001::/64	130	F	Level2
+node-3	HundredGigE0/0/0/2	fcbb:3:3:e000::/64	130	T	Level2
+node-4	HundredGigE0/0/0/4	fcbb:0:4:e000::/64	0	T	Level2
+node-4	HundredGigE0/0/0/4	fcbb:0:4:e001::/64	0	F	Level2
+node-4	HundredGigE0/0/0/4	fcbb:1:4:e000::/64	128	T	Level2
+node-4	HundredGigE0/0/0/4	fcbb:1:4:e001::/64	128	F	Level2
+node-4	HundredGigE0/0/0/4	fcbb:2:4:e000::/64	129	T	Level2
+node-4	HundredGigE0/0/0/4	fcbb:2:4:e001::/64	129	F	Level2
+node-4	HundredGigE0/0/0/4	fcbb:3:4:e000::/64	130	T	Level2
+node-4	HundredGigE0/0/0/4	fcbb:3:4:e001::/64	130	F	Level2
+node-2	GigabitEthernet0/0/0/2	fcbb:0:2:e002::/64	0	T	Level2
+node-2	GigabitEthernet0/0/0/2	fcbb:0:2:e003::/64	0	F	Level2
+node-2	GigabitEthernet0/0/0/2	fcbb:1:2:e002::/64	128	T	Level2
+node-2	GigabitEthernet0/0/0/2	fcbb:1:2:e003::/64	128	F	Level2
+node-2	GigabitEthernet0/0/0/2	fcbb:2:2:e003::/64	129	F	Level2
+node-2	GigabitEthernet0/0/0/2	fcbb:2:2:e002::/64	129	T	Level2
+node-2	GigabitEthernet0/0/0/2	fcbb:3:2:e003::/64	130	F	Level2
+node-2	GigabitEthernet0/0/0/2	fcbb:3:2:e002::/64	130	T	Level2
+node-1	HundredGigE0/0/0/6	fcbb:0:1:e003::/64	0	F	Level2
+node-1	HundredGigE0/0/0/6	fcbb:0:1:e002::/64	0	T	Level2
+node-1	HundredGigE0/0/0/6	fcbb:1:1:e003::/64	128	F	Level2
+node-1	HundredGigE0/0/0/6	fcbb:1:1:e002::/64	128	T	Level2
+node-1	HundredGigE0/0/0/6	fcbb:2:1:e002::/64	129	T	Level2
+node-1	HundredGigE0/0/0/6	fcbb:2:1:e003::/64	129	F	Level2
+node-1	HundredGigE0/0/0/6	fcbb:3:1:e002::/64	130	T	Level2
+node-1	HundredGigE0/0/0/6	fcbb:3:1:e003::/64	130	F	Level2
+node-2	GigabitEthernet0/0/0/0	fcbb:0:2:e004::/64	0	T	Level2
+node-2	GigabitEthernet0/0/0/0	fcbb:0:2:e005::/64	0	F	Level2
+node-2	GigabitEthernet0/0/0/0	fcbb:1:2:e004::/64	128	T	Level2
+node-2	GigabitEthernet0/0/0/0	fcbb:1:2:e005::/64	128	F	Level2
+node-2	GigabitEthernet0/0/0/0	fcbb:2:2:e004::/64	129	T	Level2
+node-2	GigabitEthernet0/0/0/0	fcbb:2:2:e005::/64	129	F	Level2
+node-2	GigabitEthernet0/0/0/0	fcbb:3:2:e004::/64	130	T	Level2
+node-2	GigabitEthernet0/0/0/0	fcbb:3:2:e005::/64	130	F	Level2
+node-1	HundredGigE0/0/0/0	fcbb:0:1:e008::/64	0	T	Level2
+node-1	HundredGigE0/0/0/0	fcbb:0:1:e009::/64	0	F	Level2
+node-1	HundredGigE0/0/0/0	fcbb:1:1:e008::/64	128	T	Level2
+node-1	HundredGigE0/0/0/0	fcbb:1:1:e009::/64	128	F	Level2
+node-1	HundredGigE0/0/0/0	fcbb:2:1:e008::/64	129	T	Level2
+node-1	HundredGigE0/0/0/0	fcbb:2:1:e009::/64	129	F	Level2
+node-1	HundredGigE0/0/0/0	fcbb:3:1:e008::/64	130	T	Level2
+node-1	HundredGigE0/0/0/0	fcbb:3:1:e009::/64	130	F	Level2
+node-5	HundredGigE0/0/0/0	fcbb:0:5:e003::/64	0	F	Level2
+node-5	HundredGigE0/0/0/0	fcbb:0:5:e004::/64	0	T	Level2
+node-5	HundredGigE0/0/0/0	fcbb:1:5:e003::/64	128	F	Level2
+node-5	HundredGigE0/0/0/0	fcbb:1:5:e004::/64	128	T	Level2
+node-5	HundredGigE0/0/0/0	fcbb:2:5:e002::/64	129	T	Level2
+node-5	HundredGigE0/0/0/0	fcbb:2:5:e003::/64	129	F	Level2
+node-5	HundredGigE0/0/0/0	fcbb:3:5:e003::/64	130	F	Level2
+node-5	HundredGigE0/0/0/0	fcbb:3:5:e004::/64	130	T	Level2
+node-4	HundredGigE0/0/0/0	fcbb:0:4:e005::/64	0	F	Level2
+node-4	HundredGigE0/0/0/0	fcbb:0:4:e004::/64	0	T	Level2
+node-4	HundredGigE0/0/0/0	fcbb:1:4:e005::/64	128	F	Level2
+node-4	HundredGigE0/0/0/0	fcbb:1:4:e004::/64	128	T	Level2
+node-4	HundredGigE0/0/0/0	fcbb:2:4:e004::/64	129	T	Level2
+node-4	HundredGigE0/0/0/0	fcbb:2:4:e005::/64	129	F	Level2
+node-4	HundredGigE0/0/0/0	fcbb:3:4:e004::/64	130	T	Level2
+node-4	HundredGigE0/0/0/0	fcbb:3:4:e005::/64	130	F	Level2
+node-7	GigabitEthernet0/0/0/1	fcbb:0:7:e004::/64	0	T	Level2
+node-7	GigabitEthernet0/0/0/1	fcbb:0:7:e005::/64	0	F	Level2
+node-7	GigabitEthernet0/0/0/1	fcbb:1:7:e005::/64	128	F	Level2
+node-7	GigabitEthernet0/0/0/1	fcbb:1:7:e004::/64	128	T	Level2
+node-7	GigabitEthernet0/0/0/1	fcbb:2:7:e005::/64	129	F	Level2
+node-7	GigabitEthernet0/0/0/1	fcbb:2:7:e004::/64	129	T	Level2
+node-7	GigabitEthernet0/0/0/1	fcbb:3:7:e005::/64	130	F	Level2
+node-7	GigabitEthernet0/0/0/1	fcbb:3:7:e004::/64	130	T	Level2
+node-8	GigabitEthernet0/0/0/3	fcbb:0:8:e000::/64	0	T	Level2
+node-8	GigabitEthernet0/0/0/3	fcbb:0:8:e001::/64	0	F	Level2
+node-8	GigabitEthernet0/0/0/3	fcbb:1:8:e000::/64	128	T	Level2
+node-8	GigabitEthernet0/0/0/3	fcbb:1:8:e001::/64	128	F	Level2
+node-8	GigabitEthernet0/0/0/3	fcbb:2:8:e001::/64	129	F	Level2
+node-8	GigabitEthernet0/0/0/3	fcbb:2:8:e000::/64	129	T	Level2
+node-8	GigabitEthernet0/0/0/3	fcbb:3:8:e001::/64	130	F	Level2
+node-8	GigabitEthernet0/0/0/3	fcbb:3:8:e000::/64	130	T	Level2
+node-7	GigabitEthernet0/0/0/3	fcbb:0:7:e001::/64	0	F	Level2
+node-7	GigabitEthernet0/0/0/3	fcbb:0:7:e000::/64	0	T	Level2
+node-7	GigabitEthernet0/0/0/3	fcbb:1:7:e000::/64	128	T	Level2
+node-7	GigabitEthernet0/0/0/3	fcbb:1:7:e001::/64	128	F	Level2
+node-7	GigabitEthernet0/0/0/3	fcbb:2:7:e000::/64	129	T	Level2
+node-7	GigabitEthernet0/0/0/3	fcbb:2:7:e001::/64	129	F	Level2
+node-7	GigabitEthernet0/0/0/3	fcbb:3:7:e000::/64	130	T	Level2
+node-7	GigabitEthernet0/0/0/3	fcbb:3:7:e001::/64	130	F	Level2
+node-8	GigabitEthernet0/0/0/2	fcbb:0:8:e005::/64	0	F	Level2
+node-8	GigabitEthernet0/0/0/2	fcbb:0:8:e004::/64	0	T	Level2
+node-8	GigabitEthernet0/0/0/2	fcbb:1:8:e005::/64	128	F	Level2
+node-8	GigabitEthernet0/0/0/2	fcbb:1:8:e004::/64	128	T	Level2
+node-8	GigabitEthernet0/0/0/2	fcbb:2:8:e004::/64	129	T	Level2
+node-8	GigabitEthernet0/0/0/2	fcbb:2:8:e005::/64	129	F	Level2
+node-8	GigabitEthernet0/0/0/2	fcbb:3:8:e004::/64	130	T	Level2
+node-8	GigabitEthernet0/0/0/2	fcbb:3:8:e005::/64	130	F	Level2
+node-1	HundredGigE0/0/0/3	fcbb:0:1:e006::/64	0	T	Level2
+node-1	HundredGigE0/0/0/3	fcbb:0:1:e007::/64	0	F	Level2
+node-1	HundredGigE0/0/0/3	fcbb:1:1:e006::/64	128	T	Level2
+node-1	HundredGigE0/0/0/3	fcbb:1:1:e007::/64	128	F	Level2
+node-1	HundredGigE0/0/0/3	fcbb:2:1:e007::/64	129	F	Level2
+node-1	HundredGigE0/0/0/3	fcbb:2:1:e006::/64	129	T	Level2
+node-1	HundredGigE0/0/0/3	fcbb:3:1:e007::/64	130	F	Level2
+node-1	HundredGigE0/0/0/3	fcbb:3:1:e006::/64	130	T	Level2
+node-7	GigabitEthernet0/0/0/6	fcbb:0:7:e009::/64	0	F	Level2
+node-7	GigabitEthernet0/0/0/6	fcbb:0:7:e008::/64	0	T	Level2
+node-7	GigabitEthernet0/0/0/6	fcbb:1:7:e009::/64	128	F	Level2
+node-7	GigabitEthernet0/0/0/6	fcbb:1:7:e008::/64	128	T	Level2
+node-7	GigabitEthernet0/0/0/6	fcbb:2:7:e008::/64	129	T	Level2
+node-7	GigabitEthernet0/0/0/6	fcbb:2:7:e009::/64	129	F	Level2
+node-7	GigabitEthernet0/0/0/6	fcbb:3:7:e008::/64	130	T	Level2
+node-7	GigabitEthernet0/0/0/6	fcbb:3:7:e009::/64	130	F	Level2
+node-5	HundredGigE0/0/0/4	fcbb:0:5:e002::/64	0	T	Level2
+node-5	HundredGigE0/0/0/4	fcbb:0:5:e005::/64	0	F	Level2
+node-5	HundredGigE0/0/0/4	fcbb:1:5:e002::/64	128	T	Level2
+node-5	HundredGigE0/0/0/4	fcbb:1:5:e005::/64	128	F	Level2
+node-5	HundredGigE0/0/0/4	fcbb:2:5:e005::/64	129	F	Level2
+node-5	HundredGigE0/0/0/4	fcbb:2:5:e004::/64	129	T	Level2
+node-5	HundredGigE0/0/0/4	fcbb:3:5:e002::/64	130	T	Level2
+node-5	HundredGigE0/0/0/4	fcbb:3:5:e005::/64	130	F	Level2
+node-8	GigabitEthernet0/0/0/0	fcbb:0:8:e003::/64	0	F	Level2
+node-8	GigabitEthernet0/0/0/0	fcbb:0:8:e002::/64	0	T	Level2
+node-8	GigabitEthernet0/0/0/0	fcbb:1:8:e002::/64	128	T	Level2
+node-8	GigabitEthernet0/0/0/0	fcbb:1:8:e003::/64	128	F	Level2
+node-8	GigabitEthernet0/0/0/0	fcbb:2:8:e002::/64	129	T	Level2
+node-8	GigabitEthernet0/0/0/0	fcbb:2:8:e003::/64	129	F	Level2
+node-8	GigabitEthernet0/0/0/0	fcbb:3:8:e002::/64	130	T	Level2
+node-8	GigabitEthernet0/0/0/0	fcbb:3:8:e003::/64	130	F	Level2
+node-5	HundredGigE0/0/0/2	fcbb:0:5:e000::/64	0	T	Level2
+node-5	HundredGigE0/0/0/2	fcbb:0:5:e001::/64	0	F	Level2
+node-5	HundredGigE0/0/0/2	fcbb:1:5:e001::/64	128	F	Level2
+node-5	HundredGigE0/0/0/2	fcbb:1:5:e000::/64	128	T	Level2
+node-5	HundredGigE0/0/0/2	fcbb:2:5:e000::/64	129	T	Level2
+node-5	HundredGigE0/0/0/2	fcbb:2:5:e001::/64	129	F	Level2
+node-5	HundredGigE0/0/0/2	fcbb:3:5:e000::/64	130	T	Level2
+node-5	HundredGigE0/0/0/2	fcbb:3:5:e001::/64	130	F	Level2
+
+<InterfaceAdjacencies>
+Node	Interface	Type	UUID	IGPMetric	TEMetric	ASLATEMetric	ASLADelay	Active
+node-3	HundredGigE0/0/0/0	ISIS_IPv4_L2	cfda1e0d-519e-4f1f-a669-19e91bd4e3f3	10.0	10.0		11.0	T
+node-3	HundredGigE0/0/0/0	ISIS_IPv6_L2	db222b83-68d8-49cb-905e-aef92999d339	10.0			11.0	T
+node-1	HundredGigE0/0/0/4	ISIS_IPv4_L2	83fc06ee-c8da-449d-940b-8784a1cbb154	10.0	10.0		11.0	T
+node-1	HundredGigE0/0/0/4	ISIS_IPv6_L2	ab21c6d9-2934-4a7e-a7ed-9a0b23b6c8fb	10.0			11.0	T
+node-1	HundredGigE0/0/0/2	ISIS_IPv4_L2	347ab356-bb43-46bf-b459-4de8766f2e62	10.0	10.0		1.0	T
+node-1	HundredGigE0/0/0/2	ISIS_IPv6_L2	5bb6bbef-1893-43d5-be64-aa6aa4105420	10.0	10.0		1.0	T
+node-7	GigabitEthernet0/0/0/2	ISIS_IPv4_L2	2f15c5bf-d9f3-4e60-bef1-9aaf321351ac	10.0	10.0		1.0	T
+node-7	GigabitEthernet0/0/0/2	ISIS_IPv6_L2	c1b10ea4-b2f4-4ec5-b025-31d9786a4adc	10.0	10.0		1.0	T
+node-7	GigabitEthernet0/0/0/4	ISIS_IPv4_L2	8db7eaf7-5398-423e-9559-d9a239449520	10.0	10.0		1.0	T
+node-7	GigabitEthernet0/0/0/4	ISIS_IPv6_L2	992bea82-4325-4164-a946-7a9000c160b2	10.0	10.0		1.0	T
+node-3	HundredGigE0/0/0/1	ISIS_IPv4_L2	7490ca59-149b-4413-9c40-e220fba11f9b	10.0	10.0		1.0	T
+node-3	HundredGigE0/0/0/1	ISIS_IPv6_L2	3b137cda-dc23-431a-a8d0-f711360c1f65	10.0	10.0		1.0	T
+node-4	HundredGigE0/0/0/2	ISIS_IPv4_L2	23faf19e-0d76-4a69-88e8-cfa84b5d3cd4	11.0	11.0		1.0	T
+node-4	HundredGigE0/0/0/2	ISIS_IPv6_L2	428e5d40-d0a5-4a1b-b720-03b6682a92eb	11.0			1.0	T
+node-3	HundredGigE0/0/0/3	ISIS_IPv4_L2	82839e40-2653-4818-9390-8ea179440c0a	11.0	11.0		1.0	T
+node-3	HundredGigE0/0/0/3	ISIS_IPv6_L2	1500cf78-a63e-4b0e-b6a8-62712ece75ff	11.0	11.0		1.0	T
+node-2	GigabitEthernet0/0/0/1	ISIS_IPv4_L2	1a8b0b08-a147-47c3-8a43-002c92b0e29c	10.0	10.0		1.0	T
+node-2	GigabitEthernet0/0/0/1	ISIS_IPv6_L2	df158677-56f1-4312-9d76-046fa606db7f	10.0			1.0	T
+node-3	HundredGigE0/0/0/2	ISIS_IPv4_L2	c9e53e98-97bf-4da5-a6f2-f3c038bd32e3	10.0				T
+node-3	HundredGigE0/0/0/2	ISIS_IPv6_L2	39d39be4-0ecf-4303-b72c-3f6ffc123c18	10.0				T
+node-4	HundredGigE0/0/0/4	ISIS_IPv4_L2	e16e5ad5-7e71-4356-b990-a3859cf20af9	100.0				T
+node-4	HundredGigE0/0/0/4	ISIS_IPv6_L2	9b5d6288-c65b-4b48-86ac-ffedde9cfbfc	100.0				T
+node-2	GigabitEthernet0/0/0/2	ISIS_IPv4_L2	82f92e85-aa87-4c83-8a66-d385a27536ab	100.0	100.0		1.0	T
+node-2	GigabitEthernet0/0/0/2	ISIS_IPv6_L2	23e3e84b-a365-4300-a886-ec866a6413a5	100.0	100.0		1.0	T
+node-1	HundredGigE0/0/0/6	ISIS_IPv4_L2	c43b4933-3d2c-49ce-9433-a625394500e5	100.0	10.0		10.0	T
+node-1	HundredGigE0/0/0/6	ISIS_IPv6_L2	8c6bd0cf-2bfc-4195-a0b6-e21b6a85501e	100.0			10.0	T
+node-2	GigabitEthernet0/0/0/0	ISIS_IPv4_L2	f26b59e9-32c8-4953-92df-ab8b5e164e4a	100.0	10.0		10.0	T
+node-2	GigabitEthernet0/0/0/0	ISIS_IPv6_L2	c816eec2-69a1-4d9e-a638-db69f9d7084f	100.0			10.0	T
+node-1	HundredGigE0/0/0/0	ISIS_IPv4_L2	f287b023-a26e-4cf9-a067-566cdf234ec7	100.0	10.0		1.0	T
+node-1	HundredGigE0/0/0/0	ISIS_IPv6_L2	9f9d7783-5a0d-4cea-9630-4ca2017e176a	100.0			1.0	T
+node-5	HundredGigE0/0/0/0	ISIS_IPv4_L2	03f92a8b-ec30-4a6f-9f5c-72494e4f4721	100.0	10.0		1.0	T
+node-5	HundredGigE0/0/0/0	ISIS_IPv6_L2	76c9526b-e317-45e4-8f9a-29c5b26345ff	100.0			1.0	T
+node-4	HundredGigE0/0/0/0	ISIS_IPv4_L2	3caf74a3-10d9-4946-8b8b-ace68ec455cb	100.0	10.0		1.0	T
+node-4	HundredGigE0/0/0/0	ISIS_IPv6_L2	a4545726-1d45-4533-a1f1-1454746d08f2	100.0			1.0	T
+node-7	GigabitEthernet0/0/0/1	ISIS_IPv4_L2	76495bda-de4c-4aea-af07-b594bc9217a5	100.0	10.0		1.0	T
+node-7	GigabitEthernet0/0/0/1	ISIS_IPv6_L2	d6089318-748b-46b1-bc84-199695978870	100.0			1.0	T
+node-8	GigabitEthernet0/0/0/3	ISIS_IPv4_L2	638938be-4165-4a2c-8471-9dbec7a8e7f3	10.0	10.0		1.0	T
+node-8	GigabitEthernet0/0/0/3	ISIS_IPv6_L2	afdca3a4-9f94-4f55-8ef6-f6dcc7c6ad3d	10.0			1.0	T
+node-7	GigabitEthernet0/0/0/3	ISIS_IPv4_L2	c5c65a1e-ded6-4dc3-a6d1-7d17a10c6da2	10.0	10.0		1.0	T
+node-7	GigabitEthernet0/0/0/3	ISIS_IPv6_L2	225610ce-88fb-4e66-95ec-65ddbd45d82f	10.0			1.0	T
+node-8	GigabitEthernet0/0/0/2	ISIS_IPv4_L2	31ce7e7f-ef8d-4355-86e9-7bd4f04521df	10.0	10.0		1.0	T
+node-8	GigabitEthernet0/0/0/2	ISIS_IPv6_L2	2122c5ea-5ed7-42de-b9d2-26e93b87fc85	10.0	10.0		1.0	T
+node-1	HundredGigE0/0/0/3	ISIS_IPv4_L2	00c6288c-4349-4878-87f1-462a793ed5fb	10.0	10.0		1.0	T
+node-1	HundredGigE0/0/0/3	ISIS_IPv6_L2	4aaabaf9-1550-476c-8217-baef7605c228	10.0	10.0		1.0	T
+node-7	GigabitEthernet0/0/0/6	ISIS_IPv4_L2	677e19d3-4e09-4222-9e39-618b7b53b30a	100.0	100.0		30.0	T
+node-7	GigabitEthernet0/0/0/6	ISIS_IPv6_L2	0617fa54-2bcb-437c-a92f-4abe7aa3881c	100.0			30.0	T
+node-5	HundredGigE0/0/0/4	ISIS_IPv4_L2	46a58dc3-501e-489f-8e78-4fd25796f449	100.0	100.0			T
+node-5	HundredGigE0/0/0/4	ISIS_IPv6_L2	335bbfc4-23e6-4e94-86f7-f566cb19ca14	100.0				T
+node-8	GigabitEthernet0/0/0/0	ISIS_IPv4_L2	5302a173-1f5c-43e2-8f8c-e35d79fe9527	10.0	10.0		1.0	T
+node-8	GigabitEthernet0/0/0/0	ISIS_IPv6_L2	c3bb2035-5e9a-473a-8fba-6f5f42770f79	10.0	10.0		1.0	T
+node-5	HundredGigE0/0/0/2	ISIS_IPv4_L2	2f80c5cb-524e-4dcd-9640-27bcb7b5020e	10.0	10.0		1.0	T
+node-5	HundredGigE0/0/0/2	ISIS_IPv6_L2	5010a27e-3447-4159-893d-c23e0bb79d09	10.0	10.0		1.0	T
+
+<FlexAlgorithms>
+SRAlgorithm	IGPProcessID	OSPFArea	ISISLevel	MetricType	IncludeAll	IncludeAny	ExcludeAll
+128	0			delay			
+129	0			igp			102
+130	0			igp			101
+
+<LSPs>
+Name	Source	SourceIP	Destination	DestinationIP	NetIntDestination	SetupBW	SetupPri	HoldPri	Active	Private	Topology	Class	P2MPLSP	SID	Include	IncludeAny	Exclude	Loadshare	HopLimit	ActivePath	MetricType	Metric	Type	FRREnabled	FRRInterface	NetIntFRRInterface	PolicyColor	Description	UUID	DisjointGroup	DisjointPriority	PCEDelegated	DelegatedPCEAddress	Autobandwidth	TEMetricDisabled	Tags	IncludeAnyDemandsTags	NetIntType	NetIntIndex	NetIntAdminStatus	NetIntOperStatus	NetIntActivePath	NetIntLastPathChange	NetIntTunnelInterfaceId
+srte_c_1000_ep_198.19.1.4	node-5	198.19.1.5	node-4	198.19.1.4			7	7	T	F		Default		80004				1.0		1	NonTrafficSteering		SRv4	T			1000		311adf02-623e-4c1b-a488-01e39951d56b					F	F									
+srte_c_1001_ep_198.19.1.4	node-5	198.19.1.5	node-4	198.19.1.4			7	7	T	F		Default		80013				1.0		1	NonTrafficSteering		SRv4	T			1001		cd18a28e-8c0e-4527-9b8a-c9715a2d17a7					F	F									
+srte_c_1002_ep_198.19.1.4	node-5	198.19.1.5	node-4	198.19.1.4			7	7	T	F		Default		80102				1.0		1	NonTrafficSteering		SRv4	T			1002		01f17d60-0284-4396-9ce9-ab08ed88fcf5					F	F									
+
+<LSPPaths>
+LSP	Source	PathName	SetupBW	PathOption	Preference	SetupPri	HoldPri	UUID	Include	IncludeAny	Exclude	HopLimit	Standby	PCEDelegated	Active	Tags	NetIntPathType	ProtocolOrigin	SRCandidatePathName	MetricType	Dynamic
+srte_c_1000_ep_198.19.1.4	node-5			1	100			1b703326-9742-47d9-ac1c-99c0a84358cb							T				srte_c_1000_ep_198.19.1.4	IGP Metric	F
+srte_c_1001_ep_198.19.1.4	node-5			1	100			0ca4b604-adc2-4500-9c01-05732518a9d6							T				srte_c_1001_ep_198.19.1.4	IGP Metric	F
+srte_c_1002_ep_198.19.1.4	node-5			1	100			e39b75a8-9239-43b6-8556-4adeed6c9c1a							T				srte_c_1002_ep_198.19.1.4	IGP Metric	F
+
+<LSPPathWeightedSegmentLists>
+LSP	Source	PathOption	SLName	Weight
+srte_c_1000_ep_198.19.1.4	node-5	1	1b703326-9742-47d9-ac1c-99c0a84358cb	1.0
+srte_c_1001_ep_198.19.1.4	node-5	1	0ca4b604-adc2-4500-9c01-05732518a9d6	1.0
+srte_c_1002_ep_198.19.1.4	node-5	1	e39b75a8-9239-43b6-8556-4adeed6c9c1a	1.0
+
+<SegmentLists>
+Source	Name
+node-5	1b703326-9742-47d9-ac1c-99c0a84358cb
+node-5	0ca4b604-adc2-4500-9c01-05732518a9d6
+node-5	e39b75a8-9239-43b6-8556-4adeed6c9c1a
+
+<SegmentListHops>
+Source	Name	Step	SegmentNode	SegmentInterface	SegmentLSP	SegmentAnycastGroup	Type	SID	SRv6SID	NetIntHop
+node-5	1b703326-9742-47d9-ac1c-99c0a84358cb	1	node-5	HundredGigE0/0/0/4			Interface	80007		
+node-5	1b703326-9742-47d9-ac1c-99c0a84358cb	2	node-7	GigabitEthernet0/0/0/1			Interface	80005		
+node-5	0ca4b604-adc2-4500-9c01-05732518a9d6	1	node-5	HundredGigE0/0/0/0			Interface	80009		
+node-5	0ca4b604-adc2-4500-9c01-05732518a9d6	2	node-2				Node	17002		
+node-5	0ca4b604-adc2-4500-9c01-05732518a9d6	3	node-2	GigabitEthernet0/0/0/2			Interface	80001		
+node-5	e39b75a8-9239-43b6-8556-4adeed6c9c1a	1	node-7				Node	17007		
+node-5	e39b75a8-9239-43b6-8556-4adeed6c9c1a	2	node-4				Node	17004		
+
+<TreeSIDLSPs>
+Source	Name	UUID	IDXR	Type	MetricType	PCCAddress	PCEAddress	SetupPri	HoldPri	Include	IncludeAny	Exclude	FRREnabled	Active	Tags
+node-5	STATIC_TREE_902	8ddfb095-b010-4d9b-9c0d-19225af9817c	0	static	te	198.19.1.5	172.18.116.219	0					T	T	
+node-5	STATIC_TREE_903	35b0949d-fb23-41b2-a150-1243410fd67f	0	static	delay	198.19.1.5	172.18.116.219	0					T	T	
+node-5	STATIC_TREE_901	38c73b2a-5ae5-4d85-81e0-1342b3cedade	0	static	igp	198.19.1.5	172.18.116.219	0					T	T	
+
+<TreeSIDNodes>
+LSPSource	LSPName	Node	Type	IPv4
+node-5	STATIC_TREE_902	node-7	TRANSIT	T
+node-5	STATIC_TREE_902	node-4	EGRESS	T
+node-5	STATIC_TREE_902	node-1	BUD	T
+node-5	STATIC_TREE_902	node-8	EGRESS	T
+node-5	STATIC_TREE_902	node-5	INGRESS	T
+node-5	STATIC_TREE_903	node-7	TRANSIT	T
+node-5	STATIC_TREE_903	node-4	EGRESS	T
+node-5	STATIC_TREE_903	node-1	BUD	T
+node-5	STATIC_TREE_903	node-8	EGRESS	T
+node-5	STATIC_TREE_903	node-5	INGRESS	T
+node-5	STATIC_TREE_901	node-4	EGRESS	T
+node-5	STATIC_TREE_901	node-3	TRANSIT	T
+node-5	STATIC_TREE_901	node-1	BUD	T
+node-5	STATIC_TREE_901	node-8	BUD	T
+node-5	STATIC_TREE_901	node-5	INGRESS	T
+
+<TreeSIDHops>
+LSPSource	LSPName	Index	ParentIndex	UUID	SourceNode	SourceInterface	IPv4
+node-5	STATIC_TREE_902	1		5be3cbf4-8c00-4ed1-8984-9e277009e411	node-5	HundredGigE0/0/0/0	T
+node-5	STATIC_TREE_902	2		fa898448-ff4b-4581-92ad-b4a70a378942	node-5	HundredGigE0/0/0/2	T
+node-5	STATIC_TREE_902	3	1	c0930bad-79e6-4b0a-b0f8-c11a41f93457	node-1	HundredGigE0/0/0/2	T
+node-5	STATIC_TREE_902	4	3	9910b74f-e654-4669-b990-9edace16d08f	node-7	GigabitEthernet0/0/0/1	T
+node-5	STATIC_TREE_903	1		fa898448-ff4b-4581-92ad-b4a70a378942	node-5	HundredGigE0/0/0/2	T
+node-5	STATIC_TREE_903	2		5be3cbf4-8c00-4ed1-8984-9e277009e411	node-5	HundredGigE0/0/0/0	T
+node-5	STATIC_TREE_903	3	2	c0930bad-79e6-4b0a-b0f8-c11a41f93457	node-1	HundredGigE0/0/0/2	T
+node-5	STATIC_TREE_903	4	3	9910b74f-e654-4669-b990-9edace16d08f	node-7	GigabitEthernet0/0/0/1	T
+node-5	STATIC_TREE_901	1		fa898448-ff4b-4581-92ad-b4a70a378942	node-5	HundredGigE0/0/0/2	T
+node-5	STATIC_TREE_901	2	1	e0b60ffb-e799-4810-98a5-10892c1e3daa	node-8	GigabitEthernet0/0/0/2	T
+node-5	STATIC_TREE_901	3	2	2242a19c-c934-45ca-8f2f-301d770cbd16	node-1	HundredGigE0/0/0/4	T
+node-5	STATIC_TREE_901	4	3	60007c9e-377f-4a87-8605-a42cb3ccbe3c	node-3	HundredGigE0/0/0/3	T
+
+<ServiceClasses>
+Name
+Default
+
+<TrafficLevels>
+Name
+Default
+
+<InterfaceTraffic>
+Node	Interface	TrafficLevel	Queue	TraffMeas	GrowthPercent
+node-3	HundredGigE0/0/0/0	Default		0.003	
+node-1	HundredGigE0/0/0/4	Default		0.002	
+node-1	HundredGigE0/0/0/2	Default		0.002	
+node-7	GigabitEthernet0/0/0/2	Default		0.003	
+node-7	GigabitEthernet0/0/0/4	Default		0.002	
+node-3	HundredGigE0/0/0/1	Default		0.002	
+node-4	HundredGigE0/0/0/2	Default		0.002	
+node-3	HundredGigE0/0/0/3	Default		0.002	
+node-2	GigabitEthernet0/0/0/1	Default		0.002	
+node-3	HundredGigE0/0/0/2	Default		0.002	
+node-4	HundredGigE0/0/0/4	Default		0.002	
+node-2	GigabitEthernet0/0/0/2	Default		0.002	
+node-1	HundredGigE0/0/0/6	Default		0.002	
+node-2	GigabitEthernet0/0/0/0	Default		0.002	
+node-1	HundredGigE0/0/0/0	Default		0.002	
+node-5	HundredGigE0/0/0/0	Default		0.002	
+node-4	HundredGigE0/0/0/0	Default		0.002	
+node-7	GigabitEthernet0/0/0/1	Default		0.002	
+node-8	GigabitEthernet0/0/0/3	Default		0.002	
+node-7	GigabitEthernet0/0/0/3	Default		0.002	
+node-8	GigabitEthernet0/0/0/2	Default		0.003	
+node-1	HundredGigE0/0/0/3	Default		0.003	
+node-7	GigabitEthernet0/0/0/6	Default		0.002	
+node-5	HundredGigE0/0/0/4	Default		0.002	
+node-8	GigabitEthernet0/0/0/0	Default		0.003	
+node-5	HundredGigE0/0/0/2	Default		0.002	
+
+<InterfaceIPAddresses>
+Node	Interface	IPv4Address	IPv4PrefixLength	IPv6Address	IPv6PrefixLength
+node-3	HundredGigE0/0/0/0	10.1.3.3			
+node-3	HundredGigE0/0/0/0			2001::103:3	
+node-1	HundredGigE0/0/0/4	10.1.3.1			
+node-1	HundredGigE0/0/0/4			2001::103:1	
+node-1	HundredGigE0/0/0/2	10.1.7.1			
+node-1	HundredGigE0/0/0/2			2001::107:1	
+node-7	GigabitEthernet0/0/0/2	10.1.7.7			
+node-7	GigabitEthernet0/0/0/2			2001::107:7	
+node-7	GigabitEthernet0/0/0/4	10.3.7.7			
+node-7	GigabitEthernet0/0/0/4			2001::307:7	
+node-3	HundredGigE0/0/0/1	10.3.7.3			
+node-3	HundredGigE0/0/0/1			2001::307:3	
+node-4	HundredGigE0/0/0/2	10.3.4.4			
+node-4	HundredGigE0/0/0/2			2001::304:4	
+node-3	HundredGigE0/0/0/3	10.3.4.3			
+node-3	HundredGigE0/0/0/3			2001::304:3	
+node-2	GigabitEthernet0/0/0/1	10.2.3.2			
+node-2	GigabitEthernet0/0/0/1			2001::203:2	
+node-3	HundredGigE0/0/0/2	10.2.3.3			
+node-3	HundredGigE0/0/0/2			2001::203:3	
+node-4	HundredGigE0/0/0/4	10.2.4.4			
+node-4	HundredGigE0/0/0/4			2001::204:4	
+node-2	GigabitEthernet0/0/0/2	10.2.4.2			
+node-2	GigabitEthernet0/0/0/2			2001::204:2	
+node-1	HundredGigE0/0/0/6	10.1.2.1			
+node-1	HundredGigE0/0/0/6			2001::102:1	
+node-2	GigabitEthernet0/0/0/0	10.1.2.2			
+node-2	GigabitEthernet0/0/0/0			2001::102:2	
+node-1	HundredGigE0/0/0/0	10.1.5.1			
+node-1	HundredGigE0/0/0/0			2001::105:1	
+node-5	HundredGigE0/0/0/0	10.1.5.5			
+node-5	HundredGigE0/0/0/0			2001::105:5	
+node-4	HundredGigE0/0/0/0	10.4.7.4			
+node-4	HundredGigE0/0/0/0			2001::407:4	
+node-7	GigabitEthernet0/0/0/1	10.4.7.7			
+node-7	GigabitEthernet0/0/0/1			2001::407:7	
+node-8	GigabitEthernet0/0/0/3	10.7.8.8			
+node-8	GigabitEthernet0/0/0/3			2001::708:8	
+node-7	GigabitEthernet0/0/0/3	10.7.8.7			
+node-7	GigabitEthernet0/0/0/3			2001::708:7	
+node-8	GigabitEthernet0/0/0/2	10.1.8.8			
+node-8	GigabitEthernet0/0/0/2			2001::108:8	
+node-1	HundredGigE0/0/0/3	10.1.8.1			
+node-1	HundredGigE0/0/0/3			2001::108:1	
+node-7	GigabitEthernet0/0/0/6	10.5.7.7			
+node-7	GigabitEthernet0/0/0/6			2001::507:7	
+node-5	HundredGigE0/0/0/4	10.5.7.5			
+node-5	HundredGigE0/0/0/4			2001::507:5	
+node-8	GigabitEthernet0/0/0/0	10.5.8.8			
+node-8	GigabitEthernet0/0/0/0			2001::508:8	
+node-5	HundredGigE0/0/0/2	10.5.8.5			
+node-5	HundredGigE0/0/0/2			2001::508:5	
+
+<LSPTraffic>
+Name	Source	TrafficLevel	Queue	TraffMeas
+srte_c_1000_ep_198.19.1.4	node-5	Default		0.0
+srte_c_1001_ep_198.19.1.4	node-5	Default		0.0
+srte_c_1002_ep_198.19.1.4	node-5	Default		0.0
+
+<LSPClasses>
+Name
+Default
+
+<ASRelationships>
+FromAS	ToAS	RoutingPolicy
+
+<Sites>
+Name	DisplayName	LocationCode	ParentSite	Protected	Active	Failed	Longitude	Latitude	Tags
+
+<NodeSiteMappingRules>
+Order	NodeMatches	SiteExpression
+
+<SRv6NodeSIDPrefixLoopbacks>
+Node	SID	IPAddress	IGPProcessID
+
+<L3L1Links>
+Node	L1Node
+
+<Ports>
+Node	Port	L1Node	L1Port	Description	MACAddress	Interface	Capacity	Active	Failed	Protected	Tags	NetIntPortIndex	NetIntInterfaceIndex	NetIntActorPortIndex	NetIntRemotePortIndex	LACPMuxState	NetIntInventoryId
+
+<PortTraffic>
+Node	Port	TrafficLevel	Queue	TraffMeas
+
+<PortCircuits>
+Name	Description	NodeA	NodeB	PortA	PortB	Capacity	Active	Failed	Protected	Tags
+
+<AdminGroups>
+Affinity	Name
+
+<CentralFrequencyIDExcludelists>
+Name	CentralFrequencyIDExcludelist	FrequencyIDLowerBound	FrequencyIDUpperBound
+
+<InterfaceTEPriorities>
+Node	Interface	TEPriority	UnreservedBWMeas
+
+<FlexAlgoSRLGs>
+Name
+
+<FlexAlgoSRLGInterfaces>
+SRLG	Node	Interface
+
+<FlexAlgoExcludeSRLGs>
+SRAlgorithm	IGPProcessID	OSPFArea	ISISLevel	FlexAlgoSRLG
+
+<CircuitStyleSRPolicies>
+NodeA	NodeAIP	NodeB	NodeBIP	Color	Tags
+
+<L1Links>
+Name	Description	L1NodeA	L1NodeB	Metric	Distance	Delay	Loss	NoiseAtoB	NoiseSigmaAtoB	NoiseBtoA	NoiseSigmaBtoA	SSONEnabled	CentralFrequencyIDExcludelistName	Protected	Active	Failed	Tags
+
+<L1LinkWaypoints>
+L1NodeA	L1NodeB	L1LinkName	Order	Longitude	Latitude	Description
+
+<L1Nodes>
+Name	Type	Description	Site	Protected	Active	Failed	IPAddress	IPManage	Vendor	Model	OS	Longitude	Latitude	Tags
+
+<L1NodeSiteMappingRules>
+Order	L1NodeMatches	SiteExpression
+
+<L1Ports>
+L1Node	L1Port	Capacity	Active	Failed	Protected	Description	Tags
+
+<L1Circuits>
+Name	L1NodeA	L1PortA	L1NodeB	L1PortB	ActivePath	MinRoutedPaths	BW	DisjointGroup	DisjointPriority	PreferLowerFrequencyIDs	SSONEnabled	Tags
+
+<L1CircuitPaths>
+L1Circuit	L1NodeA	L1PortA	L1NodeB	L1PortB	PathOption	Standby	Active	CentralFrequencyID	SpectralWidthID	AutoSpectrumAssignment	Distance	Delay	FeasibilityLimit	FeasibilityAcceptanceThreshold	SetupPriority	Tags
+
+<L1CircuitPathHops>
+L1Circuit	L1NodeA	L1PortA	L1NodeB	L1PortB	PathOption	Type	Step	HopL1NodeA	HopL1NodeB	HopL1Link	CentralFrequencyID
+
+<ActualL1CircuitPathHops>
+L1Circuit	L1NodeA	L1PortA	L1NodeB	L1PortB	PathOption	Step	HopL1NodeA	HopL1NodeB	HopL1Link	CentralFrequencyID
+
+<L1DiversityConstraints>
+Name	L1CircuitANodeA	L1CircuitAPortA	L1CircuitANodeB	L1CircuitAPortB	L1CircuitBNodeA	L1CircuitBPortA	L1CircuitBNodeB	L1CircuitBPortB	L1NodeDiversity	L1LinkDiversity	SRLGDiversity	Type	Active
+
+<Queues>
+Name
+
+<InterfaceQueues>
+Node	Interface	Queue	Priority	Weight	PoliceLimit
+
+<P2MPLSPs>
+Name	Source	DisjointGroup	DisjointPriority	Tags
+
+<NamedPaths>
+Name	Source	Active
+
+<NamedPathHops>
+Name	Source	Step	Node	Interface	NetIntHop	Type
+
+<ActualPathHops>
+LSP	Source	PathOption	Step	Node	Interface	NetIntHop	NetIntCalculatedHop
+
+<AnycastGroups>
+Name	SID
+
+<AnycastGroupMembers>
+AnycastGroup	Node
+
+<NodeGroups>
+Name
+
+<NodeGroupMembers>
+NodeGroup	Node
+
+<IGPABRExclusions>
+Node	ExcludeNode
+
+<SegmentRoutingFRRs>
+Node	Interface	DestinationGroup	OutInterface	SLName
+
+<ServiceClassPolicy>
+ServiceClass	InterfacePolicyGroup	ServiceUtilBound	ServiceWCUtilBound
+
+<ServiceClassQueueMapping>
+ServiceClass	Queue
+
+<MulticastFlows>
+S	G	Tags
+
+<MulticastFlowDestinations>
+S	G	Destination
+
+<ExternalEndpoints>
+Name	Tags
+
+<ExternalEndpointMembers>
+Endpoint	Member	Priority	TrafficBalancePercent	Type	Protected	Active	Failed
+
+<Demands>
+Name	Source	Destination	ServiceClass	Domain	Active	Reroutable	RequireLSP	PrivateLSPName	PrivateLSPSource	Topology	LatencyBound	Tags
+
+<MulticastFlowHops>
+S	G	Node	Interface
+
+<MulticastFlowTraffic>
+S	G	TrafficLevel	Queue	TraffMeas
+
+<MulticastFlowExternalHops>
+S	G	Direction	Node	Interface	Index
+
+<DemandTraffic>
+Name	Source	Destination	ServiceClass	TrafficLevel	Traffic	GrowthPercent
+
+<NodeTraffic>
+Node	TrafficLevel	Queue	SrcTraffMeas	DestTraffMeas
+
+<TreeSIDLSPTraffic>
+LSPSource	LSPName	TrafficLevel	Queue	TraffMeas
+
+<SRLGs>
+Name	Active	Description	Tags	Failed
+
+<SRLGNodes>
+SRLG	Node
+
+<SRLGCircuits>
+SRLG	NodeA	InterfaceA	NodeB	InterfaceB
+
+<SRLGPorts>
+SRLG	Node	Port
+
+<SRLGPortCircuits>
+SRLG	NodeA	PortA	NodeB	PortB
+
+<SRLGExternalEndpointMembers>
+SRLG	EndPoint	Member
+
+<SRLGL1Nodes>
+SRLG	L1Node
+
+<SRLGL1Links>
+SRLG	L1NodeA	L1NodeB	Name
+
+<NodeConfiguredSRLGs>
+Node	SRLG
+
+<Flows>
+FlowID	FromType	ToType	Tags
+
+<FlowFrom>
+FlowID	Node
+
+<FlowTo>
+FlowID	Node
+
+<FlowTraffic>
+FlowID	TrafficLevel	Queue	TraffMeas
+
+<PlotLayouts>
+Name	PlotLayoutType
+
+<PlotLayoutElements>
+PlotLayoutName	ElementSite	ElementNode	ElementInterface	ElementL1Node	X	Y	Shown	Expanded	LabelDir
+
+<PlotLayoutOptions>
+PlotLayoutName	PlotLayoutType	Property	Value
+
+<PlotSiteToSiteOptions>
+SiteA	SiteB	PlotLayoutName	InterfaceStyle
+
+<PlotNodeToNodeOptions>
+NodeA	NodeB	PlotLayoutName	InterfaceStyle
+
+<PlotViewInterfaces>
+PlotView	Node	Interface	Color	FillPercent	FillBound
+
+<Reports>
+Name	DateCreated
+
+<ReportTableInteractions>
+Report	Section	Reference	ReferenceType	Table	SourceJoinColumns	DestJoinColumns	ObjectColumn
+
+<ReportSections>
+Name	Report	Type	DisplayIndex	DisplayName	Contents
+
+<DemandGroupings>
+Name	SourceSiteEquals	SourceASEquals	SourceNodeEquals	SourceEndpointEquals	DestSiteEquals	DestASEquals	DestNodeEquals	DestEndpointEquals	DemandNameEquals	ServiceClassEquals	SourceNodeMatches	DestNodeMatches	TagsInclude	SourceSiteTagsInclude	DestSiteTagsInclude	SourceNodeTagsInclude	DestNodeTagsInclude	SourceASTagsInclude	DestASTagsInclude	GrowthTrafficTotal	GrowthTrafficPercent	GrowthTrafficInc
+
+<VPNs>
+Name	Type	Connectivity	ServiceClass	Tags
+
+<VPNNodes>
+Node	Type	Name	VPN	Description	RTImport	RTExport	RD	Tags	NetIntVirtualCircuitType
+
+<VPNNodesTraffic>
+Node	Type	Name	TrafficLevel	Queue	SrcTraffMeas	DestTraffMeas
+
+<Topologies>
+Name
+
+<InterfaceTopologies>
+Node	Interface	Topology
+
+<ServiceClassLSPClassMapping>
+ServiceClass	Priority	LSPClass
+
+<NetIntRouters>
+SysName	IpAddress	Vendor	Description	SwDesc	EntityDesc	MulticastMIB	RsvpMIB	LdpMIB	FlowSamplingRate	ServiceClasses	ServiceClassIndexes	RE0CPU1m	RE0CPU5m	RE0Mem	RE1CPU1m	RE1CPU5m	RE1Mem
+
+<NetIntInterfaces>
+Node	Interface	IGPMetric	MetricISISLevel1	Capacity	PolicyGroup	TEMetric	TEEnabled	IPv6IGPMetric	IPv6TEMetric	ASLATEMetric	ASLADelay	SRv6ASLATEMetric	SRv6ASLADelay	ResvBW	PCMinLinks	PCMinBW	FRREnabled	SRFRREnabled	Area	ISISLevel	IGPProcessID	Affinities	FlexAlgoAffinities	Description	UUID	LocalAddress	UnnumberedIndex	NetIntIndex	NetIntContainerIndex	NetIntType	NetIntAdminStatus	NetIntOperStatus	NetIntSubnet	Type	Aggregated	AggregatedInside	OnTopOf	NetIntNetMask	NetIntSrlg	VPNNode	Place	IPAddress	FlowReceived
+
+<NetIntInterfaceTraffic>
+Node	Interface	TrafficLevel	Queue	TraffMeas	GrowthPercent	NetIntInTraffMeas	NetIntPacketsOut	NetIntPacketsIn	NetIntErrorPacketsIn	NetIntDropPacketsOut	NetIntDropTraffOut	FlowTrafficEstimate	FlowTraffic	FlowTrafficRatio
+
+<NetIntIfMeasurements>
+Node	MeasType	NetIntIndex	Interface	Queue	OutOctets_avg	OutOctets_samples	InOctets_avg	InOctets_samples	OutPackets_avg	OutPackets_samples	InPackets_avg	InPackets_samples	InErrors_avg	InErrors_samples	OutDiscards_avg	OutDiscards_samples	OutOctetDiscards_avg	OutOctetDiscards_samples
+
+<NetIntHistory>
+Time	Revision	ToolRun	Options	Comment
+
+<NetIntBgpSpeakers>
+Router	BgpId	As
+
+<NetIntBgpPeers>
+Router	RemoteAddr	PeerId	As	State	Status	LocalAddr	ExitInterface	MultihopExit
+
+<NetIntIpAddresses>
+Node	IpAddress	NetIntIndex	NetPrefixLength	AddressFamily
+
+<NetIntSubnets>
+Node	Subnet	IGPmetric	RemoteNode
+
+<NetIntMulticastFlows>
+Node	S	G	NetMask	Index
+
+<NetIntMulticastFlowHops>
+Node	S	G	NetMask	Index
+
+<NetIntMulticastMeasurements>
+Node	MeasType	S	G	OutOctets_avg	OutOctets_samples
+
+<NetIntLspMeasurements>
+Node	MeasType	NetIntIndex	OutOctets_avg	OutOctets_samples
+
+<NetIntLdp>
+Node	DestNode	LspID	NetMask	Index	OutIfIndex
+
+<NetIntLdpMeasurements>
+Node	MeasType	NetIntIndex	OutOctets_avg	OutOctets_samples	TransitOctets_avg	TransitOctets_samples	InOctets_avg	InOctets_samples
+
+<NetIntInterASFlows>
+SourceAS	FromNeighborAS	IngressNode	IngressInterface	EgressNode	EgressInterface	ToNeighborAS	ASPath	DestinationAS	IPProtocolVersion	Extras	Traffic
+
+<NetIntMacAddresses>
+Node	NetIntIndex	MAC	Interface	IPv4Address	IPv6Address
+
+<NetIntMacMeasurements>
+Node	MeasType	NetIntIndex	MAC	OutOctets_avg	OutOctets_samples	InOctets_avg	InOctets_samples
+
+<NetIntMacTraffic>
+Node	Interface	MAC	TrafficLevel	OutTraffMeas	InTraffMeas
+
+<NetIntPlanFileGenerationTime>
+Time
+
+<NetIntInterfaceQueues>
+Node	Interface	Queue	NetIntIndex
+
+<NetIntNodeInventory>
+Node	Id	Type	Name	Description	SerialNumber	ParentId
+
+<NetIntHardwareChassis>
+Node	SnmpId	ParentId	Model	Name	Description	SerialNumber	NumChildren	ParentTable	SlotNumber
+
+<NetIntHardwareBackPlane>
+Node	SnmpId	ParentId	Model	Name	Description	SerialNumber	NumChildren	ParentTable	SlotNumber
+
+<NetIntHardwareContainer>
+Node	SnmpId	ParentId	Model	Name	Description	SerialNumber	NumChildren	ParentTable	SlotNumber
+
+<NetIntHardwareModule>
+Node	SnmpId	ParentId	Model	Name	Description	SerialNumber	NumChildren	ParentTable	SlotNumber
+
+<NetIntHardwarePowerSupply>
+Node	SnmpId	ParentId	Model	Name	Description	SerialNumber	NumChildren	ParentTable	SlotNumber
+
+<NetIntHardwareSensor>
+Node	SnmpId	ParentId	Model	Name	Description	SerialNumber	NumChildren	ParentTable	SlotNumber
+
+<NetIntHardwarePort>
+Node	SnmpId	ParentId	Model	Name	Description	SerialNumber	NumChildren	ParentTable	SlotNumber
+
+<NetIntHardwareFan>
+Node	SnmpId	ParentId	Model	Name	Description	SerialNumber	NumChildren	ParentTable	SlotNumber
+
+<NetIntHardwareOther>
+Node	SnmpId	ParentId	Model	Name	Description	SerialNumber	NumChildren	ParentTable	SlotNumber
+
+<NetIntDemandNameSequence>
+Sequence	Name	Type
+
+<NetIntAdjacencySIDs>
+Node	Prefix	AdjacencySID	Flags	RemoteNode
+
+<NetIntPrefixSIDs>
+Node	Prefix	PrefixSID	Flags	Anycast
+
+<NetIntL1Circuits>
+CircuitID	CircuitName	SourceL1Node	DestinationL1Node	SourceL1Port	DestinationL1Port	BW	SSONEnabled	RestorationType	Type	CarryingVC	CarriedByVC	Active	LastSeen
+
+<NetIntL1CircuitPathHops>
+CircuitID	Role	Step	HopNodeID	HopLinkID	HopType	HopConstraintType	IsActualPathHop
+
+<NetIntL1Links>
+LinkID	SourceL1Node	DestinationL1Node	Name	Dist	Latency	IGPMetric	LinkDescription	ReverseL1LinkID	IsDataValid	Noise	NoiseSigma	MaxL1Circuits	FiberType	Loss	CentralFrequencyExcludelistName	SRLG	IngressSideID	EgressSideID	IsNyquist	Active	LastSeen
+
+<NetIntL1Nodes>
+NodeID	Name	SiteName	NodeDesc	IPAddress	IPManage	Vendor	Model	OS	NodeType	SRLG	Active	LastSeen
+
+<NetIntL1Ports>
+NodeID	PortID	PortType	PortName	BW	InUse	FECType	Power	OSNR	Active	LastSeen
+
+<NetIntL1Sites>
+Name	DisplayName	LocationCode	Longitude	Latitude	ParentSite	Active	LastSeen
+
+<NetIntL1CircuitPaths>
+CircuitID	Role	AutoProvisioning	Wavelength	ChannelNumber	CentralFrequency	OpticalWidth	ValidationType	AcceptanceThreshold
+
+<NetIntL1DiversityConstraints>
+Name	Type	L1CircuitA	L1CircuitB	L1NodeDiversity	L1LinkDiversity	SRLGDiversity	Active
+
+<NetIntL3PortConnections>
+Index	NodeID	PortID	OpticalPortID	L3Node	L3Port
+
+<NetIntXtcEvents>
+PcepLspId	PeerAddress	TunnelName	EventId	EventMessage	TimeStamp
+
+<NetIntXtcIGPSRGBInfo>
+NodeIdentifier	IgpId	IsLinkState	IsisSystemId	IsisLevel	OspfRouterId	OspfArea	BgpRouterId	ConfederationAsn	LsIdentifier	Start	Size	DomainIdentifier	ASN
+
+<NetIntXtcLinks>
+NodeIdentifier	RemoteNodeName	RemoteIpv4teRouterId	RemoteIpv4BgpRouterId	RemoteIsisSystemId	RemoteOspfRouterId	LocalIsisSystemId	LocalOspfRouterId	RemoteNodeIdentifier	UnidirectionalMinDelay	LocalIpv4Address	RemoteIpv4Address	LocalIpv6Address	RemoteIpv6Address	TeMetric	MaximumLinkBandwidth	MaxReservableBandwidth	Srlgs	IgpMetric	AdministrativeGroups	FlexAlgoAslaAdminGroups	LocalIgpId	LocalIsisLevel	LocalOspfArea	LocalIpv4BgpRouterID	LocalDomainIdentifier	LocalAsn	RemoteIgpId
+
+<NetIntXtcTopoNodes>
+NodeIdentifier	NodeName	Ipv4bgpRouterIdSet	Ipv4bgpRouterId	Ipv4teRouterIdSet	Ipv4teRouterId	IPv6RouterIdSet	IPv6RouterId	CommonIpv4RouterId	SystemId	NodeIdentifierXr	Overload
+
+<NetIntXtcTunnelDetails>
+PcepLspId	PeerAddress	TunnelName	PccAddress	TunnelNameXr	XtcControlled	Color	InterfaceName	ProfileId	SourceAddress	DestinationAddress	TunnelId	LspId	AfName	IPv4	IPv6	BindingSid	LspSetupType	OperationalState	AdministrativeState	Msd	AbsoluteMargin	RelativeMargin	ReportedMetricType	ReportedMetricValue	ComputedMetricType	ComputedMetricValue	ComputedHopListTime	NodeAddress	ErrorFlags	ErrorCode	ErrorValue	PcepId	PcepFlagD	PcepFlagS	PcepFlagR	PcepFlagA	PcepFlagO	PcepFlagC	AssociationType	AssociationId	AssociationSource	AffinityExcludeAny	AffinityIncludeAny	AffinityIncludeAll	SetupPriority	HoldPriority	LocalProtection	SignaledBandwidthSpecified	SignaledBandwidth	ActualBandwidthSpecified	ActualBandwidth	LspRole	Preference	ComputingPce	SubDelegatedPce	StatSyncPce	ReportingPccAddress	Srlgs	AllowXtcReoptimization	Protection	ComputedRsvpPath	ReportedRsvpPath
+
+<NetIntXtcSIDs>
+NodeIdentifier	RemoteNodeName	RemoteIpv4teRouterId	RemoteIpv4BgpRouterId	RemoteIsisSystemId	RemoteOspfRouterId	RemoteNodeIdentifier	AfName	Ipv4Address	Ipv6Address	LocalIpv4Address	RemoteIpv4Address	LocalIpv6Address	RemoteIpv6Address	SidType	MplsLabel	DomainIdentifier	Algorithm	Rflag	Nflag	Pflag	Eflag	Vflag	Lflag
+
+<NetIntXtcSRv6SIDs>
+NodeIdentifier	RemoteNodeName	RemoteIPv4teRouterId	RemoteIPv4BgpRouterId	RemoteIsisSystemId	RemoteOspfRouterId	LocalIPv6Address	RemoteIPv6Address	SRv6SID	EndPointFunction	SidType	Flags	Algorithm	Weight	LocatorBlockLength	LocatorNodeLength	FunctionLength	ArgumentLength	ASN	LsIdentifier	DomainIdentifier
+
+<NetIntXtcFlexAlgorithms>
+NodeIdentifier	IGPID	IGPDomainIdentifier	SystemId	Level	RouterId	Area	AlgorithmsParticipation	Number	LocalPriority	MetricType	AffinityIncludeAll	AffinityIncludeAny	AffinityExcludeAny
+
+<NetIntXtcSRPath>
+PcepLspId	PeerAddress	TunnelName	PathType	SidType	SRv6SID	MplsLabel	LocalAddr	RemoteAddr	HopType	RroType	IPv4Address	Flags
+
+<NetIntMibs>
+Node	Function	Type	SubType	Oid	PadIndex
+
+<SimAnalysisOptions>
+Option	Value
+
+<SimAnalysisWCUtilInterfaces>
+FailureSet	WCTraffLevel	Node	Interface	WCServiceClass	WCFailure	WCTraffic	WCUtil	WCQoSBound	DiffWCQoSBound	DiffWCQoSBoundPerc	SimulatedCapacity	ServiceCapacity
+
+<SimAnalysisWCUtilVPNs>
+Name	Type	FailureSet	WCUtil	WCFailure	WCTraffLevel	WCQoSViolation	WCQoSViolationPerc
+
+<SimAnalysisWCLatencyDemands>
+FailureSet	Name	Source	Destination	ServiceClass	WCFailure	WCLatency
+
+<SimAnalysisFailureImpacts>
+FailureSet	TraffLevel	ServiceClass	Failure	FailureImpactNode	FailureImpactInterface	QoSViolationSimPercent	FailureImpactUsage	FailureImpactSimCap	FailureImpactServiceCap	FailureImpactPotentialCap	FailureImpactNoFailEffCap
+
+<SimAnalysisWCUtilL1Node>
+Name	FailureSet	WCFailure	WCNumL1CirPath
+
+<SimAnalysisWCUtilL1Link>
+Name	NodeA	NodeB	FailureSet	WCFailure	WCNumL1CirPath	WCUtilSim
+
+<SimCacheInterfaces>
+Node	Interface	TrafficLevel	ServiceClass	Queue	SimTraffic	SimCap	ServiceCap	NoFailCap
+
+<SimCacheLSPReservation>
+Node	Interface	SimTraffic
+
+<ColumnData>
+Table	Column	Type	Decimals	DisplayName	Tooltip	Shown
+
+<Hashes>
+Name	Value
+
+<UserTableInteractions>
+UserTable	Reference	ReferenceType	Table	SourceJoinColumns	DestJoinColumns	ObjectColumn
