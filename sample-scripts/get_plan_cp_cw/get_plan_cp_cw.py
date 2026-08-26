@@ -159,6 +159,98 @@ def get_plan(session: requests.Session, base_url: str, token: str, plan_format: 
         return response.content
 
 
+def get_dlm_node_coordinates(session: requests.Session, base_url: str, token: str) -> Dict[str, Tuple[object, object]]:
+    """Return DLM Inventory coordinates keyed by case-insensitive hostname."""
+    inventory_url = f"{base_url}/crosswork/inventory/v1/nodes/query"
+    response = session.post(
+        inventory_url,
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        },
+        json={"limit": 0, "filter": {}},
+    )
+    check_response(response, "get_dlm_node_coordinates")
+
+    try:
+        nodes = response.json().get("data", [])
+    except ValueError as exc:
+        raise CrossworkAuthError("get_dlm_node_coordinates returned invalid JSON") from exc
+    if not isinstance(nodes, list):
+        raise CrossworkAuthError("get_dlm_node_coordinates returned an unexpected response format")
+
+    coordinates: Dict[str, Tuple[object, object]] = {}
+    for node in nodes:
+        hostname = node.get("host_name")
+        geo = node.get("geo_info", {}).get("coordinates", {})
+        latitude = geo.get("latitude", {}).get("value")
+        longitude = geo.get("longitude", {}).get("value")
+        if isinstance(hostname, str) and latitude is not None and longitude is not None:
+            coordinates[hostname.casefold()] = (longitude, latitude)
+    return coordinates
+
+
+def update_plan_node_coordinates(
+    plan_content: bytes, coordinates: Dict[str, Tuple[object, object]]
+) -> Tuple[bytes, int, int]:
+    """Update Longitude and Latitude columns in a text plan's ``<Nodes>`` table."""
+    try:
+        plan_text = plan_content.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise ValueError("--geoloc requires a UTF-8 text plan (.txt), not a binary plan") from exc
+
+    lines = plan_text.splitlines(keepends=True)
+    in_nodes_table = False
+    header_indexes: Optional[Dict[str, int]] = None
+    updated = 0
+    plan_node_count = 0
+
+    for index, line in enumerate(lines):
+        line_body = line.rstrip("\r\n")
+        if line_body.strip() == "<Nodes>":
+            in_nodes_table = True
+            header_indexes = None
+            continue
+        if in_nodes_table and line_body.startswith("<"):
+            break
+        if not in_nodes_table:
+            continue
+
+        columns = line_body.split("\t")
+        if header_indexes is None:
+            if "Name" in columns and "Longitude" in columns and "Latitude" in columns:
+                header_indexes = {
+                    "name": columns.index("Name"),
+                    "longitude": columns.index("Longitude"),
+                    "latitude": columns.index("Latitude"),
+                }
+            continue
+        if not line_body:
+            continue
+
+        plan_node_count += 1
+        name_index = header_indexes["name"]
+        if len(columns) <= name_index:
+            continue
+        node_coordinates = coordinates.get(columns[name_index].casefold())
+        if node_coordinates is None:
+            continue
+
+        required_columns = max(header_indexes.values()) + 1
+        columns.extend([""] * (required_columns - len(columns)))
+        longitude, latitude = node_coordinates
+        columns[header_indexes["longitude"]] = str(longitude)
+        columns[header_indexes["latitude"]] = str(latitude)
+        line_ending = line[len(line_body):]
+        lines[index] = "\t".join(columns) + line_ending
+        updated += 1
+
+    if not in_nodes_table or header_indexes is None:
+        raise ValueError("The text plan does not contain a <Nodes> table with Longitude and Latitude columns")
+    return "".join(lines).encode("utf-8"), updated, plan_node_count
+
+
 def run_command(cmd: List[str], description: str) -> None:
     """Run a subprocess command, log output, and raise on failure."""
     logger.info("%s: %s", description, " ".join(cmd))
@@ -212,7 +304,7 @@ def find_and_apply_trim(
         return tmpfile
 
     base, _ = os.path.splitext(tmpfile)
-    trim_output = base + ".trim.pln"
+    trim_output = base + ".trim" + os.path.splitext(tmpfile)[1]
     trim_cmd = ["trim_nodes", "-plan-file", tmpfile, "-out-file", trim_output] + trim_args
     run_command(trim_cmd, "Trimming nodes: ")
     return trim_output
@@ -241,8 +333,14 @@ def main() -> None:
     parser.add_argument("-k", "--insecure", action="store_true",
                         help="Disable SSL certificate verification (not recommended)")
     parser.add_argument("--version", "-v", default=PLAN_VERSION, help="Planfile version (default: empty)")
+    parser.add_argument("--geoloc", action="store_true",
+                        help="Populate <Nodes> Longitude and Latitude from DLM Inventory (uses a text temporary plan)")
 
     args = parser.parse_args()
+
+    # DLM coordinates are written into the text plan before it is converted to .db.
+    if args.geoloc and args.tmpfile == TMP_PLANFILE:
+        args.tmpfile = os.path.splitext(TMP_PLANFILE)[0] + ".txt"
 
     # Deduce format from temporary planfile extension
     ext = os.path.splitext(args.tmpfile)[1].lower()
@@ -252,6 +350,9 @@ def main() -> None:
         file_format = "pln"
     else:
         logger.error("Temporary planfile must have .txt or .pln, got '%s'", ext)
+        sys.exit(1)
+    if args.geoloc and file_format != "txt":
+        logger.error("--geoloc requires a .txt temporary plan file; use --tmpfile planfile.txt")
         sys.exit(1)
 
     temp_files: List[str] = []
@@ -275,6 +376,12 @@ def main() -> None:
         logger.info("Retrieving plan: %s...", args.tmpfile)
         plan_content = get_plan(session, base_url, token, file_format, args.version)
         logger.info("  Retrieved %d bytes", len(plan_content))
+
+        if args.geoloc:
+            logger.info("Retrieving node coordinates from DLM Inventory...")
+            coordinates = get_dlm_node_coordinates(session, base_url, token)
+            plan_content, updated_nodes, plan_nodes = update_plan_node_coordinates(plan_content, coordinates)
+            logger.info("Updated coordinates for %d of %d plan nodes.", updated_nodes, plan_nodes)
 
         with open(args.tmpfile, "wb") as f:
             f.write(plan_content)

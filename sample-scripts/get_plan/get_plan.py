@@ -134,6 +134,11 @@ def load_token_from_file(path: str) -> str:
         return jwt_file.read().strip()
 
 
+def default_jwt_path(ip: str) -> str:
+    """Return the default JWT path created by cw_get_jwt.py for *ip*."""
+    return os.path.join(os.path.expanduser("~/.crosswork"), f"{ip}.jwt")
+
+
 def get_plan(session: requests.Session, base_url: str, token: str, plan_name: str, plan_format: str, version: str) -> bytes:
     """Retrieve the plan file from Crosswork."""
     plan_url = f"{base_url}/crosswork/nbi/optima/v2/restconf/operations/cisco-crosswork-optimization-engine-operations:get-plan"
@@ -163,13 +168,110 @@ def get_plan(session: requests.Session, base_url: str, token: str, plan_name: st
     return response.content
 
 
+def get_dlm_node_coordinates(session: requests.Session, base_url: str, token: str) -> dict:
+    """Return DLM Inventory coordinates keyed by case-insensitive hostname."""
+    inventory_url = f"{base_url}/crosswork/inventory/v1/nodes/query"
+    response = session.post(
+        inventory_url,
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        },
+        json={"limit": 0, "filter": {}},
+    )
+    check_response(response, "get_dlm_node_coordinates")
+
+    try:
+        nodes = response.json().get("data", [])
+    except ValueError as exc:
+        raise CrossworkAuthError("get_dlm_node_coordinates returned invalid JSON") from exc
+    if not isinstance(nodes, list):
+        raise CrossworkAuthError("get_dlm_node_coordinates returned an unexpected response format")
+
+    coordinates = {}
+    for node in nodes:
+        hostname = node.get("host_name")
+        geo = node.get("geo_info", {}).get("coordinates", {})
+        latitude = geo.get("latitude", {}).get("value")
+        longitude = geo.get("longitude", {}).get("value")
+        if isinstance(hostname, str) and latitude is not None and longitude is not None:
+            coordinates[hostname.casefold()] = (longitude, latitude)
+    return coordinates
+
+
+def update_plan_node_coordinates(plan_content: bytes, coordinates: dict) -> tuple:
+    """Update Longitude and Latitude columns in a text plan's ``<Nodes>`` table.
+
+    Inventory host names and plan node names are matched case-insensitively.  Nodes
+    without both coordinates, and plan nodes without an inventory match, are left
+    unchanged.
+    """
+    try:
+        plan_text = plan_content.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise ValueError("--geoloc requires a UTF-8 text plan (.txt), not a binary plan") from exc
+
+    lines = plan_text.splitlines(keepends=True)
+    in_nodes_table = False
+    header_indexes = None
+    updated = 0
+    plan_node_count = 0
+
+    for index, line in enumerate(lines):
+        line_body = line.rstrip("\r\n")
+        if line_body.strip() == "<Nodes>":
+            in_nodes_table = True
+            header_indexes = None
+            continue
+        if in_nodes_table and line_body.startswith("<"):
+            break
+        if not in_nodes_table:
+            continue
+
+        columns = line_body.split("\t")
+        if header_indexes is None:
+            if "Name" in columns and "Longitude" in columns and "Latitude" in columns:
+                header_indexes = {
+                    "name": columns.index("Name"),
+                    "longitude": columns.index("Longitude"),
+                    "latitude": columns.index("Latitude"),
+                }
+            continue
+        if not line_body:
+            continue
+
+        plan_node_count += 1
+        name_index = header_indexes["name"]
+        if len(columns) <= name_index:
+            continue
+        node_coordinates = coordinates.get(columns[name_index].casefold())
+        if node_coordinates is None:
+            continue
+
+        required_columns = max(header_indexes.values()) + 1
+        columns.extend([""] * (required_columns - len(columns)))
+        longitude, latitude = node_coordinates
+        columns[header_indexes["longitude"]] = str(longitude)
+        columns[header_indexes["latitude"]] = str(latitude)
+        line_ending = line[len(line_body):]
+        lines[index] = "\t".join(columns) + line_ending
+        updated += 1
+
+    if not in_nodes_table or header_indexes is None:
+        raise ValueError("The text plan does not contain a <Nodes> table with Longitude and Latitude columns")
+
+    return "".join(lines).encode("utf-8"), updated, plan_node_count
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Retrieve a plan file from Crosswork Network Controller",
         epilog=(
-            "Credentials are resolved in order: CLI flags > environment variables "
-            f"({ENV_USERNAME}, {ENV_PASSWORD}) > interactive prompt.\n"
-            "Use cw_get_jwt.py to obtain a JWT file for --jwt authentication."
+            "When --username, --password, and --jwt are omitted, the script uses "
+            "~/.crosswork/<ip>.jwt when it exists. Otherwise, credentials are resolved "
+            "in order: CLI flags > environment variables "
+            f"({ENV_USERNAME}, {ENV_PASSWORD}) > interactive prompt."
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -188,6 +290,8 @@ def main():
     parser.add_argument("--format", choices=["txt", "pln"], default="txt",
                         help="Plan file format (default: txt). Used for default filename when --planfile is not provided.")
     parser.add_argument("--version", "-v", default="", help="Planfile schema version (default: empty string)")
+    parser.add_argument("--geoloc", action="store_true",
+                        help="Populate <Nodes> Longitude and Latitude from the DLM Inventory API (text plans only)")
     parser.add_argument("--timeout", type=int, default=CONNECT_TIMEOUT,
                         help=f"HTTP timeout in seconds (default: {CONNECT_TIMEOUT})")
 
@@ -210,16 +314,24 @@ def main():
             print(f"Error: --planfile must have .txt or .pln extension, got '{ext}'")
             sys.exit(1)
 
+    if args.geoloc and file_format != "txt":
+        print("Error: --geoloc requires a .txt plan file; binary .pln files cannot be updated in place")
+        sys.exit(1)
+
     verify_ssl = not args.insecure
     if args.insecure:
         print("WARNING: SSL verification disabled", file=sys.stderr)
 
     base_url = f"https://{args.ip}:{args.port}"
+    stored_jwt_path = default_jwt_path(args.ip)
 
     try:
         if args.jwt:
             token = load_token_from_file(args.jwt)
             print(f"Using JWT from {args.jwt}")
+        elif not args.username and not args.password and os.path.isfile(stored_jwt_path):
+            token = load_token_from_file(stored_jwt_path)
+            print(f"Using JWT from {stored_jwt_path}")
         else:
             print(f"Authenticating to {args.ip}...")
             username, password = _resolve_credentials(args.username, args.password)
@@ -229,6 +341,12 @@ def main():
 
         print(f"Retrieving plan: {args.planfile}...")
         plan_content = get_plan(session, base_url, token, args.planfile, file_format, args.version)
+
+        if args.geoloc:
+            print("Retrieving node coordinates from DLM Inventory...")
+            coordinates = get_dlm_node_coordinates(session, base_url, token)
+            plan_content, updated_nodes, plan_nodes = update_plan_node_coordinates(plan_content, coordinates)
+            print(f"Updated coordinates for {updated_nodes} of {plan_nodes} plan nodes.")
 
         with open(args.planfile, "wb") as f:
             f.write(plan_content)

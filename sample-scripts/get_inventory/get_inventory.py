@@ -131,6 +131,11 @@ def load_token_from_file(path: str) -> str:
         return jwt_file.read().strip()
 
 
+def default_jwt_path(ip: str) -> str:
+    """Return the default JWT path created by cw_get_jwt.py for *ip*."""
+    return os.path.join(os.path.expanduser("~/.crosswork"), f"{ip}.jwt")
+
+
 def get_inventory(ip_address: str, token: str, port: int = BASE_PORT, verify_ssl: bool = True) -> dict:
     """Retrieve deep inventory from Crosswork Network Controller."""
     base_url = f"https://{ip_address}:{port}"
@@ -330,11 +335,15 @@ Credentials are resolved in order: CLI flags > environment variables
     if args.insecure:
         print("WARNING: SSL verification disabled", file=sys.stderr)
 
+    stored_jwt_path = default_jwt_path(args.ip)
     print(f"Connecting to Crosswork at {args.ip}...")
     try:
         if args.jwt:
             token = load_token_from_file(args.jwt)
             print(f"Using JWT from {args.jwt}")
+        elif not args.username and not args.password and os.path.isfile(stored_jwt_path):
+            token = load_token_from_file(stored_jwt_path)
+            print(f"Using JWT from {stored_jwt_path}")
         else:
             print("Authenticating...")
             username, password = _resolve_credentials(args.username, args.password)
