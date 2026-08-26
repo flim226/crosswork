@@ -41,8 +41,9 @@ Key characteristics of startup scripts:
 
 1. **Authenticates** to Crosswork Network Controller via SSO
 2. **Retrieves** the current network plan file using the CNC RESTCONF API
-3. **Trims** the plan file by including or excluding nodes based on optional node trimming configuration files
-4. **Converts** the plan file to `.db` format required by Crosswork Planning
+3. Optionally retrieves node coordinates from DLM Inventory and adds them to the text plan's `<Nodes>` table
+4. **Trims** the plan file by including or excluding nodes based on optional node trimming configuration files
+5. **Converts** the plan file to `.db` format required by Crosswork Planning
 
 This enables Crosswork Planning to use the live network model from CNC as its collection source, rather than performing independent topology discovery.
 
@@ -137,6 +138,7 @@ python get_plan_cp_cw.py <baseplan> <output_planfile> <device_auth_file> <networ
 | `--username`, `-u` | CNC username *(optional, for testing only)* |
 | `--password`, `-p` | CNC password *(optional, for testing only)* |
 | `--version`, `-v` | Planfile version (default: empty string) |
+| `--geoloc` | Populate node `Longitude` and `Latitude` in the `<Nodes>` table from DLM Inventory. It changes the default intermediate file from `planfile.pln` to `planfile.txt`; when supplying `--tmpfile`, it must end in `.txt`. |
 
 > **Note**: The `--ip`, `--username`, `--password` and `--version` parameters are optional and intended for quick testing purposes only. For production deployments, configure these values as constants within the script or use environment variables.
 
@@ -146,11 +148,16 @@ python get_plan_cp_cw.py <baseplan> <output_planfile> <device_auth_file> <networ
 # As standalone script (with required positional args)
 python get_plan_cp_cw.py ignored output.db devauth.txt netaccess.txt /home/user /uploads /archive --ip 10.58.239.120 -u admin -p mypassword
 
+# Add node coordinates before conversion to the output database
+python get_plan_cp_cw.py ignored output.db devauth.txt netaccess.txt /home/user /uploads /archive --ip 10.58.239.120 --geoloc
+
 # The script internally:
 # 1. Downloads plan as planfile.pln
 # 2. Optionally trims nodes (if trim config files exist in home_dir or user_upload_dir)
 # 3. Converts planfile.pln → output.db using mate_convert
 ```
+
+With `--geoloc`, the script calls `POST /crosswork/inventory/v1/nodes/query` after retrieving the plan. It matches each plan-node `Name` to the DLM Inventory `host_name` case-insensitively, then writes `geo_info.coordinates.longitude.value` and `latitude.value` into the text plan's `<Nodes>` table. Nodes with no match or no complete coordinate pair remain unchanged.
 
 ## Integration with Crosswork Planning Collector
 
