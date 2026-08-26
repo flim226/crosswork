@@ -4,7 +4,7 @@ Crosswork Planning Simulation MCP Server (FastMCP).
 
 Exposes OPM/Design RPC simulation tools to LLM clients over stdio (local) or
 Streamable HTTP (remote). Upload plan content at runtime, then run route simulation,
-link failure analysis, simulation analysis, and traffic growth forecasting.
+LSP path lookup, link failure analysis, simulation analysis, and traffic growth forecasting.
 
 Quick start (local / Cursor):
   pip install -r requirements-mcp.txt
@@ -731,6 +731,295 @@ def _path_of(demand) -> list[str] | None:
     return [_fmt_iface(i) for i in demand.route.interfaces]
 
 
+def _resolve_lsp(
+    model,
+    source: str,
+    lsp_name: str | None,
+    destination: str | None,
+    color: int | None,
+    destination_ip: str | None,
+):
+    """Return an LSP object by RSVP-TE name or SR policy color key."""
+    from com.cisco.wae.opm.network.model.lsp.key import LSPKey
+
+    if lsp_name:
+        try:
+            return model.lsps[{"source": source, "name": lsp_name}]
+        except KeyError as exc:
+            raise ValueError(
+                f"LSP not found: source={source!r}, name={lsp_name!r}"
+            ) from exc
+
+    if destination is not None and color is not None:
+        if destination_ip:
+            lookup = (source, destination, destination_ip, color)
+        else:
+            lookup = (source, destination, color)
+        key = LSPKey(lookup, model=model)
+        if not key.source or not key.name:
+            raise ValueError(
+                f"SR policy not found: source={source!r}, destination={destination!r}, "
+                f"color={color!r}"
+                + (f", destination_ip={destination_ip!r}" if destination_ip else "")
+            )
+        try:
+            return model.lsps[key]
+        except KeyError as exc:
+            raise ValueError(
+                f"SR policy LSP not found: source={source!r}, destination={destination!r}, "
+                f"color={color!r}"
+            ) from exc
+
+    raise ValueError(
+        "Identify the LSP with lsp_name (RSVP-TE tunnel) or destination+color (SR policy); "
+        "source is always required"
+    )
+
+
+def _resolve_lsp_path(
+    model,
+    source: str,
+    lsp_name: str,
+    path_option: int,
+):
+    try:
+        return model.lsp_paths[
+            {"source": source, "lsp_name": lsp_name, "path_option": path_option}
+        ]
+    except KeyError as exc:
+        raise ValueError(
+            f"LSP path not found: source={source!r}, lsp_name={lsp_name!r}, "
+            f"path_option={path_option!r}"
+        ) from exc
+
+
+def _lsp_endpoint_nodes(routable, model):
+    """Return (source_node_name, destination_node_name) for an LSP or LSPPath."""
+    if hasattr(routable, "lsp") and hasattr(routable, "path_option"):
+        lsp = routable.lsp if hasattr(routable.lsp, "destination") else model.lsps[routable.lsp]
+    else:
+        lsp = routable
+    src = _node_name(lsp.source)
+    dst = _node_name(lsp.destination)
+    return src, dst
+
+
+def _node_name(node) -> str:
+    name = getattr(node, "name", None)
+    if name:
+        return str(name)
+    text = str(node)
+    if text.startswith("node{") and text.endswith("}"):
+        return text[5:-1]
+    return text
+
+
+def _peer_node_name(model, iface) -> str | None:
+    for circuit in model.circuits:
+        if not circuit.active:
+            continue
+        if circuit.interface_a == iface:
+            return circuit.interface_b.node.name
+        if circuit.interface_b == iface:
+            return circuit.interface_a.node.name
+    return None
+
+
+def _order_interface_hops(model, src_node: str, dst_node: str, iface_objects) -> list[str]:
+    """Order an unordered interface set into a source-to-destination walk."""
+    if src_node == dst_node:
+        return []
+    remaining = set(iface_objects)
+    if not remaining:
+        return []
+
+    if len(remaining) == 1:
+        return [_fmt_iface(next(iter(remaining)))]
+
+    ordered: list[str] = []
+    current = src_node
+    while current != dst_node and remaining:
+        next_iface = None
+        for iface in remaining:
+            if iface.node.name == current:
+                next_iface = iface
+                break
+        if next_iface is None:
+            break
+        ordered.append(_fmt_iface(next_iface))
+        remaining.remove(next_iface)
+        current = _peer_node_name(model, next_iface) or current
+
+    if remaining:
+        ordered.extend(_fmt_iface(iface) for iface in remaining)
+    return ordered
+
+
+def _ordered_igp_hops(model, src_node: str, dst_node: str) -> list[str]:
+    """Return ordered IGP interface hops between two nodes."""
+    if src_node == dst_node:
+        return []
+    igp_route = model.route_simulation.shortest_path(
+        model.nodes[src_node], model.nodes[dst_node], "igp"
+    )
+    if not igp_route or not igp_route.interfaces:
+        return []
+    return _order_interface_hops(
+        model, src_node, dst_node, igp_route.interfaces
+    )
+
+
+def _get_lsp_path_object(model, lsp, path_option: int | None):
+    """Return the LSPPath carrying segment-list configuration for an LSP."""
+    src = _node_name(lsp.source)
+    if path_option is not None:
+        return model.lsp_paths[
+            {"source": src, "lsp_name": lsp.name, "path_option": path_option}
+        ]
+    active_path = getattr(lsp, "active_path", None)
+    if active_path is not None:
+        return model.lsp_paths[
+            {"source": src, "lsp_name": lsp.name, "path_option": active_path}
+        ]
+    ordered_paths = list(lsp.ordered_lsp_paths)
+    if ordered_paths:
+        return ordered_paths[0]
+    return None
+
+
+def _segment_list_hops_payload(segment_list) -> list[dict[str, Any]]:
+    """Serialize configured segment-list hops from the plan."""
+    if not segment_list:
+        return []
+    rows: list[dict[str, Any]] = []
+    for idx, hop in enumerate(segment_list.hops, 1):
+        row: dict[str, Any] = {"step": idx, "hop_type": hop.hop_type}
+        if hop.sid is not None:
+            row["sid"] = hop.sid
+        if hop.interface:
+            row["interface"] = _fmt_iface(hop.interface)
+        if hop.node:
+            row["node"] = hop.node.name
+        if hop.anycast_group:
+            row["anycast_group"] = str(hop.anycast_group)
+        if hop.lsp:
+            row["lsp"] = hop.lsp.name if hasattr(hop.lsp, "name") else str(hop.lsp)
+        rows.append(row)
+    return rows
+
+
+def _resolve_segment_list_path(
+    model,
+    segment_list,
+    src_node: str,
+    dst_node: str,
+) -> tuple[list[str], list[str]]:
+    """Expand a segment list into an ordered interface path via IGP node-SID fill."""
+    if not segment_list:
+        return [], []
+
+    ordered: list[str] = []
+    warnings: list[str] = []
+    current = src_node
+
+    for idx, hop in enumerate(segment_list.hops, 1):
+        if hop.hop_type == "interface" and hop.interface:
+            iname = _fmt_iface(hop.interface)
+            ordered.append(iname)
+            current = _peer_node_name(model, hop.interface) or hop.interface.node.name
+            continue
+
+        if hop.hop_type == "node" and hop.node:
+            target = hop.node.name
+            sub_hops = _ordered_igp_hops(model, current, target)
+            if not sub_hops:
+                warnings.append(
+                    f"Segment step {idx}: no IGP path from {current} to node {target}"
+                )
+                current = target
+                continue
+            ordered.extend(sub_hops)
+            current = target
+            continue
+
+        warnings.append(
+            f"Segment step {idx}: unsupported hop type {hop.hop_type!r} — skipped"
+        )
+
+    if current != dst_node:
+        tail = _ordered_igp_hops(model, current, dst_node)
+        if tail:
+            ordered.extend(tail)
+        else:
+            warnings.append(
+                f"No IGP path from last segment anchor {current} to destination {dst_node}"
+            )
+
+    return ordered, warnings
+
+
+def _route_hops_payload(
+    model,
+    routable,
+    lsp_path=None,
+    path_option: int | None = None,
+) -> dict[str, Any]:
+    """Build LSP path metrics, segment list, and resolved hop data."""
+    route = routable.route
+    interface_set = [
+        {
+            "interface": _fmt_iface(iface),
+            "traffic_share": route.interface_usage[iface],
+        }
+        for iface in route.interfaces
+    ]
+
+    src, dst = _lsp_endpoint_nodes(routable, model)
+    reference_igp: list[str] = _ordered_igp_hops(model, src, dst)
+
+    if lsp_path is None:
+        lsp = routable.lsp if hasattr(routable, "lsp") and hasattr(routable, "path_option") else routable
+        if hasattr(lsp, "lsp"):
+            lsp = model.lsps[lsp.lsp] if not hasattr(lsp.lsp, "destination") else lsp.lsp
+        lsp_path = _get_lsp_path_object(model, lsp, path_option)
+
+    segment_list = getattr(lsp_path, "segment_list", None) if lsp_path else None
+    segment_list_hops = _segment_list_hops_payload(segment_list)
+    resolved_ordered_path, resolution_warnings = _resolve_segment_list_path(
+        model, segment_list, src, dst
+    )
+
+    resolved_set = set(resolved_ordered_path)
+    sim_set = {entry["interface"] for entry in interface_set}
+
+    return {
+        "path_metric": route.total_path_metric,
+        "latency_ms": {
+            "min": route.minimum_latency,
+            "avg": route.average_latency,
+            "max": route.maximum_latency,
+        },
+        "min_ecmp_percent": route.minimum_ecmp_percentage,
+        "interface_set": interface_set,
+        "interface_set_count": len(interface_set),
+        "interface_set_note": (
+            "Unordered set of traversed interfaces from route simulation "
+            "(interfaceUsage keys, not hop sequence)."
+        ),
+        "segment_list_hops": segment_list_hops,
+        "resolved_ordered_path": resolved_ordered_path,
+        "resolved_hop_count": len(resolved_ordered_path),
+        "interface_set_matches_resolved_path": resolved_set == sim_set,
+        "resolution_warnings": resolution_warnings,
+        "reference_igp_shortest_path": reference_igp,
+        "reference_igp_shortest_path_note": (
+            "Unconstrained IGP shortest path between LSP endpoints for comparison; "
+            "not the SR policy / RSVP-TE path."
+        ),
+        "hop_count": len(resolved_ordered_path) or len(interface_set),
+    }
+
+
 def _compound_multiplier(growth_percent: float, period_inc: int, num_periods: int) -> float:
     rate = 1.0 + (growth_percent / 100.0)
     return rate ** (period_inc * num_periods)
@@ -1034,7 +1323,9 @@ def _create_mcp_server() -> FastMCP:
             "(e.g. 'worst case under circuit failures', 'most at-risk links'), "
             "call get_wc_traffic only — do not call failure_sim. "
             "Use failure_sim only for a specific what-if (one known failed link "
-            "or circuit list) with reroute and per-interface delta detail."
+            "or circuit list) with reroute and per-interface delta detail. "
+            "For LSP / SR policy hop-by-hop paths: call list_lsps then get_lsp_path "
+            "(use resolved_ordered_path for ordered hops; interface_set is unordered)."
         ),
         auth=_build_auth_provider(),
         middleware=_build_middleware(),
@@ -1085,6 +1376,9 @@ def _plan_summary_payload(plan_ref: str | None = None) -> dict[str, Any]:
             active_circuits=sum(1 for c in model.circuits if c.active),
             demands=len(model.demands),
             active_demands=sum(1 for d in model.demands if d.active),
+            lsps=len(model.lsps),
+            active_lsps=sum(1 for lsp in model.lsps if lsp.active),
+            lsp_paths=len(model.lsp_paths),
         )
 
 
@@ -1156,6 +1450,45 @@ def _list_demands_payload(
             if len(rows) >= limit:
                 break
         return ok(plan_ref=plan_ref, demands=rows, count=len(rows), truncated=len(rows) >= limit)
+
+
+def _list_lsps_payload(
+    plan_ref: str | None = None,
+    source: str | None = None,
+    destination: str | None = None,
+    active_only: bool = True,
+    limit: int = 100,
+) -> dict[str, Any]:
+    path = _resolve_plan_ref(plan_ref)
+    limit = min(max(limit, 1), 500)
+    with _open_model(path) as model:
+        rows = []
+        for lsp in model.lsps:
+            if active_only and not lsp.active:
+                continue
+            src = str(lsp.source)
+            dst = str(lsp.destination)
+            if source and source not in src:
+                continue
+            if destination and destination not in dst:
+                continue
+            rows.append(
+                {
+                    "name": lsp.name,
+                    "source": src,
+                    "destination": dst,
+                    "lsp_type": lsp.lsp_type,
+                    "setup_bandwidth_mbps": lsp.setup_bandwidth,
+                    "color": getattr(lsp, "color", None),
+                    "active": lsp.active,
+                    "path_options": [
+                        lp.path_option for lp in lsp.ordered_lsp_paths
+                    ],
+                }
+            )
+            if len(rows) >= limit:
+                break
+        return ok(plan_ref=plan_ref, lsps=rows, count=len(rows), truncated=len(rows) >= limit)
 
 
 def _uploaded_plans_payload() -> dict[str, Any]:
@@ -1487,6 +1820,128 @@ def get_igp_path(
                 metric=metric,
                 path=[_fmt_iface(i) for i in igp_route.interfaces],
                 hop_count=len(igp_route.interfaces),
+            )
+    except (OSError, ValueError, RuntimeError, FileNotFoundError, KeyError) as exc:
+        _fail(str(exc))
+
+
+@mcp.tool
+def list_lsps(
+    plan_ref: str | None = None,
+    source: str | None = None,
+    destination: str | None = None,
+    active_only: bool = True,
+    limit: int = 100,
+) -> dict[str, Any]:
+    """List LSPs (RSVP-TE tunnels and SR policies) in a plan."""
+    try:
+        return _list_lsps_payload(plan_ref, source, destination, active_only, limit)
+    except (OSError, ValueError, RuntimeError, FileNotFoundError, KeyError) as exc:
+        _fail(str(exc))
+
+
+@mcp.tool
+def get_lsp_path(
+    source: str,
+    plan_ref: str | None = None,
+    lsp_name: str | None = None,
+    destination: str | None = None,
+    color: int | None = None,
+    destination_ip: str | None = None,
+    path_option: int | None = None,
+) -> dict[str, Any]:
+    """Simulate IGP hops traversed by an LSP (RSVP-TE tunnel or SR policy).
+
+    Baseline route simulation (no failures). Identify the tunnel using either:
+    - RSVP-TE / named LSP: ``source`` + ``lsp_name``
+    - SR policy: ``source`` + ``destination`` + ``color`` (optional ``destination_ip``)
+    - Specific path option: add ``path_option`` with ``source`` + ``lsp_name``
+
+    Returns:
+    - ``segment_list_hops``: configured SR segment list from the plan
+    - ``resolved_ordered_path``: segment list expanded with IGP fill for node SIDs
+    - ``interface_set``: unordered traversed interfaces from route simulation
+    - ``reference_igp_shortest_path``: unconstrained IGP shortest path (comparison only)
+    """
+    try:
+        path = _resolve_plan_ref(plan_ref)
+        with _open_model(path) as model:
+            lsp_count = len(model.lsps)
+            if lsp_count == 0:
+                return ok(
+                    routed=False,
+                    lsp_count=0,
+                    message=(
+                        "Plan contains no LSPs. Upload a plan with RSVP-TE tunnels or "
+                        "SR policies (e.g. us_wan_lsps.txt from OPM examples)."
+                    ),
+                )
+
+            if path_option is not None:
+                if not lsp_name:
+                    _fail("path_option requires lsp_name", hint="Provide source and lsp_name")
+                routable = _resolve_lsp_path(model, source, lsp_name, path_option)
+                lsp_path_obj = routable
+                lookup = "lsp_path"
+            else:
+                routable = _resolve_lsp(
+                    model, source, lsp_name, destination, color, destination_ip
+                )
+                lsp_path_obj = None
+                lookup = "sr_policy" if color is not None else "lsp"
+
+            model.route_simulation = []
+            model.traffic_simulation = None
+            model.route_simulation.recompute()
+
+            lsp = routable.lsp if lookup == "lsp_path" else routable
+            if lookup == "lsp_path" and not hasattr(lsp, "destination"):
+                lsp = model.lsps[lsp]
+
+            if lsp_path_obj is None:
+                lsp_path_obj = _get_lsp_path_object(model, lsp, path_option)
+
+            src, dst = _node_name(lsp.source), _node_name(lsp.destination)
+            segment_list = (
+                getattr(lsp_path_obj, "segment_list", None) if lsp_path_obj else None
+            )
+            segment_list_hops = _segment_list_hops_payload(segment_list)
+            resolved_ordered_path, resolution_warnings = _resolve_segment_list_path(
+                model, segment_list, src, dst
+            )
+
+            if not routable.routed:
+                return ok(
+                    routed=False,
+                    lookup=lookup,
+                    source=source,
+                    lsp_name=lsp.name if lookup != "lsp_path" else lsp_name,
+                    destination=dst,
+                    lsp_type=lsp.lsp_type,
+                    active=lsp.active,
+                    path_option=path_option,
+                    segment_list_hops=segment_list_hops,
+                    resolved_ordered_path=resolved_ordered_path,
+                    resolved_hop_count=len(resolved_ordered_path),
+                    resolution_warnings=resolution_warnings,
+                    message="LSP is not routed in the current simulation",
+                )
+
+            payload = _route_hops_payload(
+                model, routable, lsp_path=lsp_path_obj, path_option=path_option
+            )
+            return ok(
+                routed=True,
+                lookup=lookup,
+                source=source,
+                lsp_name=lsp.name,
+                destination=dst,
+                lsp_type=lsp.lsp_type,
+                active=lsp.active,
+                path_option=path_option,
+                setup_bandwidth_mbps=lsp.setup_bandwidth,
+                color=getattr(lsp, "color", None),
+                **payload,
             )
     except (OSError, ValueError, RuntimeError, FileNotFoundError, KeyError) as exc:
         _fail(str(exc))
