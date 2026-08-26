@@ -556,6 +556,11 @@ def load_token_from_file(path: str) -> str:
         return jwt_file.read().strip()
 
 
+def default_jwt_path(ip: str) -> str:
+    """Return the default JWT path created by cw_get_jwt.py for *ip*."""
+    return os.path.join(os.path.expanduser("~/.crosswork"), f"{ip}.jwt")
+
+
 # ===========================================================================
 # Configuration and authentication
 # ===========================================================================
@@ -1510,6 +1515,12 @@ def _obtain_token(args: argparse.Namespace, config: ClientConfig) -> str:
     if args.jwt:
         token = load_token_from_file(args.jwt)
         print(f"Using JWT from {args.jwt}", file=sys.stderr)
+        return token
+
+    jwt_path = default_jwt_path(args.ip)
+    if not args.username and not args.password and os.path.isfile(jwt_path):
+        token = load_token_from_file(jwt_path)
+        print(f"Using JWT from {jwt_path}", file=sys.stderr)
         return token
 
     print(f"Authenticating to {args.ip}...", file=sys.stderr)
