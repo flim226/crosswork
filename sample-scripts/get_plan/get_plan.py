@@ -134,6 +134,11 @@ def load_token_from_file(path: str) -> str:
         return jwt_file.read().strip()
 
 
+def default_jwt_path(ip: str) -> str:
+    """Return the default JWT path created by cw_get_jwt.py for *ip*."""
+    return os.path.join(os.path.expanduser("~/.crosswork"), f"{ip}.jwt")
+
+
 def get_plan(session: requests.Session, base_url: str, token: str, plan_name: str, plan_format: str, version: str) -> bytes:
     """Retrieve the plan file from Crosswork."""
     plan_url = f"{base_url}/crosswork/nbi/optima/v2/restconf/operations/cisco-crosswork-optimization-engine-operations:get-plan"
@@ -167,9 +172,10 @@ def main():
     parser = argparse.ArgumentParser(
         description="Retrieve a plan file from Crosswork Network Controller",
         epilog=(
-            "Credentials are resolved in order: CLI flags > environment variables "
-            f"({ENV_USERNAME}, {ENV_PASSWORD}) > interactive prompt.\n"
-            "Use cw_get_jwt.py to obtain a JWT file for --jwt authentication."
+            "When --username, --password, and --jwt are omitted, the script uses "
+            "~/.crosswork/<ip>.jwt when it exists. Otherwise, credentials are resolved "
+            "in order: CLI flags > environment variables "
+            f"({ENV_USERNAME}, {ENV_PASSWORD}) > interactive prompt."
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -215,11 +221,15 @@ def main():
         print("WARNING: SSL verification disabled", file=sys.stderr)
 
     base_url = f"https://{args.ip}:{args.port}"
+    stored_jwt_path = default_jwt_path(args.ip)
 
     try:
         if args.jwt:
             token = load_token_from_file(args.jwt)
             print(f"Using JWT from {args.jwt}")
+        elif not args.username and not args.password and os.path.isfile(stored_jwt_path):
+            token = load_token_from_file(stored_jwt_path)
+            print(f"Using JWT from {stored_jwt_path}")
         else:
             print(f"Authenticating to {args.ip}...")
             username, password = _resolve_credentials(args.username, args.password)

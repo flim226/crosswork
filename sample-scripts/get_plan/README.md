@@ -101,8 +101,9 @@ python get_plan.py --ip <CNC_IP> --username <USER> --password <PASS> --planfile 
 | Argument | Short | Required | Description |
 |----------|-------|----------|-------------|
 | `--ip` | | Yes | Crosswork Network Controller IP address |
-| `--username` | `-u` | Yes | CNC username for authentication |
-| `--password` | `-p` | Yes | CNC password for authentication |
+| `--username` | `-u` | No | CNC username for authentication |
+| `--password` | `-p` | No | CNC password for authentication |
+| `--jwt` | `-j` | No | Path to a JWT file. When `--username`, `--password`, and `--jwt` are omitted, the script uses `~/.crosswork/<ip>.jwt` if it exists. |
 | `--planfile` | `-f` | Yes | Output file name (must end with `.txt` or `.pln`) |
 | `--version` | `-v` | No | Planfile schema version (default: `7.10`) |
 
@@ -126,6 +127,9 @@ python get_plan.py --ip 198.18.134.219 -u admin -p mypassword -f network.txt
 
 # Specify a different planfile schema version
 python get_plan.py --ip 198.18.134.219 -u admin -p mypassword -f network.pln -v 7.6
+
+# Use the default JWT created by cw_get_jwt.py
+python get_plan.py --ip 198.18.134.219 -f network.pln
 ```
 
 ### Sample Output
