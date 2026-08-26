@@ -826,7 +826,8 @@ def failure_sim(
 |------|------------------|
 | `upload_plan` | `PlanRegistry` + Pydantic validation; `confirm=true` for uploads >10 MiB |
 | `delete_uploaded_plan` | `PlanRegistry.delete()`; requires `confirm=true` |
-| `get_plan_summary`, `list_circuits`, `list_demands` | Iterate `model.*`; prefer matching `plan://` resources for unfiltered reads |
+| `get_plan_summary`, `list_circuits`, `list_demands`, `list_lsps` | Iterate `model.*`; prefer matching `plan://` resources for unfiltered reads |
+| `get_lsp_path` | `model.lsp_paths[...]` segment list + route sim; returns `segment_list_hops`, `resolved_ordered_path`, `interface_set` |
 | `get_igp_path` | `model.route_simulation.shortest_path(src, dst, metric)` |
 | `get_wc_traffic` | `SimulationAnalysis(model, failure_types=[...])`; `failure_sets` as list or comma-separated string |
 | `get_traffic_growth` | `demand.growth_percent` + GenericTool `create_growth_plans` + compound fallback |
@@ -909,7 +910,7 @@ To add a new capability:
 | Baseline routing | `get_demand_path` returns hops and metric |
 | Failure simulation | `failure_sim` returns reroutes and oversubscription |
 | Resources available | `plan://uploads` and `server://health` readable in MCP client |
-| stdio transport | Cursor spawns process; 12 tools + 5 resources + 2 prompts appear in MCP panel |
+| stdio transport | Cursor spawns process; 14 tools + 5 resources + 2 prompts appear in MCP panel |
 
 Reference implementation: [`cp_sample_mcp.py`](cp_sample_mcp.py)
 
@@ -1355,10 +1356,12 @@ Successful tool calls return JSON with `"ok": true`. On failure, the server rais
 | Plan provision | `upload_plan` | Stage plan content; returns `plan_id`; `confirm=true` for uploads >10 MiB |
 | | `list_uploaded_plans` | List staged plans (prefer resource `plan://uploads`) |
 | | `delete_uploaded_plan` | Remove staged plan; requires `confirm=true` |
-| Catalog | `get_plan_summary` | Node/circuit/demand counts (prefer `plan://{plan_id}/summary`) |
+| Catalog | `get_plan_summary` | Node/circuit/demand/LSP counts (prefer `plan://{plan_id}/summary`) |
 | | `list_circuits` | Filter circuits by node name (prefer `plan://{plan_id}/circuits`) |
 | | `list_demands` | Filter demands by source/destination (prefer `plan://{plan_id}/demands`) |
+| | `list_lsps` | List/filter RSVP-TE tunnels and SR policies |
 | Route simulation | `get_demand_path` | Baseline demand path |
+| | `get_lsp_path` | SR policy / RSVP-TE path: segment list + resolved hop-by-hop path |
 | | `get_igp_path` | IGP/BGP/TE/latency shortest path |
 | | `failure_sim` | Failure + traffic delta report |
 | Analysis | `get_wc_traffic` | Worst-case failure scenarios |
@@ -1465,6 +1468,54 @@ Baseline demand routing (no failures).
 **Returns:** `routed`, `path_metric`, `latency_ms`, `interfaces[]`, `hop_count`
 
 **Verified checkpoint (`us_wan.txt`):** `er1.sjc` → `er1.mia` — 6 hops, metric 2169, latency ~33.4 ms
+
+---
+
+#### `list_lsps`
+
+List RSVP-TE tunnels and SR policies in a plan.
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `plan_ref` | string | null | Plan handle |
+| `source` | string | null | Filter by source node substring |
+| `destination` | string | null | Filter by destination node substring |
+| `active_only` | bool | true | Skip inactive LSPs |
+| `limit` | int | 100 | Max results (1–500) |
+
+**Returns:** `lsps[]` with `name`, `source`, `destination`, `lsp_type`, `setup_bandwidth_mbps`, `color`, `path_options`
+
+**Note:** `us_wan.txt` has **no LSPs** (demand-only plan). Use a plan with RSVP-TE or SR policies.
+
+---
+
+#### `get_lsp_path`
+
+Baseline LSP / SR policy routing (no failures). Returns segment-list configuration,
+a resolved ordered path (with IGP fill for node SIDs), and route-simulation metrics.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `source` | string | yes | Source node of the LSP / SR policy |
+| `plan_ref` | string | no | Plan handle |
+| `lsp_name` | string | * | RSVP-TE tunnel name (with `source`) |
+| `destination` | string | * | SR policy destination node (with `source` + `color`) |
+| `color` | int | * | SR policy color (with `source` + `destination`) |
+| `destination_ip` | string | no | SR policy destination IP (optional) |
+| `path_option` | int | no | Specific LSP path option (requires `lsp_name`) |
+
+\* Identify the tunnel with **`lsp_name`** (RSVP-TE) **or** **`destination` + `color`** (SR policy).
+
+**Returns:** `routed`, `lsp_name`, `destination`, `lsp_type`, `path_metric`, `latency_ms`, `segment_list_hops[]`, `resolved_ordered_path[]`, `resolved_hop_count`, `interface_set[]` (unordered), `interface_set_count`, `interface_set_matches_resolved_path`, `reference_igp_shortest_path[]` (comparison only), `hop_count`
+
+**Notes:**
+- `interface_set` is the **unordered** set of interfaces from route simulation (`interfaceUsage` keys).
+- `resolved_ordered_path` walks the configured segment list and IGP-fills node SID hops.
+- `reference_igp_shortest_path` is the unconstrained IGP shortest path between endpoints — not the LSP path.
+
+**OPM example (RSVP-TE):** `source="cr1.atl"`, `lsp_name="cr1.atl_cr1.bos"` on `us_wan_lsps.txt`
+
+**OPM example (SR policy):** `source`, `destination`, `color` — resolved via policy color key
 
 ---
 
