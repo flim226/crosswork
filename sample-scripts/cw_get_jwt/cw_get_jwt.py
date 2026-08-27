@@ -204,16 +204,28 @@ def main():
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    parser.add_argument("ip", nargs="?", default=None, help="CNC IP address or hostname")
-    parser.add_argument("-u", "--username", default=None,
+    parser.add_argument(
+        "ip_positional",
+        nargs="?",
+        default=None,
+        metavar="IP",
+        help="CNC IP address or hostname (legacy positional form; use --ip)",
+    )
+    parser.add_argument("--ip", dest="ip_option", default=None,
+                        metavar="IP", help="CNC IP address or hostname")
+    parser.add_argument("--username", "-u", default=None,
                         help=f"Username (or set {ENV_USERNAME})")
-    parser.add_argument("-p", "--password", default=None,
+    parser.add_argument("--password", "-p", default=None,
                         help=f"Password (or set {ENV_PASSWORD}; will prompt if omitted)")
     parser.add_argument("-f", "--filename", default=None,
                         help="JWT filename to save to or decode from (default: ~/.crosswork/<ip>.jwt)")
     parser.add_argument("-k", "--insecure", action="store_true",
                         help="Disable SSL certificate verification (not recommended)")
     args = parser.parse_args()
+
+    if args.ip_positional is not None and args.ip_option is not None:
+        parser.error("provide the CNC IP either positionally or with --ip, not both")
+    args.ip = args.ip_option if args.ip_option is not None else args.ip_positional
 
     # Decode mode: no IP provided, just decode the JWT file
     if args.ip is None:
