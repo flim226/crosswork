@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crosswork Planning Disk Calculator</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b1220;
+      --panel: #111b2e;
+      --panel-2: #16233a;
+      --line: #2a3a58;
+      --text: #edf4ff;
+      --muted: #9fb0ca;
+      --blue: #5db6ff;
+      --teal: #45d7bf;
+      --amber: #f4b85f;
+      --red: #ff7e87;
+      --shadow: 0 20px 55px rgba(0, 0, 0, .25);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font: 15px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(67, 149, 220, .18), transparent 34rem),
+        var(--bg);
+    }
+
+    main { width: min(1120px, calc(100% - 32px)); margin: 0 auto; padding: 52px 0 64px; }
+
+    header { margin-bottom: 28px; }
+    .eyebrow { margin: 0 0 8px; color: var(--teal); font-size: 12px; font-weight: 750; letter-spacing: .14em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(30px, 5vw, 48px); line-height: 1.08; letter-spacing: -.035em; }
+    .intro { max-width: 760px; margin: 14px 0 0; color: var(--muted); font-size: 16px; }
+
+    .layout { display: grid; grid-template-columns: minmax(290px, 360px) 1fr; gap: 20px; align-items: start; }
+    .panel { border: 1px solid var(--line); border-radius: 18px; background: rgba(17, 27, 46, .92); box-shadow: var(--shadow); }
+    .controls { padding: 22px; }
+    .results { padding: 22px; }
+    h2 { margin: 0; font-size: 18px; }
+    .subtle { color: var(--muted); font-size: 13px; }
+    .controls > .subtle { margin: 5px 0 14px; }
+    .controls-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .reset-button { padding: 7px 11px; border: 1px solid var(--line); border-radius: 8px; color: var(--text); background: var(--panel-2); font: inherit; font-size: 12px; font-weight: 650; cursor: pointer; }
+    .reset-button:hover { border-color: var(--blue); background: rgba(93, 182, 255, .12); }
+    .reset-button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+    .field { margin: 0 0 22px; }
+    .field:last-of-type { margin-bottom: 18px; }
+    .field-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 9px; }
+    label { font-weight: 650; }
+    .key { display: block; margin-top: 1px; color: var(--muted); font-size: 12px; font-weight: 450; }
+    .number-wrap { display: flex; align-items: center; gap: 8px; }
+    input[type="number"] {
+      width: 104px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 9px;
+      color: var(--text); background: var(--panel-2); font: inherit; text-align: right;
+    }
+    input[type="number"]:focus { outline: 2px solid var(--blue); outline-offset: 1px; }
+    .unit { color: var(--muted); font-size: 13px; }
+    input[type="range"] { display: block; width: 100%; accent-color: var(--blue); cursor: pointer; }
+    .range-limits { display: flex; justify-content: space-between; margin-top: 3px; color: var(--muted); font-size: 11px; }
+
+    .fixed-note { padding: 12px 13px; border: 1px solid rgba(244, 184, 95, .32); border-radius: 11px; color: #f7d69f; background: rgba(244, 184, 95, .08); font-size: 12px; }
+    .fixed-note strong { color: var(--amber); }
+    .source-note { margin-top: 12px; color: var(--muted); font-size: 12px; }
+    .source-note a { color: var(--blue); }
+
+    .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 18px 0 22px; }
+    .metric { min-width: 0; padding: 13px; border: 1px solid var(--line); border-radius: 12px; background: rgba(22, 35, 58, .68); }
+    .metric-label { color: var(--muted); font-size: 11px; line-height: 1.25; }
+    .metric-value { margin-top: 5px; font-size: clamp(19px, 2.5vw, 26px); font-weight: 750; letter-spacing: -.025em; white-space: nowrap; }
+    .metric-value small { color: var(--muted); font-size: 12px; font-weight: 500; }
+
+    .disk-title { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 9px; }
+    .disk-title h3 { margin: 0; font-size: 16px; }
+    .disk-total { color: var(--muted); font-size: 13px; }
+    .disk-bar { display: flex; height: 30px; overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: #25334a; }
+    .segment { min-width: 2px; transition: width .18s ease; }
+    .segment.core { background: var(--amber); }
+    .segment.data { background: var(--blue); }
+    .segment.backup { background: var(--teal); }
+    .legend { display: flex; flex-wrap: wrap; gap: 14px; margin: 9px 0 22px; color: var(--muted); font-size: 12px; }
+    .legend span::before { content: ""; display: inline-block; width: 9px; height: 9px; margin-right: 5px; border-radius: 2px; background: var(--color); }
+
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 11px 9px; border-bottom: 1px solid var(--line); text-align: left; }
+    th { color: var(--muted); font-size: 11px; font-weight: 650; letter-spacing: .06em; text-transform: uppercase; }
+    td:nth-child(3), th:nth-child(3) { text-align: right; }
+    td:last-child, th:last-child { text-align: right; }
+    tbody tr:last-child td { border-bottom: 0; }
+    .partition { color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+    .size { font-weight: 700; }
+    .mount { color: var(--muted); font-size: 12px; }
+    .formula { margin-top: 20px; padding: 14px; overflow-x: auto; border: 1px solid var(--line); border-radius: 11px; color: #cad8ed; background: rgba(7, 13, 25, .35); font: 12px/1.7 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: nowrap; }
+    .formula strong { color: var(--teal); font-weight: 600; }
+    .notice { margin-top: 14px; padding: 11px 13px; border-radius: 10px; color: var(--muted); background: rgba(93, 182, 255, .08); font-size: 12px; }
+    .notice.error { color: #ffd0d3; background: rgba(255, 126, 135, .11); }
+    .hidden { display: none; }
+
+    @media (max-width: 820px) {
+      main { padding-top: 32px; }
+      .layout { grid-template-columns: 1fr; }
+      .controls { display: grid; grid-template-columns: 1fr 1fr; column-gap: 18px; }
+      .controls-heading, .controls > .subtle, .fixed-note, .source-note { grid-column: 1 / -1; }
+      .controls > .subtle { margin-bottom: 18px; }
+    }
+    @media (max-width: 560px) {
+      main { width: min(100% - 20px, 1120px); padding-top: 24px; }
+      .controls, .results { padding: 16px; }
+      .controls { display: block; }
+      .summary { grid-template-columns: repeat(2, 1fr); }
+      th:nth-child(2), td:nth-child(2) { display: none; }
+      th, td { padding-left: 5px; padding-right: 5px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">Crosswork Planning · CP 8.0</p>
+      <h1>Disk partition calculator</h1>
+      <p class="intro">Adjust the four OVF-style inputs to see the initial data-disk layout. Textboxes and sliders are linked, and all sizes are shown in decimal GB.</p>
+    </header>
+
+    <div class="layout">
+      <section class="panel controls" aria-labelledby="inputs-title">
+        <div class="controls-heading">
+          <h2 id="inputs-title">Deployment inputs</h2>
+          <button id="reset-button" class="reset-button" type="button">Reset</button>
+        </div>
+        <p class="subtle">The values correspond to the installer properties.</p>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="logsfs">logsfs <span class="key">OVF: logfs</span></label>
+            <div class="number-wrap"><input id="logsfs" type="number" min="1" max="1000" step="1" value="20" inputmode="decimal" aria-describedby="logsfs-limits"><span class="unit">GB</span></div>
+          </div>
+          <input id="logsfs-range" type="range" min="1" max="1000" step="1" value="20" aria-label="logsfs slider">
+          <div id="logsfs-limits" class="range-limits"><span>1 GB</span><span>1,000 GB</span></div>
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="ddatafs">ddatafs <span class="key">total data disk</span></label>
+            <div class="number-wrap"><input id="ddatafs" type="number" min="450" max="8000" step="1" value="485" inputmode="decimal" aria-describedby="ddatafs-limits"><span class="unit">GB</span></div>
+          </div>
+          <input id="ddatafs-range" type="range" min="450" max="8000" step="1" value="485" aria-label="ddatafs slider">
+          <div id="ddatafs-limits" class="range-limits"><span>450 GB</span><span>8,000 GB</span></div>
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="corefs">corefs <span class="key">core partition</span></label>
+            <div class="number-wrap"><input id="corefs" type="number" min="0" max="1000" step="1" value="18" inputmode="decimal" aria-describedby="corefs-limits"><span class="unit">GB</span></div>
+          </div>
+          <input id="corefs-range" type="range" min="0" max="1000" step="1" value="18" aria-label="corefs slider">
+          <div id="corefs-limits" class="range-limits"><span>0 GB</span><span>1,000 GB</span></div>
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="backup-percent">bckup_min_percent <span class="key">minimum backup percentage</span></label>
+            <div class="number-wrap"><input id="backup-percent" type="number" min="1" max="80" step="1" value="35" inputmode="decimal" aria-describedby="backup-limits"><span class="unit">%</span></div>
+          </div>
+          <input id="backup-percent-range" type="range" min="1" max="80" step="1" value="35" aria-label="bckup_min_percent slider">
+          <div id="backup-limits" class="range-limits"><span>1%</span><span>80%</span></div>
+        </div>
+
+        <div class="fixed-note"><strong>Fixed extrafs offset:</strong> 50 GB. This is the reference deployment’s backup-marked <code>dregfs</code> capacity, represented by <code>extra_sz</code> in the source formula.</div>
+        <div class="source-note">Defaults referenced from <a href="https://www.cisco.com/c/en/us/td/docs/cloud-systems-management/crosswork-planning/7-2/install-guide/cisco-crosswork-planning-7-2-installation-guide/install-crosswork-planning/installation-parameters.html" target="_blank" rel="noopener noreferrer">Cisco Crosswork Planning 7.2.x Installation Guide - Installation Parameters</a>.</div>
+      </section>
+
+      <section class="panel results" aria-labelledby="results-title">
+        <h2 id="results-title">Final partition sizes</h2>
+        <div class="summary" aria-live="polite">
+          <div class="metric"><div class="metric-label">Log disk</div><div id="metric-log" class="metric-value">—</div></div>
+          <div class="metric"><div class="metric-label">Data disk</div><div id="metric-total" class="metric-value">—</div></div>
+          <div class="metric"><div class="metric-label">ddatafs partition</div><div id="metric-data" class="metric-value">—</div></div>
+          <div class="metric"><div class="metric-label">backupfs partition</div><div id="metric-backup" class="metric-value">—</div></div>
+        </div>
+
+        <div class="disk-title"><h3>/dev/sdc · data disk</h3><span id="disk-total" class="disk-total">—</span></div>
+        <div class="disk-bar" aria-label="Data disk partition proportions">
+          <div id="bar-core" class="segment core" title="corefs"></div>
+          <div id="bar-data" class="segment data" title="ddatafs"></div>
+          <div id="bar-backup" class="segment backup" title="backupfs"></div>
+        </div>
+        <div class="legend">
+          <span style="--color: var(--amber)">corefs</span>
+          <span style="--color: var(--blue)">ddatafs</span>
+          <span style="--color: var(--teal)">backupfs</span>
+        </div>
+
+        <table>
+          <thead><tr><th>Partition</th><th>Filesystem</th><th>Size</th><th>Mount point</th></tr></thead>
+          <tbody>
+            <tr><td class="partition">sdb1</td><td>logfs</td><td id="size-log" class="size">—</td><td class="mount">/mnt/cw_logfs</td></tr>
+            <tr><td class="partition">sdc1</td><td>corefs</td><td id="size-core" class="size">—</td><td class="mount">/mnt/cw_corefs</td></tr>
+            <tr><td class="partition">sdc2</td><td>ddatafs</td><td id="size-data" class="size">—</td><td class="mount">/mnt/cw_ddatafs</td></tr>
+            <tr><td class="partition">sdc3</td><td>backupfs</td><td id="size-backup" class="size">—</td><td class="mount">/mnt/cw_backupfs</td></tr>
+          </tbody>
+        </table>
+
+        <div id="formula" class="formula"></div>
+        <div id="notice" class="notice">The backup partition is the remainder after corefs and ddatafs.</div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const EXTRA_BACKUP_GB = 50;
+      const DEFAULTS = { logsfs: 20, ddatafs: 485, corefs: 18, backupPercent: 35 };
+      const numberFormat = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
+      const fields = [
+        { key: 'logsfs', input: document.getElementById('logsfs'), range: document.getElementById('logsfs-range') },
+        { key: 'ddatafs', input: document.getElementById('ddatafs'), range: document.getElementById('ddatafs-range') },
+        { key: 'corefs', input: document.getElementById('corefs'), range: document.getElementById('corefs-range') },
+        { key: 'backupPercent', input: document.getElementById('backup-percent'), range: document.getElementById('backup-percent-range') }
+      ];
+
+      const outputIds = ['metric-log', 'metric-total', 'metric-data', 'metric-backup', 'disk-total', 'size-log', 'size-core', 'size-data', 'size-backup'];
+      const outputs = Object.fromEntries(outputIds.map((id) => [id, document.getElementById(id)]));
+      const bars = { core: document.getElementById('bar-core'), data: document.getElementById('bar-data'), backup: document.getElementById('bar-backup') };
+      const formula = document.getElementById('formula');
+      const notice = document.getElementById('notice');
+
+      const gb = (value) => `${numberFormat.format(value)} <small>GB</small>`;
+      const rawValues = () => Object.fromEntries(fields.map(({ key, input }) => [key, Number(input.value)]));
+
+      function clearOutputs() {
+        outputIds.forEach((id) => { outputs[id].innerHTML = '—'; });
+        Object.values(bars).forEach((bar) => { bar.style.width = '0%'; });
+      }
+
+      function calculate() {
+        const { logsfs, ddatafs, corefs, backupPercent } = rawValues();
+        const valuesAreNumbers = [logsfs, ddatafs, corefs, backupPercent].every(Number.isFinite);
+        const valuesAreInRange = fields.every(({ input }) => Number(input.value) >= Number(input.min) && Number(input.value) <= Number(input.max));
+
+        if (!valuesAreNumbers || !valuesAreInRange) {
+          clearOutputs();
+          formula.textContent = 'Enter values within the ranges shown above.';
+          notice.textContent = 'One or more inputs is outside its allowed range.';
+          notice.classList.add('error');
+          return;
+        }
+
+        const availableAfterExtra = ddatafs - EXTRA_BACKUP_GB;
+        // The shell implementation uses integer arithmetic, so reproduce its truncation.
+        const dataPartition = Math.floor(availableAfterExtra * (100 - backupPercent) / 100);
+        const backupPartition = ddatafs - corefs - dataPartition;
+        const validLayout = availableAfterExtra >= 0 && corefs <= ddatafs && backupPartition >= 0;
+
+        outputs['metric-log'].innerHTML = gb(logsfs);
+        outputs['metric-total'].innerHTML = gb(ddatafs);
+        outputs['metric-data'].innerHTML = validLayout ? gb(dataPartition) : '—';
+        outputs['metric-backup'].innerHTML = validLayout ? gb(backupPartition) : '—';
+        outputs['disk-total'].textContent = `${numberFormat.format(ddatafs)} GB total`;
+        outputs['size-log'].innerHTML = gb(logsfs);
+        outputs['size-core'].innerHTML = gb(corefs);
+        outputs['size-data'].innerHTML = validLayout ? gb(dataPartition) : 'Invalid';
+        outputs['size-backup'].innerHTML = validLayout ? gb(backupPartition) : 'Invalid';
+
+        const coreWidth = Math.max(0, corefs / ddatafs * 100);
+        const dataWidth = validLayout ? Math.max(0, dataPartition / ddatafs * 100) : 0;
+        const backupWidth = validLayout ? Math.max(0, backupPartition / ddatafs * 100) : 0;
+        bars.core.style.width = `${coreWidth}%`;
+        bars.data.style.width = `${dataWidth}%`;
+        bars.backup.style.width = `${backupWidth}%`;
+
+        formula.innerHTML = `<strong>datafs_sz</strong> = (${numberFormat.format(ddatafs)} − ${EXTRA_BACKUP_GB}) × (100 − ${numberFormat.format(backupPercent)}) ÷ 100 = ${validLayout ? numberFormat.format(dataPartition) + ' GB' : 'invalid'}<br><strong>backupfs</strong> = ${numberFormat.format(ddatafs)} − ${numberFormat.format(corefs)} − ${validLayout ? numberFormat.format(dataPartition) : '—'} = ${validLayout ? numberFormat.format(backupPartition) + ' GB' : 'invalid'}`;
+
+        notice.classList.toggle('error', !validLayout);
+        notice.textContent = validLayout
+          ? 'The 50 GB extrafs backup offset is outside /dev/sdc; it only reduces the ddatafs calculation. The backupfs value is the remaining capacity on /dev/sdc.'
+          : 'This combination cannot produce a valid layout. Ensure the data disk is at least 50 GB and large enough for corefs plus the calculated ddatafs partition.';
+      }
+
+      fields.forEach(({ input, range }) => {
+        range.addEventListener('input', () => {
+          input.value = range.value;
+          calculate();
+        });
+        input.addEventListener('input', () => {
+          const value = Number(input.value);
+          if (Number.isFinite(value) && value >= Number(range.min) && value <= Number(range.max)) range.value = value;
+          calculate();
+        });
+        input.addEventListener('change', () => {
+          let value = Number(input.value);
+          if (!Number.isFinite(value)) value = Number(input.min);
+          value = Math.min(Number(input.max), Math.max(Number(input.min), value));
+          input.value = value;
+          range.value = value;
+          calculate();
+        });
+      });
+
+      document.getElementById('reset-button').addEventListener('click', () => {
+        fields.forEach(({ key, input, range }) => {
+          input.value = DEFAULTS[key];
+          range.value = DEFAULTS[key];
+        });
+        calculate();
+      });
+
+      calculate();
+    })();
+  </script>
+</body>
+</html>
