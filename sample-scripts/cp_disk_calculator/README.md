@@ -1,33 +1,24 @@
 # Crosswork Planning Disk Calculator
 
-`cp_disk_calculator.html` is a self-contained, client-side disk sizing calculator for Cisco Crosswork Planning. It estimates the initial disk partition layout from the four storage-related OVF parameters used by the installer.
+A self-contained, client-side disk sizing calculator for Cisco Crosswork Planning.
 
-The calculator runs entirely in a web browser. It has no server component, build step, external JavaScript library, or network dependency.
+## Overview
 
-## Use the calculator
+When sizing a Crosswork Planning VM, the installer accepts four OVF storage parameters—but the resulting partition layout on `/dev/sdb` and `/dev/sdc` is computed with integer arithmetic and a fixed extrafs backup offset. Manual mental math is error-prone and easy to get wrong.
 
-1. Open [`cp_disk_calculator.html`](./cp_disk_calculator.html) in a modern web browser.
-2. Enter values in the numeric textboxes or adjust the corresponding sliders.
-3. Review the calculated partition sizes, data-disk visualization, and formula details.
-4. Select **Reset** to restore the Cisco-documented defaults.
+This calculator estimates the initial disk partition layout from those four storage-related OVF parameters and displays partition sizes, a data-disk visualization, and formula details. It runs entirely in a web browser with no server component, build step, external JavaScript library, or network dependency.
 
-The textboxes and sliders are synchronized. Values are displayed in decimal GB and are calculated as whole GB values to match the installer’s integer arithmetic.
+## Scope
 
-## Inputs
+- Initial provisioning disk layout for `/dev/sdb` (`logfs`) and `/dev/sdc` (`corefs`, `ddatafs`, `backupfs`)
+- Four installer parameters: `logfs`, `ddatafs`, `corefs`, `bckup_min_percent`
+- Fixed 50 GB extrafs backup offset (`extra_sz`) from the reference deployment
+- Whole-GB integer arithmetic matching the installer's shell implementation
+- Input validation and invalid-layout detection
 
-| Calculator input | Installer property | Default | Allowed range | Description |
-|---|---|---:|---:|---|
-| `logsfs` | `logfs` | 20 GB | 1–1,000 GB | Size of the log disk. The calculator maps this to the entire `/dev/sdb` disk. |
-| `ddatafs` | `ddatafs` | 485 GB | 450–8,000 GB | Total `/dev/sdc` data-disk capacity before partitioning. It is not the final ddatafs partition size. |
-| `corefs` | `corefs` | 18 GB | 0–1,000 GB | Size of the corefs partition on the data disk. |
-| `bckup_min_percent` | `bckup_min_percent` | 35% | 1–80% | Minimum backup percentage used to calculate the ddatafs allocation. |
+### Calculation
 
-The defaults are referenced from the [Cisco Crosswork Planning 7.2.x Installation Guide – Installation Parameters](https://www.cisco.com/c/en/us/td/docs/cloud-systems-management/crosswork-planning/7-2/install-guide/cisco-crosswork-planning-7-2-installation-guide/install-crosswork-planning/installation-parameters.html).
-
-## Calculation
-
-
-The extrafs backup offset is fixed at **50 GB**. This represents the reference deployment’s backup-marked `dregfs` partition on `/dev/sdd` and corresponds to `extra_sz` in the source formula. It is not part of the `/dev/sdc` partition table.
+The extrafs backup offset is fixed at **50 GB**. This represents the reference deployment's backup-marked `dregfs` partition on `/dev/sdd` and corresponds to `extra_sz` in the source formula. It is not part of the `/dev/sdc` partition table.
 
 The final sizes are calculated as follows:
 
@@ -37,7 +28,7 @@ datafs_sz  = floor((ddatafs - extra_sz) × (100 - bckup_min_percent) / 100)
 backupfs   = (ddatafs - corefs) - datafs_sz
 ```
 
-The `floor` operation represents the truncation performed by the shell implementation’s integer arithmetic.
+The `floor` operation represents the truncation performed by the shell implementation's integer arithmetic.
 
 The resulting layout is:
 
@@ -48,7 +39,7 @@ The resulting layout is:
 | `/dev/sdc2` | `ddatafs` | calculated `datafs_sz` |
 | `/dev/sdc3` | `backupfs` | calculated remainder |
 
-## Default result
+### Default result
 
 With the Cisco defaults and the fixed 50 GB extrafs offset:
 
@@ -62,20 +53,22 @@ ddatafs partition   = floor((485 - 50) × 65 / 100) = 282 GB
 backupfs partition  = 485 - 18 - 282 = 185 GB
 ```
 
-## Validation
+## Limitations
 
-The calculator reports an invalid layout when:
+- Covers initial provisioning only; does not model the separate post-deployment resize formula, which uses a fixed 65/35 split after the `corefs` partition
+- The 50 GB `extra_sz` value is based on the reference deployment—update `EXTRA_BACKUP_GB` in the HTML file if another deployment has a different total of backup-marked extrafs partitions
+- Defaults are referenced from the [Cisco Crosswork Planning 7.2.x Installation Guide](https://www.cisco.com/c/en/us/td/docs/cloud-systems-management/crosswork-planning/7-2/install-guide/cisco-crosswork-planning-7-2-installation-guide/install-crosswork-planning/installation-parameters.html) and should be verified against the current installation guide for your release
 
-- an input is outside its displayed range;
-- the data disk is smaller than the fixed 50 GB extrafs offset;
-- `corefs` is larger than the total data disk; or
-- the calculated backupfs remainder is negative.
+## Usage
 
-## Scope and limitations
+Typical usage includes:
 
-- The calculator covers initial provisioning only.
-- It does not model the separate post-deployment resize formula, which uses a fixed 65/35 split after the corefs partition.
-- The 50 GB `extra_sz` value is based on the reference deployment. If another deployment has a different total of backup-marked extrafs partitions, update `EXTRA_BACKUP_GB` in the HTML file before using the calculator for that deployment.
-- The HTML file includes the CSS and JavaScript inline, so it can be copied and used as a standalone artifact.
+- Opening [`cp_disk_calculator.html`](./cp_disk_calculator.html) in a modern web browser
+- Adjusting inputs via numeric textboxes or synchronized sliders
+- Reviewing calculated partition sizes and selecting **Reset** to restore Cisco-documented defaults
 
+## Location
 
+https://github.com/flim226/crosswork/tree/main/sample-scripts/cp_disk_calculator
+
+The calculator lives in [`cp_disk_calculator.html`](cp_disk_calculator.html).
