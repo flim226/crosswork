@@ -62,9 +62,18 @@ When deploying as an external script, package `append_circuit_id.py` and `circui
 Each change is logged to stdout for auditability:
 
 ```
-Updated node-4 GigabitEthernet0/0/0/8: 'to node-8' -> 'to node-8 (Circuit ID: SR/IPIG/483921/CNC)'
-Updated node-8 GigabitEthernet0/0/0/4: '' -> '(Circuit ID: SR/IPIG/483921/CNC)'
-Unchanged node-1 GigabitEthernet0/0/0/6: to node-6 (Circuit ID: SR/IPIG/716304/CNC)
+Using Circuit ID mapping file: /app/external-executor/linux/work/data/1_NETWORK/8_EXTERNAL_SCRIPT/input/circuitid_mappings.csv
+Loaded 15 circuit mappings (30 endpoints) from /app/external-executor/linux/work/data/1_NETWORK/8_EXTERNAL_SCRIPT/input/circuitid_mappings.csv
+Source plan: /app/external-executor/linux/work/data/1_NETWORK/8_EXTERNAL_SCRIPT/input/0_DARE.db (860160 bytes)
+Updated node-1 GigabitEthernet0/0/0/2: 'Connection to device node-2 destination interface 1' -> 'Connection to device node-2 destination interface 1 (Circuit ID: SR/IPIG/371968/CNC)'
+Updated node-2 GigabitEthernet0/0/0/1: 'Connection to device node-1 destination interface 2' -> 'Connection to device node-1 destination interface 2 (Circuit ID: SR/IPIG/371968/CNC)'
+Updated node-1 GigabitEthernet0/0/0/5: 'Connection to device node-5 destination interface 1' -> 'Connection to device node-5 destination interface 1 (Circuit ID: SR/IPIG/147593/CNC)'
+Updated node-5 GigabitEthernet0/0/0/1: 'Connection to device node-1 destination interface 5' -> 'Connection to device node-1 destination interface 5 (Circuit ID: SR/IPIG/147593/CNC)'
+Updated node-1 GigabitEthernet0/0/0/6: 'Connection to device node-6 destination interface 1' -> 'Connection to device node-6 destination interface 1 (Circuit ID: SR/IPIG/716304/CNC)'
+Updated node-6 GigabitEthernet0/0/0/1: 'Connection to device node-1 destination interface 6' -> 'Connection to device node-1 destination interface 6 (Circuit ID: SR/IPIG/716304/CNC)'
+Updated node-2 GigabitEthernet0/0/0/6: 'Connection to device node-6 destination interface 2' -> 'Connection to device node-6 destination interface 2 (Circuit ID: SR/IPIG/825416/CNC)'
+Updated node-6 GigabitEthernet0/0/0/2: 'Connection to device node-2 destination interface 6' -> 'Connection to device node-2 destination interface 6 (Circuit ID: SR/IPIG/825416/CNC)'
+...
 ```
 
 Unmatched CSV rows and missing interfaces are also logged:
