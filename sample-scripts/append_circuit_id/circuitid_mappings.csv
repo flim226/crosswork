@@ -1,0 +1,16 @@
+Circuit ID,NodeA,InterfaceA,NodeB,InterfaceB
+SR/IPIG/483921/CNC,node-4,GigabitEthernet0/0/0/8,node-8,GigabitEthernet0/0/0/4
+SR/IPIG/716304/CNC,node-1,GigabitEthernet0/0/0/6,node-6,GigabitEthernet0/0/0/1
+SR/IPIG/259847/CNC,node-5,GigabitEthernet0/0/0/6,node-6,GigabitEthernet0/0/0/5
+SR/IPIG/904162/CNC,node-5,GigabitEthernet0/0/0/8,node-8,GigabitEthernet0/0/0/5
+SR/IPIG/638075/CNC,node-4,GigabitEthernet0/0/0/5,node-5,GigabitEthernet0/0/0/4
+SR/IPIG/147593/CNC,node-1,GigabitEthernet0/0/0/5,node-5,GigabitEthernet0/0/0/1
+SR/IPIG/825416/CNC,node-2,GigabitEthernet0/0/0/6,node-6,GigabitEthernet0/0/0/2
+SR/IPIG/371968/CNC,node-1,GigabitEthernet0/0/0/2,node-2,GigabitEthernet0/0/0/1
+SR/IPIG/592731/CNC,node-3,GigabitEthernet0/0/0/8,node-8,GigabitEthernet0/0/0/3
+SR/IPIG/068459/CNC,node-3,GigabitEthernet0/0/0/4,node-4,GigabitEthernet0/0/0/3
+SR/IPIG/943287/CNC,node-3,GigabitEthernet0/0/0/7,node-7,GigabitEthernet0/0/0/3
+SR/IPIG/410826/CNC,node-7,GigabitEthernet0/0/0/8,node-8,GigabitEthernet0/0/0/7
+SR/IPIG/786152/CNC,node-2,GigabitEthernet0/0/0/7,node-7,GigabitEthernet0/0/0/2
+SR/IPIG/235694/CNC,node-6,GigabitEthernet0/0/0/7,node-7,GigabitEthernet0/0/0/6
+SR/IPIG/651379/CNC,node-5,GigabitEthernet0/0/0/7,node-7,GigabitEthernet0/0/0/5
