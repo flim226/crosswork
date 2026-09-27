@@ -19,6 +19,7 @@ Matching is orientation-independent: NodeA/InterfaceA vs NodeB/InterfaceB
 in the plan may be swapped relative to the CSV.
 
 For reference please see:
+https://developer.cisco.com/docs/crosswork/planning/libraries-crosswork-planning-design-rpc-python-library/
 https://www.cisco.com/c/en/us/td/docs/cloud-systems-management/crosswork-planning/7-2/setup-guide/cisco-crosswork-planning-7-2-collection-setup-and-administration/m-collectors-in-cp.html#run-external-scripts
 """
 
