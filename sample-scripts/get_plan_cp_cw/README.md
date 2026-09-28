@@ -137,6 +137,7 @@ python get_plan_cp_cw.py <baseplan> <output_planfile> <device_auth_file> <networ
 | `--ip` | Crosswork Network Controller IP address *(optional, for testing only)* |
 | `--username`, `-u` | CNC username *(optional, for testing only)* |
 | `--password`, `-p` | CNC password *(optional, for testing only)* |
+| `--jwt`, `-j` | Path to a JWT file. When `--username`, `--password`, and `--jwt` are omitted, a non-empty `~/.crosswork/<ip>.jwt` is used. A missing or empty file falls back to CLI flags, then `CW_USERNAME` / `CW_PASSWORD`, then the script constants |
 | `--version`, `-v` | Planfile version (default: empty string) |
 | `--geoloc` | Populate node `Longitude` and `Latitude` in the `<Nodes>` table from DLM Inventory. It changes the default intermediate file from `planfile.pln` to `planfile.txt`; when supplying `--tmpfile`, it must end in `.txt`. |
 

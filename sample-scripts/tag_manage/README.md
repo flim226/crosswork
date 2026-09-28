@@ -30,8 +30,16 @@ python3 tag_manage.py [HOST] --ip <IP> --username <USER> --password <PASS> <ACTI
 | Argument | Description |
 |----------|-------------|
 | `--ip` | Crosswork controller IP address |
-| `--username` | Authentication username |
-| `--password` | Authentication password |
+
+### Authentication
+
+When `--username`, `--password`, and `--jwt` are omitted, a non-empty `~/.crosswork/<ip>.jwt` is used. If that file is missing or empty, or if `--username` or `--password` is set, credentials come from the CLI flags, then `CW_USERNAME` / `CW_PASSWORD`, then an interactive prompt.
+
+| Argument | Description |
+|----------|-------------|
+| `--username`, `-u` | Authentication username |
+| `--password`, `-p` | Authentication password |
+| `--jwt`, `-j` | Path to a JWT file |
 
 ### Actions (one required)
 
