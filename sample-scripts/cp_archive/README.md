@@ -14,23 +14,23 @@ Connection options come first, then exactly one of `--import` or `--export`.
 ### Export plans from an archive
 
 ```bash
-python cp_archive.py --ip <CNC_IP> --export --archive <NAME> --last 10
+python cp_archive.py --ip <CW_IP> --export --archive <NAME> --last 10
 ```
 
-Plans are written to `./<CNC_IP>-<NAME>-export` by default, with a `download_manifest.json` listing each file.
+Plans are written to `./<CW_IP>-<NAME>-export` by default, with a `download_manifest.json` listing each file.
 
 Select a window with one of `--from`/`--to`, `--last`, or `--lastdays`. Omit all three to export every plan in the archive. Dates are UTC. A `--to` date without a time covers that whole UTC day.
 
 ```bash
-python cp_archive.py --ip <CNC_IP> --export --archive sr_topo_igp --lastdays 7
-python cp_archive.py --ip <CNC_IP> --export --archive sr_topo_igp --from 2026-09-17 --to 2026-09-25
-python cp_archive.py --ip <CNC_IP> --export --archive sr_topo_igp --last 10 -o ./sr_topo_igp-export
+python cp_archive.py --ip <CW_IP> --export --archive sr_topo_igp --lastdays 7
+python cp_archive.py --ip <CW_IP> --export --archive sr_topo_igp --from 2026-09-17 --to 2026-09-25
+python cp_archive.py --ip <CW_IP> --export --archive sr_topo_igp --last 10 -o ./sr_topo_igp-export
 ```
 
 ### Import plans into an archive
 
 ```bash
-python cp_archive.py --ip <CNC_IP> --import --archive <NAME> plan_a.pln plan_b.pln
+python cp_archive.py --ip <CW_IP> --import --archive <NAME> plan_a.pln plan_b.pln
 ```
 
 Pass plan files, directories of `*.pln` files, or both. Directories are not searched recursively. If the archive is not on the server, it is created first.
@@ -38,7 +38,7 @@ Pass plan files, directories of `*.pln` files, or both. Directories are not sear
 Filenames of the form `YYYYMMDD_HHMM_UTC.pln` keep that minute as the archive timestamp.
 
 ```bash
-python cp_archive.py --ip <CNC_IP> --import --archive sr_topo_igp sr_topo_igp/
+python cp_archive.py --ip <CW_IP> --import --archive sr_topo_igp sr_topo_igp/
 ```
 
 ## Options
