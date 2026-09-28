@@ -24,8 +24,16 @@ python get_inventory.py --ip <IP_ADDRESS> -u <USERNAME> -p <PASSWORD> [OPTIONS]
 | Argument | Description |
 |----------|-------------|
 | `--ip` | Crosswork controller IP address |
+
+### Authentication
+
+When `--username`, `--password`, and `--jwt` are omitted, a non-empty `~/.crosswork/<ip>.jwt` is used. If that file is missing or empty, or if `--username` or `--password` is set, credentials come from the CLI flags, then `CW_USERNAME` / `CW_PASSWORD`, then an interactive prompt.
+
+| Argument | Description |
+|----------|-------------|
 | `-u`, `--username` | Authentication username |
 | `-p`, `--password` | Authentication password |
+| `-j`, `--jwt` | Path to a JWT file |
 
 ### Optional Arguments
 

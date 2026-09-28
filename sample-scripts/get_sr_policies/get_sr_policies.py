@@ -116,9 +116,21 @@ def _resolve_credentials(username=None, password=None) -> tuple:
 
 
 def load_token_from_file(path: str) -> str:
-    """Read a JWT token from a file."""
+    """Read a JWT from an explicit file path. An empty file is an error."""
     with open(path, "r", encoding="utf-8") as jwt_file:
-        return jwt_file.read().strip()
+        token = jwt_file.read().strip()
+    if not token:
+        raise CrossworkAuthError(f"JWT file is empty: {path}")
+    return token
+
+
+def read_stored_jwt(path: str):
+    """Return the token at *path* when the file exists and is non-empty."""
+    if not os.path.isfile(path):
+        return None
+    with open(path, "r", encoding="utf-8") as jwt_file:
+        token = jwt_file.read().strip()
+    return token or None
 
 
 def default_jwt_path(ip: str) -> str:
@@ -146,9 +158,10 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="Retrieve Segment Routing policy operational data from Crosswork CNC.",
         epilog=(
-            "When --username, --password, and --jwt are omitted, the script uses "
-            "~/.crosswork/<ip>.jwt when it exists. Otherwise, credentials are resolved "
-            f"in order: CLI flags > environment variables ({ENV_USERNAME}, {ENV_PASSWORD}) > interactive prompt."
+            "When --username, --password, and --jwt are omitted, a non-empty "
+            "~/.crosswork/<ip>.jwt is used. If that file is missing or empty, or if "
+            "--username or --password is set, credentials are resolved in order: "
+            f"CLI flags > environment variables ({ENV_USERNAME}, {ENV_PASSWORD}) > interactive prompt."
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -170,13 +183,15 @@ def main() -> None:
     base_url = f"https://{args.ip}:{args.port}"
 
     try:
+        token = None
         if args.jwt:
             token = load_token_from_file(args.jwt)
             print(f"Using JWT from {args.jwt}", file=sys.stderr)
-        elif not args.username and not args.password and os.path.isfile(stored_jwt_path):
-            token = load_token_from_file(stored_jwt_path)
-            print(f"Using JWT from {stored_jwt_path}", file=sys.stderr)
-        else:
+        elif not args.username and not args.password:
+            token = read_stored_jwt(stored_jwt_path)
+            if token:
+                print(f"Using JWT from {stored_jwt_path}", file=sys.stderr)
+        if not token:
             print(f"Authenticating to {args.ip}...", file=sys.stderr)
             username, password = _resolve_credentials(args.username, args.password)
             token = get_jwt(args.ip, username, password, verify_ssl=verify_ssl, port=args.port)
