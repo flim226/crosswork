@@ -42,16 +42,17 @@ python get_ecmp_paths.py -s <source_ip> -d <destination_ip> -c <color> [OPTIONS]
 |----------|---------|-------------|
 | `--raw` | off | Print raw verbose `grpcurl` output instead of tabular format |
 | `--graph` | off | Generate a Graphviz topology graph to the given filename (format inferred from extension, e.g. `.png`, `.svg`, `.pdf`) |
-| `--ip` | `198.18.134.219` | Crosswork Network Controller IP address |
-| `-u`, `--username` | `admin` | Authentication username |
-| `-p`, `--password` | `PASSWORD` | Authentication password |
+| `--ip` | required | Crosswork Network Controller IP address |
+| `-u`, `--username` | prompt | Authentication username. See authentication order below |
+| `-p`, `--password` | prompt | Authentication password. See authentication order below |
+| `-j`, `--jwt` | none | JWT file. With this flag, that file is used. With none of `--username`, `--password`, and `--jwt`, a non-empty `~/.crosswork/<ip>.jwt` is used |
 | `--port` | `30603` | gRPC port on the Crosswork controller |
 | `--protoset` | `pa.protoset` | Path to the protobuf descriptor set file |
 
 ## Workflow
 
 1. **Validate Inputs** — Validates that the source and destination are well-formed IPv4 or IPv6 addresses.
-2. **Authenticate** — Obtains a TGT from the Crosswork SSO endpoint, then exchanges it for a JWT bearer token.
+2. **Authenticate** — Uses `--jwt` when given. Otherwise, when `--username` and `--password` are also omitted, uses a non-empty `~/.crosswork/<ip>.jwt`. A missing or empty file, or either credential flag, falls back to CLI flags, then `CW_USERNAME` / `CW_PASSWORD`, then a prompt, and exchanges those credentials for a JWT.
 3. **Build gRPC Request** — Encodes source/destination IPs into the Path Analytics protobuf format (IPv4 as uint32, IPv6 as base64-encoded bytes) and includes the SR-TE color.
 4. **Invoke grpcurl** — Calls the `rca.analytics.PathAnalytics/GetPaths` gRPC service via the `grpcurl` CLI tool with the JWT token for authorization.
 5. **Display Results** — Parses the JSON response and renders a tabular report showing each ECMP path with per-hop link details, or prints raw `grpcurl` output if `--raw` is specified.
