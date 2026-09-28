@@ -16,6 +16,7 @@ import getpass
 import json
 import os
 import re
+import shutil
 import sys
 import threading
 import time
@@ -475,6 +476,112 @@ def _remove(path: str) -> None:
         pass
 
 
+def progress_bar(done: int, total: int, width: int = 30) -> str:
+    """Return a fixed-width bar that fills once per completed plan."""
+    if width < 1:
+        return ""
+    if total <= 0 or done >= total:
+        return "#" * width
+    filled = width * done // total
+    if done > 0 and filled == 0:
+        filled = 1
+    if filled >= width:
+        filled = width - 1
+    return "#" * filled + "-" * (width - filled)
+
+
+def format_progress(label: str, done: int, total: int, *, ok: int, failed: int,
+                    mismatch: int, elapsed: float, name: str) -> str:
+    """Format one progress line. ``done`` is the number of plans finished."""
+    parts = [
+        f"{label} [{progress_bar(done, total)}] {done}/{total}",
+        f"ok={ok}",
+        f"fail={failed}",
+    ]
+    if mismatch:
+        parts.append(f"size_mismatch={mismatch}")
+    parts.append(f"{elapsed:.0f}s")
+    if name:
+        parts.append(name)
+    return " ".join(parts)
+
+
+class TransferProgress:
+    """Redraw a one-line bar as each plan transfer finishes.
+
+    On a terminal the line is updated in place. Otherwise each finished plan
+    is written on its own line so a log still shows every transfer.
+    """
+
+    def __init__(self, total: int, label: str):
+        self.total = total
+        self.label = label
+        self.done = 0
+        self.ok = 0
+        self.failed = 0
+        self.mismatch = 0
+        self.started = time.time()
+        self._tty = sys.stderr.isatty()
+        self._last_len = 0
+        self._closed = False
+        self._lock = threading.Lock()
+        self._render("")
+
+    def update(self, name: str, *, ok: bool = False, failed: bool = False,
+               mismatch: bool = False, error: str | None = None) -> None:
+        """Count one finished plan and redraw."""
+        with self._lock:
+            self.done += 1
+            if failed:
+                self.failed += 1
+            elif mismatch:
+                self.mismatch += 1
+            elif ok:
+                self.ok += 1
+            if error:
+                self._erase()
+                print(f"FAIL {name}: {error}", file=sys.stderr)
+            self._render(name)
+
+    def close(self) -> None:
+        """Leave the last progress line in place and move to the next line."""
+        with self._lock:
+            if self._closed:
+                return
+            self._closed = True
+            if self._tty:
+                sys.stderr.write("\n")
+                sys.stderr.flush()
+
+    def _render(self, name: str) -> None:
+        line = format_progress(
+            self.label,
+            self.done,
+            self.total,
+            ok=self.ok,
+            failed=self.failed,
+            mismatch=self.mismatch,
+            elapsed=time.time() - self.started,
+            name=name,
+        )
+        if not self._tty:
+            print(line, file=sys.stderr)
+            return
+        cols = shutil.get_terminal_size(fallback=(80, 24)).columns
+        if len(line) >= cols:
+            line = line[:cols - 1]
+        pad = " " * max(0, self._last_len - len(line))
+        sys.stderr.write("\r" + line + pad)
+        sys.stderr.flush()
+        self._last_len = len(line)
+
+    def _erase(self) -> None:
+        if self._tty and self._last_len:
+            sys.stderr.write("\r" + " " * self._last_len + "\r")
+            sys.stderr.flush()
+            self._last_len = 0
+
+
 def run_export(args, timeout: int) -> None:
     """Download plans from an archive into a local directory."""
     start, end = resolve_window(args)
@@ -516,45 +623,44 @@ def run_export(args, timeout: int) -> None:
     failed = 0
     mismatches = 0
     results = []
-    print_lock = threading.Lock()
-    started = time.time()
-    with ThreadPoolExecutor(max_workers=args.workers) as pool:
-        futures = {pool.submit(_one, plan, dest): (plan, dest) for plan, dest in jobs}
-        for done, future in enumerate(as_completed(futures), 1):
-            plan, dest = futures[future]
-            name = os.path.basename(dest)
-            try:
-                rec = future.result()
-            except (CrossworkAuthError, requests.RequestException, OSError) as exc:
-                failed += 1
+    progress = TransferProgress(len(jobs), "export")
+    try:
+        with ThreadPoolExecutor(max_workers=args.workers) as pool:
+            futures = {pool.submit(_one, plan, dest): (plan, dest) for plan, dest in jobs}
+            for future in as_completed(futures):
+                plan, dest = futures[future]
+                name = os.path.basename(dest)
+                try:
+                    rec = future.result()
+                except (CrossworkAuthError, requests.RequestException, OSError) as exc:
+                    failed += 1
+                    results.append({
+                        "id": plan.get("id"),
+                        "file": name,
+                        "status": "failed",
+                        "error": str(exc),
+                    })
+                    progress.update(name, failed=True, error=str(exc))
+                    continue
+                status = "size_mismatch" if rec["size_mismatch"] else "ok"
+                if rec["size_mismatch"]:
+                    mismatches += 1
+                else:
+                    ok += 1
                 results.append({
-                    "id": plan.get("id"),
-                    "file": name,
-                    "status": "failed",
-                    "error": str(exc),
+                    "id": rec["id"],
+                    "file": rec["file"],
+                    "status": status,
+                    "bytes": rec["bytes"],
+                    "timestamp": rec.get("timestamp"),
                 })
-                with print_lock:
-                    print(f"FAIL {name}: {exc}", file=sys.stderr)
-                continue
-            status = "size_mismatch" if rec["size_mismatch"] else "ok"
-            if rec["size_mismatch"]:
-                mismatches += 1
-            else:
-                ok += 1
-            results.append({
-                "id": rec["id"],
-                "file": rec["file"],
-                "status": status,
-                "bytes": rec["bytes"],
-                "timestamp": rec.get("timestamp"),
-            })
-            if done % 50 == 0 or done == len(jobs):
-                with print_lock:
-                    print(
-                        f"{done}/{len(jobs)} ok={ok} fail={failed} "
-                        f"size_mismatch={mismatches} "
-                        f"elapsed={time.time() - started:.0f}s"
-                    )
+                progress.update(
+                    name,
+                    ok=status == "ok",
+                    mismatch=rec["size_mismatch"],
+                )
+    finally:
+        progress.close()
 
     manifest = {
         "archive": args.archive,
@@ -681,25 +787,23 @@ def run_import(args, timeout: int) -> None:
 
     ok = 0
     failed: list[str] = []
-    print_lock = threading.Lock()
-    with ThreadPoolExecutor(max_workers=args.workers) as pool:
-        futures = {pool.submit(_one, path): path for path in files}
-        for future in as_completed(futures):
-            path = futures[future]
-            name = os.path.basename(path)
-            try:
-                rec = future.result()
-            except (CrossworkAuthError, requests.RequestException, OSError, ValueError) as exc:
-                failed.append(name)
-                with print_lock:
-                    print(f"FAIL {name}: {exc}", file=sys.stderr)
-                continue
-            ok += 1
-            with print_lock:
-                print(
-                    f"ok {rec['file']} id={rec['id']} "
-                    f"path={rec['path']} timestamp={rec['timestamp']}"
-                )
+    progress = TransferProgress(len(files), "import")
+    try:
+        with ThreadPoolExecutor(max_workers=args.workers) as pool:
+            futures = {pool.submit(_one, path): path for path in files}
+            for future in as_completed(futures):
+                path = futures[future]
+                name = os.path.basename(path)
+                try:
+                    rec = future.result()
+                except (CrossworkAuthError, requests.RequestException, OSError, ValueError) as exc:
+                    failed.append(name)
+                    progress.update(name, failed=True, error=str(exc))
+                    continue
+                ok += 1
+                progress.update(f"{name} id={rec['id']}", ok=True)
+    finally:
+        progress.close()
 
     print(f"Imported {ok}/{len(files)} into {args.archive}; failed {len(failed)}")
     if failed:
