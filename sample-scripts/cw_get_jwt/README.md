@@ -12,7 +12,7 @@ Obtain or decode a JWT token from Cisco Crosswork Network Controller.
 ### Authenticate and save a JWT
 
 ```bash
-python cw_get_jwt.py --ip <CNC_IP> -u <username> -p <password>
+python cw_get_jwt.py --ip <CW_IP> -u <username> -p <password>
 ```
 
 The token is saved to `~/.crosswork/<ip>.jwt` by default.
@@ -20,7 +20,7 @@ The token is saved to `~/.crosswork/<ip>.jwt` by default.
 For compatibility, the IP may also be supplied as the first positional argument:
 
 ```bash
-python cw_get_jwt.py <CNC_IP> -u <username> -p <password>
+python cw_get_jwt.py <CW_IP> -u <username> -p <password>
 ```
 
 ### Decode an existing JWT
