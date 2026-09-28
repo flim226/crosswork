@@ -94,7 +94,7 @@ The script implements CNC's two-step SSO authentication process:
 ### Usage
 
 ```bash
-python get_plan.py --ip <CNC_IP> --username <USER> --password <PASS> --planfile <OUTPUT_FILE>
+python get_plan.py --ip <CW_IP> --username <USER> --password <PASS> --planfile <OUTPUT_FILE>
 ```
 
 ### Arguments
@@ -318,7 +318,7 @@ Integrate with automation pipelines for network validation:
 
 ```bash
 # In CI/CD pipeline
-python get_plan.py --ip $CNC_IP -u $CNC_USER -p $CNC_PASS -f baseline.pln
+python get_plan.py --ip $CW_IP -u $CNC_USER -p $CNC_PASS -f baseline.pln
 # Run validation scripts against baseline.pln
 ```
 
@@ -360,7 +360,7 @@ python get_plan.py --ip 10.0.2.100 -u admin -p pass2 -f domain2.pln
 
 1. **Test connectivity**:
    ```bash
-   curl -k https://<CNC_IP>:30603/crosswork/sso/v1/tickets
+   curl -k https://<CW_IP>:30603/crosswork/sso/v1/tickets
    ```
 
 2. **Use text format for debugging**:
