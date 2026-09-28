@@ -135,8 +135,21 @@ def _resolve_credentials(username=None, password=None) -> tuple:
 
 
 def load_token_from_file(path: str) -> str:
+    """Read a JWT from an explicit file path. An empty file is an error."""
     with open(path, "r", encoding="utf-8") as jwt_file:
-        return jwt_file.read().strip()
+        token = jwt_file.read().strip()
+    if not token:
+        raise CrossworkAuthError(f"JWT file is empty: {path}")
+    return token
+
+
+def read_stored_jwt(path: str):
+    """Return the token at *path* when the file exists and is non-empty."""
+    if not os.path.isfile(path):
+        return None
+    with open(path, "r", encoding="utf-8") as jwt_file:
+        token = jwt_file.read().strip()
+    return token or None
 
 
 def default_jwt_path(ip: str) -> str:
@@ -517,6 +530,11 @@ Examples:
   python get_ecmp_paths.py -s 2001:db8::1 -d 2001:db8::2 -c 100 --raw
   python get_ecmp_paths.py -s 199.20.53.72 -d 199.20.53.71 -c 131 --graph topology.png
   python get_ecmp_paths.py -s 199.20.53.72 -d 199.20.53.71 -c 131 --graph topology.svg
+
+When --username, --password, and --jwt are omitted, a non-empty
+~/.crosswork/<ip>.jwt is used. If that file is missing or empty, or if
+--username or --password is set, credentials are resolved in order:
+CLI flags > environment variables (CW_USERNAME, CW_PASSWORD) > interactive prompt.
 """,
     )
 
@@ -595,13 +613,15 @@ Examples:
             print("WARNING: SSL verification disabled", file=sys.stderr)
         stored_jwt_path = default_jwt_path(args.ip)
 
+        token = None
         if args.jwt:
             token = load_token_from_file(args.jwt)
             print(f"Using JWT from {args.jwt}", file=sys.stderr)
-        elif not args.username and not args.password and os.path.isfile(stored_jwt_path):
-            token = load_token_from_file(stored_jwt_path)
-            print(f"Using JWT from {stored_jwt_path}", file=sys.stderr)
-        else:
+        elif not args.username and not args.password:
+            token = read_stored_jwt(stored_jwt_path)
+            if token:
+                print(f"Using JWT from {stored_jwt_path}", file=sys.stderr)
+        if not token:
             print(f"Authenticating to {args.ip}...", file=sys.stderr)
             username, password = _resolve_credentials(args.username, args.password)
             token = get_jwt(args.ip, username, password, verify_ssl=verify_ssl, port=args.port)

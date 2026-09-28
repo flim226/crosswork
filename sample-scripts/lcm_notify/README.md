@@ -112,12 +112,9 @@ The authentication flow matches other CNC API scripts such as `get_plan.py`:
 
 Credentials are resolved in this order:
 
-1. `--jwt` file (skips username/password entirely)
-2. `--username` / `--password` CLI arguments
-3. `CW_USERNAME` / `CW_PASSWORD` environment variables
-4. Interactive prompt (`Username:` / `Password:` via `getpass`)
-
-Alternatively, a pre-obtained JWT may be supplied with `--jwt` to skip username/password authentication. The companion script `cw_get_jwt.py` can be used to obtain and save a JWT file.
+1. `--jwt` uses the specified JWT file.
+2. When `--username`, `--password`, and `--jwt` are all omitted, a non-empty `~/.crosswork/<ip>.jwt` (the file written by `cw_get_jwt.py`) is used.
+3. `--username` or `--password`, or a missing or empty default file, uses CLI flags, then `CW_USERNAME` / `CW_PASSWORD`, then an interactive prompt (`Username:` / `Password:` via `getpass`).
 
 ### Proxy Configuration
 
@@ -268,7 +265,7 @@ python lcm_notify.py --ip <CNC_HOST> [options]
 | `-k`, `--insecure` | Disable SSL certificate verification (not recommended) |
 | `--username`, `-u` | CNC username (or set `CW_USERNAME`) |
 | `--password`, `-p` | CNC password (or set `CW_PASSWORD`; prompts if omitted) |
-| `--jwt`, `-j` | Path to a JWT file; skips username/password authentication |
+| `--jwt`, `-j` | Path to a JWT file. When `--username`, `--password`, and `--jwt` are omitted, a non-empty `~/.crosswork/<ip>.jwt` is used |
 | `--timeout` | HTTP timeout in seconds for auth and setup requests (default: `30`) |
 | `--api` | Notification API variant: `auto`, `v3`, or `legacy` (default: `auto`) |
 | `--stream-id` | Existing optimization v3 stream UUID; skips initial stream creation |

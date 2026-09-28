@@ -125,8 +125,26 @@ def _resolve_credentials(username=None, password=None) -> Tuple[str, str]:
 
 
 def load_token_from_file(path: str) -> str:
+    """Read a JWT from an explicit file path. An empty file is an error."""
     with open(path, "r", encoding="utf-8") as jwt_file:
-        return jwt_file.read().strip()
+        token = jwt_file.read().strip()
+    if not token:
+        raise CrossworkAuthError(f"JWT file is empty: {path}")
+    return token
+
+
+def read_stored_jwt(path: str) -> Optional[str]:
+    """Return the token at *path* when the file exists and is non-empty."""
+    if not os.path.isfile(path):
+        return None
+    with open(path, "r", encoding="utf-8") as jwt_file:
+        token = jwt_file.read().strip()
+    return token or None
+
+
+def default_jwt_path(ip: str) -> str:
+    """Return the default JWT path created by cw_get_jwt.py for *ip*."""
+    return os.path.join(os.path.expanduser("~/.crosswork"), f"{ip}.jwt")
 
 
 def get_plan(session: requests.Session, base_url: str, token: str, plan_format: str, version: str) -> bytes:
@@ -314,7 +332,15 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(message)s")
 
     parser = argparse.ArgumentParser(
-        description="Retrieve a plan file from Crosswork Network Controller"
+        description="Retrieve a plan file from Crosswork Network Controller",
+        epilog=(
+            "When --username, --password, and --jwt are omitted, a non-empty "
+            "~/.crosswork/<ip>.jwt is used. If that file is missing or empty, or if "
+            "--username or --password is set, credentials are resolved in order: "
+            f"CLI flags > environment variables ({ENV_USERNAME}, {ENV_PASSWORD}) > "
+            "the CROSSWORK_USERNAME and CROSSWORK_PASSWORD constants in this script."
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("dummy", help="First parameter, base planfile (ignored)")
     parser.add_argument("planfile", help="Output plan file name")
@@ -325,10 +351,10 @@ def main() -> None:
     parser.add_argument("archive_root_dir", help="Path to access archive root directory")
     parser.add_argument("--tmpfile", default=TMP_PLANFILE)
     parser.add_argument("--ip", default=CROSSWORK_IP, help=f"Crosswork controller IP address (default: {CROSSWORK_IP})")
-    parser.add_argument("--username", "-u", default=CROSSWORK_USERNAME,
-                        help=f"Username (default: {CROSSWORK_USERNAME}, or set {ENV_USERNAME})")
-    parser.add_argument("--password", "-p", default=CROSSWORK_PASSWORD,
-                        help=f"Password (default: {CROSSWORK_PASSWORD}, or set {ENV_PASSWORD})")
+    parser.add_argument("--username", "-u", default=None,
+                        help=f"Username (or set {ENV_USERNAME}; otherwise the script constant)")
+    parser.add_argument("--password", "-p", default=None,
+                        help=f"Password (or set {ENV_PASSWORD}; otherwise the script constant)")
     parser.add_argument("--jwt", "-j", help="Path to JWT file (skips username/password auth)")
     parser.add_argument("-k", "--insecure", action="store_true",
                         help="Disable SSL certificate verification (not recommended)")
@@ -364,10 +390,16 @@ def main() -> None:
         session = _create_session(verify_ssl=verify_ssl)
         base_url = f"https://{args.ip}:{BASE_PORT}"
 
+        token = None
         if args.jwt:
             logger.info("Using JWT from %s", args.jwt)
             token = load_token_from_file(args.jwt)
-        else:
+        elif not args.username and not args.password:
+            stored_jwt_path = default_jwt_path(args.ip)
+            token = read_stored_jwt(stored_jwt_path)
+            if token:
+                logger.info("Using JWT from %s", stored_jwt_path)
+        if not token:
             logger.info("Authenticating to Crosswork at %s...", args.ip)
             username, password = _resolve_credentials(args.username, args.password)
             ticket = get_ticket(session, base_url, username, password)

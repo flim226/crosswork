@@ -26,13 +26,13 @@ python get_sr_policies.py --ip <CNC_HOSTNAME_OR_IP> [options]
 | `-k`, `--insecure` | Disable TLS certificate verification. |
 | `--timeout` | HTTP timeout in seconds; defaults to `20`. |
 
-If `--username`, `--password`, and `--jwt` are all omitted, the script uses the default JWT file created by `cw_get_jwt.py`:
+If `--username`, `--password`, and `--jwt` are all omitted, the script uses a non-empty JWT file created by `cw_get_jwt.py`:
 
 ```text
 ~/.crosswork/<ip>.jwt
 ```
 
-If that file does not exist, credentials are resolved from CLI options, then `CW_USERNAME` / `CW_PASSWORD`, then interactive prompts.
+If that file is missing or empty, or if `--username` or `--password` is set, credentials are resolved from CLI options, then `CW_USERNAME` / `CW_PASSWORD`, then interactive prompts.
 
 ## Examples
 
