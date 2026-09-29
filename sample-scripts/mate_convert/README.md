@@ -12,7 +12,7 @@ Credentials are never stored in the script. When `--username`, `--password`, and
 
 ## Requirements
 
-- Python 3.10+
+- Python 3.10+ (3.10 is in security-only support through October 2026)
 - `requests` (`pip install requests`)
 - Crosswork Planning 8.0, with the Design REST API reachable (HTTPS port `30603` by default)
 - A local plan file, or a plan already stored in Design userspace as a `PLANFILE` with the same basename
@@ -163,7 +163,9 @@ The CP 8.0 submit body includes `jobName`, `jobType` (`CLI_JOB`), `fsId`, `jobCo
 
 ## Notes
 
-- TLS certificate verification is on unless `-k` / `--insecure` is set. Use `-k` only for lab controllers with a private or self-signed certificate. For a production controller, leave verification enabled so the client checks the server certificate.
+- TLS certificate verification is on unless `-k` / `--insecure` is set. Use `-k` only for lab controllers with a private or self-signed certificate. For a production controller, leave verification enabled so the client checks the server certificate. The client allows TLS 1.2 and TLS 1.3 and does not follow HTTP redirects.
+- Names sent to the engine (`-plan-file`, `-out-file`, `-log-file`, `-options-file`) must be 1–255 characters of letters, digits, `.`, `_`, or `-`, and must start with a letter or digit. Paths are reduced to that basename. Uploads, the result tar, and the extracted plan are limited to 1 GiB. Empty files are not uploaded.
+- `--password` prints a warning because the value is visible in the process list. A group- or world-readable JWT file also prints a warning. Prefer `chmod 600` on `~/.crosswork/<ip>.jwt`.
 - Passwords and tokens are read from a JWT file, environment variables, CLI flags, or a prompt. Do not commit them, and prefer `cw_get_jwt.py` plus the default `~/.crosswork/<ip>.jwt` path for repeat runs.
 - Re-running against the same local plan imports that file into userspace again under the same basename.
 - A job that ends in `FAILED`, `ABORTED`, or `CANCELLED`, or that completes without an `outputTarFileId`, is reported as an error. The converted file is written only after a `COMPLETED` job and a successful tar extract.
