@@ -1,0 +1,814 @@
+<Network>
+Property	Value
+Title	
+Version	7.6
+
+<AS>
+ASN	Type	ExternalMesh
+65000	internal	exclude
+
+<Nodes>
+Name	AS	BGPID	IPAddress	Vendor	Model	OS
+node-3	65000	198.19.1.3	198.19.1.3	Cisco	IOS-XRv 9000	IOS XR 7.11.1
+node-4	65000	198.19.1.4	198.19.1.4	Cisco	IOS-XRv 9000	IOS XR 7.11.1
+node-5	65000	198.19.1.5	198.19.1.5	Cisco	IOS-XRv 9000	IOS XR 7.11.1
+node-6	65000	198.19.1.6	198.19.1.6	Cisco	IOS-XRv 9000	IOS XR 7.11.1
+node-7	65000	198.19.1.7	198.19.1.7	Cisco	IOS-XRv 9000	IOS XR 7.11.1
+node-8	65000	198.19.1.8	198.19.1.8	Cisco	IOS-XRv 9000	IOS XR 7.11.1
+node-1	65000	198.19.1.1	198.19.1.1	Cisco	IOS-XRv 9000	IOS XR 7.11.1
+node-2	65000	198.19.1.2	198.19.1.2	Cisco	IOS-XRv 9000	IOS XR 7.11.1
+
+<NodeSIDs>
+Node	SID	Type	SRAlgorithm
+node-3	16003	REGULAR	0
+node-3	17203	FLEX-ALGO	129
+node-3	17003	STRICT	1
+node-3	17303	FLEX-ALGO	130
+node-3	17103	FLEX-ALGO	128
+node-4	17104	FLEX-ALGO	128
+node-4	17304	FLEX-ALGO	130
+node-4	16004	REGULAR	0
+node-4	17004	STRICT	1
+node-4	17204	FLEX-ALGO	129
+node-5	16005	REGULAR	0
+node-5	17005	STRICT	1
+node-5	17205	FLEX-ALGO	129
+node-5	17105	FLEX-ALGO	128
+node-5	17305	FLEX-ALGO	130
+node-6	17306	FLEX-ALGO	130
+node-6	17106	FLEX-ALGO	128
+node-6	16006	REGULAR	0
+node-6	17206	FLEX-ALGO	129
+node-6	17006	STRICT	1
+node-7	16007	REGULAR	0
+node-7	17307	FLEX-ALGO	130
+node-7	17007	STRICT	1
+node-7	17207	FLEX-ALGO	129
+node-7	17107	FLEX-ALGO	128
+node-8	17208	FLEX-ALGO	129
+node-8	17008	STRICT	1
+node-8	16008	REGULAR	0
+node-8	17308	FLEX-ALGO	130
+node-8	17108	FLEX-ALGO	128
+node-1	17001	STRICT	1
+node-1	16001	REGULAR	0
+node-1	17201	FLEX-ALGO	129
+node-1	17101	FLEX-ALGO	128
+node-1	17301	FLEX-ALGO	130
+node-2	17302	FLEX-ALGO	130
+node-2	17102	FLEX-ALGO	128
+node-2	16002	REGULAR	0
+node-2	17202	FLEX-ALGO	129
+node-2	17002	STRICT	1
+
+<NodePrefixLoopbacks>
+Node	IPAddress	IGPProcessID	ISISLevel
+node-3	198.19.1.3	0	Level2
+node-3	2010::3	0	Level2
+node-4	198.19.1.4	0	Level2
+node-4	2010::4	0	Level2
+node-5	198.19.1.5	0	Level2
+node-5	2010::5	0	Level2
+node-6	2010::6	0	Level1-2
+node-6	198.19.1.6	0	Level1-2
+node-7	2010::7	0	Level2
+node-7	198.19.1.7	0	Level2
+node-8	2010::8	0	Level1-2
+node-8	198.19.1.8	0	Level1-2
+node-1	198.19.1.1	0	Level2
+node-1	2010::1	0	Level2
+node-2	198.19.1.2	0	Level2
+node-2	2010::2	0	Level2
+
+<NodeSIDPrefixLoopbacks>
+Node	SID	IPAddress	IGPProcessID
+node-3	16003	198.19.1.3	0
+node-3	17203	198.19.1.3	0
+node-3	17003	198.19.1.3	0
+node-3	17303	198.19.1.3	0
+node-3	17103	198.19.1.3	0
+node-4	17104	198.19.1.4	0
+node-4	17304	198.19.1.4	0
+node-4	16004	198.19.1.4	0
+node-4	17004	198.19.1.4	0
+node-4	17204	198.19.1.4	0
+node-5	16005	198.19.1.5	0
+node-5	17005	198.19.1.5	0
+node-5	17205	198.19.1.5	0
+node-5	17105	198.19.1.5	0
+node-5	17305	198.19.1.5	0
+node-6	17306	198.19.1.6	0
+node-6	17106	198.19.1.6	0
+node-6	16006	198.19.1.6	0
+node-6	17206	198.19.1.6	0
+node-6	17006	198.19.1.6	0
+node-7	16007	198.19.1.7	0
+node-7	17307	198.19.1.7	0
+node-7	17007	198.19.1.7	0
+node-7	17207	198.19.1.7	0
+node-7	17107	198.19.1.7	0
+node-8	17208	198.19.1.8	0
+node-8	17008	198.19.1.8	0
+node-8	16008	198.19.1.8	0
+node-8	17308	198.19.1.8	0
+node-8	17108	198.19.1.8	0
+node-1	17001	198.19.1.1	0
+node-1	16001	198.19.1.1	0
+node-1	17201	198.19.1.1	0
+node-1	17101	198.19.1.1	0
+node-1	17301	198.19.1.1	0
+node-2	17302	198.19.1.2	0
+node-2	17102	198.19.1.2	0
+node-2	16002	198.19.1.2	0
+node-2	17202	198.19.1.2	0
+node-2	17002	198.19.1.2	0
+
+<Circuits>
+Name	NodeA	InterfaceA	NodeB	InterfaceB	Delay
+2001::3:7:3/112	node-3	GigabitEthernet0/0/0/7	node-7	GigabitEthernet0/0/0/3	
+10.3.8.0/28	node-3	GigabitEthernet0/0/0/8	node-8	GigabitEthernet0/0/0/3	0.011
+2001::3:4:3/112	node-3	GigabitEthernet0/0/0/4	node-4	GigabitEthernet0/0/0/3	
+2001::4:5:4/112	node-4	GigabitEthernet0/0/0/5	node-5	GigabitEthernet0/0/0/4	
+10.4.8.0/28	node-4	GigabitEthernet0/0/0/8	node-8	GigabitEthernet0/0/0/4	0.011
+10.6.7.6/31	node-6	GigabitEthernet0/0/0/7	node-7	GigabitEthernet0/0/0/6	0.011
+10.5.6.4/30	node-5	GigabitEthernet0/0/0/6	node-6	GigabitEthernet0/0/0/5	0.011
+2001::5:7:5/112	node-5	GigabitEthernet0/0/0/7	node-7	GigabitEthernet0/0/0/5	
+10.5.8.0/28	node-5	GigabitEthernet0/0/0/8	node-8	GigabitEthernet0/0/0/5	0.011
+10.7.8.0/28	node-7	GigabitEthernet0/0/0/8	node-8	GigabitEthernet0/0/0/7	0.011
+10.2.6.0/29	node-2	GigabitEthernet0/0/0/6	node-6	GigabitEthernet0/0/0/2	0.011
+2001::2:7:2/112	node-2	GigabitEthernet0/0/0/7	node-7	GigabitEthernet0/0/0/2	
+2001::1:6:1/112	node-1	GigabitEthernet0/0/0/6	node-6	GigabitEthernet0/0/0/1	
+10.1.2.0/30	node-1	GigabitEthernet0/0/0/2	node-2	GigabitEthernet0/0/0/1	0.001
+10.1.5.0/29	node-1	GigabitEthernet0/0/0/5	node-5	GigabitEthernet0/0/0/1	0.001
+
+<Interfaces>
+Node	Interface	IGPMetric	Capacity	TEMetric	ResvBW	IGPProcessID	Affinities	FlexAlgoAffinities	Description	NetIntIndex	NetIntType	NetIntAdminStatus	NetIntOperStatus
+node-3	GigabitEthernet0/0/0/7	100	10.0	100	7.5	0	23	106	Connection to device node-7 destination interface 3	13	6	up	up
+node-5	GigabitEthernet0/0/0/8	10	10.0	10	7.5	0			Connection to device node-8 destination interface 5	14	6	up	up
+node-1	GigabitEthernet0/0/0/6	10	10.0	10	7.5	0			Connection to device node-6 destination interface 1	12	6	up	up
+node-7	GigabitEthernet0/0/0/3	100	10.0	100	7.5	0	23	106	Connection to device node-3 destination interface 7	9	6	up	up
+node-7	GigabitEthernet0/0/0/5	10	10.0	10	7.5	0			Connection to device node-5 destination interface 7	11	6	up	up
+node-5	GigabitEthernet0/0/0/4	100	10.0	100	7.5	0	24	108	Connection to device node-4 destination interface 5	10	6	up	up
+node-5	GigabitEthernet0/0/0/6	10	10.0	10	7.5	0	24	108	Connection to device node-6 destination interface 5	12	6	up	up
+node-1	GigabitEthernet0/0/0/2	100	10.0	100	7.5	0			Connection to device node-2 destination interface 1	8	6	up	up
+node-2	GigabitEthernet0/0/0/6	10	10.0	10	7.5	0			Connection to device node-6 destination interface 2	12	6	up	up
+node-8	GigabitEthernet0/0/0/7	10	10.0	10	7.5	0			Connection to device node-7 destination interface 8	13	6	up	up
+node-8	GigabitEthernet0/0/0/5	10	10.0	10	7.5	0			Connection to device node-5 destination interface 8	11	6	up	up
+node-8	GigabitEthernet0/0/0/3	10	10.0	10	7.5	0			Connection to device node-3 destination interface 8	9	6	up	up
+node-6	GigabitEthernet0/0/0/2	10	10.0	10	7.5	0			Connection to device node-2 destination interface 6	8	6	up	up
+node-4	GigabitEthernet0/0/0/3	100	10.0	100	7.5	0			Connection to device node-3 destination interface 4	9	6	up	up
+node-4	GigabitEthernet0/0/0/5	100	10.0	100	7.5	0	24	108	Connection to device node-5 destination interface 4	11	6	up	up
+node-1	GigabitEthernet0/0/0/5	100	10.0	100	7.5	0	24	108	Connection to device node-5 destination interface 1	11	6	up	up
+node-3	GigabitEthernet0/0/0/8	10	10.0	10	7.5	0			Connection to device node-8 destination interface 3	14	6	up	up
+node-7	GigabitEthernet0/0/0/2	100	10.0	100	7.5	0	23	106	Connection to device node-2 destination interface 7	8	6	up	up
+node-5	GigabitEthernet0/0/0/1	100	10.0	100	7.5	0	24	108	Connection to device node-1 destination interface 5	7	6	up	up
+node-7	GigabitEthernet0/0/0/6	10	10.0	10	7.5	0			Connection to device node-6 destination interface 7	12	6	up	up
+node-7	GigabitEthernet0/0/0/8	10	10.0	10	7.5	0			Connection to device node-8 destination interface 7	14	6	up	up
+node-3	GigabitEthernet0/0/0/4	100	10.0	100	7.5	0			Connection to device node-4 destination interface 3	10	6	up	up
+node-5	GigabitEthernet0/0/0/7	10	10.0	10	7.5	0			Connection to device node-7 destination interface 5	13	6	up	up
+node-4	GigabitEthernet0/0/0/8	10	10.0	10	7.5	0			Connection to device node-8 destination interface 4	14	6	up	up
+node-2	GigabitEthernet0/0/0/7	100	10.0	100	7.5	0	23	106	Connection to device node-7 destination interface 2	13	6	up	up
+node-8	GigabitEthernet0/0/0/4	10	10.0	10	7.5	0			Connection to device node-4 destination interface 8	10	6	up	up
+node-6	GigabitEthernet0/0/0/1	10	10.0	10	7.5	0			Connection to device node-1 destination interface 6	7	6	up	up
+node-6	GigabitEthernet0/0/0/5	10	10.0	10	7.5	0	24	108	Connection to device node-5 destination interface 6	11	6	up	up
+node-2	GigabitEthernet0/0/0/1	100	10.0	100	7.5	0			Connection to device node-1 destination interface 2	7	6	up	up
+node-6	GigabitEthernet0/0/0/7	10	10.0	10	7.5	0			Connection to device node-7 destination interface 6	13	6	up	up
+
+<InterfaceSIDs>
+Node	Interface	SID	Protected
+node-3	GigabitEthernet0/0/0/7	24146	F
+node-3	GigabitEthernet0/0/0/7	24145	T
+node-5	GigabitEthernet0/0/0/8	24004	T
+node-5	GigabitEthernet0/0/0/8	24005	F
+node-1	GigabitEthernet0/0/0/6	24150	F
+node-1	GigabitEthernet0/0/0/6	24149	T
+node-7	GigabitEthernet0/0/0/3	24004	T
+node-7	GigabitEthernet0/0/0/3	24005	F
+node-7	GigabitEthernet0/0/0/5	24002	T
+node-7	GigabitEthernet0/0/0/5	24003	F
+node-5	GigabitEthernet0/0/0/4	24007	F
+node-5	GigabitEthernet0/0/0/4	24006	T
+node-5	GigabitEthernet0/0/0/6	24011	F
+node-5	GigabitEthernet0/0/0/6	24010	T
+node-1	GigabitEthernet0/0/0/2	24146	F
+node-1	GigabitEthernet0/0/0/2	24145	T
+node-2	GigabitEthernet0/0/0/6	24148	F
+node-2	GigabitEthernet0/0/0/6	24147	T
+node-8	GigabitEthernet0/0/0/7	24011	F
+node-8	GigabitEthernet0/0/0/7	24010	T
+node-8	GigabitEthernet0/0/0/5	24009	F
+node-8	GigabitEthernet0/0/0/5	24008	T
+node-8	GigabitEthernet0/0/0/3	24005	F
+node-8	GigabitEthernet0/0/0/3	24004	T
+node-6	GigabitEthernet0/0/0/2	24149	T
+node-6	GigabitEthernet0/0/0/2	24150	F
+node-4	GigabitEthernet0/0/0/3	24002	T
+node-4	GigabitEthernet0/0/0/3	24003	F
+node-4	GigabitEthernet0/0/0/5	24004	T
+node-4	GigabitEthernet0/0/0/5	24005	F
+node-1	GigabitEthernet0/0/0/5	24147	T
+node-1	GigabitEthernet0/0/0/5	24148	F
+node-3	GigabitEthernet0/0/0/8	24150	F
+node-3	GigabitEthernet0/0/0/8	24149	T
+node-7	GigabitEthernet0/0/0/2	24009	F
+node-7	GigabitEthernet0/0/0/2	24008	T
+node-5	GigabitEthernet0/0/0/1	24009	F
+node-5	GigabitEthernet0/0/0/1	24008	T
+node-7	GigabitEthernet0/0/0/6	24010	T
+node-7	GigabitEthernet0/0/0/6	24011	F
+node-7	GigabitEthernet0/0/0/8	24006	T
+node-7	GigabitEthernet0/0/0/8	24007	F
+node-3	GigabitEthernet0/0/0/4	24147	T
+node-3	GigabitEthernet0/0/0/4	24148	F
+node-5	GigabitEthernet0/0/0/7	24003	F
+node-5	GigabitEthernet0/0/0/7	24002	T
+node-4	GigabitEthernet0/0/0/8	24006	T
+node-4	GigabitEthernet0/0/0/8	24007	F
+node-2	GigabitEthernet0/0/0/7	24149	T
+node-2	GigabitEthernet0/0/0/7	24150	F
+node-8	GigabitEthernet0/0/0/4	24007	F
+node-8	GigabitEthernet0/0/0/4	24006	T
+node-6	GigabitEthernet0/0/0/1	24145	T
+node-6	GigabitEthernet0/0/0/1	24146	F
+node-6	GigabitEthernet0/0/0/5	24152	F
+node-6	GigabitEthernet0/0/0/5	24151	T
+node-2	GigabitEthernet0/0/0/1	24146	F
+node-2	GigabitEthernet0/0/0/1	24145	T
+node-6	GigabitEthernet0/0/0/7	24154	F
+node-6	GigabitEthernet0/0/0/7	24153	T
+
+<FlexAlgorithms>
+SRAlgorithm	IGPProcessID	ISISLevel	MetricType	ExcludeAll
+128	0	Level1	delay	
+128	0	Level2	delay	
+129	0	Level1	igp	108
+129	0	Level2	igp	108
+130	0	Level1	igp	106
+130	0	Level2	igp	106
+
+<Queues>
+Name
+class-default
+
+<LSPs>
+Name	Source	Destination	SetupBW	HoldPri	Private	Tags
+node-1_node-2	node-1	node-2	2.0	0	T	
+node-1_node-3	node-1	node-3	2.0	0	T	
+node-1_node-4	node-1	node-4	0.0	7	T	expopt
+node-1_node-5	node-1	node-5	2.0	0	T	
+node-1_node-7	node-1	node-7	2.0	0	T	
+node-2_node-1	node-2	node-1	2.0	0	T	
+node-2_node-3	node-2	node-3	0.0	7	T	expopt
+node-2_node-4	node-2	node-4	2.0	0	T	
+node-2_node-5	node-2	node-5	2.0	0	T	
+node-2_node-7	node-2	node-7	2.0	0	T	
+node-3_node-1	node-3	node-1	2.0	0	T	
+node-3_node-2	node-3	node-2	2.0	0	T	
+node-3_node-4	node-3	node-4	0.0	7	T	expopt
+node-3_node-5	node-3	node-5	2.0	0	T	
+node-3_node-7	node-3	node-7	2.0	0	T	
+node-4_node-1	node-4	node-1	0.0	7	T	expopt
+node-4_node-2	node-4	node-2	0.0	7	T	expopt
+node-4_node-3	node-4	node-3	2.0	0	T	
+node-4_node-5	node-4	node-5	2.0	0	T	
+node-4_node-7	node-4	node-7	2.0	0	T	
+node-5_node-1	node-5	node-1	2.0	0	T	
+node-5_node-2	node-5	node-2	2.0	0	T	
+node-5_node-3	node-5	node-3	2.0	0	T	
+node-5_node-4	node-5	node-4	2.0	0	T	
+node-5_node-7	node-5	node-7	2.0	0	T	
+node-7_node-1	node-7	node-1	2.0	0	T	
+node-7_node-2	node-7	node-2	2.0	0	T	
+node-7_node-3	node-7	node-3	2.0	0	T	
+node-7_node-4	node-7	node-4	2.0	0	T	
+node-7_node-5	node-7	node-5	2.0	0	T	
+
+<LSPPaths>
+LSP	Source	PathName	SetupBW	PathOption
+node-1_node-4	node-1	node-1_node-4_1	0.0	2
+node-2_node-3	node-2	node-2_node-3_1	0.0	2
+node-3_node-4	node-3	node-3_node-4_1	0.0	2
+node-4_node-1	node-4	node-4_node-1_1	0.0	2
+node-4_node-2	node-4	node-4_node-2_1	0.0	2
+
+<NamedPaths>
+Name	Source
+node-1_node-4_1	node-1
+node-2_node-3_1	node-2
+node-3_node-4_1	node-3
+node-4_node-1_1	node-4
+node-4_node-2_1	node-4
+
+<NamedPathHops>
+Name	Source	Step	Node	Interface	Type
+node-1_node-4_1	node-1	1	node-5	GigabitEthernet0/0/0/1	strict
+node-1_node-4_1	node-1	2	node-4	GigabitEthernet0/0/0/5	strict
+node-2_node-3_1	node-2	1	node-7	GigabitEthernet0/0/0/2	strict
+node-2_node-3_1	node-2	2	node-3	GigabitEthernet0/0/0/7	strict
+node-3_node-4_1	node-3	1	node-4	GigabitEthernet0/0/0/3	strict
+node-4_node-1_1	node-4	1	node-5	GigabitEthernet0/0/0/4	strict
+node-4_node-1_1	node-4	2	node-1	GigabitEthernet0/0/0/5	strict
+node-4_node-2_1	node-4	1	node-3	GigabitEthernet0/0/0/4	strict
+node-4_node-2_1	node-4	2	node-7	GigabitEthernet0/0/0/3	strict
+node-4_node-2_1	node-4	3	node-2	GigabitEthernet0/0/0/7	strict
+
+<ServiceClasses>
+Name
+Default
+
+<TrafficLevels>
+Name
+Default
+
+<InterfaceTraffic>
+Node	Interface	TrafficLevel	TraffMeas
+node-3	GigabitEthernet0/0/0/7	Default	4.1
+node-5	GigabitEthernet0/0/0/8	Default	6.0
+node-1	GigabitEthernet0/0/0/6	Default	5.9
+node-7	GigabitEthernet0/0/0/3	Default	4.0
+node-7	GigabitEthernet0/0/0/5	Default	4.1
+node-5	GigabitEthernet0/0/0/4	Default	1.9
+node-5	GigabitEthernet0/0/0/6	Default	5.9
+node-8	GigabitEthernet0/0/0/7	Default	4.0
+node-8	GigabitEthernet0/0/0/5	Default	6.0
+node-8	GigabitEthernet0/0/0/3	Default	6.0
+node-6	GigabitEthernet0/0/0/2	Default	5.9
+node-4	GigabitEthernet0/0/0/3	Default	2.1
+node-4	GigabitEthernet0/0/0/5	Default	2.0
+node-1	GigabitEthernet0/0/0/5	Default	4.1
+node-3	GigabitEthernet0/0/0/8	Default	6.0
+node-7	GigabitEthernet0/0/0/2	Default	4.0
+node-5	GigabitEthernet0/0/0/1	Default	3.9
+node-7	GigabitEthernet0/0/0/6	Default	1.9
+node-7	GigabitEthernet0/0/0/8	Default	3.9
+node-3	GigabitEthernet0/0/0/4	Default	2.0
+node-5	GigabitEthernet0/0/0/7	Default	4.0
+node-4	GigabitEthernet0/0/0/8	Default	6.1
+node-2	GigabitEthernet0/0/0/7	Default	4.1
+node-8	GigabitEthernet0/0/0/4	Default	6.0
+node-6	GigabitEthernet0/0/0/1	Default	5.8
+node-6	GigabitEthernet0/0/0/5	Default	6.0
+node-2	GigabitEthernet0/0/0/1	Default	0.0
+node-6	GigabitEthernet0/0/0/7	Default	1.8
+node-2	GigabitEthernet0/0/0/6	Default	5.9
+
+<InterfaceIPAddresses>
+Node	Interface	IPv4Address	IPv4PrefixLength	IPv6Address	IPv6PrefixLength
+node-3	GigabitEthernet0/0/0/7	10.3.7.3	24		
+node-5	GigabitEthernet0/0/0/8			2001::5:8:5	112
+node-1	GigabitEthernet0/0/0/6	10.1.6.1	24		
+node-7	GigabitEthernet0/0/0/3	10.3.7.7	24		
+node-7	GigabitEthernet0/0/0/5	10.5.7.7	24		
+node-5	GigabitEthernet0/0/0/4	10.4.5.5	24		
+node-5	GigabitEthernet0/0/0/6			2001::5:6:5	112
+node-1	GigabitEthernet0/0/0/2			2001::1:2:1	112
+node-2	GigabitEthernet0/0/0/6			2001::2:6:2	112
+node-8	GigabitEthernet0/0/0/7			2001::7:8:8	112
+node-8	GigabitEthernet0/0/0/5			2001::5:8:8	112
+node-8	GigabitEthernet0/0/0/3			2001::3:8:8	112
+node-6	GigabitEthernet0/0/0/2			2001::2:6:6	112
+node-4	GigabitEthernet0/0/0/3	10.3.4.4	24		
+node-4	GigabitEthernet0/0/0/5	10.4.5.4	24		
+node-1	GigabitEthernet0/0/0/5			2001::1:5:1	112
+node-3	GigabitEthernet0/0/0/8			2001::3:8:3	112
+node-7	GigabitEthernet0/0/0/2	10.2.7.7	24		
+node-5	GigabitEthernet0/0/0/1			2001::1:5:5	112
+node-7	GigabitEthernet0/0/0/6			2001::6:7:7	112
+node-7	GigabitEthernet0/0/0/8			2001::7:8:7	112
+node-3	GigabitEthernet0/0/0/4	10.3.4.3	24		
+node-5	GigabitEthernet0/0/0/7	10.5.7.5	24		
+node-4	GigabitEthernet0/0/0/8			2001::4:8:4	112
+node-2	GigabitEthernet0/0/0/7	10.2.7.2	24		
+node-8	GigabitEthernet0/0/0/4			2001::4:8:8	112
+node-6	GigabitEthernet0/0/0/1	10.1.6.6	24		
+node-6	GigabitEthernet0/0/0/5			2001::5:6:6	112
+node-2	GigabitEthernet0/0/0/1			2001::1:2:2	112
+node-6	GigabitEthernet0/0/0/7			2001::6:7:6	112
+
+<LSPTraffic>
+Name	Source	TrafficLevel	TraffMeas
+node-1_node-2	node-1	Default	1.9
+node-1_node-3	node-1	Default	1.9
+node-1_node-4	node-1	Default	2.0
+node-1_node-5	node-1	Default	2.0
+node-1_node-7	node-1	Default	2.1
+node-2_node-1	node-2	Default	2.1
+node-2_node-3	node-2	Default	2.0
+node-2_node-4	node-2	Default	1.8
+node-2_node-5	node-2	Default	1.9
+node-2_node-7	node-2	Default	2.0
+node-3_node-1	node-3	Default	2.1
+node-3_node-2	node-3	Default	2.1
+node-3_node-4	node-3	Default	2.0
+node-3_node-5	node-3	Default	1.9
+node-3_node-7	node-3	Default	1.8
+node-4_node-1	node-4	Default	2.1
+node-4_node-2	node-4	Default	2.1
+node-4_node-3	node-4	Default	2.1
+node-4_node-5	node-4	Default	2.0
+node-4_node-7	node-4	Default	2.2
+node-5_node-1	node-5	Default	2.0
+node-5_node-2	node-5	Default	1.9
+node-5_node-3	node-5	Default	1.9
+node-5_node-4	node-5	Default	1.9
+node-5_node-7	node-5	Default	2.0
+node-7_node-1	node-7	Default	2.1
+node-7_node-2	node-7	Default	2.1
+node-7_node-3	node-7	Default	2.1
+node-7_node-4	node-7	Default	2.0
+node-7_node-5	node-7	Default	1.8
+
+<PlotLayouts>
+Name	PlotLayoutType
+Default	Design
+
+<PlotLayoutElements>
+PlotLayoutName	ElementNode	X	Y	Shown	Expanded
+Default	node-3	-80.8160972348484	-49.4232936903025	T	F
+Default	node-4	-80.8160972348484	49.9112979714971	T	F
+Default	node-5	-10.5321880401789	49.9112979714971	T	F
+Default	node-6	23.2040883732625	1.49349385961367	T	F
+Default	node-7	-10.5321880401789	-49.4232936903025	T	F
+Default	node-8	-45.2055832428825	0.556375070351405	T	F
+Default	node-1	61.001212873507	50.2236709012512	T	F
+Default	node-2	59.7517211544906	-49.4232936903025	T	F
+
+<Reports>
+Name	DateCreated
+Design History	Mon Jan 13 11:46:24 2025
+
+<ReportSections>
+Name	Report	Contents
+dmd_mesh_creator	Design History	OPTIONS\n--------------------------------------------------------\nplan-file:  (not specified)\nout-file:  (not specified)\nsource-list: nodes,as,endpoints (default)\nsource-nodes-table:  (default)\nsource-sites-table:  (default)\nsource-as-table:  (default)\nsource-endpoints-table:  (default)\ndemandmesh-table:  (default)\nout-demandmesh-table:  (default)\nout-demands-table:  (default)\ndest-equals-source: true (default)\ndest-list: nodes,as,endpoints (default)\ndest-nodes-table:  (default)\ndest-sites-table:  (default)\ndest-as-table:  (default)\ndest-endpoints-table:  (default)\nboth-directions: true (default)\nexternal-AS-interface-endpoints: true (default)\nrespect-as-relationships: true (default)\nservice-class:  (default)\ntopology:  (default)\nset-name:  (default)\nset-tag-list:  (default)\ndelete-same-name: false (default)\ninclude-demands-to-self: true (default)\nexternal-mesh: respect (default)\nhelp: false (default)\noptions-file:  (default)\nversion: false (default)\nno-global-options: false (default)\nsuppress-progress: false (default)\nverbosity: 30 (default)\nlog-file:  (default)\nsimple-txt-out-file: false (default)\n
+lsp_mesh_creator	Design History	OPTIONS\n--------------------------------------------------------\nplan-file:  (not specified)\nout-file:  (not specified)\nsource-nodes-table:  (default)\ndest-nodes-table:  (default)\ndest-equals-source: true (default)\nsetup-bw: Default (default)\nautobandwidth: false (default)\nsetup-pri: 7 (default)\nhold-pri: 7 (default)\nload-share: -1 (default)\nmetric-type: autoroute (default)\nmetric: -1 (default)\ntype: RSVP (default)\ncopy-from-existing:  (default)\nname-postfix:  (default)\nno-inter-as-lsp: true (default)\nno-inter-area-lsp: true (default)\ninclude:  (default)\ninclude-any:  (default)\nexclude:  (default)\ninclude-any-demand-tags:  (default)\ntopology:  (default)\nboth-directions: true (default)\nhelp: false (default)\noptions-file:  (default)\nversion: false (default)\nno-global-options: false (default)\nsuppress-progress: false (default)\nverbosity: 30 (default)\nlog-file:  (default)\nsimple-txt-out-file: false (default)\n
+LSP Optimization	Design History	LSP OPTIMIZATION REPORT\n================================================================================\n\nWARNINGS SUMMARY\n--------------------------------------------------------------------------------\n\nNo warnings.\n\nUTILIZATION SUMMARY\n--------------------------------------------------------------------------------\nAfter (Before)\n\nScenario:          Max Utilization over Optimized Interfaces (%) \nNormal                   60 (75) \n\n\nNumber of interfaces to optimize        : 30\nNumber of optimized interfaces with\n    normal utilization \> 70%            : 0 (8)\nNumber of non-optimized interfaces with\n    normal utilization \> 70%            : 0 (0)\n    normal utilization \> current + 0%   : 0 (0)\n\nLSP SUMMARY\n--------------------------------------------------------------------------------\nNumber of LSPs selected to reroute : 30\nNumber rerouted                    : 5\n   (these are tagged in plan as 'expopt')\n\nWARNINGS DETAILS\n--------------------------------------------------------------------------------\n\nNo warnings.\n\nOPTIONS\n--------------------------------------------------------------------------------\n\nplan-file: /Users/limfung/Desktop/BRKOPS-1643/cp7_sr_topo_baseline_no_demands.txt (not specified)\nout-file: /Users/limfung/Desktop/BRKOPS-1643/cp7_sr_topo_baseline_no_demands.txt (not specified)\nexclude-lsps-table:  (default)\noptimize-lsps-table:  (default)\nlsp-tag: expopt (default)\nopt-interfaces-table:  (default)\nnon-opt-interfaces: bound (default)\nnon-opt-increment: true (default)\nnon-opt-increment-value: 0 (default)\nnon-opt-bound: true (default)\nlsp-configuration: setupbw,affinities,hoplimit,priorities (default)\nreport-file:  (default)\nprimaries: optimized (default)\nmin-max-nofailure-util: false (default)\nmin-nofailure-links-above: 70 (default)\nbalance-util-threshold: inf (default)\nbalance-latency-tolerance: 30 (default)\nenforce-latency-bounds: false (default)\ntraffic-level: Default (default)\noptimization-type: incremental (default)\ntraffic-disjointness: false (default)\nconfigure-rerouted-LSPs-only: true (default)\nrerouting-preference: none (default)\nset-inactive: false (default)\npriority: disjointness (default)\nsecondaries: none (default)\nsecondary-setup-bw: 0 (default)\nsecondary-standby: true (default)\ndisjoint-failure-set: nodes,circuits,srlgs,l1links (default)\ndisjoint-weight-circuits: 1 (default)\ndisjoint-weight-srlgs: 2 (default)\ndisjoint-weight-nodes: 3 (default)\ndisjoint-weight-l1nodes: 3 (default)\ndisjoint-weight-l1links: 3 (default)\ntertiaries: none (default)\ntertiary-setup-bw: 0 (default)\ntertiary-standby: false (default)\nfailure-set: circuits,srlgs (default)\nmin-max-failure-util: false (default)\nmin-failure-links-above: inf (default)\nhelp: false (default)\noptions-file:  (default)\nversion: false (default)\nno-global-options: false (default)\nsuppress-progress: false (default)\nverbosity: 30 (default)\nlog-file:  (default)\nsimple-txt-out-file: false (default)\nmax-pathname-length: 32 (default)\n\n
+
+<LSPClasses>
+Name
+Default
+
+<NetIntRouters>
+SysName	IpAddress	Vendor	Description	SwDesc	EntityDesc	ServiceClasses	ServiceClassIndexes
+node-3	198.19.1.3	9	Cisco IOS XR Software (IOS-XRv 9000), Version 7.11.1  Copyright (c) 2013-2023 by Cisco Systems, Inc.	Cisco Model Name: R-IOSXRV9000-RP-C	Cisco IOS-XRv 9000 Virtual RP Motherboard	class-default	1965376995
+node-4	198.19.1.4	9	Cisco IOS XR Software (IOS-XRv 9000), Version 7.11.1  Copyright (c) 2013-2023 by Cisco Systems, Inc.	Cisco Model Name: R-IOSXRV9000-RP-C	Cisco IOS-XRv 9000 Virtual RP Motherboard	class-default	1965376995
+node-5	198.19.1.5	9	Cisco IOS XR Software (IOS-XRv 9000), Version 7.11.1  Copyright (c) 2013-2023 by Cisco Systems, Inc.	Cisco Model Name: R-IOSXRV9000-RP-C	Cisco IOS-XRv 9000 Virtual RP Motherboard	class-default	1965376995
+node-6	198.19.1.6	9	Cisco IOS XR Software (IOS-XRv 9000), Version 7.11.1  Copyright (c) 2013-2023 by Cisco Systems, Inc.	Cisco Model Name: R-IOSXRV9000-RP-C	Cisco IOS-XRv 9000 Virtual RP Motherboard	class-default	1965376995
+node-7	198.19.1.7	9	Cisco IOS XR Software (IOS-XRv 9000), Version 7.11.1  Copyright (c) 2013-2023 by Cisco Systems, Inc.	Cisco Model Name: R-IOSXRV9000-RP-C	Cisco IOS-XRv 9000 Virtual RP Motherboard	class-default	1965376995
+node-8	198.19.1.8	9	Cisco IOS XR Software (IOS-XRv 9000), Version 7.11.1  Copyright (c) 2013-2023 by Cisco Systems, Inc.	Cisco Model Name: R-IOSXRV9000-RP-C	Cisco IOS-XRv 9000 Virtual RP Motherboard	class-default	1965376995
+node-1	198.19.1.1	9	Cisco IOS XR Software (IOS-XRv 9000), Version 7.11.1  Copyright (c) 2013-2023 by Cisco Systems, Inc.	Cisco Model Name: R-IOSXRV9000-RP-C	Cisco IOS-XRv 9000 Virtual RP Motherboard	class-default	1965376995
+node-2	198.19.1.2	9	Cisco IOS XR Software (IOS-XRv 9000), Version 7.11.1  Copyright (c) 2013-2023 by Cisco Systems, Inc.	Cisco Model Name: R-IOSXRV9000-RP-C	Cisco IOS-XRv 9000 Virtual RP Motherboard	class-default	1965376995
+
+<NetIntInterfaces>
+Node	Interface	IGPMetric	Capacity	Description	NetIntIndex	NetIntAdminStatus	NetIntOperStatus	Place	IPAddress
+node-5	GigabitEthernet0/0/0/8	10	10.0	Connection to device node-8 destination interface 5	14	up	up	interface	10.5.8.5;FE80::C1:5CFF:FE01:508;2001::5:8:5
+node-5	GigabitEthernet0/0/0/0		10.0	Connection to tra-gen network	6	up	up	external	10.11.12.5
+node-7	GigabitEthernet0/0/0/3	100	10.0	Connection to device node-3 destination interface 7	9	up	up	interface	10.3.7.7;FE80::C1:5CFF:FE01:703;2001::3:7:7
+node-3	GigabitEthernet0/0/0/5		1000.0		11	down	down	external	
+node-1	GigabitEthernet0/0/0/2	100	10.0	Connection to device node-2 destination interface 1	8	up	up	interface	10.1.2.1;FE80::C1:5CFF:FE01:102;2001::1:2:1
+node-4	GigabitEthernet0/0/0/7		1000.0		13	down	down	external	
+node-3	MgmtEth0/RP0/CPU0/0		1000.0		3	up	up	external	198.18.1.43
+node-8	GigabitEthernet0/0/0/5	10	10.0	Connection to device node-5 destination interface 8	11	up	up	interface	10.5.8.8;FE80::C1:5CFF:FE01:805;2001::5:8:8
+node-7	Loopback0		0.0		17	up	up	external	198.19.1.7;FE80::8BD:D9FF:FE9B:1F60;2010::7
+node-6	GigabitEthernet0/0/0/2	10	10.0	Connection to device node-2 destination interface 6	8	up	up	interface	10.2.6.6;FE80::C1:5CFF:FE01:602;2001::2:6:6
+node-2	GigabitEthernet0/0/0/4		1000.0		10	down	down	external	
+node-3	GigabitEthernet0/0/0/6		1000.0		12	down	down	external	
+node-1	Loopback0		0.0		17	up	up	external	198.19.1.1;FE80::BD03:A1FF:FEBA:9C6B;2010::1
+node-1	GigabitEthernet0/0/0/9		10.0	Connection to device cpe-11 destination interface 1	15	up	up	external	10.1.11.1;FE80::C1:5CFF:FE01:109;2001::1:11:1
+node-4	GigabitEthernet0/0/0/10		1000.0		16	down	down	external	
+node-6	GigabitEthernet0/0/0/0		10.0	Connection to tra-gen network	6	up	up	external	10.11.12.6
+node-7	GigabitEthernet0/0/0/4		1000.0		10	down	down	external	
+node-4	Loopback2		0.0		18	up	up	external	198.19.2.4;FE80::559D:E6FF:FE0D:E1E3;2011::4
+node-3	GigabitEthernet0/0/0/10		1000.0		16	down	down	external	
+node-1	GigabitEthernet0/0/0/1		1000.0		7	down	down	external	
+node-7	GigabitEthernet0/0/0/10		1000.0		16	down	down	external	
+node-5	GigabitEthernet0/0/0/7	10	10.0	Connection to device node-7 destination interface 5	13	up	up	interface	10.5.7.5;FE80::C1:5CFF:FE01:507;2001::5:7:5
+node-6	GigabitEthernet0/0/0/9		1000.0		15	down	down	external	
+node-4	GigabitEthernet0/0/0/8	10	10.0	Connection to device node-8 destination interface 4	14	up	up	interface	10.4.8.4;FE80::C1:5CFF:FE01:408;2001::4:8:4
+node-8	GigabitEthernet0/0/0/6		1000.0		12	down	down	external	
+node-6	GigabitEthernet0/0/0/1	10	10.0	Connection to device node-1 destination interface 6	7	up	up	interface	10.1.6.6;FE80::C1:5CFF:FE01:601;2001::1:6:6
+node-4	GigabitEthernet0/0/0/0		10.0	Connection to tra-gen network	6	up	up	external	10.11.12.4
+node-5	Loopback2		0.0		18	up	up	external	198.19.2.5;FE80::DCD8:A8FF:FEC8:25CA;2011::5
+node-2	GigabitEthernet0/0/0/3		1000.0		9	down	down	external	
+node-2	MgmtEth0/RP0/CPU0/0		1000.0		2	up	up	external	198.18.1.42
+node-1	GigabitEthernet0/0/0/8		1000.0		14	down	down	external	
+node-8	GigabitEthernet0/0/0/2		1000.0		8	down	down	external	
+node-5	GigabitEthernet0/0/0/2		1000.0		8	down	down	external	
+node-7	GigabitEthernet0/0/0/5	10	10.0	Connection to device node-5 destination interface 7	11	up	up	interface	10.5.7.7;FE80::C1:5CFF:FE01:705;2001::5:7:7
+node-3	GigabitEthernet0/0/0/3		1000.0		9	down	down	external	
+node-1	GigabitEthernet0/0/0/0		10.0	Connection to tra-gen network	6	up	up	external	10.11.12.1
+node-2	GigabitEthernet0/0/0/6	10	10.0	Connection to device node-6 destination interface 2	12	up	up	interface	10.2.6.2;FE80::C1:5CFF:FE01:206;2001::2:6:2
+node-8	GigabitEthernet0/0/0/10		1000.0		16	down	down	external	
+node-7	Loopback2		0.0		18	up	up	external	198.19.2.7;FE80::8BD:D9FF:FE9B:1F60;2011::7
+node-4	GigabitEthernet0/0/0/9		10.0	Connection to device cpe-14 destination interface 1	15	up	up	external	10.4.14.4;FE80::C1:5CFF:FE01:409;2001::4:14:4
+node-8	GigabitEthernet0/0/0/3	10	10.0	Connection to device node-3 destination interface 8	9	up	up	interface	10.3.8.8;FE80::C1:5CFF:FE01:803;2001::3:8:8
+node-4	GigabitEthernet0/0/0/1		1000.0		7	down	down	external	
+node-6	GigabitEthernet0/0/0/8		1000.0		14	down	down	external	
+node-8	Loopback2		0.0		18	up	up	external	198.19.2.8;FE80::B56A:8FF:FE12:A803;2011::8
+node-5	GigabitEthernet0/0/0/9		1000.0		15	down	down	external	
+node-1	GigabitEthernet0/0/0/7		1000.0		13	down	down	external	
+node-1	MgmtEth0/RP0/CPU0/0		1000.0		3	up	up	external	198.18.1.41
+node-5	GigabitEthernet0/0/0/1	100	10.0	Connection to device node-1 destination interface 5	7	up	up	interface	10.1.5.5;FE80::C1:5CFF:FE01:501;2001::1:5:5
+node-7	GigabitEthernet0/0/0/6	10	10.0	Connection to device node-6 destination interface 7	12	up	up	interface	10.6.7.7;FE80::C1:5CFF:FE01:706;2001::6:7:7
+node-3	GigabitEthernet0/0/0/4	100	10.0	Connection to device node-4 destination interface 3	10	up	up	interface	10.3.4.3;FE80::C1:5CFF:FE01:304;2001::3:4:3
+node-8	Null0		0.0		1	up	up	external	
+node-2	GigabitEthernet0/0/0/5		1000.0		11	down	down	external	
+node-8	GigabitEthernet0/0/0/4	10	10.0	Connection to device node-4 destination interface 8	10	up	up	interface	10.4.8.8;FE80::C1:5CFF:FE01:804;2001::4:8:8
+node-7	MgmtEth0/RP0/CPU0/0		1000.0		2	up	up	external	198.18.1.47
+node-4	Null0		0.0		1	up	up	external	
+node-4	GigabitEthernet0/0/0/2		1000.0		8	down	down	external	
+node-6	GigabitEthernet0/0/0/7	10	10.0	Connection to device node-7 destination interface 6	13	up	up	interface	10.6.7.6;FE80::C1:5CFF:FE01:607;2001::6:7:6
+node-3	GigabitEthernet0/0/0/9		10.0	Connection to device cpe-13 destination interface 1	15	up	up	external	10.3.13.3;FE80::C1:5CFF:FE01:309;2001::3:13:3
+node-1	GigabitEthernet0/0/0/6	10	10.0	Connection to device node-6 destination interface 1	12	up	up	interface	10.1.6.1;FE80::C1:5CFF:FE01:106;2001::1:6:1
+node-6	Loopback2		0.0		18	up	up	external	198.19.2.6;FE80::ADD3:F5FF:FE92:D6F0;2011::6
+node-8	GigabitEthernet0/0/0/0		10.0	Connection to tra-gen network	6	up	up	external	10.11.12.8
+node-3	GigabitEthernet0/0/0/1		1000.0		7	down	down	external	
+node-5	GigabitEthernet0/0/0/4	100	10.0	Connection to device node-4 destination interface 5	10	up	up	interface	10.4.5.5;FE80::C1:5CFF:FE01:504;2001::4:5:5
+node-7	GigabitEthernet0/0/0/7		1000.0		13	down	down	external	
+node-8	GigabitEthernet0/0/0/9		10.0	Connection to device pce-9 destination interface 8	15	up	up	external	10.8.9.8;FE80::C1:5CFF:FE01:809;2001::8:9:8
+node-2	GigabitEthernet0/0/0/8		1000.0		14	down	down	external	
+node-8	MgmtEth0/RP0/CPU0/0		1000.0		2	up	up	external	198.18.1.48
+node-2	Loopback0		0.0		17	up	up	external	198.19.1.2;FE80::8491:75FF:FE80:E951;2010::2
+node-2	GigabitEthernet0/0/0/10		1000.0		16	down	down	external	
+node-2	GigabitEthernet0/0/0/0		10.0	Connection to tra-gen network	6	up	up	external	10.11.12.2
+node-3	Loopback2		0.0		18	up	up	external	198.19.2.3;FE80::6534:3FFF:FE5A:5554;2011::3
+node-6	GigabitEthernet0/0/0/6		1000.0		12	down	down	external	
+node-4	GigabitEthernet0/0/0/3	100	10.0	Connection to device node-3 destination interface 4	9	up	up	interface	10.3.4.4;FE80::C1:5CFF:FE01:403;2001::3:4:4
+node-5	GigabitEthernet0/0/0/10		1000.0		16	down	down	external	
+node-1	GigabitEthernet0/0/0/5	100	10.0	Connection to device node-5 destination interface 1	11	up	up	interface	10.1.5.1;FE80::C1:5CFF:FE01:105;2001::1:5:1
+node-6	GigabitEthernet0/0/0/10		10.0	Connection to device pce-10 destination interface 6	16	up	up	external	10.6.10.6;FE80::C1:5CFF:FE01:60A;2001::6:10:6
+node-8	Loopback0		0.0		17	up	up	external	198.19.1.8;FE80::B56A:8FF:FE12:A803;2010::8
+node-8	GigabitEthernet0/0/0/1		1000.0		7	down	down	external	
+node-6	MgmtEth0/RP0/CPU0/0		1000.0		2	up	up	external	198.18.1.46
+node-5	GigabitEthernet0/0/0/3		1000.0		9	down	down	external	
+node-3	GigabitEthernet0/0/0/2		1000.0		8	down	down	external	
+node-7	GigabitEthernet0/0/0/8	10	10.0	Connection to device node-8 destination interface 7	14	up	up	interface	10.7.8.7;FE80::C1:5CFF:FE01:708;2001::7:8:7
+node-7	Null0		0.0		1	up	up	external	
+node-2	GigabitEthernet0/0/0/7	100	10.0	Connection to device node-7 destination interface 2	13	up	up	interface	10.2.7.2;FE80::C1:5CFF:FE01:207;2001::2:7:2
+node-6	GigabitEthernet0/0/0/5	10	10.0	Connection to device node-5 destination interface 6	11	up	up	interface	10.5.6.6;FE80::C1:5CFF:FE01:605;2001::5:6:6
+node-4	GigabitEthernet0/0/0/4		1000.0		10	down	down	external	
+node-5	Null0		0.0		1	up	up	external	
+node-3	Null0		0.0		1	up	up	external	
+node-1	Null0		0.0		1	up	up	external	
+node-3	GigabitEthernet0/0/0/7	100	10.0	Connection to device node-7 destination interface 3	13	up	up	interface	10.3.7.3;FE80::C1:5CFF:FE01:307;2001::3:7:3
+node-5	MgmtEth0/RP0/CPU0/0		1000.0		3	up	up	external	198.18.1.45
+node-1	GigabitEthernet0/0/0/4		1000.0		10	down	down	external	
+node-3	Loopback0		0.0		17	up	up	external	198.19.1.3;FE80::6534:3FFF:FE5A:5554;2010::3
+node-6	Loopback0		0.0		17	up	up	external	198.19.1.6;FE80::ADD3:F5FF:FE92:D6F0;2010::6
+node-5	GigabitEthernet0/0/0/6	10	10.0	Connection to device node-6 destination interface 5	12	up	up	interface	10.5.6.5;FE80::C1:5CFF:FE01:506;2001::5:6:5
+node-7	GigabitEthernet0/0/0/9		1000.0		15	down	down	external	
+node-2	Loopback2		0.0		18	up	up	external	198.19.2.2;FE80::8491:75FF:FE80:E951;2011::2
+node-8	GigabitEthernet0/0/0/7	10	10.0	Connection to device node-7 destination interface 8	13	up	up	interface	10.7.8.8;FE80::C1:5CFF:FE01:807;2001::7:8:8
+node-7	GigabitEthernet0/0/0/0		10.0	Connection to tra-gen network	6	up	up	external	10.11.12.7
+node-6	GigabitEthernet0/0/0/4		1000.0		10	down	down	external	
+node-2	GigabitEthernet0/0/0/2		1000.0		8	down	down	external	
+node-4	GigabitEthernet0/0/0/5	100	10.0	Connection to device node-5 destination interface 4	11	up	up	interface	10.4.5.4;FE80::C1:5CFF:FE01:405;2001::4:5:4
+node-1	GigabitEthernet0/0/0/10		1000.0		16	down	down	external	
+node-1	Loopback2		0.0		18	up	up	external	198.19.2.1;FE80::BD03:A1FF:FEBA:9C6B;2011::1
+node-3	GigabitEthernet0/0/0/8	10	10.0	Connection to device node-8 destination interface 3	14	up	up	interface	10.3.8.3;FE80::C1:5CFF:FE01:308;2001::3:8:3
+node-7	GigabitEthernet0/0/0/2	100	10.0	Connection to device node-2 destination interface 7	8	up	up	interface	10.2.7.7;FE80::C1:5CFF:FE01:702;2001::2:7:7
+node-4	MgmtEth0/RP0/CPU0/0		1000.0		3	up	up	external	198.18.1.44
+node-3	GigabitEthernet0/0/0/0		10.0	Connection to tra-gen network	6	up	up	external	10.11.12.3
+node-5	GigabitEthernet0/0/0/5		1000.0		11	down	down	external	
+node-1	GigabitEthernet0/0/0/3		1000.0		9	down	down	external	
+node-8	GigabitEthernet0/0/0/8		1000.0		14	down	down	external	
+node-4	Loopback0		0.0		17	up	up	external	198.19.1.4;FE80::559D:E6FF:FE0D:E1E3;2010::4
+node-2	GigabitEthernet0/0/0/9		10.0	Connection to device cpe-12 destination interface 1	15	up	up	external	10.2.12.2;FE80::C1:5CFF:FE01:209;2001::2:12:2
+node-7	GigabitEthernet0/0/0/1		1000.0		7	down	down	external	
+node-5	Loopback0		0.0		17	up	up	external	198.19.1.5;FE80::DCD8:A8FF:FEC8:25CA;2010::5
+node-6	GigabitEthernet0/0/0/3		1000.0		9	down	down	external	
+node-2	Null0		0.0		1	up	up	external	
+node-6	Null0		0.0		1	up	up	external	
+node-2	GigabitEthernet0/0/0/1	100	10.0	Connection to device node-1 destination interface 2	7	up	up	interface	10.1.2.2;FE80::C1:5CFF:FE01:201;2001::1:2:2
+node-4	GigabitEthernet0/0/0/6		1000.0		12	down	down	external	
+
+<NetIntIpAddresses>
+Node	IpAddress	NetIntIndex	NetPrefixLength	AddressFamily
+198.19.1.1	FE80::C1:5CFF:FE01:102	8	128	IPv6
+198.19.1.2	10.11.12.2	6	24	IPv4
+198.19.1.6	10.5.6.6	11	24	IPv4
+198.19.1.5	10.1.5.5	7	24	IPv4
+198.19.1.3	FE80::C1:5CFF:FE01:307	13	128	IPv6
+198.19.1.7	2011::7	18	128	IPv6
+198.19.1.3	2001::3:4:3	10	112	IPv6
+198.19.1.1	10.1.2.1	8	24	IPv4
+198.19.1.5	10.5.6.5	12	24	IPv4
+198.19.1.8	198.18.1.48	2	24	IPv4
+198.19.1.5	2011::5	18	128	IPv6
+198.19.1.2	10.1.2.2	7	24	IPv4
+198.19.1.6	198.19.2.6	18	32	IPv4
+198.19.1.2	FE80::C1:5CFF:FE01:201	7	128	IPv6
+198.19.1.5	2001::5:8:5	14	112	IPv6
+198.19.1.8	198.19.1.8	17	32	IPv4
+198.19.1.2	2001::2:6:2	12	112	IPv6
+198.19.1.6	2011::6	18	128	IPv6
+198.19.1.2	FE80::C1:5CFF:FE01:209	15	128	IPv6
+198.19.1.7	FE80::C1:5CFF:FE01:702	8	128	IPv6
+198.19.1.3	2001::3:7:3	13	112	IPv6
+198.19.1.3	2001::3:13:3	15	112	IPv6
+198.19.1.3	10.11.12.3	6	24	IPv4
+198.19.1.8	FE80::C1:5CFF:FE01:807	13	128	IPv6
+198.19.1.4	2001::3:4:4	9	112	IPv6
+198.19.1.4	2011::4	18	128	IPv6
+198.19.1.3	10.3.13.3	15	24	IPv4
+198.19.1.4	10.4.8.4	14	24	IPv4
+198.19.1.3	2011::3	18	128	IPv6
+198.19.1.4	FE80::C1:5CFF:FE01:405	11	128	IPv6
+198.19.1.7	198.19.2.7	18	32	IPv4
+198.19.1.7	198.18.1.47	2	24	IPv4
+198.19.1.6	2001::5:6:6	11	112	IPv6
+198.19.1.2	2011::2	18	128	IPv6
+198.19.1.3	10.3.8.3	14	24	IPv4
+198.19.1.7	FE80::C1:5CFF:FE01:703	9	128	IPv6
+198.19.1.5	FE80::C1:5CFF:FE01:504	10	128	IPv6
+198.19.1.1	2011::1	18	128	IPv6
+198.19.1.2	198.19.1.2	17	32	IPv4
+198.19.1.6	10.6.10.6	16	24	IPv4
+198.19.1.6	10.2.6.6	8	24	IPv4
+198.19.1.3	FE80::C1:5CFF:FE01:309	15	128	IPv6
+198.19.1.8	10.4.8.8	10	24	IPv4
+198.19.1.1	2010::1	17	128	IPv6
+198.19.1.6	FE80::C1:5CFF:FE01:601	7	128	IPv6
+198.19.1.8	198.19.2.8	18	32	IPv4
+198.19.1.1	2001::1:5:1	11	112	IPv6
+198.19.1.1	2001::1:2:1	8	112	IPv6
+198.19.1.5	10.5.8.5	14	24	IPv4
+198.19.1.8	2001::8:9:8	15	112	IPv6
+198.19.1.6	198.18.1.46	2	24	IPv4
+198.19.1.8	10.11.12.8	6	24	IPv4
+198.19.1.5	FE80::C1:5CFF:FE01:507	13	128	IPv6
+198.19.1.2	10.2.6.2	12	24	IPv4
+198.19.1.6	FE80::C1:5CFF:FE01:60A	16	128	IPv6
+198.19.1.4	2001::4:5:4	11	112	IPv6
+198.19.1.8	2001::3:8:8	9	112	IPv6
+198.19.1.7	2001::3:7:7	9	112	IPv6
+198.19.1.1	10.1.11.1	15	24	IPv4
+198.19.1.3	198.19.1.3	17	32	IPv4
+198.19.1.7	10.5.7.7	11	24	IPv4
+198.19.1.5	FE80::DCD8:A8FF:FEC8:25CA	18	128	IPv6
+198.19.1.8	FE80::C1:5CFF:FE01:809	15	128	IPv6
+198.19.1.7	2001::6:7:7	12	112	IPv6
+198.19.1.1	FE80::C1:5CFF:FE01:109	15	128	IPv6
+198.19.1.3	FE80::C1:5CFF:FE01:308	14	128	IPv6
+198.19.1.4	FE80::C1:5CFF:FE01:403	9	128	IPv6
+198.19.1.1	10.11.12.1	6	24	IPv4
+198.19.1.6	FE80::C1:5CFF:FE01:602	8	128	IPv6
+198.19.1.4	10.4.14.4	15	24	IPv4
+198.19.1.1	198.18.1.41	3	24	IPv4
+198.19.1.5	FE80::C1:5CFF:FE01:506	12	128	IPv6
+198.19.1.4	10.3.4.4	9	24	IPv4
+198.19.1.4	2001::4:8:4	14	112	IPv6
+198.19.1.7	FE80::C1:5CFF:FE01:705	11	128	IPv6
+198.19.1.4	2001::4:14:4	15	112	IPv6
+198.19.1.1	198.19.2.1	18	32	IPv4
+198.19.1.3	2001::3:8:3	14	112	IPv6
+198.19.1.6	2001::6:7:6	13	112	IPv6
+198.19.1.8	2010::8	17	128	IPv6
+198.19.1.1	FE80::C1:5CFF:FE01:106	12	128	IPv6
+198.19.1.6	FE80::C1:5CFF:FE01:607	13	128	IPv6
+198.19.1.4	198.19.1.4	17	32	IPv4
+198.19.1.6	2001::2:6:6	8	112	IPv6
+198.19.1.8	FE80::C1:5CFF:FE01:804	10	128	IPv6
+198.19.1.7	10.3.7.7	9	24	IPv4
+198.19.1.3	FE80::6534:3FFF:FE5A:5554	18	128	IPv6
+198.19.1.4	198.18.1.44	3	24	IPv4
+198.19.1.8	FE80::B56A:8FF:FE12:A803	18	128	IPv6
+198.19.1.6	2010::6	17	128	IPv6
+198.19.1.6	FE80::ADD3:F5FF:FE92:D6F0	18	128	IPv6
+198.19.1.8	2001::7:8:8	13	112	IPv6
+198.19.1.7	2010::7	17	128	IPv6
+198.19.1.8	10.7.8.8	13	24	IPv4
+198.19.1.7	FE80::C1:5CFF:FE01:706	12	128	IPv6
+198.19.1.7	10.2.7.7	8	24	IPv4
+198.19.1.5	FE80::C1:5CFF:FE01:501	7	128	IPv6
+198.19.1.6	10.11.12.6	6	24	IPv4
+198.19.1.7	10.7.8.7	14	24	IPv4
+198.19.1.2	198.19.2.2	18	32	IPv4
+198.19.1.3	10.3.7.3	13	24	IPv4
+198.19.1.6	2001::6:10:6	16	112	IPv6
+198.19.1.2	10.2.12.2	15	24	IPv4
+198.19.1.4	FE80::C1:5CFF:FE01:409	15	128	IPv6
+198.19.1.1	2001::1:11:1	15	112	IPv6
+198.19.1.8	FE80::C1:5CFF:FE01:803	9	128	IPv6
+198.19.1.7	2001::7:8:7	14	112	IPv6
+198.19.1.5	2001::5:6:5	12	112	IPv6
+198.19.1.5	198.19.1.5	17	32	IPv4
+198.19.1.7	FE80::8BD:D9FF:FE9B:1F60	18	128	IPv6
+198.19.1.5	2010::5	17	128	IPv6
+198.19.1.1	10.1.6.1	12	24	IPv4
+198.19.1.3	198.18.1.43	3	24	IPv4
+198.19.1.2	10.2.7.2	13	24	IPv4
+198.19.1.2	FE80::C1:5CFF:FE01:206	12	128	IPv6
+198.19.1.5	FE80::C1:5CFF:FE01:508	14	128	IPv6
+198.19.1.4	2010::4	17	128	IPv6
+198.19.1.7	2001::2:7:7	8	112	IPv6
+198.19.1.2	2001::2:7:2	13	112	IPv6
+198.19.1.1	FE80::BD03:A1FF:FEBA:9C6B	18	128	IPv6
+198.19.1.7	2001::5:7:7	11	112	IPv6
+198.19.1.3	198.19.2.3	18	32	IPv4
+198.19.1.8	2001::5:8:8	11	112	IPv6
+198.19.1.8	10.5.8.8	11	24	IPv4
+198.19.1.3	10.3.4.3	10	24	IPv4
+198.19.1.7	10.11.12.7	6	24	IPv4
+198.19.1.3	2010::3	17	128	IPv6
+198.19.1.4	10.4.5.4	11	24	IPv4
+198.19.1.4	FE80::C1:5CFF:FE01:408	14	128	IPv6
+198.19.1.2	2010::2	17	128	IPv6
+198.19.1.4	10.11.12.4	6	24	IPv4
+198.19.1.6	FE80::C1:5CFF:FE01:605	11	128	IPv6
+198.19.1.6	10.6.7.6	13	24	IPv4
+198.19.1.8	2001::4:8:8	10	112	IPv6
+198.19.1.5	2001::5:7:5	13	112	IPv6
+198.19.1.6	198.19.1.6	17	32	IPv4
+198.19.1.7	10.6.7.7	12	24	IPv4
+198.19.1.2	198.18.1.42	2	24	IPv4
+198.19.1.8	10.8.9.8	15	24	IPv4
+198.19.1.7	FE80::C1:5CFF:FE01:708	14	128	IPv6
+198.19.1.4	198.19.2.4	18	32	IPv4
+198.19.1.6	10.1.6.6	7	24	IPv4
+198.19.1.2	FE80::C1:5CFF:FE01:207	13	128	IPv6
+198.19.1.4	FE80::559D:E6FF:FE0D:E1E3	18	128	IPv6
+198.19.1.1	198.19.1.1	17	32	IPv4
+198.19.1.2	2001::2:12:2	15	112	IPv6
+198.19.1.8	10.3.8.8	9	24	IPv4
+198.19.1.1	FE80::C1:5CFF:FE01:105	11	128	IPv6
+198.19.1.3	FE80::C1:5CFF:FE01:304	10	128	IPv6
+198.19.1.8	FE80::C1:5CFF:FE01:805	11	128	IPv6
+198.19.1.5	10.5.7.5	13	24	IPv4
+198.19.1.1	2001::1:6:1	12	112	IPv6
+198.19.1.1	10.1.5.1	11	24	IPv4
+198.19.1.7	198.19.1.7	17	32	IPv4
+198.19.1.5	2001::1:5:5	7	112	IPv6
+198.19.1.5	198.18.1.45	3	24	IPv4
+198.19.1.2	2001::1:2:2	7	112	IPv6
+198.19.1.8	2011::8	18	128	IPv6
+198.19.1.5	198.19.2.5	18	32	IPv4
+198.19.1.5	2001::4:5:5	10	112	IPv6
+198.19.1.6	2001::1:6:6	7	112	IPv6
+198.19.1.5	10.11.12.5	6	24	IPv4
+198.19.1.2	FE80::8491:75FF:FE80:E951	18	128	IPv6
+198.19.1.5	10.4.5.5	10	24	IPv4
+
+<NetIntAdjacencySIDs>
+Node	Prefix	AdjacencySID	Flags
+node-8	10.4.8.8	24006	B
+node-8	10.7.8.8	24010	B
+node-6	10.6.7.6	24153	B
+node-7	10.6.7.7	24010	B
+node-7	10.3.7.7	24004	B
+node-1	10.1.5.1	24147	B
+node-5	10.5.6.5	24010	B
+node-5	10.5.8.5	24004	B
+node-7	10.5.7.7	24002	B
+node-7	10.2.7.7	24008	B
+node-6	10.1.6.6	24145	B
+node-8	10.3.8.8	24004	B
+node-2	10.2.6.2	24147	B
+node-4	10.4.8.4	24006	B
+node-3	10.3.7.3	24145	B
+node-7	10.7.8.7	24006	B
+node-2	10.1.2.2	24145	B
+node-1	10.1.6.1	24149	B
+node-1	10.1.2.1	24145	B
+node-5	10.5.7.5	24002	B
+node-5	10.4.5.5	24006	B
+node-4	10.3.4.4	24002	B
+node-6	10.5.6.6	24151	B
+node-4	10.4.5.4	24004	B
+node-2	10.2.7.2	24149	B
+node-6	10.2.6.6	24149	B
+node-8	10.5.8.8	24008	B
+node-3	10.3.8.3	24149	B
+node-5	10.1.5.5	24008	B
+node-3	10.3.4.3	24147	B
+
+<NetIntPrefixSIDs>
+Node	Prefix	PrefixSID	Flags
+node-4	198.19.1.4	17304	N
+node-3	198.19.1.3	17103	N
+node-5	198.19.1.5	17305	N
+node-1	198.19.1.1	17101	N
+node-6	198.19.1.6	17306	N
+node-8	198.19.1.8	17308	N
+node-7	198.19.1.7	17307	N
+node-2	198.19.1.2	17102	N
+
+<ColumnData>
+Table	Column	Type	Decimals	DisplayName	Tooltip
+mate::report::Simulation Analysis::Max Util	MaxUtil	REAL	2	MaxUtil	MaxUtil
+mate::report::Simulation Analysis::Simulations	Failure	TEXT		Failure	Failure
+mate::report::Simulation Analysis::Simulations	LatencyBoundViolations	INTEGER		LatencyBoundViolations	LatencyBoundViolations
+mate::report::Simulation Analysis::Simulations	MaxQoSBoundPercent	REAL	2	MaxQoSBoundPercent	MaxQoSBoundPercent
+mate::report::Simulation Analysis::Simulations	MaxUtil	REAL	2	MaxUtil	MaxUtil
+mate::report::Simulation Analysis::Simulations	NetworkBreakPoint	TEXT		NetworkBreakPoint	NetworkBreakPoint
+mate::report::Simulation Analysis::Simulations	NumQoSViolations	INTEGER		NumQoSViolations	NumQoSViolations
+mate::report::Simulation Analysis::Simulations	NumUnroutedDemands	INTEGER		NumUnroutedDemands	NumUnroutedDemands
+mate::report::Simulation Analysis::Simulations	NumUnroutedFRRLSPs	INTEGER		NumUnroutedFRRLSPs	Number of unrouted FRR LSPs in the failure scenario
+mate::report::Simulation Analysis::Simulations	NumUnroutedL1Circuits	INTEGER		NumUnroutedL1Circuits	Number of unrouted L1 circuits in the failure scenario
+mate::report::Simulation Analysis::Simulations	NumUnroutedLSPs	INTEGER		NumUnroutedLSPs	Number of unrouted non-FRR LSPs in the failure scenario
+mate::report::Simulation Analysis::Simulations	ServiceClass	TEXT		ServiceClass	ServiceClass
+mate::report::Simulation Analysis::Simulations	TrafficLevel	TEXT		TrafficLevel	TrafficLevel
+mate::report::Simulation Analysis::Simulations	UnroutedTraffic	REAL	2	UnroutedTraffic	UnroutedTraffic
+
+<Hashes>
+Name	Value
+NoFailureSimulationHash	6EF7D49B1C8D50F969DD7CF91A62E765
