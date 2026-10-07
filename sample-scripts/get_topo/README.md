@@ -12,14 +12,29 @@ API reference: [Retrieve topology networks operational data](https://developer.c
 
 ## Requirements
 
-- Python 3.x
-- `requests` library
-- `urllib3` library
+- Python 3.10 or later
 
-Install dependencies:
-```bash
-pip install requests urllib3
+No `pip install` is needed. The script is self-contained: its dependencies, pinned in `requirements.txt`, are bundled as pure-Python packages in `vendor/`, which `get_topo.py` adds to `sys.path` at startup. Copy the whole `get_topo/` directory to run it on another host.
+
+```text
+get_topo/
+├── get_topo.py
+├── requirements.txt
+└── vendor/          # requests, urllib3, certifi, idna, charset-normalizer
 ```
+
+The vendored packages take precedence over any versions installed in the Python environment. TLS verification uses the CA bundle from the vendored `certifi`, so a CNC certificate signed by a private CA needs `REQUESTS_CA_BUNDLE=/path/to/ca.pem` (or `-k` in a lab).
+
+To update the bundled dependencies, edit the versions in `requirements.txt` and rebuild `vendor/`:
+
+```bash
+rm -rf vendor
+python3 -m pip install -r requirements.txt --target vendor --no-deps \
+  --only-binary=:all: --platform any --implementation py --python-version 3.10 --no-compile
+rm -rf vendor/bin
+```
+
+The `--platform any --implementation py` flags select pure-Python wheels only, so the bundle works on any OS and CPU architecture.
 
 ## Usage
 
