@@ -11,8 +11,10 @@ import os
 import re
 import sys
 
-import requests
-import urllib3
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "vendor"))
+
+import requests  # noqa: E402
+import urllib3  # noqa: E402
 
 BASE_PORT = 30603
 CONNECT_TIMEOUT = 20
