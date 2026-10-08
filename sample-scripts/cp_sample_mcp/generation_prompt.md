@@ -11,6 +11,9 @@ without manual code completion.
 ## Non-negotiable deliverable
 
 Create exactly one implementation file named `cp_sample_mcp.py`.
+Name the FastMCP server uniquely (`cw-planning-tutorial` unless that name is
+already taken in the MCP client). Do not reuse `cp_sample_mcp` or
+`cp-sample-sim` if another server already uses them.
 
 - Target Python 3.11 or newer.
 - Use `fastmcp.FastMCP` and Pydantic v2.
@@ -128,7 +131,8 @@ inventing constructor arguments. This release loads IceSSL from
 inside `ServiceConnectionManager` (`IceSSL.VerifyPeer=2`). Environment values
 above may point to trust and identity files but must never contain private-key
 or certificate contents. Do not accept secrets through CLI arguments. Default
-`CW_DESIGNAPI_PROTOCOL` is `ssl`.
+`CW_DESIGNAPI_PORT` is `30744`. Default `CW_DESIGNAPI_PROTOCOL` is `ssl`.
+Also accept `--designapi-host` as an alias of `--cw-host`.
 
 Use safe defaults:
 
@@ -145,7 +149,7 @@ Provide `main()` with at least:
 - `--transport {stdio,http}`, default `stdio`;
 - `--host`, `--port`, and `--path`;
 - `--allow-remote`;
-- `--cw-host`;
+- `--cw-host` and `--designapi-host` (aliases for the DesignAPI host);
 - `--cariden-home`;
 - a non-network `--check` or equivalent startup diagnostic mode.
 
@@ -574,8 +578,11 @@ certificate files are configured or discovered, flag them for operator
 verification and document this command:
 
 ```bash
-openssl x509 -text -noout -in <certificate_file>
+env -u LD_LIBRARY_PATH openssl x509 -text -noout -in <certificate_file>
 ```
+
+If `LD_LIBRARY_PATH` includes the SDK `lib` directory, the system openssl CLI
+fails (`undefined symbol: EVP_sm3`) unless you unset that variable.
 
 The operator must verify:
 
