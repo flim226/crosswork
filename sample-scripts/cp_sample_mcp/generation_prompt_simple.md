@@ -7,6 +7,8 @@ and direct. Do not add features that are not listed here.
 ## Deliverable
 
 Write one executable file, `cp_mcp.py`, for Python 3.11 or newer.
+Name the FastMCP server `cw-planning-tutorial` so it does not collide with
+other Crosswork MCP servers already registered in the client.
 
 - Start with `#!/usr/bin/env python3` and a short module docstring that shows
   how to run stdio and authenticated HTTP.
@@ -46,8 +48,8 @@ import. Fail startup with an actionable message when `lib/python` is missing.
 
 Read configuration from the environment:
 
-- `CW_DESIGNAPI_HOST`, `CW_DESIGNAPI_PORT`, `CW_DESIGNAPI_PROTOCOL`
-  (default `ssl`), `CW_DESIGNAPI_TIMEOUT_S`
+- `CW_DESIGNAPI_HOST`, `CW_DESIGNAPI_PORT` (default `30744`),
+  `CW_DESIGNAPI_PROTOCOL` (default `ssl`), `CW_DESIGNAPI_TIMEOUT_S`
 - `CW_DESIGNAPI_CA_FILE`, `CW_DESIGNAPI_CLIENT_CERT_FILE`,
   `CW_DESIGNAPI_CLIENT_KEY_FILE`
 - `CW_DESIGNAPI_USERNAME` and `CW_DESIGNAPI_PASSWORD_FILE`, or
@@ -85,7 +87,9 @@ openssl x509 -text -noout -in <certificate_file>
 
 They must check validity dates, RSA 2048-bit or P-256-or-stronger keys, a SHA-2
 signature, and whether a self-signed certificate is intentional and limited to
-private use.
+private use. If `LD_LIBRARY_PATH` includes the SDK `lib` directory, invoke
+openssl as `env -u LD_LIBRARY_PATH openssl ...` — Cisco SSL libraries break
+the system openssl CLI (`undefined symbol: EVP_sm3`).
 
 ## Uploaded plans
 
@@ -95,9 +99,10 @@ text or strict base64, enforce the size limit, and allow only safe filename
 characters. Generate plan IDs on the server. Large uploads and deletions return
 a preview until the caller retries with `confirm=true`.
 
-References use `upload:<plan_id>`. List, get, and delete only the current
-owner’s plans, using the same not-found response for missing and unauthorized
-IDs. A configured default plan is available only to the local stdio owner and
+References use `upload:<plan_id>`. An owned bare `plan_id` must resolve the
+same way; do not treat a matching upload id as a filesystem path. List, get,
+and delete only the current owner’s plans, using the same not-found response
+for missing and unauthorized IDs. A configured default plan is available only to the local stdio owner and
 must stay inside `CW_PLAN_ROOT`. Reject path traversal and symlinks. HTTP
 callers cannot pass filesystem paths.
 
