@@ -44,8 +44,13 @@ acceptable evidence.
 1. Determine `CARIDEN_HOME` in this precedence order: CLI override,
    environment variable, then a configurable local default.
 2. Apply CLI overrides before importing any Cisco package.
-3. Verify `<CARIDEN_HOME>/lib/python`, configure the required Python and native
-   library search paths, then inspect the installed symbols.
+3. Verify `<CARIDEN_HOME>/lib/python`, add it to `sys.path`, and put both
+   `<CARIDEN_HOME>/lib` and `<CARIDEN_HOME>/lib/python` on `LD_LIBRARY_PATH`.
+   Mutating `os.environ["LD_LIBRARY_PATH"]` in an already-started process does
+   not load `libIceDiscovery.so`. After updating native paths, if `Ice`/`IcePy`
+   cannot import, re-exec the same interpreter with `os.execv` (preserving argv
+   and the new env) **before** any Cisco import. Then inspect the installed
+   symbols.
 4. Verify every imported Cisco class and every constructor, attribute, method,
    enum, RPC option, and return type used by the implementation.
 5. At minimum, establish whether this release provides and how it uses:
@@ -61,6 +66,14 @@ acceptable evidence.
    home-grown approximation. Apply the prerequisite gate above when an API is
    absent; use a runtime capability error only when the API exists but the
    deployed service cannot currently execute it.
+8. Python docstrings in this SDK are incomplete and sometimes wrong.
+   `open_plan`'s protocol text (`http`/`https`) does not match
+   `ServiceConnectionManager.newServiceConnection`, which accepts `ssl` or
+   `tcp`. Remote IceSSL DesignAPI uses `protocol="ssl"`. GenericTool JSON
+   option names are not Python symbols; they appear as kebab-case strings in
+   `libdesignservice.so`. Use the **Verified OPM/Design operational contract**
+   below as mandatory ground truth for those items. Do not invent camelCase
+   GenericTool options.
 
 Use FastMCP APIs from one installed distribution/version only. Verify decorator,
 middleware, authentication, lifespan, context, transport, and `run()` signatures
@@ -110,9 +123,12 @@ unrelated process environment variables. Support these environment variables:
 
 If the installed Cisco release obtains DesignAPI mTLS settings exclusively from
 its own documented configuration, verify and use that mechanism instead of
-inventing constructor arguments. Environment values above may point to trust
-and identity files but must never contain private-key or certificate contents.
-Do not accept secrets through CLI arguments.
+inventing constructor arguments. This release loads IceSSL from
+`CARIDEN_HOME/etc/certs/{ca_cert.pem,designapi_user_cert.pem,designapi_user_key.pem}`
+inside `ServiceConnectionManager` (`IceSSL.VerifyPeer=2`). Environment values
+above may point to trust and identity files but must never contain private-key
+or certificate contents. Do not accept secrets through CLI arguments. Default
+`CW_DESIGNAPI_PROTOCOL` is `ssl`.
 
 Use safe defaults:
 
@@ -291,6 +307,96 @@ Register:
    - run worst-case circuit-failure Simulation Analysis;
    - summarize oversubscribed and near-capacity circuits.
 
+## Verified OPM/Design operational contract
+
+These patterns are mandatory. Do not replace them with docstring guesses.
+
+**Native libs.** After setting `LD_LIBRARY_PATH` to
+`<CARIDEN_HOME>/lib:<CARIDEN_HOME>/lib/python`, re-exec with `os.execv` if
+`IcePy` is not yet importable. A wrapper script is allowed only as comments
+in the module docstring; the Python file itself must start unaided.
+
+**Open plan.** `open_plan(path, host=..., port=..., protocol="ssl", linger=False)`.
+Never `https`. IceSSL files are not constructor arguments.
+
+**Baseline reset.** Always:
+
+```python
+model.route_simulation = []     # empty failure list; never None
+model.traffic_simulation = None
+model.route_simulation.recompute()
+```
+
+`route_simulation = None` leaves `_failed_objects` as a list, so
+`circuit.failed = True` raises `AttributeError: 'list' object has no attribute
+'add'`. Do not use `.failed = True` for what-if.
+
+**Apply circuit failures.**
+
+```python
+model.route_simulation = [circuit, ...]  # OPM circuit objects
+model.route_simulation.recompute()
+_ = model.traffic_simulation
+```
+
+**IGP.** `shortest_path` requires OPM Node objects:
+
+```python
+route = model.route_simulation.shortest_path(
+    model.nodes[src_name], model.nodes[dst_name], "igp"
+)
+```
+
+Passing a string yields Ice `ValueError` on `getShortestPathRouteRecord` and
+can poison the pooled communicator. Map SDK exceptions to ToolError with the
+real exception class name; never claim a type error is a missing certificate.
+
+**Order hops.** `Route.interfaces` is unordered. Reconstruct order by walking
+from the source node: choose the interface whose node name equals the current
+node, then advance via `opposite_interface.node` (or the other circuit
+endpoint). Use that walk for IGP fill between node SIDs and from the last
+anchor to the destination. Emit `resolved_ordered_path` as `"{node}:{iface}"`
+strings. This topology walk is required; skipping IGP fill because the SDK
+collection is unordered is incorrect.
+
+**Circuit IDs.** Accept unique `node_a`+`node_b` (reject parallels), SDK
+`ckt{n1|if1|n2|if2}`, and shorthand `n1-n2` / `n2-n1`.
+
+**Simulation Analysis.**
+
+```python
+sa = SimulationAnalysis(model, failure_types=names, max_fail_per_int=n)
+sa.cache_valid = True
+for iface in model.interfaces:
+    rec = sa.interfaces[iface]   # index by model interface
+    util = rec.worst_case_utilization
+```
+
+Stable `interface_id` (`if{node|name}` or `{node}:{name}`). Never a wrapper
+`repr`. Do not iterate SA wrappers as if they were model interfaces.
+
+**Growth.** kebab-case GenericTool JSON and DesignAPI filesystem round-trip:
+
+1. Set `demand.growth_percent` on active demands.
+2. `network.rpc_plan.serializeToFileSystem("/tmp/mcp_growth_<unique>.txt")`.
+3. `pm.newPlanFromFileSystem(server_path)`; `newGenericTool().runTool(net,
+   "create_growth_plans", json.dumps({
+     "plan-file": server_path,
+     "create-plans-from": "DEMANDS",
+     "num-periods": num_periods,
+     "period-inc": period_inc,
+     "growth-method": "COMPOUND",
+     "run-sim-analysis": False,
+   }))`.
+4. If the tool **raises** or reports success without changing demand traffic,
+   apply compound `(1 + g/100) ** (period_inc * num_periods)` via
+   `DemandTrafficKey` / `Demand.traffic` and set `fallback_used` /
+   `compound_fallback_applied`. Do not fail the tool solely because
+   `create_growth_plans` threw when fallback can still produce COMPOUND results.
+5. `finally`: remove local temps and extra PlanManager keys.
+6. SIMPLE: linear `1 + (g/100)*periods` through a verified API, or reject
+   SIMPLE explicitly. Never label compound math as SIMPLE.
+
 ## MCP tools
 
 Implement every tool below with detailed docstrings, validated bounded inputs,
@@ -331,8 +437,10 @@ deterministically ordered outputs, and the common response/error conventions.
 9. `get_igp_path(source, destination, plan_ref=None, metric="igp")`
    - allow only metrics verified for the installed SDK, such as IGP, BGP, TE,
      and latency;
+   - resolve endpoints with `model.nodes[name]` and call `shortest_path` with
+     those Node objects;
    - return the SDK-provided path while explicitly stating whether ordering is
-     guaranteed.
+     guaranteed; if unordered, also return a topology-walk ordered list.
 10. `list_lsps(plan_ref=None, source=None, destination=None, active_only=True, limit=100)`
     - include stable identity, type, setup bandwidth and units, color, state,
       and path options.
@@ -346,13 +454,17 @@ deterministically ordered outputs, and the common response/error conventions.
       latency, and ECMP data;
     - return configured segment-list steps;
     - expand interface SIDs directly;
-    - expand node SIDs with SDK-provided IGP shortest-path fill;
-    - append IGP fill from the final segment anchor to the destination;
+    - expand node SIDs with SDK-provided IGP shortest-path fill using Node
+      objects plus the topology walk in the operational contract;
+    - append IGP fill from the final segment anchor to the destination using
+      the same walk;
     - report unsupported or unresolved segment steps as warnings;
-    - clearly distinguish `resolved_ordered_path`, unordered simulation
-      `interface_set`, and unconstrained `reference_igp_shortest_path`;
-    - never fabricate order by iterating a set. If ordered reconstruction is
-      not provable, return unresolved warnings instead.
+    - clearly distinguish `resolved_ordered_path` (`"{node}:{iface}"` strings),
+      unordered simulation `interface_set`, and unconstrained
+      `reference_igp_shortest_path` (also Node-object `shortest_path`);
+    - never fabricate order by iterating a set. The topology walk above is the
+      required reconstruction; do not omit IGP fill because the SDK collection
+      is unordered.
 
 ### Explicit deterministic failure simulation
 
@@ -361,8 +473,11 @@ deterministically ordered outputs, and the common response/error conventions.
       complete node pair;
     - resolve every circuit uniquely before changing simulation state; reject
       a node pair matching parallel circuits and require explicit circuit IDs;
+    - treat `ckt{...}`, `nodeA-nodeB`, and `nodeB-nodeA` as circuit-ID list
+      forms;
     - compute baseline demand paths and per-interface traffic/utilization;
-    - apply exactly the requested circuit failures and recompute;
+    - apply exactly the requested circuit failures with
+      `model.route_simulation = [circuits]` (not `.failed = True`) and recompute;
     - return applied circuit IDs, active-demand count, rerouted and unrouted
       counts, bounded sample reroutes with before/after paths, largest bounded
       interface traffic changes, before/after utilization, newly
@@ -380,6 +495,8 @@ engine.
     - validate failure-set names against an explicit allowlist proven valid for
       the installed release;
     - invoke Cisco `SimulationAnalysis` using its verified API;
+    - read worst-case utilization via `sa.interfaces[model_iface]` for each
+      model interface; never use a wrapper object's `repr` as an id;
     - rank interfaces by vendor-produced worst-case utilization with stable
       tie-breaking;
     - return failure sets, units, bounded top interfaces, relevant vendor
@@ -406,14 +523,15 @@ unavailable in the deployed service, return a runtime capability error.
       the generated result; if the release supports only a documented
       server-visible filesystem path, validate that deployment prerequisite
       explicitly;
-    - invoke the documented `create_growth_plans` GenericTool through Design
-      RPC with verified option names and values;
+    - invoke `create_growth_plans` through Design RPC using the kebab-case
+      options and `serializeToFileSystem` / `newPlanFromFileSystem` lifecycle
+      in the operational contract (not camelCase, not `newPlanFromBytes` alone);
     - inspect the generated plan and verify whether expected demand growth was
       actually applied;
-    - if a verified release defect reports success without applying COMPOUND
-      growth, a compatibility adapter may apply the mathematically correct
-      compound multiplier through the documented demand-traffic RPC API, but it
-      must report that fallback;
+    - if the tool raises, returns no new plan key, or reports success without
+      applying COMPOUND growth, a compatibility adapter must apply the
+      mathematically correct compound multiplier through the documented
+      demand-traffic RPC API and report that fallback;
     - for SIMPLE growth, implement the documented mathematics through a
       verified API or reject it explicitly; never use compound arithmetic while
       labeling it SIMPLE;
@@ -428,8 +546,9 @@ unavailable in the deployed service, return a runtime capability error.
 
 ## Simulation correctness
 
-- Reset failure, route, and traffic state before every baseline.
-- Recompute after applying failures.
+- Reset failure, route, and traffic state before every baseline with
+  `model.route_simulation = []` (never `None`).
+- Recompute after applying failures via `model.route_simulation = [circuits]`.
 - Include only active objects where requested.
 - Handle missing traffic, utilization, capacity, latency, and route values
   safely without converting “unknown” to zero unless that meaning is documented.
@@ -471,9 +590,13 @@ When configured certificate files are present, parse the public certificates
 with a maintained library or documented standard-library facility and fail
 closed on expiry/not-yet-valid status, RSA keys below 2048 bits, EC curves below
 P-256, or MD5/SHA-1 signatures. Report self-signed status as an operator warning
-and never expose certificate contents. Verify that a configured private-key
-path exists and has private permissions, but do not read or log key content
-outside the TLS/SDK facility that consumes it.
+and never expose certificate contents. `MCP_TOKEN_FILE` and other application
+secret files must be mode `0600`/`0400` (fail closed). IceSSL private keys under
+`CARIDEN_HOME/etc/certs`: if the file exists and is owner-readable, log a
+warning to stderr when the mode is not `0600`/`0400`, but do **not** refuse
+startup solely because a lab key is group-readable (`0664`). Still fail closed
+if the IceSSL key is missing, unreadable by the process, or world-writable.
+Do not read or log key content outside the TLS/SDK facility that consumes it.
 
 ## Required validation before completion
 
@@ -514,6 +637,15 @@ Then:
     non-loopback without explicit authorization.
 15. Confirm one authenticated principal cannot infer, read, operate on, or
     delete another principal's plans.
+16. Confirm `os.execv` (or equivalent) is used so `python3 cp_sample_mcp.py`
+    works without a pre-exported `LD_LIBRARY_PATH`.
+17. If `CW_DESIGNAPI_HOST` is set and `us_wan.txt` is available, run live
+    DesignAPI checks and fix failures: upload (33/50/95); demand path
+    er1.sjc→er1.mia hop_count 6 metric ~2169; IGP cr1.sjc→cr1.kcy with Node
+    objects and no Ice ValueError; `failure_sim` node pair rerouted_count 10;
+    `failure_sim` `failed_circuits=["cr1.sjc-cr1.kcy"]`; `get_wc_traffic`
+    circuits with ~113% and human-readable interface ids; `get_traffic_growth`
+    33% one period with `ok` true and either tool growth or fallback.
 
 Fix all failures before answering. Do not claim checks that could not run.
 
