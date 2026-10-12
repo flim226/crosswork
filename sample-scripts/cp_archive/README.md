@@ -4,8 +4,9 @@ Import or export plan files for a Cisco Crosswork Planning archive.
 
 Connection options come first, then exactly one of `--import` or `--export`.
 
-## Prerequisites
+## Requirements
 
+- Platform: Cisco Crosswork Planning 8.0.0 or later
 - Python 3.10+
 - `requests` library (`pip install requests`)
 

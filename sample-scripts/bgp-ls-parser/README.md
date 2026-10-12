@@ -18,8 +18,9 @@ By the end of this tutorial you will be able to paste router output into the par
 
 ---
 
-## 2. Prerequisites
+## 2. Requirements
 
+- Platform: None (browser-only). Input is `show bgp link-state link-state` output from IOS-XR, for example SR-PCE.
 - A modern web browser (Chrome, Firefox, Safari, or Edge).
 - Access to the `bgp-ls-parser.html` file.
 - Optionally, raw output from `show bgp link-state link-state` collected from an IOS-XR router (e.g., an SR-PCE).

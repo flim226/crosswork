@@ -4,6 +4,7 @@ Retrieves physical node inventory from Cisco Crosswork Network Controller using 
 
 ## Requirements
 
+- Platform: Cisco Crosswork Network Controller 7.2 or later
 - Python 3.x
 - `requests` library
 - `urllib3` library

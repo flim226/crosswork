@@ -10,8 +10,8 @@ The script is designed to run as a **Crosswork Planning external script** within
 
 ## Requirements
 
+- Platform: Cisco Crosswork Planning 7.2 or later (external script, OPM Python Library)
 - Python 3.10+
-- Crosswork Planning
 
 ## How It Works
 

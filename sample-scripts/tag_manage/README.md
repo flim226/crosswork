@@ -4,6 +4,7 @@ Manage tags on Crosswork Network Controller nodes. List, add, and remove tags fr
 
 ## Requirements
 
+- Platform: Cisco Crosswork Network Controller 7.2 or later
 - Python 3.x
 - `requests` library
 - `urllib3` library

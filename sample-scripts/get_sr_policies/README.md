@@ -10,6 +10,18 @@ GET /crosswork/nbi/optima/v2/restconf/data/cisco-crosswork-segment-routing-polic
 
 The complete RESTCONF JSON response is written to standard output, so it can be redirected to a file or piped to `jq`.
 
+## Requirements
+
+- Platform: Cisco Crosswork Network Controller 7.2 or later
+- Python 3.x
+- `requests` library
+- `urllib3` library
+
+Install dependencies:
+```bash
+pip install requests urllib3
+```
+
 ## Usage
 
 ```bash

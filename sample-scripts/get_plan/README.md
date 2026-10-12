@@ -4,6 +4,26 @@
 
 This application note describes how to use the `get_plan.py` script to retrieve network plan files from **Cisco Crosswork Network Controller (CNC)**. The script provides a simple command-line interface to authenticate with CNC and download the current network model as a plan file in either `.pln` (binary) or `.txt` (text) format.
 
+## Requirements
+
+- Platform: Cisco Crosswork Network Controller 7.2 or later
+
+### Python Packages
+
+| Package | Purpose |
+|---------|---------|
+| `requests` | HTTP client for REST API calls |
+| `urllib3` | SSL warning suppression for self-signed certificates |
+| `argparse` | Command-line argument parsing |
+| `base64` | Decoding API response content |
+| `os` | File path operations |
+
+### Installation
+
+```bash
+pip install requests urllib3
+```
+
 ## About Cisco Crosswork Network Controller
 
 Cisco Crosswork Network Controller (CNC) is a unified platform for network automation that provides end-to-end network management and orchestration capabilities for service provider and enterprise networks. It delivers:
@@ -220,24 +240,6 @@ The API returns a JSON response with base64-encoded plan file content:
 
 The script handles both `planfile-content` and `plan-file-content` response keys for compatibility across CNC versions.
 
-## Dependencies
-
-### Python Packages
-
-| Package | Purpose |
-|---------|---------|
-| `requests` | HTTP client for REST API calls |
-| `urllib3` | SSL warning suppression for self-signed certificates |
-| `argparse` | Command-line argument parsing |
-| `base64` | Decoding API response content |
-| `os` | File path operations |
-
-### Installation
-
-```bash
-pip install requests urllib3
-```
-
 ## Error Handling
 
 The script handles common error scenarios with informative messages:
@@ -381,4 +383,4 @@ python get_plan.py --ip 10.0.2.100 -u admin -p pass2 -f domain2.pln
 
 *Document Version: 1.0*  
 *Script: get_plan.py*  
-*Platform: Cisco Crosswork Network Controller*
+*Platform: Cisco Crosswork Network Controller 7.2 or later*
