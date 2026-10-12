@@ -12,9 +12,10 @@ Credentials are never stored in the script. When `--username`, `--password`, and
 
 ## Requirements
 
+- Platform: Cisco Crosswork Planning 8.0.0 or later (tested on 8.0.0 Build 385)
 - Python 3.10+ (3.10 is in security-only support through October 2026)
 - `requests` (`pip install requests`)
-- Crosswork Planning 8.0, with the Design REST API reachable (HTTPS port `30603` by default)
+- Design REST API reachable (HTTPS port `30603` by default)
 - A local plan file, or a plan already stored in Design userspace as a `PLANFILE` with the same basename
 
 ## How It Works

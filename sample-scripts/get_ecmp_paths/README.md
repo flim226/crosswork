@@ -4,6 +4,7 @@ Retrieves ECMP (Equal-Cost Multi-Path) paths from Cisco Crosswork Path Analytics
 
 ## Requirements
 
+- Platform: Cisco Crosswork Network Controller 7.2 or later (Crosswork Path Analytics gRPC API)
 - Python 3.x
 - `requests` library
 - `urllib3` library

@@ -2,8 +2,9 @@
 
 Obtain or decode a JWT token from Cisco Crosswork Network Controller.
 
-## Prerequisites
+## Requirements
 
+- Platform: Cisco Crosswork Network Controller 7.2 or later, or Cisco Crosswork Planning 8.0.0 or later
 - Python 3.6+
 - `requests` library (`pip install requests`)
 
