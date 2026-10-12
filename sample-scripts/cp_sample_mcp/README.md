@@ -180,7 +180,7 @@ When you send a message in Cursor, the client launches (or reuses) the Python pr
 
 ## Requirements
 
-- Platform: Cisco Crosswork Planning 8.0.0 or later (tested on release-8.0.0 Build 385)
+- Platform: Cisco Crosswork Planning 7.2 or later (tested on release-8.0.0 Build 385)
 
 Before you begin, ensure you have:
 
