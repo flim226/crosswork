@@ -17,7 +17,7 @@ Crosswork Planning exposes powerful simulation and analysis through the OPM Pyth
 1. [Overview](#overview)
 2. [Background](#background)
 3. [Architecture](#architecture)
-4. [Prerequisites](#prerequisites)
+4. [Requirements](#requirements)
 5. [Part 1 — Establish OPM/Python Library connectivity](#part-1--establish-opmpython-library-connectivity)
 6. [Part 2 — Build the MCP server](#part-2--build-the-mcp-server)
 7. [Installation](#installation)
@@ -178,7 +178,9 @@ When you send a message in Cursor, the client launches (or reuses) the Python pr
 
 ---
 
-## Prerequisites
+## Requirements
+
+- Platform: Cisco Crosswork Planning 8.0.0 or later (tested on release-8.0.0 Build 385)
 
 Before you begin, ensure you have:
 

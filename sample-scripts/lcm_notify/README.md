@@ -6,6 +6,20 @@ This application note describes `lcm_notify.py`, a single-file Python script tha
 
 The script also supports optional **recommendation detail retrieval** (`--get-rec`), **pretty-printed or verbose HTTP-style output** (`--pretty`, `--verbose`), **environment-variable credentials**, **HTTP/HTTPS proxy servers** via `http_proxy` and `https_proxy`, and **secure-by-default SSL verification** (with an explicit opt-out via `-k`/`--insecure`). It runs indefinitely until the user presses **Ctrl+C**, and automatically reconnects if the notification stream is closed by the server.
 
+## Requirements
+
+- Platform: Cisco Crosswork Network Controller 7.2 or later
+- Older releases: legacy optima v2 notification fallback for CNC 7.0, and legacy preview fallback for `--get-rec` on CNC 7.1
+- **Python packages**: `requests`, `urllib3`
+- **Standard library**: `argparse`, `contextlib`, `getpass`, `json`, `os`, `signal`, `sys`, `time`, `datetime`, `dataclasses`, `enum`, `typing`
+- **External tools**: None
+
+Install dependencies:
+
+```bash
+pip install requests urllib3
+```
+
 ## Background: LCM Recommendation Notifications
 
 Crosswork Optimization Engine (COE) publishes **LCM Recommendation Events** when recommendation-related state changes occur in the network. These notifications are defined in the YANG model `cisco-crosswork-optimization-engine-lcm-recommendation-operations` and use the common grouping `lcm-rec-notification`.
@@ -687,18 +701,6 @@ ENV_HTTPS_PROXY = "https_proxy"
 ```
 
 Port, timeout, and SSL verification may be overridden via `--port`, `--timeout`, and `-k`/`--insecure` on the command line. SSL verification is **enabled by default**; use `-k` for self-signed lab certificates. Proxy servers are configured only through environment variables (there is no `--proxy` CLI flag).
-
-## Dependencies
-
-- **Python packages**: `requests`, `urllib3`
-- **Standard library**: `argparse`, `contextlib`, `getpass`, `json`, `os`, `signal`, `sys`, `time`, `datetime`, `dataclasses`, `enum`, `typing`
-- **External tools**: None
-
-Install dependencies:
-
-```bash
-pip install requests urllib3
-```
 
 ## Error Handling
 
