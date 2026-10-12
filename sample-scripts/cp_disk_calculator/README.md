@@ -8,6 +8,11 @@ When sizing a Crosswork Planning VM, the installer accepts four OVF storage para
 
 This calculator estimates the initial disk partition layout from those four storage-related OVF parameters and displays partition sizes, a data-disk visualization, and formula details. It runs entirely in a web browser with no server component, build step, external JavaScript library, or network dependency.
 
+## Requirements
+
+- Platform: Cisco Crosswork Planning 7.2 or later installer layout. Verify against the installation guide for your release.
+- A modern web browser
+
 ## Scope
 
 - Initial provisioning disk layout for `/dev/sdb` (`logfs`) and `/dev/sdc` (`corefs`, `ddatafs`, `backupfs`)

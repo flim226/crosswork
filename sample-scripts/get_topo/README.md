@@ -12,6 +12,7 @@ API reference: [Retrieve topology networks operational data](https://developer.c
 
 ## Requirements
 
+- Platform: Cisco Crosswork Network Controller 7.2 or later
 - Python 3.10 or later
 
 No `pip install` is needed. The script is self-contained: its dependencies, pinned in `requirements.txt`, are bundled as pure-Python packages in `vendor/`, which `get_topo.py` adds to `sys.path` at startup. Copy the whole `get_topo/` directory to run it on another host.

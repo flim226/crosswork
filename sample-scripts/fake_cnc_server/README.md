@@ -15,6 +15,7 @@ This script creates a local HTTPS server that simulates the Crosswork CNC authen
 
 ## Requirements
 
+- Platform: None. It emulates the Crosswork Network Controller 7.2 or later SSO and `optima/v2` plan APIs for testing `get_plan.py`.
 - Python 3.6+
 - OpenSSL (for certificate generation when using HTTPS)
 

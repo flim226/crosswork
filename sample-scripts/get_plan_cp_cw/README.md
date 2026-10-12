@@ -4,6 +4,13 @@
 
 This application note provides an example on how an external script may be used within **Cisco Crosswork Planning 7.2** as a **Startup Script** in the data collection workflow. Our script `get_plan_cp_cw.py` retrieve the real time network model in the form of a planfile from **Crosswork Network Controller (CNC)** and converts it for use in Crosswork Planning. Since the startup script can be scheduled to execute at a regular cadence as part of a collection workflow, it allows for a automated archival of planfiles for offline planning use cases.
 
+## Requirements
+
+- Platform: Cisco Crosswork Planning 7.2 or later (startup script)
+- Source: Cisco Crosswork Network Controller 7.2 or later
+- **Python packages**: `requests`, `urllib3`, `argparse`, `base64`, `os`, `subprocess`, `logging`, `sys`, `typing`  (Satisfied by Crosswork Planning)
+- **External tools**: `mate_convert` (Cisco WAE/Crosswork Planning utility), `trim_nodes` (Cisco WAE/Crosswork Planning utility, used for optional node trimming)
+
 ## About Cisco Crosswork Planning
 
 Cisco Crosswork Planning provides toolsets for network operators to create and maintain a model of the current network through the collection and analysis of the network and the traffic demands placed on it. At a given time, this network model contains all relevant information about a network, including topology, LSPs and traffic. You may use this as a basis for analyzing the impact on the network due to changes in traffic demands, paths, node and link failures, link metrics, or others. Crosswork Planning comprises two components: **Crosswork Planning Collector** (component that create, maintain, and archive a network model) and **Crosswork Planning Design** (component for predictive what-if simulation analysis, growth planning, and network optimization and design).
@@ -334,11 +341,6 @@ VERIFY_SSL = False                   # Set to True for production with valid cer
 
 > **Security Note**: For production deployments, consider using environment variables or a secure credential store instead of hardcoded credentials.
 
-## Dependencies
-
-- **Python packages**: `requests`, `urllib3`, `argparse`, `base64`, `os`, `subprocess`, `logging`, `sys`, `typing`  (Satisfied by Crosswork Planning)
-- **External tools**: `mate_convert` (Cisco WAE/Crosswork Planning utility), `trim_nodes` (Cisco WAE/Crosswork Planning utility, used for optional node trimming)
-
 ## Error Handling
 
 The script handles common error scenarios:
@@ -408,4 +410,4 @@ This script fulfills that role by providing the network model from CNC, enabling
 
 *Document Version: 1.3*  
 *Script: get_plan_cp_cw.py*  
-*Platform: Cisco Crosswork Planning 7.2*
+*Platform: Cisco Crosswork Planning 7.2 or later*
