@@ -48,7 +48,7 @@ python3 snmp_pcap_bitrate.py crosswork1.eth1.cap
 python3 snmp_pcap_bitrate.py crosswork1.eth1.cap --summary-only
 
 # One device and interface, also saved to CSV
-python3 snmp_pcap_bitrate.py crosswork1.eth1.cap --device node-2 --interface 'GigabitEthernet0/0/0/6$' --csv node-2.csv
+python3 snmp_pcap_bitrate.py crosswork1.eth1.cap --device node-2 --interface '^HundredGigE0/0/0/12/1$' --csv node-2.csv
 
 # Inbound instead of outbound, with every bitrate shown in Gbps
 python3 snmp_pcap_bitrate.py crosswork1.eth1.cap --direction in --unit Gbps
