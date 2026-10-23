@@ -148,10 +148,10 @@
         <div class="field">
           <div class="field-head">
             <label for="ddatafs">ddatafs <span class="key">total data disk</span></label>
-            <div class="number-wrap"><input id="ddatafs" type="number" min="50" max="8000" step="1" value="485" inputmode="decimal" aria-describedby="ddatafs-limits"><span class="unit">GB</span></div>
+            <div class="number-wrap"><input id="ddatafs" type="number" min="450" max="8000" step="1" value="485" inputmode="decimal" aria-describedby="ddatafs-limits"><span class="unit">GB</span></div>
           </div>
-          <input id="ddatafs-range" type="range" min="50" max="8000" step="1" value="485" aria-label="ddatafs slider">
-          <div id="ddatafs-limits" class="range-limits"><span>50 GB</span><span>8,000 GB</span></div>
+          <input id="ddatafs-range" type="range" min="450" max="8000" step="1" value="485" aria-label="ddatafs slider">
+          <div id="ddatafs-limits" class="range-limits"><span>450 GB</span><span>8,000 GB</span></div>
         </div>
 
         <div class="field">
@@ -282,7 +282,7 @@
         notice.classList.toggle('error', !validLayout);
         notice.textContent = validLayout
           ? 'The 50 GB extrafs backup offset is outside /dev/sdc; it only reduces the ddatafs calculation. The backupfs value is the remaining capacity on /dev/sdc.'
-          : 'This combination cannot produce a valid layout. Ensure the data disk is at least 50 GB and large enough for corefs plus the calculated ddatafs partition.';
+          : 'This combination cannot produce a valid layout. Ensure the data disk is at least 450 GB and large enough for corefs plus the calculated ddatafs partition.';
       }
 
       fields.forEach(({ input, range }) => {
