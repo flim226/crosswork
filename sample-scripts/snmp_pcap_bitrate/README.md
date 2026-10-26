@@ -75,7 +75,7 @@ python3 snmp_pcap_bitrate.py crosswork1.eth1.cap --direction in --unit Gbps
 
 ## Sample output
 
-The output below comes from a synthetic capture built to exercise the edge cases. It contains one router polled four times, 300 seconds apart, run with `--counter both --include-first`:
+The output below comes from a synthetic capture built to exercise the edge cases. It contains one router polled four times, 300 seconds apart, run with `--counter both --include-first`. The timestamp is the capture time recorded in the pcap/pcapng file. It is the moment the capture tool (tcpdump, Wireshark, etc.) saw the SNMP response packet.
 
 ```text
 # 4 packets, 4 SNMP responses decoded, 0 undecodable; 1 agents, 2 interfaces with out octet counters
