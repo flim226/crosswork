@@ -26,6 +26,9 @@ tcpdump -i eth1 -v -w crosswork1.eth1.cap 'udp port 161 or (ip[6:2] & 0x1fff != 
 
 # Capture for 3600 seconds, then stop
 timeout 3600 tcpdump -i eth1 -v -w crosswork1.eth1.cap 'udp port 161 or (ip[6:2] & 0x1fff != 0)'
+
+# Capture for 3600 seconds to/from 192.0.0.1, then stop
+tcpdump -i eth1 -v -w crosswork1.eth1.cap 'host 192.0.0.1 and (udp port 161 or (ip[6:2] & 0x1fff != 0))'
 ```
 
 The `(ip[6:2] & 0x1fff != 0)` part of the filter matters. Large SNMP responses, such as GetBulk replies, are often split into IP fragments. Only the first fragment carries the UDP header, so a plain `port 161` filter keeps the first fragment and drops the rest. The script then cannot reassemble those responses, and their counters are silently missing from the output. For IPv6 agents, use `'udp port 161 or (ip6 and ip6[6] == 44)'`.
