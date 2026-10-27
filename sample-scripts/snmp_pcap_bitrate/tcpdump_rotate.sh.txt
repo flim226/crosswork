@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+#
+# tcpdump wrapper that rotates the -w file every 5 minutes with a timestamped name.
+# All arguments are passed to tcpdump unchanged, except -w which gets a timestamp
+# inserted before its extension.
+#
+# Usage:
+#   sudo ./tcpdump_rotate.sh <normal tcpdump args>
+#
+# Example:
+#   sudo WINDOW=600 KEEP_MIN=0 ./tcpdump_rotate.sh -i eth1 -v -w crosswork1.eth1.cap \
+#       'host 192.0.0.1 and (udp port 161 or (ip[6:2] & 0x1fff != 0))'
+#   -> crosswork1.eth1_20261027_221000.cap, crosswork1.eth1_20261027_221500.cap, ...
+# 
+# Environment:
+#   WINDOW=300     rotation interval in seconds (ignored if -G is given)
+#   KEEP_MIN=0     delete rotated files older than N minutes (0 = keep all)
+
+set -euo pipefail
+
+WINDOW="${WINDOW:-300}"
+KEEP_MIN="${KEEP_MIN:-0}"
+TS_FMT="%Y%m%d_%H%M%S"
+
+command -v tcpdump >/dev/null || { echo "tcpdump not found" >&2; exit 1; }
+[[ $EUID -eq 0 ]] || { echo "Run as root (sudo)" >&2; exit 1; }
+
+ARGS=()
+OUTFILE=""
+HAVE_G=0
+HAVE_Z=0
+
+while (( $# > 0 )); do
+    case "$1" in
+        -w)  OUTFILE="$2"; shift 2 ;;
+        -w*) OUTFILE="${1#-w}"; shift ;;
+        -G|-G*) HAVE_G=1; ARGS+=("$1"); shift ;;
+        -Z|-Z*) HAVE_Z=1; ARGS+=("$1"); shift ;;
+        *)   ARGS+=("$1"); shift ;;
+    esac
+done
+
+OUTFILE="${OUTFILE:-capture.pcap}"
+
+if [[ "$OUTFILE" == *%* ]]; then
+    PATTERN="$OUTFILE"
+    GLOB=""
+else
+    dir="$(dirname "$OUTFILE")"
+    base="$(basename "$OUTFILE")"
+    if [[ "$base" == *.* ]]; then
+        stem="${base%.*}"; ext=".${base##*.}"
+    else
+        stem="$base"; ext=""
+    fi
+    PATTERN="$dir/${stem}_${TS_FMT}${ext}"
+    GLOB="${stem}_*${ext}"
+fi
+
+mkdir -p "$(dirname "$PATTERN")"
+
+(( HAVE_G )) || ARGS=(-G "$WINDOW" "${ARGS[@]}")
+# On Linux tcpdump drops to the 'tcpdump' user and may lose write access to the output dir.
+(( HAVE_Z )) || [[ "$(uname)" != Linux ]] || ARGS=(-Z root "${ARGS[@]}")
+
+CLEANER_PID=""
+cleanup() {
+    [[ -n "$CLEANER_PID" ]] && kill "$CLEANER_PID" 2>/dev/null || true
+}
+trap cleanup EXIT INT TERM
+
+if (( KEEP_MIN > 0 )) && [[ -n "$GLOB" ]]; then
+    (
+        while true; do
+            find "$(dirname "$PATTERN")" -maxdepth 1 -name "$GLOB" -mmin +"$KEEP_MIN" -delete
+            sleep 60
+        done
+    ) &
+    CLEANER_PID=$!
+fi
+
+echo "Writing to $PATTERN" >&2
+echo "+ tcpdump ${ARGS[*]} -w $PATTERN" >&2
+tcpdump "${ARGS[@]}" -w "$PATTERN"
