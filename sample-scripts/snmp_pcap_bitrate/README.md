@@ -10,6 +10,8 @@ bitrate (bps) = (current_counter - previous_counter) / elapsed_seconds * 8
 
 This lets you check the bitrates a poller should be calculating directly from the SNMP traffic it exchanged with each device.
 
+A companion script, `add_link_utilization.py`, adds link bandwidth and percent utilization to the CSV that `snmp_pcap_bitrate.py` writes. See [Adding link utilization](#adding-link-utilization).
+
 ## Requirements
 
 - Python 3.10 or later.
@@ -129,6 +131,58 @@ The summary has one row per device, interface and counter, with the number of po
 ### CSV file
 
 `--csv` writes the per-poll table with unformatted numbers, so it can be loaded into a spreadsheet or pandas. Its columns are `timestamp`, `epoch`, `hostname`, `ip`, `ifindex`, `interface`, `counter`, `value`, `delta`, `elapsed_s`, `bitrate_bps` and `note`. The CSV always includes each interface's first poll.
+
+## Adding link utilization
+
+`add_link_utilization.py` reads a CSV from `snmp_pcap_bitrate.py --csv` and adds two columns: the link bandwidth and the measured bitrate as a percentage of it. The bandwidth comes from the `Links` table of a Crosswork topology dump produced by [get_topo](https://github.com/flim226/crosswork/tree/main/sample-scripts/get_topo).
+
+```bash
+python3 add_link_utilization.py TOPO_FILE CSV_FILE [options]
+```
+
+Example workflow:
+
+```bash
+# 1. Bitrates from the capture, saved to CSV
+python3 snmp_pcap_bitrate.py crosswork1.eth1.cap --csv crosswork1.rest-bb1-01.csv
+
+# 2. Topology dump from Crosswork (see the get_topo README)
+python3 ../get_topo/get_topo.py --ip <controller-ip> --jwt <jwt-file> --short > get_topo.txt
+
+# 3. Add bandwidth and utilization; writes crosswork1.rest-bb1-01_util.csv
+python3 add_link_utilization.py get_topo.txt crosswork1.rest-bb1-01.csv
+
+# Only keep rows for interfaces found in the topology, to a chosen file
+python3 add_link_utilization.py get_topo.txt crosswork1.rest-bb1-01.csv -o out.csv --matched-only
+```
+
+### Options
+
+| Option | Default | Description |
+| --- | --- | --- |
+| `-o`, `--output FILE` | `<csv_file stem>_util.csv` | Output CSV path. |
+| `--link-type TYPE` | `ISIS_IPV4_L2` | Only read bandwidth from links of this `Link Type` in the topology. Case-insensitive. |
+| `--rate-column NAME` | `bitrate_bps` | CSV column that holds the measured rate in bps. |
+| `--matched-only` | | Only write rows whose interface matched a link in the topology. |
+
+### Added columns
+
+| Column | Meaning |
+| --- | --- |
+| `bandwidth_bps` | Link bandwidth in bps from the topology. Empty if no link matched. |
+| `util_pct` | `bitrate_bps ÷ bandwidth_bps × 100`, to three decimal places. Empty if no link matched or the row has no bitrate, such as an interface's first poll. |
+
+All original columns are kept unchanged.
+
+### How rows are matched
+
+- Each CSV row is matched on `hostname` and `interface` against a link's **Source Node** and **Source TP** only. The destination side of a link is not used, so each interface takes the bandwidth of the link it transmits on.
+- Node names that the topology dump truncated in the `Links` table are expanded to the full name from the `Nodes` table when exactly one node starts with that prefix.
+- If there is no exact hostname match, the short hostname is tried, so `rest-b6` matches `rest-b6.ip.example.net` and the reverse.
+- Links whose bandwidth is `-` are ignored. If the same source node and interface appear more than once, the first link is used.
+- The `hostname` column in the CSV must contain the device `sysName`. If the poller did not request `sysName`, the column is `-` and no rows will match.
+
+The script prints the number of links of the chosen type in the topology, each matched interface with its bandwidth, and the number of rows written. It exits with an error if the topology has no links of that type with a bandwidth, or if the rate column is missing from the CSV.
 
 ## How it works
 
