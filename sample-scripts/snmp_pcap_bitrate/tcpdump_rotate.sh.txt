@@ -61,7 +61,16 @@ mkdir -p "$(dirname "$PATTERN")"
 
 (( HAVE_G )) || ARGS=(-G "$WINDOW" "${ARGS[@]}")
 # On Linux tcpdump drops to the 'tcpdump' user and may lose write access to the output dir.
-(( HAVE_Z )) || [[ "$(uname)" != Linux ]] || ARGS=(-Z root "${ARGS[@]}")
+# '-Z root' crashes some tcpdump builds (libcap-ng) when combined with -G, so drop to the
+# sudo caller instead, who normally owns the output dir.
+if (( ! HAVE_Z )) && [[ "$(uname)" == Linux ]]; then
+    if [[ -n "${SUDO_USER:-}" && "$SUDO_USER" != root ]]; then
+        ARGS=(-Z "$SUDO_USER" "${ARGS[@]}")
+    else
+        echo "Warning: SUDO_USER not set; tcpdump will drop to its default user." \
+             "Ensure $(dirname "$PATTERN") is writable by it, or pass -Z <user>." >&2
+    fi
+fi
 
 CLEANER_PID=""
 cleanup() {
@@ -81,4 +90,9 @@ fi
 
 echo "Writing to $PATTERN" >&2
 echo "+ tcpdump ${ARGS[*]} -w $PATTERN" >&2
-tcpdump "${ARGS[@]}" -w "$PATTERN"
+rc=0
+tcpdump "${ARGS[@]}" -w "$PATTERN" || rc=$?
+if (( rc == 139 )); then
+    echo "tcpdump segfaulted. Try a different -Z user, or check: tcpdump --version; dmesg | tail" >&2
+fi
+exit "$rc"
