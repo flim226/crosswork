@@ -1,0 +1,741 @@
+            OSPF Router with ID (147.202.18.47) (Process ID 1)
+
+                Router Link States (Area 0)
+
+  LS age: 950
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 147.202.18.33
+  Advertising Router: ar1.dub.lab.cariden.com
+  LS Seq Number: 800000DB
+  Checksum: 0x40BC
+  Length: 72
+  Number of Links: 4
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 10.100.1.0
+     (Link Data) Network Mask: 255.255.255.0
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.6
+     (Link Data) Router Interface address: 172.20.0.5
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 10
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.2
+     (Link Data) Router Interface address: 172.20.0.1
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1000
+          
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 147.202.18.33
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+
+  LS age: 847
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 147.202.18.34
+  Advertising Router: ar1.dus.lab.cariden.com
+  LS Seq Number: 800000D8
+  Checksum: 0x3AA0
+  Length: 72
+  Number of Links: 4
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 10.100.3.0
+     (Link Data) Network Mask: 255.255.255.0
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.14
+     (Link Data) Router Interface address: 172.20.0.13
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 10
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.10
+     (Link Data) Router Interface address: 172.20.0.9
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1000
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 147.202.18.34
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+          
+          
+  LS age: 575
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 147.202.18.35
+  Advertising Router: ar1.ham.lab.cariden.com
+  LS Seq Number: 800000D6
+  Checksum: 0x3285
+  Length: 72
+  Number of Links: 4
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 10.100.5.0
+     (Link Data) Network Mask: 255.255.255.0
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.22
+     (Link Data) Router Interface address: 172.20.0.21
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 10
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.18
+     (Link Data) Router Interface address: 172.20.0.17
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1000
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 147.202.18.35
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+          
+
+  LS age: 468
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 147.202.18.36
+  Advertising Router: cr2.par.lab.cariden.com
+  LS Seq Number: 800000DA
+  Checksum: 0x8A2
+  Length: 96
+  Number of Links: 6
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.41
+     (Link Data) Router Interface address: 172.20.0.41
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1000
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.38
+     (Link Data) Router Interface address: 172.20.0.37
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1000
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.34
+     (Link Data) Router Interface address: 172.20.0.33
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 100
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.30
+     (Link Data) Router Interface address: 172.20.0.29
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 200
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.26
+     (Link Data) Router Interface address: 172.20.0.25
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 200
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 147.202.18.36
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+
+  LS age: 1660
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 147.202.18.37
+  Advertising Router: cr2.fra.lab.cariden.com
+  LS Seq Number: 800000D9
+  Checksum: 0x8BE1
+  Length: 84
+  Number of Links: 5
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.10
+     (Link Data) Router Interface address: 172.20.0.10
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1000
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.50
+     (Link Data) Router Interface address: 172.20.0.49
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 100
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.26
+     (Link Data) Router Interface address: 172.20.0.26
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 200
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.46
+     (Link Data) Router Interface address: 172.20.0.45
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 200
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 147.202.18.37
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+
+  LS age: 626
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 147.202.18.38
+  Advertising Router: cr1.par.lab.cariden.com
+  LS Seq Number: 800000DA
+  Checksum: 0x64D7
+  Length: 96
+  Number of Links: 6
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.65
+     (Link Data) Router Interface address: 172.20.0.65
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1000
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.62
+     (Link Data) Router Interface address: 172.20.0.61
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1000
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.34
+     (Link Data) Router Interface address: 172.20.0.34
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 100
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.58
+     (Link Data) Router Interface address: 172.20.0.57
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 20
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.54
+     (Link Data) Router Interface address: 172.20.0.53
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 20
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 147.202.18.38
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+
+  LS age: 329
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 147.202.18.39
+  Advertising Router: ar1.muc.lab.cariden.com
+  LS Seq Number: 800000D2
+  Checksum: 0x34A9
+  Length: 72
+  Number of Links: 4
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 10.100.6.0
+     (Link Data) Network Mask: 255.255.255.0
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.74
+     (Link Data) Router Interface address: 172.20.0.73
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 10
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.70
+     (Link Data) Router Interface address: 172.20.0.69
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1000
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 147.202.18.39
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+
+  LS age: 1653
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 147.202.18.40
+  Advertising Router: ar1.cgn.lab.cariden.com
+  LS Seq Number: 800000D9
+  Checksum: 0x5EDB
+  Length: 72
+  Number of Links: 4
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 10.100.7.0
+     (Link Data) Network Mask: 255.255.255.0
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.14
+     (Link Data) Router Interface address: 172.20.0.14
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 10
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.78
+     (Link Data) Router Interface address: 172.20.0.77
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1000
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 147.202.18.40
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+
+  LS age: 1815
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 147.202.18.41
+  Advertising Router: cr1.ams.lab.cariden.com
+  LS Seq Number: 800000D2
+  Checksum: 0x6F69
+  Length: 96
+  Number of Links: 6
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.78
+     (Link Data) Router Interface address: 172.20.0.78
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1000
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.94
+     (Link Data) Router Interface address: 172.20.0.93
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 20
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.90
+     (Link Data) Router Interface address: 172.20.0.89
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 100
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.86
+     (Link Data) Router Interface address: 172.20.0.85
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 20
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.82
+     (Link Data) Router Interface address: 172.20.0.81
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 20
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 147.202.18.41
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+
+  LS age: 1851
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 147.202.18.42
+  Advertising Router: er1.par.lab.cariden.com
+  LS Seq Number: 800000D6
+  Checksum: 0xF73C
+  Length: 72
+  Number of Links: 4
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 10.100.9.0
+     (Link Data) Network Mask: 255.255.255.0
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.41
+     (Link Data) Router Interface address: 172.20.0.42
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1000
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.65
+     (Link Data) Router Interface address: 172.20.0.66
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1000
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 147.202.18.42
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+
+  LS age: 133
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 147.202.18.43
+  Advertising Router: er2.par.lab.cariden.com
+  LS Seq Number: 800000D2
+  Checksum: 0x7DC4
+  Length: 72
+  Number of Links: 4
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 10.100.10.0
+     (Link Data) Network Mask: 255.255.255.0
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.38
+     (Link Data) Router Interface address: 172.20.0.38
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1000
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.62
+     (Link Data) Router Interface address: 172.20.0.62
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1000
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 147.202.18.43
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+
+  LS age: 817
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 147.202.18.44
+  Advertising Router: cr1.lon.lab.cariden.com
+  LS Seq Number: 800000D2
+  Checksum: 0x6E40
+  Length: 96
+  Number of Links: 6
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.106
+     (Link Data) Router Interface address: 172.20.0.105
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 20
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.102
+     (Link Data) Router Interface address: 172.20.0.101
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1000
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.98
+     (Link Data) Router Interface address: 172.20.0.97
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 100
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.58
+     (Link Data) Router Interface address: 172.20.0.58
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 20
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.82
+     (Link Data) Router Interface address: 172.20.0.82
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 20
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 147.202.18.44
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+
+  LS age: 540
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 147.202.18.45
+  Advertising Router: cr1.fra.lab.cariden.com
+  LS Seq Number: 800000D2
+  Checksum: 0x10B2
+  Length: 84
+  Number of Links: 5
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.70
+     (Link Data) Router Interface address: 172.20.0.70
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1000
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.50
+     (Link Data) Router Interface address: 172.20.0.50
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 100
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.54
+     (Link Data) Router Interface address: 172.20.0.54
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 20
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.86
+     (Link Data) Router Interface address: 172.20.0.86
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 20
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 147.202.18.45
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+
+  LS age: 1475
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 147.202.18.46
+  Advertising Router: cr2.lon.lab.cariden.com
+  LS Seq Number: 800000DD
+  Checksum: 0x9AD9
+  Length: 84
+  Number of Links: 5
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.2
+     (Link Data) Router Interface address: 172.20.0.2
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1000
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.98
+     (Link Data) Router Interface address: 172.20.0.98
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 100
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.30
+     (Link Data) Router Interface address: 172.20.0.30
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 200
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.110
+     (Link Data) Router Interface address: 172.20.0.109
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 200
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 147.202.18.46
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+
+  LS age: 187
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 147.202.18.47
+  Advertising Router: cr2.ams.lab.cariden.com
+  LS Seq Number: 800000DA
+  Checksum: 0x87B9
+  Length: 84
+  AS Boundary Router
+  Number of Links: 5
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.18
+     (Link Data) Router Interface address: 172.20.0.18
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1000
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.90
+     (Link Data) Router Interface address: 172.20.0.90
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 100
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.46
+     (Link Data) Router Interface address: 172.20.0.46
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 200
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.110
+     (Link Data) Router Interface address: 172.20.0.110
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 200
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 147.202.18.47
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+
+  LS age: 1810
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 147.202.18.48
+  Advertising Router: ar1.man.lab.cariden.com
+  LS Seq Number: 800000DC
+  Checksum: 0xD821
+  Length: 72
+  Number of Links: 4
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 10.100.11.0
+     (Link Data) Network Mask: 255.255.255.0
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.6
+     (Link Data) Router Interface address: 172.20.0.6
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 10
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.102
+     (Link Data) Router Interface address: 172.20.0.102
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1000
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 147.202.18.48
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+
+  LS age: 1436
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 147.202.18.49
+  Advertising Router: ar1.ber.lab.cariden.com
+  LS Seq Number: 800000D8
+  Checksum: 0x17DC
+  Length: 72
+  Number of Links: 4
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 10.100.12.0
+     (Link Data) Network Mask: 255.255.255.0
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.22
+     (Link Data) Router Interface address: 172.20.0.22
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 10
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.74
+     (Link Data) Router Interface address: 172.20.0.74
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 10
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 147.202.18.49
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+
+  LS age: 396
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 147.202.18.50
+  Advertising Router: cr1.nyc.lab.cariden.com
+  LS Seq Number: 800000D3
+  Checksum: 0x5B8D
+  Length: 72
+  Number of Links: 4
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 10.100.13.0
+     (Link Data) Network Mask: 255.255.255.0
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.114
+     (Link Data) Router Interface address: 172.20.0.113
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 20
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.106
+     (Link Data) Router Interface address: 172.20.0.106
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 20
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 147.202.18.50
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+
+  LS age: 1012
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 147.202.18.51
+  Advertising Router: cr1.wdc.lab.cariden.com
+  LS Seq Number: 800000D1
+  Checksum: 0x3DC0
+  Length: 72
+  Number of Links: 4
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 10.100.14.0
+     (Link Data) Network Mask: 255.255.255.0
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.114
+     (Link Data) Router Interface address: 172.20.0.114
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 20
+
+    Link connected to: a Transit Network
+     (Link ID) Designated Router address: 172.20.0.94
+     (Link Data) Router Interface address: 172.20.0.94
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 20
+
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 147.202.18.51
+     (Link Data) Network Mask: 255.255.255.255
+      Number of TOS metrics: 0
+       TOS 0 Metrics: 1
+
