@@ -87,7 +87,7 @@ SPOOL_MEMORY_BYTES = 8 * 1024 * 1024
 
 PROFILE_RE = re.compile(r"^\d+m vCPU,\s*\d+Gi Mem$")
 JOB_ID_RE = re.compile(r"Job Id:\s*(\d+)", re.IGNORECASE)
-SAFE_NAME_RE = re.compile(rf"^[A-Za-z0-9][A-Za-z0-9._-]{{0,{MAX_NAME_LEN - 1}}}$")
+SAFE_NAME_RE = re.compile(rf"^[A-Za-z0-9][A-Za-z0-9._+-]{{0,{MAX_NAME_LEN - 1}}}$")
 VERSION_RE = re.compile(r"^[0-9][0-9._-]{0,31}$")
 HOSTNAME_RE = re.compile(
     r"^(?=.{1,253}$)[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?"
@@ -504,7 +504,8 @@ def _safe_basename(path: str) -> str:
     if not SAFE_NAME_RE.fullmatch(name):
         shown = _one_line(path, 120) or "<empty>"
         raise ValueError(
-            "file name must be 1-255 characters of letters, digits, '.', '_' or '-', "
+            "file name must be 1-255 characters of letters, digits, '.', '_', '+' "
+            "or '-', "
             f"must start with a letter or digit, and must not include a path: {shown}"
         )
     return name
@@ -1297,7 +1298,8 @@ def main() -> int:
             "                -options-file, -no-global-options\n"
             "\nFile names sent to the engine must be 1-255 characters of "
             "letters, digits,\n"
-            "'.', '_' or '-', and must start with a letter or digit. Uploads and the\n"
+            "'.', '_', '+' or '-', and must start with a letter or digit. Uploads and\n"
+            "the "
             f"result tar are limited to {MAX_TRANSFER_BYTES} bytes.\n"
             "\nExamples:\n"
             '  %(prog)s --ip "$CW_HOST" -k -plan-file us_wan.txt '
