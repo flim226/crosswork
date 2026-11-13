@@ -4,9 +4,11 @@
 
 This application note provides an example on how an external script may be used within **Cisco Crosswork Planning 7.2** as a **Startup Script** in the data collection workflow. Our script `get_plan_cp_cw.py` retrieve the real time network model in the form of a planfile from **Crosswork Network Controller (CNC)** and converts it for use in Crosswork Planning. Since the startup script can be scheduled to execute at a regular cadence as part of a collection workflow, it allows for a automated archival of planfiles for offline planning use cases.
 
+The script has been verified with **Cisco Crosswork Planning 7.2** and **Cisco Crosswork Planning 8.0**.
+
 ## Requirements
 
-- Platform: Cisco Crosswork Planning 7.2 or later (startup script)
+- Platform: Cisco Crosswork Planning 7.2 or later (startup script); verified on 7.2 and 8.0
 - Source: Cisco Crosswork Network Controller 7.2 or later
 - **Python packages**: `requests`, `urllib3`, `argparse`, `base64`, `os`, `subprocess`, `logging`, `sys`, `typing`  (Satisfied by Crosswork Planning)
 - **External tools**: `mate_convert` (Cisco WAE/Crosswork Planning utility), `trim_nodes` (Cisco WAE/Crosswork Planning utility, used for optional node trimming)
@@ -140,15 +142,16 @@ python get_plan_cp_cw.py <baseplan> <output_planfile> <device_auth_file> <networ
 | `home_dir` | Home directory — searched for trim configuration files |
 | `user_upload_dir` | Path where user uploaded external files are available — searched for trim configuration files |
 | `archive_root_dir` | Path to access archive root directory — accepted but not used |
-| `--tmpfile` | Intermediate plan file name (default: `planfile.pln`); extension determines download format |
+| `--tmpfile` | Intermediate plan file name (default: `TMP_PLANFILE`, `/tmp/planfile.pln`); extension determines download format |
 | `--ip` | Crosswork Network Controller IP address *(optional, for testing only)* |
 | `--username`, `-u` | CNC username *(optional, for testing only)* |
 | `--password`, `-p` | CNC password *(optional, for testing only)* |
 | `--jwt`, `-j` | Path to a JWT file. When `--username`, `--password`, and `--jwt` are omitted, a non-empty `~/.crosswork/<ip>.jwt` is used. A missing or empty file falls back to CLI flags, then `CW_USERNAME` / `CW_PASSWORD`, then the script constants |
-| `--version`, `-v` | Planfile version (default: empty string) |
-| `--geoloc` | Populate node `Longitude` and `Latitude` in the `<Nodes>` table from DLM Inventory. It changes the default intermediate file from `planfile.pln` to `planfile.txt`; when supplying `--tmpfile`, it must end in `.txt`. |
+| `-k`, `--insecure` | Disable SSL certificate verification (default: `INSECURE`, `False`) |
+| `--version`, `-v` | Planfile version (default: `PLAN_VERSION`, empty string) |
+| `--geoloc` | Populate node `Longitude` and `Latitude` in the `<Nodes>` table from DLM Inventory (default: `GEOLOC`, `False`). It changes the default intermediate file from `/tmp/planfile.pln` to `/tmp/planfile.txt`; when supplying `--tmpfile`, it must end in `.txt`. |
 
-> **Note**: The `--ip`, `--username`, `--password` and `--version` parameters are optional and intended for quick testing purposes only. For production deployments, configure these values as constants within the script or use environment variables.
+> **Note**: The `--ip`, `--username`, `--password`, `--version`, `-k` and `--geoloc` parameters are optional and intended for quick testing purposes only. For production deployments, configure these values as constants within the script (`CROSSWORK_IP`, `PLAN_VERSION`, `INSECURE`, `GEOLOC`, etc.) or use environment variables for credentials. Because `-k` and `--geoloc` are on/off flags, setting `INSECURE` or `GEOLOC` to `True` in the script cannot be overridden back to `False` from the command line.
 
 ### Example Usage
 
@@ -160,9 +163,9 @@ python get_plan_cp_cw.py ignored output.db devauth.txt netaccess.txt /home/user 
 python get_plan_cp_cw.py ignored output.db devauth.txt netaccess.txt /home/user /uploads /archive --ip 10.58.239.120 --geoloc
 
 # The script internally:
-# 1. Downloads plan as planfile.pln
+# 1. Downloads plan as /tmp/planfile.pln (/tmp/planfile.txt with --geoloc)
 # 2. Optionally trims nodes (if trim config files exist in home_dir or user_upload_dir)
-# 3. Converts planfile.pln → output.db using mate_convert
+# 3. Converts /tmp/planfile.pln → output.db using mate_convert
 ```
 
 With `--geoloc`, the script calls `POST /crosswork/inventory/v1/nodes/query` after retrieving the plan. It matches each plan-node `Name` to the DLM Inventory `host_name` case-insensitively, then writes `geo_info.coordinates.longitude.value` and `latitude.value` into the text plan's `<Nodes>` table. Nodes with no match or no complete coordinate pair remain unchanged.
@@ -180,6 +183,10 @@ With `--geoloc`, the script calls `POST /crosswork/inventory/v1/nodes/query` aft
 CROSSWORK_IP = "198.18.134.219"
 CROSSWORK_USERNAME = "admin"
 CROSSWORK_PASSWORD = "PASSWORD"
+PLAN_VERSION = ""
+TMP_PLANFILE = "/tmp/planfile.pln"
+INSECURE = False
+GEOLOC = False
 ```
 4. **Create Node trimming configuration files (Optional)**
 
@@ -234,7 +241,7 @@ An `HTTPAdapter` subclass that applies a default connect timeout (`CONNECT_TIMEO
 
 ### `_create_session()`
 
-Creates a `requests.Session` with SSL verification controlled by the `VERIFY_SSL` constant. Mounts the `_TimeoutAdapter` for both `https://` and `http://` schemes so all HTTP calls share the session for connection pooling and consistent settings.
+Creates a `requests.Session` with SSL verification controlled by `-k`/`--insecure` (default from the `INSECURE` constant). Mounts the `_TimeoutAdapter` for both `https://` and `http://` schemes so all HTTP calls share the session for connection pooling and consistent settings.
 
 ### `check_response(resp, context)`
 
@@ -333,11 +340,14 @@ The script contains hardcoded defaults that should be modified for your environm
 CROSSWORK_IP = "198.18.134.219"      # CNC IP address
 CROSSWORK_USERNAME = "admin"         # CNC username  
 CROSSWORK_PASSWORD = "PASSWORD"      # CNC password (update for production!)
-PLAN_VERSION = ""                    # Plan version (empty = latest)
-TMP_PLANFILE = "planfile.pln"        # Intermediate plan file name
+PLAN_VERSION = ""                    # Plan version (empty = latest); default for --version
+TMP_PLANFILE = "/tmp/planfile.pln"   # Intermediate plan file; extension (.pln/.txt) sets download format
+INSECURE = False                     # True disables SSL verification; default for -k
+GEOLOC = False                       # True adds DLM Inventory coordinates; default for --geoloc
 CONNECT_TIMEOUT = 20                 # HTTP connect timeout in seconds
-VERIFY_SSL = False                   # Set to True for production with valid certs
 ```
+
+When `GEOLOC = True` and `TMP_PLANFILE` ends in `.pln`, the script downloads a text plan to the same path with a `.txt` extension (for example, `/tmp/planfile.txt`).
 
 > **Security Note**: For production deployments, consider using environment variables or a secure credential store instead of hardcoded credentials.
 
@@ -398,7 +408,7 @@ This script fulfills that role by providing the network model from CNC, enabling
 1. **Single startup script**: Only one startup script per collection chain
 2. **Database file requirement**: Downstream collectors fail if the script doesn't produce a valid `.db` file
 3. **Credential management**: Hardcoded credentials should be externalized for security
-4. **SSL verification**: Script disables SSL verification by default (`VERIFY_SSL = False`) for self-signed certificates
+4. **SSL verification**: Script verifies SSL certificates by default; set `INSECURE = True` or pass `-k` for self-signed certificates
 5. **AAA session Limits**: As a safeguard against resource exhaustion, it is preferred to use separate CNC credentials for get-plan. Under Admin > AAA Settings, No. of parallel sessions should be set orders higher than No. of parallel sessions per user (e.g. 200 vs 50). 
 
 ## References
@@ -408,6 +418,6 @@ This script fulfills that role by providing the network model from CNC, enabling
 
 ---
 
-*Document Version: 1.3*  
+*Document Version: 1.4*  
 *Script: get_plan_cp_cw.py*  
-*Platform: Cisco Crosswork Planning 7.2 or later*
+*Platform: Cisco Crosswork Planning 7.2 or later (verified on 7.2 and 8.0)*
