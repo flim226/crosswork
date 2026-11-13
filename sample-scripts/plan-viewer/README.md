@@ -1,11 +1,11 @@
 # Plan Viewer
 
-A single-file, fully offline, browser-based viewer for Cisco Crosswork Planning / WAE plan files (`.pln`).
+A single-file, fully offline, browser-based viewer for Cisco Crosswork Planning / WAE plan files (`.pln` or `.txt`).
 
 ## Usage
 
 1. Open `plan-viewer.html` in Chrome, Edge, Firefox or Safari. No internet connection, server or install is needed.
-2. Drop a `.pln` file onto the page, or click the drop zone to browse.
+2. Drop a `.pln` or `.txt` plan file onto the page, or click the drop zone to browse.
 3. Use the tabs to explore the plan. The filter box applies to every table on the current tab; click a column header to sort; **⬇ CSV** exports a table.
 
 The plan is parsed entirely in the browser and never leaves your machine. The SQLite engine ([sql.js](https://sql.js.org) 1.12.0, WebAssembly) and [D3](https://d3js.org) 7.9.2 are embedded in the HTML file.
@@ -16,8 +16,9 @@ The plan is parsed entirely in the browser and never leaves your machine. The SQ
 |--------|-------------|
 | Zipped plan (CP 8.x) | Zip archive containing `network.db` (SQLite) and `version.dat`. |
 | Raw SQLite plan | Older plan files that are a SQLite database directly. |
+| Text plan (`.txt`) | Tab-separated export: a `<Table>` line, a header row, data rows, and a blank line between tables. Lines starting with `#` are comments. It is converted in the browser into the same SQLite tables, so every view works the same. A blank cell becomes NULL and `''` an empty string. Columns whose values are all numbers become numeric, except identifier columns (names, nodes, sites, interfaces, AS, IGP process IDs, SRLGs, affinities and similar), which stay text as in a `.pln`. |
 
-Accepted extensions are `.pln`, `.db`, `.sqlite` and `.sqlite3`; the content is also checked by its file signature. Files are limited to 1 GB, and `network.db` to 1 GB uncompressed.
+Accepted extensions are `.pln`, `.txt`, `.db`, `.sqlite` and `.sqlite3`; the content is also checked by its file signature (a text plan must start with a `<Table>` line). Files are limited to 1 GB, `network.db` to 1 GB uncompressed, and text plans to 512 MB, 2,000 tables and 2,000 columns per table. For a text plan, the Overview shows the `Network` table's `Version` as the plan format.
 
 ## Views
 
@@ -56,7 +57,9 @@ Interfaces are grouped into the utilisation bands `<1%`, `1–<40%`, `40–<70%`
 - **Show Groups:** a checkbox next to **Layout**, shown when the layout has located sites. When ticked, each site is drawn as a single node at its location, labelled with its node count. Circuits inside a site are hidden. All circuits between two groups (sites or ungrouped nodes) are merged into one link, coloured by the highest utilisation among them and sized by their total capacity; hover it to see the circuit count and which circuit is busiest. Double-click a site to list its nodes in **Nodes**.
 - **Force-directed:** always offered. When the plan has a plot layout, the force layout starts from plot layout `Default` (or the first plot layout with coordinates), including nodes placed at their site, and gently pulls each node back towards that position. The result keeps the plot's overall shape while the forces separate overlapping nodes. Nodes are not pinned, and Re-layout scatters them and lets them settle back towards the same shape.
 
-In plot and geographic layouts, circuits are curved to stay readable: parallel circuits fan out with spacing scaled to the link's length, links that would run over another node bow around it, and nearly overlapping links (for example two links leaving the same site towards the same place) are pushed apart. Curves are recomputed after you drag a node. The **Curvature** slider (0 = straight lines, up to 3×, default 1×) scales every curve in all layouts, moving links further apart or closer together without moving nodes. At 0 the parallel circuits lie on top of each other, so a link carrying more than one circuit is drawn dotted; it turns solid again once the curvature is above 0. Pinned nodes stay where you drop them. Re-layout puts them back at their coordinates and re-settles the rest.
+- **Directional:** a checkbox, on by default. Each link is split at its midpoint, and each half is coloured by the utilisation of the traffic leaving the node at that end: A→B next to A, B→A next to B. This shows which direction is busy, using the same colour ranges (the layout's `UtilizationColors`, or the built-in bands). Merged group links use the highest utilisation in each direction. Untick it to colour each link by the higher of its two directions. Toggling keeps node positions and zoom.
+
+In plot and geographic layouts, circuits are curved to stay readable: parallel circuits fan out with spacing scaled to the link's length, links that would run over another node bow around it, and nearly overlapping links (for example two links leaving the same site towards the same place) are pushed apart. Curves are recomputed after you drag a node. The **Curvature** slider (0 = straight lines, up to 3×, default 1×) scales every curve in all layouts, moving links further apart or closer together without moving nodes. Pinned nodes stay where you drop them. Re-layout puts them back at their coordinates and re-settles the rest.
 
 ### Utilisation colours
 
@@ -87,6 +90,7 @@ Plan files are treated as untrusted input.
 | Output encoding | Every value from the plan is HTML-escaped. No inline event handlers or inline styles. |
 | SQLite | Opened with `PRAGMA query_only = ON` and `trusted_schema = OFF`. Table and column names from the file are quoted as identifiers; all queries are read-only. |
 | Zip handling | Only `network.db` and `version.dat` are extracted. Entry count, offsets, declared vs. actual size (zip-bomb guard), encryption flag and CRC-32 are all checked. |
+| Text plans | Must be valid UTF-8. They are parsed as plain data and loaded with parameterised inserts into a fresh in-memory database, which is then made read-only. Table and column names are quoted as identifiers. Rows outside a `<Table>` section are rejected. |
 | CSV export | Cells starting with `=`, `+`, `-`, `@`, tab or CR are prefixed with `'` to prevent spreadsheet formula injection. |
 | Supply chain | sql.js and D3 are pinned to exact versions, verified by the npm lockfile integrity hash, and the build fails if the installed versions differ. D3's prebuilt bundle (`d3.min.js`) is inlined as is; the app never calls its HTML or CSV-parsing functions, and the CSP and Trusted Types would block their `innerHTML` and `new Function` uses. The build records the WASM SHA-256 in the page's `<meta name="generator">`. |
 
@@ -112,4 +116,4 @@ npm test          # smoke and security tests
 npm run check     # lint, build, audit and test in one go
 ```
 
-`npm test` uses Google Chrome at its default macOS location; set `CHROME_PATH` to override. It loads the sample plan from the parent folder, or the file in `PLAN_FILE`, plus generated hostile fixtures (XSS payloads, hostile table names, zip bomb, bad CRC).
+`npm test` uses Google Chrome at its default macOS location; set `CHROME_PATH` to override. It loads the sample plan from this folder or its parent, or the file in `PLAN_FILE`. It also loads the matching `.txt` export (or `PLAN_TEXT_FILE`) and checks that it renders the same as the `.pln`. Generated hostile fixtures cover XSS payloads, hostile table names, zip bombs, bad CRCs and malformed text plans.
