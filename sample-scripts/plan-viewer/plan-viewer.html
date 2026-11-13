@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-0klv+wwkIrR9TKdQCnmWhee8doOI5DSd6H7f7LBvoKw=' 'wasm-unsafe-eval'; style-src 'sha256-v1wir0JMAWSKTvKYi7id+cJ7eXiyk5rJDIDTFAHj6Mw='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-Ow6JhaFkWWCbtf9Dck+vUUYdjuAzR0tkOpL3VJ5LPDw=' 'wasm-unsafe-eval'; style-src 'sha256-QA4ydj9B75a+vCxsIQArsM0j6L4VbUVzeVLQBiO0JUU='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
   <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="plan-viewer 1.1.0; sql.js 1.12.0; d3 7.9.2; maplibre-gl 6.18.0; sql-wasm.wasm sha256 083460b3e9d428ebbbbaa03918ba55da33d810e0fb3470d4b5d8677b462b2c2b">
@@ -240,6 +240,30 @@ tr:hover td { background: rgba(93, 182, 255, .04); }
 .topo-layout output { min-width: 4.2em; color: var(--text); font-variant-numeric: tabular-nums; }
 .topo-layout select { font-size: .75rem; padding: 3px 6px; }
 .topo-legend i.hl { background: var(--hl); }
+.fa-plane { fill-opacity: .05; stroke-opacity: .55; stroke-width: 1.2; pointer-events: none; }
+.fa-base .fa-plane { stroke-dasharray: 5 4; }
+.fa-pane-label { font-size: 12px; font-weight: 600; pointer-events: none; }
+.fa-half { fill: none; stroke-width: 3; stroke-linecap: butt; pointer-events: none; }
+.fa-half.fa-pruned { stroke: var(--muted); stroke-opacity: .35; stroke-width: 1.5; stroke-dasharray: 4 4; }
+.fa-link { fill: none; stroke: transparent; stroke-width: 10; cursor: pointer; }
+.fa-node circle { fill: #1d3150; stroke-width: 2; cursor: pointer; }
+.fa-node .node-label { font-size: 8px; }
+.fa-node.ghost { opacity: .28; }
+.fa-node.ghost circle { stroke: var(--muted); stroke-dasharray: 2 2; }
+.fa-node.dim { opacity: .12; }
+.fa-pillar { stroke: var(--muted); stroke-opacity: .45; stroke-width: 1; stroke-dasharray: 3 4; pointer-events: none; }
+.topo-wrap svg.fa-hover .fa-half:not(.hl), .topo-wrap svg.fa-hover .fa-node:not(.hl), .topo-wrap svg.fa-hover .fa-pillar:not(.hl) { opacity: .15; }
+.topo-wrap svg.fa-hover .fa-pillar.hl { stroke: var(--hl); stroke-opacity: 1; stroke-width: 1.5; }
+.topo-wrap svg.fa-hover .fa-node.hl circle { stroke-width: 3; }
+.fa-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; font-size: .75rem; color: var(--muted); margin: 0 0 8px; }
+.fa-chip { display: inline-flex; align-items: center; gap: 5px; color: var(--text); cursor: pointer; }
+.fa-chip i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; }
+.fa-tip-ok { color: var(--teal); font-weight: 600; }
+.fa-tip-pruned { color: var(--red); font-weight: 600; }
+.topo-legend i.fa-l-ok { background: var(--blue); height: 3px; }
+.topo-legend i.fa-l-pruned { background: repeating-linear-gradient(90deg, var(--muted) 0 4px, transparent 4px 7px); height: 2px; }
+.topo-legend i.fa-l-ghost { width: 9px; height: 9px; border-radius: 50%; border: 1px dashed var(--muted); opacity: .6; }
+.topo-legend i.fa-l-pillar { width: 2px; height: 12px; background: repeating-linear-gradient(0deg, var(--muted) 0 3px, transparent 3px 6px); }
 .topo-wrap .topo-basemap { position: absolute; inset: 0; pointer-events: none; }
 .topo-basemap + svg { position: relative; }
 .topo-attrib { position: absolute; right: 8px; bottom: 6px; font-size: .68rem; color: var(--muted); background: rgba(17,27,46,.85); padding: 2px 8px; border-radius: 4px; }
@@ -1364,6 +1388,15 @@ uniform ${n} ${r} u_${i};
   let topoNodeScale = 1;
   let topoMap = false;
   let topoBaseMap = null;
+  let topoFlex3d = false;
+  // Starting camera for the 3D Flex-Algo panes: no rotation, so each pane keeps the 2D plot's orientation.
+  const FA_START_YAW = 0;
+  const FA_START_TILT = 60;
+  let topoYaw = FA_START_YAW;
+  let topoTilt = FA_START_TILT;
+  let topoPaneGap = 1;
+  let topoShowAlgo0 = true;
+  const topoHiddenAlgos = new Set();
   let mapWorker = null;
   let utilSelection = null;
   let hebLimit = null;
@@ -1886,6 +1919,8 @@ uniform ${n} ${r} u_${i};
     p.ifAddrs = get('InterfaceIPAddresses');
     p.flexAlgos = get('FlexAlgorithms');
     p.nodeFlexAlgos = get('NodeFlexAlgorithms');
+    p.faExcludeSrlgs = get('FlexAlgoExcludeSRLGs');
+    p.faSrlgIfs = get('FlexAlgoSRLGInterfaces');
     p.srlgs = get('SRLGs');
     p.srlgCircuits = get('SRLGCircuits');
     p.srlgNodes = get('SRLGNodes');
@@ -2899,6 +2934,92 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     return h`${parts}`;
   }
 
+  /* ---------------- Flex-Algo membership ---------------- */
+
+  const affinityBits = v => new Set(String(v ?? '').split(/[;,\s]+/).filter(s => /^\d+$/.test(s)).map(Number));
+  const bitList = bits => [...bits].sort((a, b) => a - b).join(';');
+  const FA_METRIC = { igp: 'IGPMetric', te: 'TEMetric', delay: 'Delay' };
+  const FA_BASE_COLOR = '#8aa0c0';
+  const faColor = idx => d3.schemeTableau10[idx % 10];
+  const faAlgoList = () => [...new Set(plan.flexAlgos.filter(f => !isBlank(f.SRAlgorithm)).map(f => String(f.SRAlgorithm)))]
+    .sort((a, b) => Number(a) - Number(b));
+
+  // One pane per algorithm number, plus the base IGP topology (algo 0). Each direction of a circuit is judged
+  // with the attributes of the interface it leaves from, against the definition for that interface's IGP process.
+  function flexAlgoModel() {
+    const p = plan;
+    const proc = v => String(v ?? '');
+    const names = new Set(p.nodes.map(n => n.Name));
+    const circuits = circuitRows().filter(c => names.has(c.NodeA) && names.has(c.NodeB) && c.NodeA !== c.NodeB);
+    const members = new Set(p.nodeFlexAlgos.map(n => `${n.Node}\u0000${n.FlexAlgo}\u0000${proc(n.IGPProcessID)}`));
+    const srlgsOf = new Map();
+    for (const r of p.faSrlgIfs) {
+      const k = ifKey(r.Node, r.Interface);
+      if (!srlgsOf.has(k)) srlgsOf.set(k, []);
+      srlgsOf.get(k).push(String(r.SRLG));
+    }
+    const excludedSrlgs = new Map();
+    for (const r of p.faExcludeSrlgs) {
+      const k = `${r.SRAlgorithm}\u0000${proc(r.IGPProcessID)}`;
+      if (!excludedSrlgs.has(k)) excludedSrlgs.set(k, new Set());
+      excludedSrlgs.get(k).add(String(r.FlexAlgoSRLG));
+    }
+
+    const base = {
+      algo: '0', base: true, color: FA_BASE_COLOR, defs: [], nodes: names,
+      links: circuits.map(c => ({ c, status: 'both', a: { ok: true, metric: c._ia.IGPMetric, metricType: 'igp' }, b: { ok: true, metric: c._ib.IGPMetric, metricType: 'igp' } })),
+    };
+    base.label = `Algo 0 · IGP baseline · ${names.size} nodes · ${circuits.length} links`;
+
+    const defsByAlgo = groupBy(p.flexAlgos.filter(f => !isBlank(f.SRAlgorithm)), f => String(f.SRAlgorithm));
+    const panes = faAlgoList().map((algo, idx) => {
+      const defs = defsByAlgo.get(algo);
+      const byProc = new Map(defs.map(f => [proc(f.IGPProcessID), f]));
+      const nodes = new Set(p.nodeFlexAlgos.filter(n => String(n.FlexAlgo) === algo && byProc.has(proc(n.IGPProcessID)) && names.has(n.Node)).map(n => n.Node));
+
+      const judge = (from, to, intf, ifName) => {
+        const fail = (reason, def) => ({ ok: false, reason, def });
+        const def = byProc.get(proc(intf.IGPProcessID)) || (isBlank(intf.IGPProcessID) && byProc.size === 1 ? defs[0] : null);
+        if (!def) return fail(`${from} ${ifName} is in IGP process ${proc(intf.IGPProcessID) || '—'}, which does not define algo ${algo}`);
+        const dp = proc(def.IGPProcessID);
+        const where = dp ? ` (process ${dp})` : '';
+        for (const n of [from, to]) if (!members.has(`${n}\u0000${algo}\u0000${dp}`)) return fail(`${n} is not in algo ${algo}${where}`, def);
+        const faBits = affinityBits(intf.FlexAlgoAffinities);
+        const useLegacy = !faBits.size && affinityBits(intf.Affinities).size > 0;
+        const bits = useLegacy ? affinityBits(intf.Affinities) : faBits;
+        const has = `${from} ${ifName} has ${useLegacy ? 'affinities' : 'FA affinities'} ${bits.size ? bitList(bits) : 'none'}`;
+        const exclude = affinityBits(def.ExcludeAll);
+        const includeAny = affinityBits(def.IncludeAny);
+        const includeAll = affinityBits(def.IncludeAll);
+        if ([...exclude].some(b => bits.has(b))) return fail(`${has} (exclude ${bitList(exclude)})`, def);
+        if (includeAny.size && ![...includeAny].some(b => bits.has(b))) return fail(`${has} (include any ${bitList(includeAny)})`, def);
+        if ([...includeAll].some(b => !bits.has(b))) return fail(`${has} (include all ${bitList(includeAll)})`, def);
+        const banned = excludedSrlgs.get(`${algo}\u0000${dp}`);
+        const hit = banned ? (srlgsOf.get(ifKey(from, ifName)) || []).filter(s => banned.has(s)) : [];
+        if (hit.length) return fail(`${from} ${ifName} is in excluded SRLG ${hit.join(', ')}`, def);
+        const metricType = String(def.MetricType || 'igp').toLowerCase();
+        const metric = intf[FA_METRIC[metricType] || 'IGPMetric'];
+        return { ok: true, def, metricType, metric };
+      };
+
+      const links = circuits.map(c => {
+        const a = judge(c.NodeA, c.NodeB, c._ia, c.InterfaceA);
+        const b = judge(c.NodeB, c.NodeA, c._ib, c.InterfaceB);
+        return { c, a, b, status: a.ok && b.ok ? 'both' : a.ok ? 'a-only' : b.ok ? 'b-only' : 'pruned' };
+      });
+      const uniq = vs => [...new Set(vs.filter(v => !isBlank(v)).map(String))];
+      const constraints = [
+        ...uniq(defs.map(d => d.ExcludeAll)).map(v => `excl ${v}`),
+        ...uniq(defs.map(d => d.IncludeAny)).map(v => `any ${v}`),
+        ...uniq(defs.map(d => d.IncludeAll)).map(v => `all ${v}`),
+      ];
+      const usable = links.filter(l => l.status !== 'pruned').length;
+      const label = [`Algo ${algo}`, uniq(defs.map(d => d.MetricType || 'igp')).join('/'), ...constraints, `${nodes.size} nodes`, `${usable}/${links.length} links`].join(' · ');
+      return { algo, defs, nodes, links, label, color: faColor(idx) };
+    });
+    return { circuits, panes: [base, ...panes] };
+  }
+
   /* ---------------- SRLGs ---------------- */
 
   function renderSrlgs() {
@@ -2976,36 +3097,54 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       ? h`Link colours use the <b>UtilizationColors</b> of plot layout <b>${mode.palette.layout}</b> (${mode.palette.type}). ` : '';
     const groupNote = topoGroups && mode.sites.length
       ? h`<b>Show Groups:</b> each of the ${mode.sites.length} site${mode.sites.length === 1 ? '' : 's'} is drawn as one node; circuits inside a site are hidden and circuits between groups are merged (colour = highest utilisation, width = total capacity). ` : '';
+    const fa3d = flex3dActive();
+    const algos = faAlgoList();
+    const mapOn = mode.kind === 'geo' && topoMap && !fa3d;
+    const shownPanes = algos.filter(a => !topoHiddenAlgos.has(a)).length + (topoShowAlgo0 ? 1 : 0);
+    const faNote = fa3d
+      ? h`<b>3D Flex-Algo:</b> one pane per Flex-Algorithm (${shownPanes} shown), stacked over the layout's node positions. A link is on a pane when, in that direction, its interface's IGP process defines the algorithm, both nodes take part in it, its affinities pass the algorithm's exclude / include-any / include-all rules and it is in no excluded SRLG. Each link is split in two: the half next to a node shows the direction leaving that node, solid when usable and dashed when pruned. Faded nodes are not in the algorithm; dashed pillars join a node's copies. Drag to rotate, Shift+drag to pan, scroll to zoom; hover a node or link for details. ` : '';
     return h`
       <div class="section-title">Topology <span class="badge badge-blue">${plan.nodes.length} nodes · ${plan.circuits.length} circuits</span>
         <div class="actions">
           ${options.length > 1 ? h`<label class="topo-layout">Layout <select id="topoLayout" data-action="topo-layout">${options.map(o => h`<option value="${o.id}"${o.id === mode.id ? h` selected` : ''}>${o.kind === 'plot' ? `Plot layout: ${o.label}` : o.label}</option>`)}</select></label>` : ''}
-          ${mode.kind === 'geo' ? h`<label class="topo-layout" title="Draw an OpenFreeMap map under the topology. Map data is fetched from tiles.openfreemap.org, which sees the area you view."><input type="checkbox" id="topoMap" data-action="topo-map"${topoMap ? h` checked` : ''}> OpenFreeMap</label>` : ''}
-          ${mode.sites.length ? h`<label class="topo-layout"><input type="checkbox" id="topoGroups" data-action="topo-groups"${topoGroups ? h` checked` : ''}> Show Groups</label>` : ''}
-          <label class="topo-layout" title="Colour each half of a link by the utilisation leaving its nearer end"><input type="checkbox" id="topoDirectional" data-action="topo-directional"${topoDirectional ? h` checked` : ''}> Directional</label>
+          ${algos.length ? h`<label class="topo-layout" title="Stack one pane per Flex-Algorithm showing its member nodes and usable links"><input type="checkbox" id="topoFlex3d" data-action="topo-flex3d"${fa3d ? h` checked` : ''}> 3D Flex-Algo</label>` : ''}
+          ${!fa3d && mode.kind === 'geo' ? h`<label class="topo-layout" title="Draw an OpenFreeMap map under the topology. Map data is fetched from tiles.openfreemap.org, which sees the area you view."><input type="checkbox" id="topoMap" data-action="topo-map"${topoMap ? h` checked` : ''}> OpenFreeMap</label>` : ''}
+          ${!fa3d && mode.sites.length ? h`<label class="topo-layout"><input type="checkbox" id="topoGroups" data-action="topo-groups"${topoGroups ? h` checked` : ''}> Show Groups</label>` : ''}
+          ${!fa3d ? h`<label class="topo-layout" title="Colour each half of a link by the utilisation leaving its nearer end"><input type="checkbox" id="topoDirectional" data-action="topo-directional"${topoDirectional ? h` checked` : ''}> Directional</label>` : ''}
           <label class="topo-layout" title="Scale nodes, sites and their labels">Node size <input type="range" id="topoNodeScale" min="0.3" max="3" step="0.1" value="${topoNodeScale}" data-action="topo-node-scale"><output id="topoNodeScaleValue" for="topoNodeScale">${scaleLabel(topoNodeScale)}</output></label>
-          <label class="topo-layout">Curvature <input type="range" id="topoCurve" min="0" max="3" step="0.1" value="${topoCurve}" data-action="topo-curve"><output id="topoCurveValue" for="topoCurve">${curveLabel(topoCurve)}</output></label>
+          ${fa3d
+    ? h`<label class="topo-layout" title="Vertical gap between the panes">Pane spacing <input type="range" id="topoPaneGap" min="0.2" max="3" step="0.1" value="${topoPaneGap}" data-action="topo-pane-gap"><output id="topoPaneGapValue" for="topoPaneGap">${scaleLabel(topoPaneGap)}</output></label>`
+    : h`<label class="topo-layout">Curvature <input type="range" id="topoCurve" min="0" max="3" step="0.1" value="${topoCurve}" data-action="topo-curve"><output id="topoCurveValue" for="topoCurve">${curveLabel(topoCurve)}</output></label>`}
           <button type="button" class="secondary small" data-action="relayout">↻ Re-layout</button>
           <button type="button" class="secondary small" data-action="fit">⤢ Fit</button>
         </div>
       </div>
-      <div class="note" id="topoNote">${modeNote}${paletteNote}${groupNote}Drag a node to pull the graph around it, drag the background to pan, scroll to zoom. ${topoDirectional
+      ${fa3d ? h`<div class="fa-chips" id="faChips">Panes
+        <label class="fa-chip" title="Baseline pane at the bottom: every node and link of the IGP topology"><input type="checkbox" id="topoAlgo0" data-action="topo-algo0"${topoShowAlgo0 ? h` checked` : ''}><i data-color="${FA_BASE_COLOR}"></i>Algo 0 (baseline)</label>
+        ${algos.map((a, i) => h`<label class="fa-chip"><input type="checkbox" data-action="topo-algo-chip" data-algo="${a}"${topoHiddenAlgos.has(a) ? '' : h` checked`}><i data-color="${faColor(i)}"></i>Algo ${a}</label>`)}
+      </div>` : ''}
+      <div class="note" id="topoNote">${modeNote}${fa3d ? faNote : h`${paletteNote}${groupNote}Drag a node to pull the graph around it, drag the background to pan, scroll to zoom. ${topoDirectional
     ? 'Each link is split in two: the half next to a node is coloured by the utilisation of traffic leaving that node (A→B near A, B→A near B).'
-    : 'Link colour shows the higher of the two directional utilisations.'} Line width shows capacity; parallel circuits between the same nodes fan out as curves. Hover a node to highlight its circuits in cyan; hover a link for details. The row filter highlights matching nodes.</div>
+    : 'Link colour shows the higher of the two directional utilisations.'} Line width shows capacity; parallel circuits between the same nodes fan out as curves. Hover a node to highlight its circuits in cyan; hover a link for details. `}The row filter highlights matching nodes.</div>
       <div class="topo-wrap" id="topoWrap">
-        ${mode.kind === 'geo' && topoMap ? h`<div class="topo-basemap" id="topoBaseMap"></div>` : ''}
+        ${mapOn ? h`<div class="topo-basemap" id="topoBaseMap"></div>` : ''}
         <svg id="topo" role="img" aria-label="Network topology"></svg>
         <div class="topo-tip" id="topoTip"></div>
-        ${mode.kind === 'geo' && topoMap ? h`<div class="topo-attrib" id="topoAttrib"><a href="https://openfreemap.org" target="_blank" rel="noopener noreferrer">OpenFreeMap</a> © <a href="https://www.openmaptiles.org/" target="_blank" rel="noopener noreferrer">OpenMapTiles</a> Data from <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a><span id="topoMapError"></span></div>` : ''}
+        ${mapOn ? h`<div class="topo-attrib" id="topoAttrib"><a href="https://openfreemap.org" target="_blank" rel="noopener noreferrer">OpenFreeMap</a> © <a href="https://www.openmaptiles.org/" target="_blank" rel="noopener noreferrer">OpenMapTiles</a> Data from <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a><span id="topoMapError"></span></div>` : ''}
         <div class="topo-legend" id="topoLegend">
-          ${mode.palette
-            ? h`${paletteLabels(mode.palette).map(b => h`<span><i data-color="${b.color}"></i>${b.label}</span>`)}`
-            : h`<span><i class="u-low"></i>&lt;40%</span>
+          ${fa3d
+    ? h`<span><i class="fa-l-ok"></i>usable (direction leaving the nearer node)</span>
+          <span><i class="fa-l-pruned"></i>pruned</span>
+          <span><i class="fa-l-ghost"></i>node not in algo</span>
+          <span><i class="fa-l-pillar"></i>same node across panes</span>`
+    : h`${mode.palette
+      ? h`${paletteLabels(mode.palette).map(b => h`<span><i data-color="${b.color}"></i>${b.label}</span>`)}`
+      : h`<span><i class="u-low"></i>&lt;40%</span>
           <span><i class="u-mid"></i>40–70%</span>
           <span><i class="u-high"></i>70–90%</span>
           <span><i class="u-crit"></i>≥90%</span>`}
           <span><i class="u-none"></i>no data</span>
-          <span><i class="hl"></i>hovered node's circuits</span>
+          <span><i class="hl"></i>hovered node's circuits</span>`}
         </div>
       </div>`;
   }
@@ -3344,17 +3483,10 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       : `M${mx},${my}Q${(c.x + t.x) / 2},${(c.y + t.y) / 2} ${t.x},${t.y}`;
   }
 
-  function initTopology({ shuffle = false } = {}) {
-    const svgEl = $('topo');
-    if (!svgEl) return;
-    const prevState = topoState;
-    if (prevState && prevState.sim) prevState.sim.stop();
-    const prev = prevState && !shuffle ? new Map(prevState.nodes.map(n => [n.id, n])) : null;
-    const mode = currentTopoLayout();
+  // Node objects for the layout (pinned at fixed positions, others settled by the force simulation) and their links.
+  function placeTopoNodes(mode, { grouped, prev, shuffle }) {
     const fixed = mode.positions;
-    const grouped = topoGroups && mode.sites.length > 0;
     const basis = mode.basis || null;
-
     const items = [
       ...(grouped ? mode.sites.map(s => ({ id: `site:${s.name}`, site: s, pin: { x: s.x, y: s.y } })) : []),
       ...plan.nodes.filter(n => !grouped || !mode.siteOf.has(n.Name)).map(n => ({ id: n.Name, n, pin: fixed && fixed.get(n.Name) })),
@@ -3370,9 +3502,6 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     const links = grouped
       ? groupedLinks(name => (mode.siteOf.has(name) ? `site:${mode.siteOf.get(name)}` : name), new Set(nodes.map(d => d.id)))
       : topoLinks(new Set(plan.nodes.map(n => n.Name)));
-    const maxCap = links.reduce((m, l) => Math.max(m, l.c._cap || 0), 0);
-    const width = l => (maxCap && l.c._cap ? 1.5 + 3.5 * Math.sqrt(l.c._cap / maxCap) : 2);
-
     const sim = d3.forceSimulation(nodes)
       .force('link', d3.forceLink(links).id(d => d.id).distance(l => 90 + 6 * Math.min(l.parallel - 1, 6)))
       .force('charge', d3.forceManyBody().strength(-420))
@@ -3385,6 +3514,28 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       for (let i = 0; i < ticks; i++) sim.tick();
     }
     sim.alpha(0);
+    return { nodes, links, sim };
+  }
+
+  // Settled X/Y of every plan node in the layout, ungrouped; shared by the 2D graph and the 3D Flex-Algo panes.
+  function topoBasePositions(mode, opts) {
+    const { nodes, sim } = placeTopoNodes(mode, { ...opts, grouped: false });
+    sim.stop();
+    return new Map(nodes.map(d => [d.id, { x: d.x, y: d.y }]));
+  }
+
+  function initTopology({ shuffle = false } = {}) {
+    const svgEl = $('topo');
+    if (!svgEl) return;
+    const prevState = topoState;
+    if (prevState && prevState.sim) prevState.sim.stop();
+    const prev = prevState && !shuffle ? new Map(prevState.nodes.map(n => [n.id, n])) : null;
+    const mode = currentTopoLayout();
+    if (flex3dActive()) { initFlexAlgo3D(svgEl, mode, { prev, shuffle, prevState }); return; }
+    const grouped = topoGroups && mode.sites.length > 0;
+    const { nodes, links, sim } = placeTopoNodes(mode, { grouped, prev, shuffle });
+    const maxCap = links.reduce((m, l) => Math.max(m, l.c._cap || 0), 0);
+    const width = l => (maxCap && l.c._cap ? 1.5 + 3.5 * Math.sqrt(l.c._cap / maxCap) : 2);
     const fixedLayout = mode.kind !== 'force';
     if (fixedLayout) spreadLinks(links, nodes);
 
@@ -3492,12 +3643,208 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     highlightTopology();
   }
 
+  /* ---------------- 3D Flex-Algo panes ---------------- */
+
+  const FA_BIG_SCENE = 1500;
+  const flex3dActive = () => topoFlex3d && Boolean(plan) && faAlgoList().length > 0;
+  const faVisiblePanes = model => model.panes.filter(p => (p.base ? topoShowAlgo0 : !topoHiddenAlgos.has(p.algo)));
+
+  // Quadratic curve s→t bowed by `offset` in the pane plane, projected, plus its two halves split at t = ½.
+  function faCurve(P, s, t, offset, i) {
+    const len = Math.hypot(t.x - s.x, t.y - s.y) || 1;
+    const c = { x: (s.x + t.x) / 2 - ((t.y - s.y) / len) * 2 * offset, y: (s.y + t.y) / 2 + ((t.x - s.x) / len) * 2 * offset };
+    const [ax, ay] = P(s.x, s.y, i);
+    const [bx, by] = P(t.x, t.y, i);
+    const [cx, cy] = P(c.x, c.y, i);
+    const mx = (ax + 2 * cx + bx) / 4;
+    const my = (ay + 2 * cy + by) / 4;
+    return {
+      full: `M${ax},${ay}Q${cx},${cy} ${bx},${by}`,
+      a: `M${ax},${ay}Q${(ax + cx) / 2},${(ay + cy) / 2} ${mx},${my}`,
+      b: `M${mx},${my}Q${(cx + bx) / 2},${(cy + by) / 2} ${bx},${by}`,
+    };
+  }
+
+  // One tilted pane per visible algorithm, stacked bottom (first) to top. Each pane repeats the layout's node
+  // positions; links are split per direction (solid = usable, dashed = pruned) and pillars join a node's copies.
+  function initFlexAlgo3D(svgEl, mode, { prev, shuffle, prevState }) {
+    const model = flexAlgoModel();
+    const panes = faVisiblePanes(model);
+    const pos = topoBasePositions(mode, { prev, shuffle });
+    const names = plan.nodes.map(n => n.Name);
+    const big = names.length * panes.length > FA_BIG_SCENE;
+    const xs = [...pos.values()].map(p => p.x);
+    const ys = [...pos.values()].map(p => p.y);
+    const pad = 60;
+    const [x0, x1, y0, y1] = [Math.min(...xs) - pad, Math.max(...xs) + pad, Math.min(...ys) - pad, Math.max(...ys) + pad];
+    const mid = { x: (x0 + x1) / 2, y: (y0 + y1) / 2 };
+    const ext = Math.max(x1 - x0, y1 - y0);
+
+    const offsets = new Array(model.circuits.length).fill(0);
+    for (const group of groupBy(model.circuits.map((c, k) => ({ c, k })), ({ c }) => [c.NodeA, c.NodeB].sort().join('\u0000')).values()) {
+      group.forEach(({ c, k }, j) => { offsets[k] = (j - (group.length - 1) / 2) * TOPO_LINK_SPACING * (c.NodeA <= c.NodeB ? 1 : -1); });
+    }
+
+    const svg = d3.select(svgEl);
+    svg.selectAll('*').remove();
+    svgEl.classList.remove('node-hover', 'fa-hover');
+    destroyBaseMap();
+    const root = svg.append('g').attr('class', 'fa-scene');
+    const span = names.map(n => {
+      const idx = panes.map((p, i) => (p.nodes.has(n) ? i : -1)).filter(i => i >= 0);
+      return { n, lo: idx.length ? idx[0] : -1, hi: idx.length ? idx[idx.length - 1] : -1 };
+    });
+    const layers = panes.map((pane, i) => {
+      const pillars = i === 0 ? null : root.append('g').attr('class', 'fa-pillars').selectAll('line')
+        .data(span.filter(s => s.lo >= 0 && s.lo <= i - 1 && s.hi >= i)).join('line')
+        .attr('class', 'fa-pillar').attr('data-name', s => s.n);
+      const g = root.append('g').attr('class', `fa-pane${pane.base ? ' fa-base' : ''}`).attr('data-algo', pane.algo);
+      const plane = g.append('polygon').attr('class', 'fa-plane').attr('fill', pane.color).attr('stroke', pane.color);
+      const label = g.append('text').attr('class', 'fa-pane-label').attr('text-anchor', 'end').attr('fill', pane.color).text(pane.label);
+      const shown = pane.links.map((l, k) => ({ l, k })).filter(({ l }) => !big || l.status !== 'pruned');
+      const halves = g.append('g').selectAll('path')
+        .data(shown.flatMap(({ l, k }) => [{ l, k, half: 'a', ok: l.a.ok }, { l, k, half: 'b', ok: l.b.ok }])).join('path')
+        .attr('class', d => `fa-half ${d.ok ? 'fa-ok' : 'fa-pruned'}`)
+        .attr('data-a', d => d.l.c.NodeA).attr('data-b', d => d.l.c.NodeB)
+        .attr('stroke', pane.color);
+      const hits = g.append('g').selectAll('path').data(shown).join('path')
+        .attr('class', ({ l }) => `fa-link fa-${l.status}`)
+        .attr('data-algo', pane.algo).attr('data-i', ({ k }) => k)
+        .attr('data-a', ({ l }) => l.c.NodeA).attr('data-b', ({ l }) => l.c.NodeB);
+      const node = g.append('g').selectAll('g').data(names.filter(n => pane.nodes.has(n) || !big)).join('g')
+        .attr('class', n => `fa-node${pane.nodes.has(n) ? '' : ' ghost'}`)
+        .attr('data-name', n => n).attr('data-algo', pane.algo);
+      node.append('circle').attr('r', 10).attr('stroke', pane.color);
+      node.append('text').attr('class', 'node-label').attr('text-anchor', 'middle').attr('dy', 3.5)
+        .text(n => (n.length > 8 ? `${n.slice(0, 7)}…` : n));
+      return { pane, pillars, plane, label, halves, hits, node };
+    });
+
+    const rad = Math.PI / 180;
+    const projector = () => {
+      const cy = Math.cos(topoYaw * rad);
+      const sy = Math.sin(topoYaw * rad);
+      const ct = Math.cos(topoTilt * rad);
+      const st = Math.sin(topoTilt * rad);
+      const gap = ext * 0.35 * topoPaneGap;
+      return (x, y, i) => {
+        const dx = x - mid.x;
+        const dy = y - mid.y;
+        return [dx * cy - dy * sy, (dx * sy + dy * cy) * ct - i * gap * st];
+      };
+    };
+    const corners = [[x0, y0], [x1, y0], [x1, y1], [x0, y1]];
+    const leftCorner = (P, i) => corners.map(([x, y]) => P(x, y, i)).reduce((m, p) => (p[0] < m[0] ? p : m));
+    const draw = () => {
+      const P = projector();
+      layers.forEach(({ pillars, plane, label, halves, hits, node }, i) => {
+        plane.attr('points', corners.map(([x, y]) => P(x, y, i).join(',')).join(' '));
+        const [lx, ly] = leftCorner(P, i);
+        label.attr('x', lx - 12).attr('y', ly + 4);
+        const curve = new Map();
+        const curveOf = k => {
+          if (!curve.has(k)) {
+            const c = model.circuits[k];
+            curve.set(k, faCurve(P, pos.get(c.NodeA), pos.get(c.NodeB), offsets[k], i));
+          }
+          return curve.get(k);
+        };
+        halves.attr('d', d => curveOf(d.k)[d.half]);
+        hits.attr('d', d => curveOf(d.k).full);
+        node.attr('transform', n => { const [sx, sy] = P(pos.get(n).x, pos.get(n).y, i); return `translate(${sx},${sy}) scale(${topoNodeScale})`; });
+        if (pillars) {
+          pillars.each(function (s) {
+            const p = pos.get(s.n);
+            const [ax, ay] = P(p.x, p.y, i - 1);
+            const [bx, by] = P(p.x, p.y, i);
+            d3.select(this).attr('x1', ax).attr('y1', ay).attr('x2', bx).attr('y2', by);
+          });
+        }
+      });
+    };
+    draw();
+
+    const bounds = () => {
+      const P = projector();
+      return layers.flatMap((layer, i) => {
+        const pts = corners.map(([x, y]) => ({ x: P(x, y, i)[0], y: P(x, y, i)[1], r: 14 }));
+        const [lx, ly] = leftCorner(P, i);
+        return [...pts, { x: lx - 12 - 6.5 * layer.pane.label.length, y: ly, r: 0 }];
+      });
+    };
+
+    const zoom = d3.zoom()
+      .scaleExtent([0.05, 8])
+      .filter(e => e.type === 'wheel' || (e.shiftKey && !e.button))
+      .on('start', e => { if (e.sourceEvent && e.sourceEvent.type !== 'wheel') svgEl.classList.add('panning'); })
+      .on('zoom', e => { root.attr('transform', e.transform); topoState.transform = e.transform; })
+      .on('end', () => svgEl.classList.remove('panning'));
+    svg.call(zoom).on('dblclick.zoom', null);
+    svg.call(d3.drag()
+      .filter(e => !e.shiftKey && !e.button)
+      .on('start', () => svgEl.classList.add('panning'))
+      .on('drag', e => {
+        topoYaw = (((topoYaw + e.dx * 0.4) % 360) + 540) % 360 - 180;
+        topoTilt = Math.max(0, Math.min(85, topoTilt - e.dy * 0.3));
+        draw();
+      })
+      .on('end', () => svgEl.classList.remove('panning')));
+
+    topoState = {
+      fa: { model, byAlgo: new Map(model.panes.map(p => [p.algo, p])), big },
+      nodes: names.map(n => ({ id: n, ...pos.get(n) })), sites: [], edges: [], sim: null, zoom, bounds,
+      redraw: draw, resize: draw, transform: null, nodesByName: new Map(plan.nodes.map(n => [n.Name, n])),
+    };
+    if (prevState && prevState.transform && !shuffle) svg.call(zoom.transform, prevState.transform);
+    else fitTopology();
+    attachTopologyEvents(svgEl);
+    highlightTopology();
+  }
+
+  // Hovered node: its copies, pillars and links on every pane stay bright; everything else fades.
+  function highlightFaNode(svg, name) {
+    svg.classList.toggle('fa-hover', Boolean(name));
+    for (const el of svg.querySelectorAll('.fa-scene .hl')) el.classList.remove('hl');
+    if (!name) return;
+    for (const el of svg.querySelectorAll('.fa-node, .fa-pillar, .fa-half, .fa-link')) {
+      const d = el.dataset;
+      if (d.name === name || d.a === name || d.b === name) el.classList.add('hl');
+    }
+  }
+
+  function faNodeTip(name) {
+    const n = topoState.nodesByName.get(name);
+    if (!n) return null;
+    const sids = new Map(plan.nodeSids.filter(s => s.Node === name && !isTrue(s.IPV6)).map(s => [String(s.SRAlgorithm ?? 0), s.SID]));
+    const rows = plan.nodeFlexAlgos.filter(r => r.Node === name)
+      .sort((a, b) => Number(a.FlexAlgo) - Number(b.FlexAlgo) || String(a.IGPProcessID ?? '').localeCompare(String(b.IGPProcessID ?? '')));
+    const missing = faAlgoList().filter(a => !rows.some(r => String(r.FlexAlgo) === a));
+    return h`<b>${n.Name}</b>${n.Site ? h` <span class="muted">@ ${n.Site}</span>` : ''}<br>
+      ${rows.length ? rows.map(r => h`Algo <b>${r.FlexAlgo}</b>${isBlank(r.IGPProcessID) ? '' : h` <span class="muted">process ${r.IGPProcessID}</span>`}${sids.has(String(r.FlexAlgo)) ? h` · SID <span class="mono">${sids.get(String(r.FlexAlgo))}</span>` : ''}<br>`) : h`<span class="muted">In no Flex-Algorithm</span><br>`}
+      ${missing.length ? h`<span class="muted">Not in algo ${missing.join(', ')}</span><br>` : ''}<span class="muted">Double-click to open in Nodes</span>`;
+  }
+
+  function faLinkTip(algo, i) {
+    const pane = topoState.fa.byAlgo.get(algo);
+    const l = pane && pane.links[i];
+    if (!l) return null;
+    const c = l.c;
+    const procs = [...new Set([l.a, l.b].map(d => d.def && d.def.IGPProcessID).filter(v => !isBlank(v)))];
+    const dir = (from, to, d) => (d.ok
+      ? h`<b>${from}→${to}</b> <span class="fa-tip-ok">usable</span> · ${d.metricType} metric ${d.metric ?? '—'}<br>`
+      : h`<b>${from}→${to}</b> <span class="fa-tip-pruned">pruned</span>: ${d.reason}<br>`);
+    const status = { both: 'usable both ways', 'a-only': `only ${c.NodeA}→${c.NodeB}`, 'b-only': `only ${c.NodeB}→${c.NodeA}`, pruned: 'pruned both ways' }[l.status];
+    return h`<b>${pane.base ? 'Algo 0 (IGP baseline)' : `Algo ${algo}`}</b>${procs.length ? h` <span class="muted">process ${procs.join(', ')}</span>` : ''} · ${status}<br>
+      <b>${c.NodeA}</b> <span class="mono muted">${c.InterfaceA}</span> ↔ <b>${c.NodeB}</b> <span class="mono muted">${c.InterfaceB}</span><br>
+      ${dir(c.NodeA, c.NodeB, l.a)}${dir(c.NodeB, c.NodeA, l.b)}`;
+  }
+
   function relayout() { initTopology({ shuffle: true }); }
 
   function fitTopology() {
     const svgEl = $('topo');
     if (!svgEl || !topoState || !topoState.nodes.length) return;
-    const boxes = [...topoState.nodes.map(n => ({ x: n.x, y: n.y, r: 0 })), ...topoState.sites.map(s => ({ x: s.x, y: s.y, r: haloRadius(s) + 14 * topoNodeScale }))];
+    const boxes = topoState.bounds ? topoState.bounds() : [...topoState.nodes.map(n => ({ x: n.x, y: n.y, r: 0 })), ...topoState.sites.map(s => ({ x: s.x, y: s.y, r: haloRadius(s) + 14 * topoNodeScale }))];
     const [x0, x1, y0, y1] = boxes.reduce(([a, b, c, d], n) => [Math.min(a, n.x - n.r), Math.max(b, n.x + n.r), Math.min(c, n.y - n.r), Math.max(d, n.y + n.r)], [Infinity, -Infinity, Infinity, -Infinity]);
     const pad = 50;
     const W = svgEl.clientWidth || 1200;
@@ -3514,16 +3861,17 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     const wrap = $('topoWrap');
     svg.addEventListener('pointermove', e => { if (!svg.classList.contains('panning')) showTip(e, tip, wrap); });
     svg.addEventListener('pointerleave', () => { tip.style.display = 'none'; });
+    const highlight = (name) => (topoState && topoState.fa ? highlightFaNode(svg, name) : highlightNodeLinks(svg, name));
     svg.addEventListener('pointerover', e => {
-      const g = e.target.closest('.node');
-      if (g) highlightNodeLinks(svg, g.dataset.name);
+      const g = e.target.closest('.node, .fa-node');
+      if (g && !svg.classList.contains('panning')) highlight(g.dataset.name);
     });
     svg.addEventListener('pointerout', e => {
-      const g = e.target.closest('.node');
-      if (g && !(e.relatedTarget && g.contains(e.relatedTarget))) highlightNodeLinks(svg, null);
+      const g = e.target.closest('.node, .fa-node');
+      if (g && !(e.relatedTarget && g.contains(e.relatedTarget))) highlight(null);
     });
     svg.addEventListener('dblclick', e => {
-      const g = e.target.closest('.node');
+      const g = e.target.closest('.node, .fa-node');
       if (!g) return;
       let filter = g.dataset.name;
       if (g.dataset.site) {
@@ -3559,7 +3907,11 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     const edge = e.target.closest('.edge');
     let content = null;
     const groupDeg = id => topoState.edges.filter(x => x.a === id || x.b === id);
-    if (node && node.dataset.site) {
+    const faNode = e.target.closest('.fa-node');
+    const faLink = e.target.closest('.fa-link');
+    if (faNode) content = faNodeTip(faNode.dataset.name);
+    else if (faLink) content = faLinkTip(faLink.dataset.algo, Number(faLink.dataset.i));
+    else if (node && node.dataset.site) {
       const s = topoState.nodes.find(d => d.id === node.dataset.name).site;
       const ls = groupDeg(node.dataset.name);
       const shown = s.members.slice(0, 12);
@@ -3609,7 +3961,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     if (!svg || !topoState) return;
     const f = $('filterText').value.trim().toLowerCase();
     const matches = n => n && [n.Name, n.Site, n.IPAddress, n.IPV6Address].some(v => String(v ?? '').toLowerCase().includes(f));
-    for (const g of svg.querySelectorAll('.node')) {
+    for (const g of svg.querySelectorAll('.node, .fa-node')) {
       const s = g.dataset.site && topoState.nodes.find(d => d.id === g.dataset.name).site;
       const hit = !f || (s
         ? s.name.toLowerCase().includes(f) || s.members.some(m => matches(topoState.nodesByName.get(m)))
@@ -3643,6 +3995,18 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       case 'traffic-level': render(); break;
       case 'topo-layout': topoLayout = e.target.value; topoState = null; render(); break;
       case 'topo-map': topoMap = e.target.checked; topoState = null; render(); break;
+      case 'topo-flex3d':
+        topoFlex3d = e.target.checked;
+        if (topoFlex3d) { topoYaw = FA_START_YAW; topoTilt = FA_START_TILT; }
+        if (topoState) topoState.transform = null;
+        render();
+        break;
+      case 'topo-algo0': topoShowAlgo0 = e.target.checked; render(); break;
+      case 'topo-algo-chip':
+        if (e.target.checked) topoHiddenAlgos.delete(e.target.dataset.algo);
+        else topoHiddenAlgos.add(e.target.dataset.algo);
+        render();
+        break;
       case 'topo-groups': topoGroups = e.target.checked; topoState = null; render(); break;
       case 'topo-directional': topoDirectional = e.target.checked; render(); break;
       case 'show-empty-raw': showEmptyRawTables = e.target.checked; render(); break;
@@ -3657,6 +4021,12 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       topoCurve = Math.max(0, Math.min(3, Number(e.target.value) || 0));
       $('topoCurveValue').textContent = curveLabel(topoCurve);
       if (topoState && topoState.redraw) topoState.redraw();
+      return;
+    }
+    if (e.target.dataset.action === 'topo-pane-gap') {
+      topoPaneGap = Math.max(0.2, Math.min(3, Number(e.target.value) || 1));
+      $('topoPaneGapValue').textContent = scaleLabel(topoPaneGap);
+      if (topoState && topoState.fa) topoState.redraw();
       return;
     }
     if (e.target.dataset.action === 'topo-node-scale') {
