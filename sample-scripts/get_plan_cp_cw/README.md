@@ -347,7 +347,7 @@ GEOLOC = False                       # True adds DLM Inventory coordinates; defa
 CONNECT_TIMEOUT = 20                 # HTTP connect timeout in seconds
 ```
 
-When `GEOLOC = True` and `TMP_PLANFILE` ends in `.pln`, the script downloads a text plan to the same path with a `.txt` extension (for example, `/tmp/planfile.txt`).
+When `GEOLOC = True` (or `--geoloc` is passed) and `--tmpfile` is not supplied, the script replaces the extension of `TMP_PLANFILE` with `.txt` and downloads a text plan (for example, `/tmp/planfile.pln` becomes `/tmp/planfile.txt`). An explicit `--tmpfile` must already end in `.txt`.
 
 > **Security Note**: For production deployments, consider using environment variables or a secure credential store instead of hardcoded credentials.
 
