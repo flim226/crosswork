@@ -17,7 +17,9 @@ CROSSWORK_IP = "198.18.134.219"
 CROSSWORK_USERNAME = "admin"
 CROSSWORK_PASSWORD = "PASSWORD"
 PLAN_VERSION = ""
-TMP_PLANFILE = "planfile.pln"
+TMP_PLANFILE = "/tmp/planfile.pln"
+INSECURE = False
+GEOLOC = False
 BASE_PORT = 30603
 CONNECT_TIMEOUT = 20
 ENV_USERNAME = "CW_USERNAME"
@@ -356,11 +358,13 @@ def main() -> None:
     parser.add_argument("--password", "-p", default=None,
                         help=f"Password (or set {ENV_PASSWORD}; otherwise the script constant)")
     parser.add_argument("--jwt", "-j", help="Path to JWT file (skips username/password auth)")
-    parser.add_argument("-k", "--insecure", action="store_true",
-                        help="Disable SSL certificate verification (not recommended)")
-    parser.add_argument("--version", "-v", default=PLAN_VERSION, help="Planfile version (default: empty)")
-    parser.add_argument("--geoloc", action="store_true",
-                        help="Populate <Nodes> Longitude and Latitude from DLM Inventory (uses a text temporary plan)")
+    parser.add_argument("-k", "--insecure", action="store_true", default=INSECURE,
+                        help=f"Disable SSL certificate verification (not recommended) (default: {INSECURE})")
+    parser.add_argument("--version", "-v", default=PLAN_VERSION,
+                        help=f"Planfile version (default: {PLAN_VERSION or 'empty'})")
+    parser.add_argument("--geoloc", action="store_true", default=GEOLOC,
+                        help="Populate <Nodes> Longitude and Latitude from DLM Inventory "
+                             f"(uses a text temporary plan) (default: {GEOLOC})")
 
     args = parser.parse_args()
 
