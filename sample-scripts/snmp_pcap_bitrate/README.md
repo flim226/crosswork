@@ -151,18 +151,18 @@ The example below comes from a capture on a Crosswork collector, run with `--tim
 ```text
 # 1287 SNMP requests in 31 OID walks; 6 answered only after a retry, 0 never answered; poller retry timeout 30.000 s
 SNMP timeouts: requests retransmitted or never answered
-first_sent               hostname                 ip              walk  req      request_id  pdu      first_oid                     sends  retry_sent    answered      wait_s  rtt_ms  status
------------------------  -----------------------  --------------  ----  -------  ----------  -------  ----------------------------  -----  ------------  ------------  ------  ------  --------------------
-2026-10-30 04:11:50.237  ldn-bb1.ip.twelve99.net  62.115.129.159     2  21/255   1090709904  getbulk  1.3.6.1.2.1.2.2.1.3.40            2  04:12:20.237  04:12:20.507  30.270   270.5  answered after retry
-2026-10-30 04:12:21.590  ldn-bb1.ip.twelve99.net  62.115.129.159     2  80/255   1090713457  getbulk  1.3.6.1.2.1.31.1.1.1.3.679        2  04:12:51.590  04:12:51.822  30.232   232.6  answered after retry
+first_sent               hostname    ip        walk  req      request_id  pdu      first_oid                     sends  retry_sent    answered      wait_s  rtt_ms  status
+-----------------------  ----------  --------  ----  -------  ----------  -------  ----------------------------  -----  ------------  ------------  ------  ------  --------------------
+2026-10-30 04:11:50.237  big-router  10.0.0.1     2  21/255   1090709904  getbulk  1.3.6.1.2.1.2.2.1.3.40            2  04:12:20.237  04:12:20.507  30.270   270.5  answered after retry
+2026-10-30 04:12:21.590  big-router  10.0.0.1     2  80/255   1090713457  getbulk  1.3.6.1.2.1.31.1.1.1.3.679        2  04:12:51.590  04:12:51.822  30.232   232.6  answered after retry
 ...
-2026-10-30 04:15:17.707  ldn-bb1.ip.twelve99.net  62.115.129.159     8  1/40     1090718508  getbulk  1.3.6.1.4.1.9.9.23.1.1.1.1.2      2  04:15:47.707  04:15:47.735  30.028    28.1  answered after retry
+2026-10-30 04:15:17.707  big-router  10.0.0.1     8  1/40     1090718508  getbulk  1.3.6.1.4.1.9.9.23.1.1.1.1.2      2  04:15:47.707  04:15:47.735  30.028    28.1  answered after retry
 
 OID walks delayed by timeouts (duration = first request to last response)
-walk  start                    hostname                 ip              oid_walk                     requests  timed_out  unanswered  timeout_wait_s  total_wait_s  typical_s   extra_s  note
-----  -----------------------  -----------------------  --------------  ---------------------------  --------  ---------  ----------  --------------  ------------  ---------  --------  ----
-   2  2026-10-30 04:11:49.591  ldn-bb1.ip.twelve99.net  62.115.129.159  IF-MIB ifXTable                   255          5           0         149.998       155.860      4.764  +151.096
-   8  2026-10-30 04:15:17.707  ldn-bb1.ip.twelve99.net  62.115.129.159  CISCO-CDP cdpInterfaceTable        40          1           0          30.000        31.101      1.127   +29.974
+walk  start                    hostname    ip        oid_walk                     requests  timed_out  unanswered  timeout_wait_s  total_wait_s  typical_s   extra_s  note
+----  -----------------------  ----------  --------  ---------------------------  --------  ---------  ----------  --------------  ------------  ---------  --------  ----
+   2  2026-10-30 04:11:49.591  big-router  10.0.0.1  IF-MIB ifXTable                   255          5           0         149.998       155.860      4.764  +151.096
+   8  2026-10-30 04:15:17.707  big-router  10.0.0.1  CISCO-CDP cdpInterfaceTable        40          1           0          30.000        31.101      1.127   +29.974
 ```
 
 Here the IF-MIB walk normally takes 4.8 seconds, but five requests each waited out the 30-second retry timer, so the walk took 155.9 seconds.
