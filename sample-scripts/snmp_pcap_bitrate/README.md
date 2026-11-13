@@ -10,6 +10,8 @@ bitrate (bps) = (current_counter - previous_counter) / elapsed_seconds * 8
 
 This lets you check the bitrates a poller should be calculating directly from the SNMP traffic it exchanged with each device.
 
+The script also flags SNMP timeouts. It matches each request the poller sent with its response and reports requests that had to be retransmitted, requests that never got a response, and how long each affected OID walk took in total compared with the same walk in the other polling cycles. See [SNMP timeout report](#snmp-timeout-report).
+
 A companion script, `add_link_utilization.py`, adds link bandwidth and percent utilization to the CSV that `snmp_pcap_bitrate.py` writes. See [Adding link utilization](#adding-link-utilization).
 
 ## Requirements
@@ -37,6 +39,8 @@ The `(ip[6:2] & 0x1fff != 0)` part of the filter matters. Large SNMP responses, 
 
 To stop after a fixed time, use `timeout`. tcpdump's `-W` option sets the number of files kept when rotating, not a duration.
 
+The timeout report needs both directions of the SNMP traffic: the poller's requests as well as the device's responses. The filters above capture both. A capture filtered on `src port 161` only has responses, so timeouts can't be detected.
+
 ## Usage
 
 ```bash
@@ -57,6 +61,9 @@ python3 snmp_pcap_bitrate.py crosswork1.eth1.cap --device node-2 --interface '^H
 
 # Inbound instead of outbound, with every bitrate shown in Gbps
 python3 snmp_pcap_bitrate.py crosswork1.eth1.cap --direction in --unit Gbps
+
+# Only the SNMP timeout report, also saved to CSV
+python3 snmp_pcap_bitrate.py crosswork1.eth1.cap --timeouts-only --timeouts-csv timeouts.csv
 ```
 
 ### Options
@@ -74,6 +81,9 @@ python3 snmp_pcap_bitrate.py crosswork1.eth1.cap --direction in --unit Gbps
 | `--port PORT` | `161` | UDP port the SNMP agents respond from. Repeat for several ports. |
 | `--unit UNIT` | `auto` | Show every bitrate in one unit: `bps`, `kbps`, `Mbps`, `Gbps`, `Tbps`, `Pbps` or `Ebps`. `auto` picks a unit per value. |
 | `--utc` | | Show timestamps in UTC instead of local time. |
+| `--timeouts-only` | | Print only the SNMP timeout report, not the bitrate tables. |
+| `--timeouts-csv FILE` | | Also write the timed-out requests, with their walk totals, to a CSV file. |
+| `--walk-gap SECONDS` | `0.1` | A request sent within this many seconds of a response continues that response's OID walk. Raise it if a slow poller splits walks into pieces. |
 
 ## Sample output
 
@@ -131,6 +141,68 @@ The summary has one row per device, interface and counter, with the number of po
 ### CSV file
 
 `--csv` writes the per-poll table with unformatted numbers, so it can be loaded into a spreadsheet or pandas. Its columns are `timestamp`, `epoch`, `hostname`, `ip`, `ifindex`, `interface`, `counter`, `value`, `delta`, `elapsed_s`, `bitrate_bps` and `note`. The CSV always includes each interface's first poll.
+
+## SNMP timeout report
+
+When any request timed out, two tables follow the summary. With `--timeouts-only` they are the only output, or `No SNMP timeouts found.` is printed. A line on standard error gives the number of requests and OID walks, how many requests were answered only after a retry or never answered, and the poller's retry timeout. The retry timeout is inferred as the median time between a request and its retransmission.
+
+The example below comes from a capture on a Crosswork collector, run with `--timeouts-only`:
+
+```text
+# 1287 SNMP requests in 31 OID walks; 6 answered only after a retry, 0 never answered; poller retry timeout 30.000 s
+SNMP timeouts: requests retransmitted or never answered
+first_sent               hostname                 ip              walk  req      request_id  pdu      first_oid                     sends  retry_sent    answered      wait_s  rtt_ms  status
+-----------------------  -----------------------  --------------  ----  -------  ----------  -------  ----------------------------  -----  ------------  ------------  ------  ------  --------------------
+2026-10-30 04:11:50.237  big-router  10.0.0.1     2  21/255   1090709904  getbulk  1.3.6.1.2.1.2.2.1.3.40            2  04:12:20.237  04:12:20.507  30.270   270.5  answered after retry
+2026-10-30 04:12:21.590  big-router  10.0.0.1     2  80/255   1090713457  getbulk  1.3.6.1.2.1.31.1.1.1.3.679        2  04:12:51.590  04:12:51.822  30.232   232.6  answered after retry
+...
+2026-10-30 04:15:17.707  big-router  10.0.0.1     8  1/40     1090718508  getbulk  1.3.6.1.4.1.9.9.23.1.1.1.1.2      2  04:15:47.707  04:15:47.735  30.028    28.1  answered after retry
+
+OID walks delayed by timeouts (duration = first request to last response)
+walk  start                    hostname                 ip              oid_walk                     requests  timed_out  unanswered  timeout_wait_s  total_wait_s  typical_s   extra_s  note
+----  -----------------------  -----------------------  --------------  ---------------------------  --------  ---------  ----------  --------------  ------------  ---------  --------  ----
+   2  2026-10-30 04:11:49.591  big-router  10.0.0.1  IF-MIB ifXTable                   255          5           0         149.998       155.860      4.764  +151.096
+   8  2026-10-30 04:15:17.707  big-router  10.0.0.1  CISCO-CDP cdpInterfaceTable        40          1           0          30.000        31.101      1.127   +29.974
+```
+
+Here the IF-MIB walk normally takes 4.8 seconds, but five requests each waited out the 30-second retry timer, so the walk took 155.9 seconds.
+
+### Timed-out requests table
+
+| Column | Meaning |
+| --- | --- |
+| `first_sent` | Capture time the request was first sent. |
+| `hostname`, `ip` | Device the request was sent to. |
+| `walk`, `req` | OID walk number, and the request's position in that walk, for example `21/255`. |
+| `request_id` | SNMP request-id. If the poller retried with a new request-id, all of them are listed. |
+| `pdu`, `first_oid` | Request type (`get`, `getnext`, `getbulk`, `set`) and its first OID. |
+| `sends` | Number of times the request was sent, including the first. |
+| `retry_sent` | Time of the last retransmission. |
+| `answered` | Time the response arrived, or `-` if it never did. |
+| `wait_s` | Seconds from the first send to the response. For an unanswered request, `>=` and the time until the poller would have given up: its last send plus one retry timeout, or the end of the capture. |
+| `rtt_ms` | Milliseconds from the last send to the response. |
+| `status` | `answered after retry`, `no response`, or `no response (capture ended)` when the capture stopped before the poller's timeout expired. |
+
+### Delayed walks table
+
+| Column | Meaning |
+| --- | --- |
+| `walk`, `start` | OID walk number and the time of its first request. |
+| `oid_walk` | MIB table the walk started on, such as `IF-MIB ifXTable`, or its first OID if not a well-known table. |
+| `requests`, `timed_out`, `unanswered` | Requests in the walk, how many of them timed out at least once, and how many were never answered. |
+| `timeout_wait_s` | Seconds the walk spent waiting on retry timers. |
+| `total_wait_s` | Seconds from the walk's first request to its last response: the final total time for the OID walk. `>=` marks a walk that ended with an unanswered request. |
+| `typical_s` | Median duration of the same walk (same device and starting OID) in cycles without timeouts. |
+| `extra_s` | `total_wait_s` minus `typical_s`. |
+| `note` | `walk abandoned` if the poller gave up on a request, or `capture ended while waiting`. |
+
+`--timeouts-csv` writes one row per timed-out request, with every send time as epoch seconds and the totals of the walk it belongs to.
+
+### How requests are grouped into walks
+
+A poller walks a table by sending each request as soon as the previous response arrives. A request sent within `--walk-gap` seconds of a response from the same device, to the same poller port, continues that response's walk. Any other request starts a new walk. Overlapping walks to the same device are kept apart this way.
+
+A request is counted as a retransmission if it repeats an unanswered request's request-id, or its exact OIDs with a new request-id, within 120 seconds of the previous send. A large response split into IP fragments is timed by its last fragment, when the whole response has arrived.
 
 ## Adding link utilization
 
@@ -191,6 +263,7 @@ The script prints the number of links of the chosen type in the topology, each m
 3. **Decode SNMP responses.** Handles SNMPv1, SNMPv2c and SNMPv3 without encryption. Encrypted SNMPv3 (authPriv) responses can't be read and are counted as undecodable.
 4. **Track names.** Records `sysName`, `ifName` and `ifDescr` wherever they appear in the capture, so a name is resolved even if it was polled after the counters.
 5. **Calculate rates.** Builds a time series per device, interface and counter, then calculates the delta and bitrate between consecutive polls.
+6. **Match requests to responses.** Pairs each request from the poller with its response by request-id, groups the requests into OID walks, and reports any request that timed out. See [SNMP timeout report](#snmp-timeout-report).
 
 All counter, timestamp and bitrate arithmetic is exact. Timestamps are integer nanoseconds and bitrates are exact fractions, rounded only for display. Full 64-bit counter values and bitrates beyond 10 Tbps are therefore shown without floating-point rounding errors.
 
@@ -205,5 +278,6 @@ All counter, timestamp and bitrate arithmetic is exact. Timestamps are integer n
 
 - **Capture time, not device time.** Timestamps are when the poller received each response. Network delay and the device's own counter update interval add some jitter to individual bitrates. The averages in the summary are more stable.
 - **Missing fragments.** If the capture is missing the later fragments of a response, that response is silently skipped. See [Capturing the pcap](#capturing-the-pcap).
-- **Encrypted SNMPv3.** authPriv responses cannot be decoded.
+- **Encrypted SNMPv3.** authPriv responses cannot be decoded, and authPriv requests can't be matched to responses, so the timeout report ignores them.
+- **Where a timeout happened.** A capture on the poller shows that a response never arrived, but not whether the request or the response was lost, or whether the device dropped it.
 - **No credentials needed or shown.** SNMP community strings travel in clear text inside the capture. The script never prints them or writes them to the CSV. Treat the pcap file itself as sensitive.
