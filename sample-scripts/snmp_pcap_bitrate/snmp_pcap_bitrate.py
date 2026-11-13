@@ -12,6 +12,11 @@ Timestamps are the capture timestamps of the SNMP response packets.
 Interface names come from ifName / ifDescr and device names from sysName when
 those objects are present in the capture; otherwise ifIndex / IP is shown.
 
+It also matches the poller's requests to their responses and flags SNMP
+timeouts: requests that were retransmitted, requests that never got a
+response, and the total time each affected OID walk took against its typical
+duration in the other polling cycles.
+
 Only the Python standard library is required.
 """
 
@@ -329,8 +334,12 @@ def decode_value(tag: int, raw: bytes):
     return raw
 
 
-def parse_snmp_response(payload: bytes):
-    """Return list of (oid_tuple, tag, value) from a Response-PDU, or None."""
+PDU_GET, PDU_GETNEXT, PDU_RESPONSE, PDU_SET, PDU_GETBULK = 0xA0, 0xA1, 0xA2, 0xA3, 0xA5
+REQUEST_PDUS = {PDU_GET: "get", PDU_GETNEXT: "getnext", PDU_SET: "set", PDU_GETBULK: "getbulk"}
+
+
+def parse_snmp_pdu(payload: bytes):
+    """Return (pdu_tag, request_id, [(oid_tuple, tag, value)]) or None if undecodable."""
     try:
         tag, s, e = ber_tlv(payload, 0)
         if tag != 0x30:
@@ -350,11 +359,12 @@ def parse_snmp_response(payload: bytes):
             pdu_tag, ps, pe = scoped[2]
         else:
             return None
-        if pdu_tag != 0xA2:  # GetResponse / Response
+        if pdu_tag != PDU_RESPONSE and pdu_tag not in REQUEST_PDUS:
             return None
         pdu = list(ber_children(payload, ps, pe))
-        if len(pdu) < 4 or pdu[3][0] != 0x30:
+        if len(pdu) < 4 or pdu[0][0] != 0x02 or pdu[3][0] != 0x30:
             return None
+        request_id = int.from_bytes(payload[pdu[0][1] : pdu[0][2]], "big", signed=True)
         out = []
         for vb_tag, vs, ve in ber_children(payload, pdu[3][1], pdu[3][2]):
             if vb_tag != 0x30:
@@ -365,7 +375,7 @@ def parse_snmp_response(payload: bytes):
             oid = decode_oid(payload[parts[0][1] : parts[0][2]])
             vtag = parts[1][0]
             out.append((oid, vtag, decode_value(vtag, payload[parts[1][1] : parts[1][2]])))
-        return out
+        return pdu_tag, request_id, out
     except (BerError, IndexError, struct.error):
         return None
 
@@ -402,17 +412,139 @@ def _text(v) -> str | None:
     return None
 
 
-def collect(path: str, direction: str, snmp_ports: set[int]):
+# --------------------------------------------------------------------------- #
+# Request / response matching and OID walks
+# --------------------------------------------------------------------------- #
+# A request re-sent with a new request-id but the same OIDs, this soon after an
+# unanswered one, is treated as a retry of it rather than a new request.
+RETRY_MATCH_NS = 120 * NS_PER_S
+
+WALK_NAMES = [
+    ((1, 3, 6, 1, 2, 1, 31, 1, 1), "IF-MIB ifXTable"),
+    ((1, 3, 6, 1, 2, 1, 2, 2), "IF-MIB ifTable"),
+    ((1, 3, 6, 1, 2, 1, 1), "SNMPv2-MIB system"),
+    ((1, 2, 840, 10006, 300, 43, 1, 1), "IEEE8023-LAG dot3adAggTable"),
+    ((1, 2, 840, 10006, 300, 43, 1, 2), "IEEE8023-LAG dot3adAggPortTable"),
+    ((1, 0, 8802, 1, 1, 2, 1, 3), "LLDP-MIB lldpLocalSystemData"),
+    ((1, 0, 8802, 1, 1, 2, 1, 4), "LLDP-MIB lldpRemTable"),
+    ((1, 3, 6, 1, 4, 1, 9, 9, 23, 1, 1), "CISCO-CDP cdpInterfaceTable"),
+    ((1, 3, 6, 1, 4, 1, 9, 9, 23, 1, 2), "CISCO-CDP cdpCacheTable"),
+]
+
+
+def oid_str(oid: tuple[int, ...]) -> str:
+    """Dotted OID string."""
+    return ".".join(map(str, oid))
+
+
+def walk_name(oid: tuple[int, ...]) -> str:
+    """Well-known MIB table name for an OID, else the dotted OID."""
+    for prefix, name in WALK_NAMES:
+        if oid[: len(prefix)] == prefix:
+            return name
+    return oid_str(oid)
+
+
+@dataclass
+class Request:
+    """One SNMP request and every (re)transmission of it."""
+
+    agent: str
+    manager: str
+    mport: int
+    reqid: int
+    pdu: str
+    oids: tuple[tuple[int, ...], ...]
+    sends: list[int]
+    reqids: list[int]
+    resp_ts: int | None = None
+    walk: "Walk | None" = None
+
+
+@dataclass
+class Walk:
+    """A chain of requests, each sent as soon as the previous response arrived."""
+
+    agent: str
+    manager: str
+    first_oid: tuple[int, ...]
+    requests: list[Request] = field(default_factory=list)
+
+
+class RequestTracker:
+    """Pairs requests with responses and groups them into OID walks.
+
+    A new request sent within `walk_gap_ns` of a response from the same agent to the
+    same manager port continues that response's walk; otherwise it starts a new walk.
+    """
+
+    def __init__(self, walk_gap_ns: int):
+        self.walk_gap = walk_gap_ns
+        self.requests: list[Request] = []
+        self.walks: list[Walk] = []
+        self.by_id: dict[tuple, Request] = {}
+        self.unanswered_by_oids: dict[tuple, Request] = {}
+        self.last_resp: dict[tuple, tuple[int, Walk]] = {}
+        self.orphan_responses = 0
+        self.duplicate_responses = 0
+        self.last_ts = 0
+
+    def request(self, ts, manager, mport, agent, aport, pdu_tag, reqid, varbinds):
+        self.last_ts = max(self.last_ts, ts)
+        key = (manager, mport, agent, aport, reqid)
+        oids = tuple(oid for oid, _tag, _value in varbinds)
+        req = self.by_id.get(key)
+        if req is not None and req.resp_ts is None and ts - req.sends[-1] <= RETRY_MATCH_NS:
+            req.sends.append(ts)
+            return
+        okey = (manager, mport, agent, aport, oids)
+        prev = self.unanswered_by_oids.get(okey)
+        if prev is not None and prev.resp_ts is None and ts - prev.sends[-1] <= RETRY_MATCH_NS:
+            prev.sends.append(ts)
+            prev.reqids.append(reqid)
+            self.by_id[key] = prev
+            return
+        req = Request(agent, manager, mport, reqid, REQUEST_PDUS[pdu_tag], oids, [ts], [reqid])
+        last = self.last_resp.pop((manager, mport, agent, aport), None)
+        if last is not None and ts - last[0] <= self.walk_gap:
+            walk = last[1]
+        else:
+            walk = Walk(agent, manager, oids[0] if oids else ())
+            self.walks.append(walk)
+        req.walk = walk
+        walk.requests.append(req)
+        self.requests.append(req)
+        self.by_id[key] = req
+        self.unanswered_by_oids[okey] = req
+
+    def response(self, ts, agent, aport, manager, mport, reqid):
+        self.last_ts = max(self.last_ts, ts)
+        req = self.by_id.get((manager, mport, agent, aport, reqid))
+        if req is None:
+            self.orphan_responses += 1
+            return
+        if req.resp_ts is not None:
+            self.duplicate_responses += 1
+            return
+        req.resp_ts = ts
+        self.last_resp[(manager, mport, agent, aport)] = (ts, req.walk)
+
+
+def collect(path: str, direction: str, snmp_ports: set[int], tracker: RequestTracker | None = None):
     """Read the capture and return (devices, counter series, stats)."""
     counters = COUNTER_OIDS[direction]
     devices: dict[str, Device] = {}
     # (device_ip, ifindex, counter_name) -> [Sample]
     series: dict[tuple[str, int, str], list[Sample]] = defaultdict(list)
     reasm = Reassembler()
-    stats = {"packets": 0, "snmp_responses": 0, "undecodable": 0}
+    stats = {"packets": 0, "snmp_responses": 0, "undecodable": 0, "snmp_requests": 0,
+             "first_ts": None, "last_ts": None}
 
     for n, (ts, linktype, frame) in enumerate(read_packets(path)):
         stats["packets"] += 1
+        if stats["first_ts"] is None:
+            stats["first_ts"] = ts
+        stats["last_ts"] = ts
         if n % 2000 == 0:
             reasm.expire(ts)
         ip = link_to_ip(linktype, frame)
@@ -421,13 +553,22 @@ def collect(path: str, direction: str, snmp_ports: set[int]):
         udp = ip_to_udp(ip, ts, reasm)
         if udp is None:
             continue
-        src, _dst, sport, _dport, payload = udp
+        src, dst, sport, dport, payload = udp
+        if dport in snmp_ports and sport not in snmp_ports:
+            pdu = parse_snmp_pdu(payload) if tracker else None
+            if pdu and pdu[0] in REQUEST_PDUS:
+                stats["snmp_requests"] += 1
+                tracker.request(ts, src, sport, dst, dport, pdu[0], pdu[1], pdu[2])
+            continue
         if sport not in snmp_ports:
             continue
-        varbinds = parse_snmp_response(payload)
-        if varbinds is None:
+        pdu = parse_snmp_pdu(payload)
+        if pdu is None or pdu[0] != PDU_RESPONSE:
             stats["undecodable"] += 1
             continue
+        if tracker:
+            tracker.response(ts, src, sport, dst, dport, pdu[1])
+        varbinds = pdu[2]
         stats["snmp_responses"] += 1
         dev = devices.setdefault(src, Device(src))
         seen_in_pdu: set[tuple[int, str]] = set()
@@ -627,6 +768,147 @@ def summarise(rows: list[dict], unit: str):
     return out
 
 
+def _secs(ns: int | None, places: int = 3) -> str:
+    return "-" if ns is None else fmt_fixed(Fraction(ns, NS_PER_S), places)
+
+
+def _median(values: list[int]) -> int | None:
+    if not values:
+        return None
+    s = sorted(values)
+    mid = len(s) // 2
+    return s[mid] if len(s) % 2 else (s[mid - 1] + s[mid]) // 2
+
+
+def analyse_timeouts(tracker: RequestTracker, devices: dict[str, Device], capture_end: int):
+    """Find requests that were retransmitted or never answered and the walks they delayed.
+
+    Returns (walk_rows, request_rows, retry_timeout_ns). A walk's duration runs from its
+    first request to its last response; an unanswered request is assumed to have been
+    waited on until one retry timeout after its last send, or the end of the capture.
+    """
+    intervals = [b - a for r in tracker.requests for a, b in zip(r.sends, r.sends[1:])]
+    retry_timeout = _median(intervals)
+
+    def gave_up(req: Request) -> int:
+        if retry_timeout is None:
+            return capture_end
+        return min(capture_end, req.sends[-1] + retry_timeout)
+
+    def is_issue(req: Request) -> bool:
+        return req.resp_ts is None or len(req.sends) > 1
+
+    def walk_end(w: Walk) -> int:
+        return max(r.resp_ts if r.resp_ts is not None else gave_up(r) for r in w.requests)
+
+    typical: dict[tuple, list[int]] = defaultdict(list)
+    for w in tracker.walks:
+        if not any(is_issue(r) for r in w.requests):
+            typical[(w.agent, w.first_oid)].append(walk_end(w) - w.requests[0].sends[0])
+
+    walk_rows, request_rows = [], []
+    for wn, w in enumerate(tracker.walks, 1):
+        issues = [(i, r) for i, r in enumerate(w.requests, 1) if is_issue(r)]
+        if not issues:
+            continue
+        start = w.requests[0].sends[0]
+        end = walk_end(w)
+        hostname = devices[w.agent].sysname if w.agent in devices else None
+        unanswered = sum(1 for _i, r in issues if r.resp_ts is None)
+        at_end = any(r.resp_ts is None and capture_end - r.sends[-1] < (retry_timeout or 30 * NS_PER_S)
+                     for _i, r in issues)
+        stalled = sum((r.sends[-1] if r.resp_ts is not None else gave_up(r)) - r.sends[0] for _i, r in issues)
+        base = _median(typical.get((w.agent, w.first_oid), []))
+        walk_rows.append({
+            "walk": wn, "start": start, "hostname": hostname or "", "agent": w.agent,
+            "walk_name": walk_name(w.first_oid), "first_oid": oid_str(w.first_oid),
+            "requests": len(w.requests), "timed_out": len(issues),
+            "retransmissions": sum(len(r.sends) - 1 for r in w.requests), "unanswered": unanswered,
+            "duration": end - start, "open_ended": bool(unanswered), "timeout_wait": stalled,
+            "typical": base, "extra": None if base is None or at_end else end - start - base,
+            "note": "capture ended while waiting" if at_end else ("walk abandoned" if unanswered else ""),
+        })
+        for i, r in issues:
+            answered = r.resp_ts is not None
+            if answered:
+                status = "answered after retry"
+            elif capture_end - r.sends[-1] < (retry_timeout or 30 * NS_PER_S):
+                status = "no response (capture ended)"
+            else:
+                status = "no response"
+            request_rows.append({
+                "walk": wn, "position": f"{i}/{len(w.requests)}", "hostname": hostname or "",
+                "agent": r.agent, "manager": f"{r.manager}:{r.mport}", "walk_name": walk_name(w.first_oid),
+                "request_ids": r.reqids, "pdu": r.pdu, "first_oid": oid_str(r.oids[0]) if r.oids else "",
+                "varbinds": len(r.oids), "sends": r.sends, "resp_ts": r.resp_ts, "status": status,
+                "wait": (r.resp_ts if answered else gave_up(r)) - r.sends[0],
+                "rtt": r.resp_ts - r.sends[-1] if answered else None,
+            })
+    return walk_rows, request_rows, retry_timeout
+
+
+def print_timeouts(walk_rows, request_rows, utc: bool, out=sys.stdout):
+    """Print the timed-out requests and the walks they delayed."""
+    print("SNMP timeouts: requests retransmitted or never answered", file=out)
+    print_table(
+        ["first_sent", "hostname", "ip", "walk", "req", "request_id", "pdu", "first_oid",
+         "sends", "retry_sent", "answered", "wait_s", "rtt_ms", "status"],
+        [[
+            fmt_ts(r["sends"][0], utc), r["hostname"] or "-", r["agent"], str(r["walk"]), r["position"],
+            ",".join(map(str, r["request_ids"])), r["pdu"], r["first_oid"], str(len(r["sends"])),
+            fmt_ts(r["sends"][-1], utc)[11:] if len(r["sends"]) > 1 else "-",
+            fmt_ts(r["resp_ts"], utc)[11:] if r["resp_ts"] is not None else "-",
+            ("" if r["resp_ts"] is not None else ">=") + _secs(r["wait"]),
+            "-" if r["rtt"] is None else fmt_fixed(Fraction(r["rtt"], 1_000_000), 1),
+            r["status"],
+        ] for r in request_rows],
+        right={3, 8, 11, 12}, out=out,
+    )
+    print(file=out)
+    print("OID walks delayed by timeouts (duration = first request to last response)", file=out)
+    print_table(
+        ["walk", "start", "hostname", "ip", "oid_walk", "requests", "timed_out", "unanswered",
+         "timeout_wait_s", "total_wait_s", "typical_s", "extra_s", "note"],
+        [[
+            str(w["walk"]), fmt_ts(w["start"], utc), w["hostname"] or "-", w["agent"], w["walk_name"],
+            str(w["requests"]), str(w["timed_out"]), str(w["unanswered"]),
+            _secs(w["timeout_wait"]), (">=" if w["open_ended"] else "") + _secs(w["duration"]),
+            _secs(w["typical"]), "-" if w["extra"] is None else ("+" if w["extra"] >= 0 else "") + _secs(w["extra"]),
+            w["note"],
+        ] for w in walk_rows],
+        right={0, 5, 6, 7, 8, 9, 10, 11}, out=out,
+    )
+
+
+def write_timeouts_csv(path: str, walk_rows, request_rows, utc: bool):
+    """One row per timed-out request, with the totals of the walk it belongs to."""
+    walks = {w["walk"]: w for w in walk_rows}
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow([
+            "first_sent", "first_sent_epoch", "hostname", "ip", "manager", "walk", "oid_walk",
+            "position", "request_ids", "pdu", "first_oid", "varbinds", "sends", "send_times_epoch",
+            "answered", "status", "wait_s", "rtt_ms", "walk_start", "walk_requests",
+            "walk_timed_out", "walk_unanswered", "walk_timeout_wait_s", "walk_total_wait_s",
+            "walk_total_wait_open_ended", "walk_typical_s", "walk_extra_s",
+        ])
+        for r in request_rows:
+            k = walks[r["walk"]]
+            w.writerow([
+                fmt_ts(r["sends"][0], utc), fmt_epoch(r["sends"][0]), r["hostname"], r["agent"], r["manager"],
+                r["walk"], r["walk_name"], r["position"], " ".join(map(str, r["request_ids"])), r["pdu"],
+                r["first_oid"], r["varbinds"], len(r["sends"]), " ".join(fmt_epoch(s) for s in r["sends"]),
+                "" if r["resp_ts"] is None else fmt_ts(r["resp_ts"], utc), r["status"],
+                fmt_fixed(Fraction(r["wait"], NS_PER_S), 6),
+                "" if r["rtt"] is None else fmt_fixed(Fraction(r["rtt"], 1_000_000), 3),
+                fmt_ts(k["start"], utc), k["requests"], k["timed_out"], k["unanswered"],
+                fmt_fixed(Fraction(k["timeout_wait"], NS_PER_S), 6), fmt_fixed(Fraction(k["duration"], NS_PER_S), 6),
+                "yes" if k["open_ended"] else "no",
+                "" if k["typical"] is None else fmt_fixed(Fraction(k["typical"], NS_PER_S), 6),
+                "" if k["extra"] is None else fmt_fixed(Fraction(k["extra"], NS_PER_S), 6),
+            ])
+
+
 def _natural_key(s: str):
     return [int(t) if t.isdigit() else t.lower() for t in re.split(r"(\d+)", s)]
 
@@ -657,10 +939,18 @@ def main(argv=None):
                     help="show timestamps in UTC instead of local time")
     ap.add_argument("--unit", choices=("auto", *BPS_UNITS), default="auto",
                     help="display bitrates in a fixed unit (default: auto-scale per value)")
+    ap.add_argument("--timeouts-only", action="store_true",
+                    help="print only the SNMP timeout report, not the bitrate tables")
+    ap.add_argument("--timeouts-csv", metavar="FILE",
+                    help="also write the timed-out requests and their walk totals to a CSV file")
+    ap.add_argument("--walk-gap", type=float, default=0.1,
+                    help="a request sent within this many seconds of a response continues that "
+                         "response's OID walk (default 0.1)")
     args = ap.parse_args(argv)
 
     counters = COUNTER_OIDS[args.direction]
-    devices, series, stats = collect(args.pcap, args.direction, set(args.port or [161]))
+    tracker = RequestTracker(int(Fraction(str(args.walk_gap)) * NS_PER_S))
+    devices, series, stats = collect(args.pcap, args.direction, set(args.port or [161]), tracker)
     chosen = select_counters(series, args.counter, counters)
     min_interval_ns = int(Fraction(str(args.min_interval)) * NS_PER_S)
     rows = build_rows(devices, series, chosen, counters, min_interval_ns)
@@ -675,14 +965,35 @@ def main(argv=None):
         _natural_key(r["device_ip"]), _natural_key(r["interface"]), r["counter"], r["timestamp"]
     ))
 
+    walk_rows, request_rows, retry_timeout = analyse_timeouts(tracker, devices, stats["last_ts"] or 0)
+    if args.device:
+        rx = re.compile(args.device, re.IGNORECASE)
+        walk_rows = [w for w in walk_rows if rx.search(w["hostname"]) or rx.search(w["agent"])]
+        request_rows = [r for r in request_rows if rx.search(r["hostname"]) or rx.search(r["agent"])]
+
     print(
         f"# {stats['packets']} packets, {stats['snmp_responses']} SNMP responses decoded, "
         f"{stats['undecodable']} undecodable; {len(devices)} agents, "
         f"{len({(d, i) for d, i, _ in chosen})} interfaces with {args.direction} octet counters",
         file=sys.stderr,
     )
+    retried = sum(1 for r in request_rows if r["resp_ts"] is not None)
+    print(
+        f"# {stats['snmp_requests']} SNMP requests in {len(tracker.walks)} OID walks; "
+        f"{retried} answered only after a retry, {len(request_rows) - retried} never answered"
+        + (f"; poller retry timeout {_secs(retry_timeout)} s" if retry_timeout is not None else ""),
+        file=sys.stderr,
+    )
+    if stats["snmp_requests"] == 0:
+        print("# no SNMP requests in the capture, so timeouts cannot be detected; capture both "
+              "directions to enable the timeout report", file=sys.stderr)
 
-    if not args.summary_only:
+    if args.timeouts_only:
+        if request_rows:
+            print_timeouts(walk_rows, request_rows, args.utc)
+        else:
+            print("No SNMP timeouts found.")
+    elif not args.summary_only:
         table = []
         for r in rows:
             if r["delta"] is None and not r["note"] and not args.include_first:
@@ -702,12 +1013,20 @@ def main(argv=None):
         )
         print()
 
-    print("Polled interfaces summary")
-    print_table(
-        ["hostname", "ip", "ifIndex", "interface", "counter",
-         "samples", "avg_poll_s", "avg_bitrate", "max_bitrate"],
-        summarise(rows, args.unit), right={2, 5, 6, 7, 8},
-    )
+    if not args.timeouts_only:
+        print("Polled interfaces summary")
+        print_table(
+            ["hostname", "ip", "ifIndex", "interface", "counter",
+             "samples", "avg_poll_s", "avg_bitrate", "max_bitrate"],
+            summarise(rows, args.unit), right={2, 5, 6, 7, 8},
+        )
+        if request_rows:
+            print()
+            print_timeouts(walk_rows, request_rows, args.utc)
+
+    if args.timeouts_csv:
+        write_timeouts_csv(args.timeouts_csv, walk_rows, request_rows, args.utc)
+        print(f"\nTimeouts CSV written to {args.timeouts_csv}", file=sys.stderr)
 
     if args.csv:
         write_csv(args.csv, rows, args.utc)
