@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-sEkoQwZrDufe6w8swppqZ1+76PgKW7Sts0APWSvg8kI=' 'wasm-unsafe-eval'; style-src 'sha256-/1cVIr2a1EspRhNpVEtM0vHDOrSwrd2T8MhowlocUE4='; img-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-O/X0F5+kMl/Pdi6PLeyVSlpwIKO9xsgHUDGXg7yI2UY=' 'wasm-unsafe-eval'; style-src 'sha256-BxrDUJGVZ6gsCG9OpJjCHizQxrp0RdoGLGWThEAjOcA='; img-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer">
   <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="plan-viewer 1.1.0; sql.js 1.12.0; d3 7.9.2; sql-wasm.wasm sha256 083460b3e9d428ebbbbaa03918ba55da33d810e0fb3470d4b5d8677b462b2c2b">
@@ -236,6 +236,7 @@ tr:hover td { background: rgba(93, 182, 255, .04); }
 .topo-layout select { font-size: .75rem; padding: 3px 6px; }
 .topo-legend i.hl { background: var(--hl); }
 .edge.inactive { stroke-dasharray: 6 4; opacity: .5; }
+.edge.multi { stroke-dasharray: 1 7; }
 
 .empty-state { text-align: center; padding: 48px 20px; color: var(--muted); }
 .error { background: rgba(255,126,135,.1); border: 1px solid rgba(255,126,135,.4); color: var(--red); border-radius: 8px; padding: 12px 16px; margin: 12px 0; font-size: .85rem; }
@@ -1967,7 +1968,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
           <button type="button" class="secondary small" data-action="fit">⤢ Fit</button>
         </div>
       </div>
-      <div class="note" id="topoNote">${modeNote}${paletteNote}${groupNote}Drag a node to pull the graph around it, drag the background to pan, scroll to zoom. Link colour shows the higher of the two directional utilisations and line width shows capacity; parallel circuits between the same nodes fan out as curves. Hover a node to highlight its circuits in cyan; hover a link for details. The row filter highlights matching nodes.</div>
+      <div class="note" id="topoNote">${modeNote}${paletteNote}${groupNote}Drag a node to pull the graph around it, drag the background to pan, scroll to zoom. Link colour shows the higher of the two directional utilisations and line width shows capacity; parallel circuits between the same nodes fan out as curves, or are drawn dotted when Curvature is straight. Hover a node to highlight its circuits in cyan; hover a link for details. The row filter highlights matching nodes.</div>
       <div class="topo-wrap" id="topoWrap">
         <svg id="topo" role="img" aria-label="Network topology"></svg>
         <div class="topo-tip" id="topoTip"></div>
@@ -2319,7 +2320,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       .text(d => `${d.site.count} node${d.site.count === 1 ? '' : 's'}`);
 
     const ticked = () => {
-      link.attr('d', topoLinkPath);
+      link.attr('d', topoLinkPath).classed('multi', l => !topoCurve && l.parallel > 1);
       node.attr('transform', d => `translate(${d.x},${d.y})`);
     };
     sim.on('tick', ticked);
