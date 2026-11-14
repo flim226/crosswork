@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-Ow6JhaFkWWCbtf9Dck+vUUYdjuAzR0tkOpL3VJ5LPDw=' 'wasm-unsafe-eval'; style-src 'sha256-QA4ydj9B75a+vCxsIQArsM0j6L4VbUVzeVLQBiO0JUU='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-IPwA9EKAAB7RuuI2ndSWRzX0JV5LDndWI64i5b8gJtE=' 'wasm-unsafe-eval'; style-src 'sha256-iYCHjwmHoPiw2nYX0cnGJlrbrWooAwwG0o+OXPD0bqU='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
   <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="plan-viewer 1.1.0; sql.js 1.12.0; d3 7.9.2; maplibre-gl 6.18.0; sql-wasm.wasm sha256 083460b3e9d428ebbbbaa03918ba55da33d810e0fb3470d4b5d8677b462b2c2b">
@@ -264,6 +264,18 @@ tr:hover td { background: rgba(93, 182, 255, .04); }
 .topo-legend i.fa-l-pruned { background: repeating-linear-gradient(90deg, var(--muted) 0 4px, transparent 4px 7px); height: 2px; }
 .topo-legend i.fa-l-ghost { width: 9px; height: 9px; border-radius: 50%; border: 1px dashed var(--muted); opacity: .6; }
 .topo-legend i.fa-l-pillar { width: 2px; height: 12px; background: repeating-linear-gradient(0deg, var(--muted) 0 3px, transparent 3px 6px); }
+.l1-wire { fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-opacity: .85; pointer-events: none; }
+.l1-wire.idle { stroke-opacity: .45; stroke-dasharray: 2 4; }
+.l1-wire.inactive { stroke: var(--red); stroke-dasharray: 6 4; }
+.l1-node rect { fill: #2a1f44; stroke-width: 2; cursor: pointer; }
+.fa-node.inactive circle, .l1-node.inactive rect { stroke: var(--red); stroke-dasharray: 3 2; }
+.l3-half { fill: none; stroke-linecap: butt; pointer-events: none; background: none; }
+.l3-half.inactive { stroke-dasharray: 6 4; opacity: .5; }
+.topo-wrap svg.fa-hover .l1-wire:not(.hl), .topo-wrap svg.fa-hover .l3-half:not(.hl) { opacity: .15; }
+.topo-wrap svg.fa-hover .l1-wire.hl, .topo-wrap svg.fa-hover .l3-half.hl { stroke: var(--hl); stroke-opacity: 1; }
+.topo-wrap svg.fa-hover .l1-node.hl rect { stroke-width: 3; }
+.topo-legend i.l1-l-wire { background: #c08cff; }
+.topo-legend i.l1-l-idle { background: repeating-linear-gradient(90deg, #c08cff 0 2px, transparent 2px 6px); height: 2px; opacity: .6; }
 .topo-wrap .topo-basemap { position: absolute; inset: 0; pointer-events: none; }
 .topo-basemap + svg { position: relative; }
 .topo-attrib { position: absolute; right: 8px; bottom: 6px; font-size: .68rem; color: var(--muted); background: rgba(17,27,46,.85); padding: 2px 8px; border-radius: 4px; }
@@ -1389,7 +1401,8 @@ uniform ${n} ${r} u_${i};
   let topoMap = false;
   let topoBaseMap = null;
   let topoFlex3d = false;
-  // Starting camera for the 3D Flex-Algo panes: no rotation, so each pane keeps the 2D plot's orientation.
+  let topoL1 = false;
+  // Starting camera for the 3D panes: no rotation, so each pane keeps the 2D plot's orientation.
   const FA_START_YAW = 0;
   const FA_START_TILT = 60;
   let topoYaw = FA_START_YAW;
@@ -1930,6 +1943,12 @@ uniform ${n} ${r} u_${i};
     p.vpns = get('VPNs');
     p.l1Nodes = get('L1Nodes');
     p.l1Links = get('L1Links');
+    p.l1Waypoints = get('L1LinkWaypoints');
+    p.l1Circuits = get('L1Circuits');
+    p.l1CircuitPaths = get('L1CircuitPaths');
+    p.l1PathHops = get('L1CircuitPathHops');
+    p.l1ActualHops = get('ActualL1CircuitPathHops');
+    p.l3l1Links = get('L3L1Links');
     p.genTime = get('NetIntPlanFileGenerationTime');
     p.nodeLoopbacks = get('NodePrefixLoopbacks');
     p.plotLayouts = get('PlotLayouts');
@@ -3020,6 +3039,185 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     return { circuits, panes: [base, ...panes] };
   }
 
+  /* ---------------- L1 / L3 layers ---------------- */
+
+  const l1LinkKey = (name, a, b) => `${name ?? ''}\u0000${[String(a ?? ''), String(b ?? '')].sort().join('\u0000')}`;
+  const l1PortKey = (na, pa, nb, pb) => [`${na ?? ''}\u0000${pa ?? ''}`, `${nb ?? ''}\u0000${pb ?? ''}`].sort().join('\u0000\u0000');
+  const l1CircuitKey = (name, r) => [name, r.L1NodeA, r.L1PortA, r.L1NodeB, r.L1PortB].map(v => String(v ?? '')).join('\u0000');
+  const l1Metric = k => Math.max(0, num(k.l.Metric) ?? 1);
+
+  function heapPush(heap, item) {
+    heap.push(item);
+    for (let i = heap.length - 1; i > 0;) {
+      const p = (i - 1) >> 1;
+      if (heap[p][0] <= heap[i][0]) break;
+      [heap[p], heap[i]] = [heap[i], heap[p]];
+      i = p;
+    }
+  }
+
+  function heapPop(heap) {
+    const top = heap[0];
+    const last = heap.pop();
+    if (heap.length) {
+      heap[0] = last;
+      for (let i = 0; ;) {
+        const l = 2 * i + 1;
+        let m = i;
+        if (l < heap.length && heap[l][0] < heap[m][0]) m = l;
+        if (l + 1 < heap.length && heap[l + 1][0] < heap[m][0]) m = l + 1;
+        if (m === i) break;
+        [heap[m], heap[i]] = [heap[i], heap[m]];
+        i = m;
+      }
+    }
+    return top;
+  }
+
+  // Lowest-metric tree from one L1 node: the link each reachable node is entered by.
+  function l1ShortestFrom(adj, src) {
+    const dist = new Map([[src, 0]]);
+    const via = new Map();
+    const heap = [[0, src]];
+    while (heap.length) {
+      const [d, u] = heapPop(heap);
+      if (d > dist.get(u)) continue;
+      for (const { link, to, w } of adj.get(u) || []) {
+        if (d + w < (dist.get(to) ?? Infinity)) {
+          dist.set(to, d + w);
+          via.set(to, link);
+          heapPush(heap, [d + w, to]);
+        }
+      }
+    }
+    return via;
+  }
+
+  // L1 nodes and links, L3 node attachments (L3L1Links), and each L3 circuit's L1 circuit with the L1 links it rides.
+  // An L1 circuit follows ActualL1CircuitPathHops, else the hops of its active path option (gaps filled by the
+  // lowest-Metric path, so loose hops work), else the lowest-Metric path over the L1 links that are up.
+  function l1Model() {
+    const p = plan;
+    const l1Names = new Set(p.l1Nodes.map(n => n.Name).filter(n => !isBlank(n)));
+    const l3Names = new Set(p.nodes.map(n => n.Name));
+    const links = p.l1Links
+      .filter(l => l1Names.has(l.L1NodeA) && l1Names.has(l.L1NodeB) && l.L1NodeA !== l.L1NodeB)
+      .map((l, i) => ({ l, i, a: l.L1NodeA, b: l.L1NodeB, up: isTrue(l.Active ?? 'T') && !isTrue(l.Failed), riders: [], l1cs: new Set() }));
+    const byName = groupBy(links, k => String(k.l.Name ?? ''));
+    const byPair = groupBy(links, k => l1LinkKey('', k.a, k.b));
+    const findLink = (name, a, b) => {
+      const cands = !isBlank(name) ? byName.get(String(name)) || [] : !isBlank(a) && !isBlank(b) ? byPair.get(l1LinkKey('', a, b)) || [] : [];
+      return cands.find(k => (isBlank(a) || k.a === a || k.b === a) && (isBlank(b) || k.a === b || k.b === b)) || null;
+    };
+
+    const adj = new Map();
+    for (const k of links.filter(x => x.up)) {
+      for (const [u, v] of [[k.a, k.b], [k.b, k.a]]) {
+        if (!adj.has(u)) adj.set(u, []);
+        adj.get(u).push({ link: k, to: v, w: l1Metric(k) });
+      }
+    }
+    const trees = new Map();
+    const shortest = (from, to) => {
+      if (from === to) return [];
+      if (!trees.has(from)) trees.set(from, l1ShortestFrom(adj, from));
+      const via = trees.get(from);
+      if (!via.has(to)) return null;
+      const path = [];
+      for (let n = to; n !== from;) {
+        const k = via.get(n);
+        path.unshift(k);
+        n = k.a === n ? k.b : k.a;
+      }
+      return path;
+    };
+    const walk = (start, end, hops) => {
+      const out = [];
+      let cur = start;
+      const go = to => {
+        const seg = shortest(cur, to);
+        if (!seg) return false;
+        out.push(...seg);
+        cur = to;
+        return true;
+      };
+      for (const hop of hops) {
+        const k = findLink(hop.HopL1Link, hop.HopL1NodeA, hop.HopL1NodeB);
+        if (k) {
+          const entry = cur === k.a || cur === k.b ? cur : hop.HopL1NodeA === k.b ? k.b : k.a;
+          if (!go(entry)) return null;
+          out.push(k);
+          cur = entry === k.a ? k.b : k.a;
+        } else {
+          for (const n of [hop.HopL1NodeA, hop.HopL1NodeB]) if (l1Names.has(n) && !go(n)) return null;
+        }
+      }
+      return go(end) ? out : null;
+    };
+
+    const actual = groupBy(p.l1ActualHops, r => l1CircuitKey(r.L1Circuit, r));
+    const configured = groupBy(p.l1PathHops, r => l1CircuitKey(r.L1Circuit, r));
+    const paths = groupBy(p.l1CircuitPaths, r => l1CircuitKey(r.L1Circuit, r));
+    const byOption = (a, b) => (num(a.PathOption) ?? 0) - (num(b.PathOption) ?? 0);
+    const bySteps = rows => [...rows].sort((a, b) => (num(a.Step) ?? 0) - (num(b.Step) ?? 0));
+    const routeOf = lc => {
+      const key = l1CircuitKey(lc.Name, lc);
+      const ps = [...(paths.get(key) || [])].sort(byOption);
+      const option = num(lc.ActivePath) ?? num((ps.find(r => isTrue(r.Active ?? 'T')) || ps[0] || {}).PathOption);
+      const optionRows = (rows, strict) => {
+        if (!rows) return [];
+        const exact = option === null ? null : rows.filter(r => num(r.PathOption) === option);
+        if (exact && (exact.length || strict)) return bySteps(exact);
+        const lowest = rows.reduce((m, r) => Math.min(m, num(r.PathOption) ?? 0), Infinity);
+        return bySteps(rows.filter(r => (num(r.PathOption) ?? 0) === lowest));
+      };
+      let found = null;
+      if (l1Names.has(lc.L1NodeA) && l1Names.has(lc.L1NodeB)) {
+        for (const [source, hops] of [['actual', optionRows(actual.get(key), false)], ['hops', optionRows(configured.get(key), true)]]) {
+          const ks = hops.length ? walk(lc.L1NodeA, lc.L1NodeB, hops) : null;
+          if (ks) { found = { links: ks, source }; break; }
+        }
+        if (!found) {
+          const ks = walk(lc.L1NodeA, lc.L1NodeB, []);
+          if (ks) found = { links: ks, source: 'shortest' };
+        }
+      }
+      if (!found) return { links: null, nodes: [], source: 'unrouted' };
+      const nodes = [lc.L1NodeA];
+      for (const k of found.links) nodes.push(k.a === nodes[nodes.length - 1] ? k.b : k.a);
+      return { ...found, nodes, metric: found.links.reduce((s, k) => s + l1Metric(k), 0) };
+    };
+
+    const l1cByPorts = new Map();
+    for (const lc of p.l1Circuits) {
+      const k = l1PortKey(lc.L1NodeA, lc.L1PortA, lc.L1NodeB, lc.L1PortB);
+      if (!l1cByPorts.has(k)) l1cByPorts.set(k, lc);
+    }
+    const routes = new Map();
+    const circuits = circuitRows().filter(c => l3Names.has(c.NodeA) && l3Names.has(c.NodeB) && c.NodeA !== c.NodeB).map((c, i) => {
+      if (isBlank(c.L1CircuitNodeA) && isBlank(c.L1CircuitNodeB)) return { c, i, l1c: null, route: null };
+      const lc = l1cByPorts.get(l1PortKey(c.L1CircuitNodeA, c.L1CircuitPortA, c.L1CircuitNodeB, c.L1CircuitPortB));
+      if (!lc) return { c, i, l1c: null, route: null, missing: true };
+      if (!routes.has(lc)) routes.set(lc, routeOf(lc));
+      const route = routes.get(lc);
+      for (const k of new Set(route.links || [])) {
+        k.riders.push(i);
+        k.l1cs.add(lc.Name);
+      }
+      return { c, i, l1c: lc, route };
+    });
+
+    const l3To1 = new Map();
+    const l1To3 = new Map();
+    const attach = (m, k, v) => { if (!m.has(k)) m.set(k, new Set()); m.get(k).add(v); };
+    for (const r of p.l3l1Links) {
+      if (!l3Names.has(r.Node) || !l1Names.has(r.L1Node)) continue;
+      attach(l3To1, r.Node, r.L1Node);
+      attach(l1To3, r.L1Node, r.Node);
+    }
+    return { nodes: [...l1Names], links, circuits, l3To1, l1To3 };
+  }
+
   /* ---------------- SRLGs ---------------- */
 
   function renderSrlgs() {
@@ -3097,22 +3295,27 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       ? h`Link colours use the <b>UtilizationColors</b> of plot layout <b>${mode.palette.layout}</b> (${mode.palette.type}). ` : '';
     const groupNote = topoGroups && mode.sites.length
       ? h`<b>Show Groups:</b> each of the ${mode.sites.length} site${mode.sites.length === 1 ? '' : 's'} is drawn as one node; circuits inside a site are hidden and circuits between groups are merged (colour = highest utilisation, width = total capacity). ` : '';
-    const fa3d = flex3dActive();
+    const l13d = l1View3dActive();
+    const fa3d = !l13d && flex3dActive();
+    const in3d = fa3d || l13d;
     const algos = faAlgoList();
-    const mapOn = mode.kind === 'geo' && topoMap && !fa3d;
+    const mapOn = mode.kind === 'geo' && topoMap && !in3d;
     const shownPanes = algos.filter(a => !topoHiddenAlgos.has(a)).length + (topoShowAlgo0 ? 1 : 0);
     const faNote = fa3d
       ? h`<b>3D Flex-Algo:</b> one pane per Flex-Algorithm (${shownPanes} shown), stacked over the layout's node positions. A link is on a pane when, in that direction, its interface's IGP process defines the algorithm, both nodes take part in it, its affinities pass the algorithm's exclude / include-any / include-all rules and it is in no excluded SRLG. Each link is split in two: the half next to a node shows the direction leaving that node, solid when usable and dashed when pruned. Faded nodes are not in the algorithm; dashed pillars join a node's copies. Drag to rotate, Shift+drag to pan, scroll to zoom; hover a node or link for details. ` : '';
+    const l1Note = l13d
+      ? h`<b>3D L1/L3:</b> the L1 (optical) topology is the bottom pane and the L3 (IP) topology sits above it, over the layout's node positions. L1 nodes are placed at their site's or their own location in the layout, else under the L3 nodes attached to them. Dashed pillars join each L3 node to its L1 node (<b>L3L1Links</b>). L3 circuits are coloured by utilisation${topoDirectional ? ', each half by the direction leaving the nearer node' : ''}. Each L3 circuit is matched to its L1 circuit by its L1 ports. The L1 circuit's route comes from <b>ActualL1CircuitPathHops</b>, else from its path hops, else it is the lowest L1 <b>Metric</b> path, which the viewer estimates. L1 links are thicker when they carry more L3 circuits, dotted when they carry none${mode.l1Waypoints && mode.l1Waypoints.size ? ', and follow their waypoints' : ''}. Hover an L3 node or circuit to see its L1 route, or an L1 node or link to see the L3 circuits that ride it. Drag to rotate, Shift+drag to pan, scroll to zoom. ` : '';
     return h`
-      <div class="section-title">Topology <span class="badge badge-blue">${plan.nodes.length} nodes · ${plan.circuits.length} circuits</span>
+      <div class="section-title">Topology <span class="badge badge-blue">${plan.nodes.length} nodes · ${plan.circuits.length} circuits${l13d ? ` · ${plan.l1Nodes.length} L1 nodes · ${plan.l1Links.length} L1 links` : ''}</span>
         <div class="actions">
           ${options.length > 1 ? h`<label class="topo-layout">Layout <select id="topoLayout" data-action="topo-layout">${options.map(o => h`<option value="${o.id}"${o.id === mode.id ? h` selected` : ''}>${o.kind === 'plot' ? `Plot layout: ${o.label}` : o.label}</option>`)}</select></label>` : ''}
+          ${plan.l1Nodes.length ? h`<label class="topo-layout" title="Stack the L3 topology over the L1 topology it rides on"><input type="checkbox" id="topoL1" data-action="topo-l1"${l13d ? h` checked` : ''}> 3D L1/L3</label>` : ''}
           ${algos.length ? h`<label class="topo-layout" title="Stack one pane per Flex-Algorithm showing its member nodes and usable links"><input type="checkbox" id="topoFlex3d" data-action="topo-flex3d"${fa3d ? h` checked` : ''}> 3D Flex-Algo</label>` : ''}
-          ${!fa3d && mode.kind === 'geo' ? h`<label class="topo-layout" title="Draw an OpenFreeMap map under the topology. Map data is fetched from tiles.openfreemap.org, which sees the area you view."><input type="checkbox" id="topoMap" data-action="topo-map"${topoMap ? h` checked` : ''}> OpenFreeMap</label>` : ''}
-          ${!fa3d && mode.sites.length ? h`<label class="topo-layout"><input type="checkbox" id="topoGroups" data-action="topo-groups"${topoGroups ? h` checked` : ''}> Show Groups</label>` : ''}
+          ${!in3d && mode.kind === 'geo' ? h`<label class="topo-layout" title="Draw an OpenFreeMap map under the topology. Map data is fetched from tiles.openfreemap.org, which sees the area you view."><input type="checkbox" id="topoMap" data-action="topo-map"${topoMap ? h` checked` : ''}> OpenFreeMap</label>` : ''}
+          ${!in3d && mode.sites.length ? h`<label class="topo-layout"><input type="checkbox" id="topoGroups" data-action="topo-groups"${topoGroups ? h` checked` : ''}> Show Groups</label>` : ''}
           ${!fa3d ? h`<label class="topo-layout" title="Colour each half of a link by the utilisation leaving its nearer end"><input type="checkbox" id="topoDirectional" data-action="topo-directional"${topoDirectional ? h` checked` : ''}> Directional</label>` : ''}
           <label class="topo-layout" title="Scale nodes, sites and their labels">Node size <input type="range" id="topoNodeScale" min="0.3" max="3" step="0.1" value="${topoNodeScale}" data-action="topo-node-scale"><output id="topoNodeScaleValue" for="topoNodeScale">${scaleLabel(topoNodeScale)}</output></label>
-          ${fa3d
+          ${in3d
     ? h`<label class="topo-layout" title="Vertical gap between the panes">Pane spacing <input type="range" id="topoPaneGap" min="0.2" max="3" step="0.1" value="${topoPaneGap}" data-action="topo-pane-gap"><output id="topoPaneGapValue" for="topoPaneGap">${scaleLabel(topoPaneGap)}</output></label>`
     : h`<label class="topo-layout">Curvature <input type="range" id="topoCurve" min="0" max="3" step="0.1" value="${topoCurve}" data-action="topo-curve"><output id="topoCurveValue" for="topoCurve">${curveLabel(topoCurve)}</output></label>`}
           <button type="button" class="secondary small" data-action="relayout">↻ Re-layout</button>
@@ -3123,7 +3326,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
         <label class="fa-chip" title="Baseline pane at the bottom: every node and link of the IGP topology"><input type="checkbox" id="topoAlgo0" data-action="topo-algo0"${topoShowAlgo0 ? h` checked` : ''}><i data-color="${FA_BASE_COLOR}"></i>Algo 0 (baseline)</label>
         ${algos.map((a, i) => h`<label class="fa-chip"><input type="checkbox" data-action="topo-algo-chip" data-algo="${a}"${topoHiddenAlgos.has(a) ? '' : h` checked`}><i data-color="${faColor(i)}"></i>Algo ${a}</label>`)}
       </div>` : ''}
-      <div class="note" id="topoNote">${modeNote}${fa3d ? faNote : h`${paletteNote}${groupNote}Drag a node to pull the graph around it, drag the background to pan, scroll to zoom. ${topoDirectional
+      <div class="note" id="topoNote">${modeNote}${l13d ? h`${paletteNote}${l1Note}` : fa3d ? faNote : h`${paletteNote}${groupNote}Drag a node to pull the graph around it, drag the background to pan, scroll to zoom. ${topoDirectional
     ? 'Each link is split in two: the half next to a node is coloured by the utilisation of traffic leaving that node (A→B near A, B→A near B).'
     : 'Link colour shows the higher of the two directional utilisations.'} Line width shows capacity; parallel circuits between the same nodes fan out as curves. Hover a node to highlight its circuits in cyan; hover a link for details. `}The row filter highlights matching nodes.</div>
       <div class="topo-wrap" id="topoWrap">
@@ -3144,18 +3347,24 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
           <span><i class="u-high"></i>70–90%</span>
           <span><i class="u-crit"></i>≥90%</span>`}
           <span><i class="u-none"></i>no data</span>
-          <span><i class="hl"></i>hovered node's circuits</span>`}
+          ${l13d
+    ? h`<span><i class="l1-l-wire"></i>L1 link</span>
+          <span><i class="l1-l-idle"></i>L1 link with no L3 circuit</span>
+          <span><i class="fa-l-pillar"></i>L3 node on its L1 node</span>
+          <span><i class="hl"></i>hovered element's L1 route / L3 circuits</span>`
+    : h`<span><i class="hl"></i>hovered node's circuits</span>`}`}
         </div>
       </div>`;
   }
 
   const TOPO_LINK_SPACING = 18;
 
-  // Places each node at its site's location (nearest site up the ParentSite chain that has one), else at its own.
-  // Nodes sharing a site sit on a ring around it. Returns null unless two distinct locations are known.
-  function anchoredPositions(nodeRaw, siteRaw, W, H, { uniform, flipY }) {
+  const naturalCompare = (a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+
+  // The nearest site up the ParentSite chain that has a location.
+  function siteLocator(siteRaw) {
     const parent = new Map(plan.sites.map(s => [s.Name, s.ParentSite]));
-    const siteWithLocation = site => {
+    return site => {
       const seen = new Set();
       for (let st = site; !isBlank(st) && !seen.has(st); st = parent.get(st)) {
         seen.add(st);
@@ -3163,6 +3372,12 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       }
       return null;
     };
+  }
+
+  // Places each node at its site's location (nearest site up the ParentSite chain that has one), else at its own.
+  // Nodes sharing a site sit on a ring around it. Returns null unless two distinct locations are known.
+  function anchoredPositions(nodeRaw, siteRaw, W, H, { uniform, flipY }) {
+    const siteWithLocation = siteLocator(siteRaw);
     const anchors = new Map();
     for (const n of plan.nodes) {
       const site = isBlank(n.Site) ? null : siteWithLocation(n.Site);
@@ -3180,16 +3395,15 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     if (uniform) sx = sy = Math.min(sx ?? Infinity, sy ?? Infinity);
     const mx = (x0 + x1) / 2;
     const my = (y0 + y1) / 2;
-    const natural = (a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+    const place = raw => ({ x: (raw.x - mx) * (sx ?? 0), y: (flipY ? my - raw.y : raw.y - my) * (sy ?? 0) });
 
     const positions = new Map();
     const sites = [];
     const siteOf = new Map();
     let viaSite = 0;
     for (const a of list) {
-      const cx = (a.raw.x - mx) * (sx ?? 0);
-      const cy = (flipY ? my - a.raw.y : a.raw.y - my) * (sy ?? 0);
-      const members = a.members.sort(natural);
+      const { x: cx, y: cy } = place(a.raw);
+      const members = a.members.sort(naturalCompare);
       const r = members.length > 1 ? Math.max(40, (46 * members.length) / (2 * Math.PI)) : 0;
       members.forEach((name, i) => {
         const t = -Math.PI / 2 + (2 * Math.PI * i) / members.length;
@@ -3201,22 +3415,52 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
         sites.push({ name: a.site, x: cx, y: cy, r: r + TOPO_HALO_PAD, count: members.length, members });
       }
     }
-    return { positions, sites, viaSite, siteOf, frame: { mx, my, sx, sy } };
+    return { positions, sites, viaSite, siteOf, frame: { mx, my, sx, sy }, place };
+  }
+
+  // L1 nodes at their site's location, else their own, in the L3 nodes' frame. L1 nodes sharing a spot form a ring.
+  function l1AnchoredPositions(res, l1Raw, siteRaw) {
+    const locate = siteLocator(siteRaw);
+    const spots = new Map();
+    for (const n of plan.l1Nodes) {
+      if (isBlank(n.Name)) continue;
+      const site = isBlank(n.Site) ? null : locate(n.Site);
+      const raw = site ? siteRaw.get(site) : l1Raw.get(n.Name);
+      if (!raw) continue;
+      const key = site ? `s:${site}` : `n:${n.Name}`;
+      if (!spots.has(key)) spots.set(key, { raw, members: [] });
+      spots.get(key).members.push(n.Name);
+    }
+    const out = new Map();
+    for (const { raw, members } of spots.values()) {
+      const c = res.place(raw);
+      const r = members.length > 1 ? Math.max(24, (40 * members.length) / (2 * Math.PI)) : 0;
+      members.sort(naturalCompare).forEach((name, i) => {
+        const t = -Math.PI / 2 + (2 * Math.PI * i) / members.length;
+        out.set(name, { x: c.x + r * Math.cos(t), y: c.y + r * Math.sin(t) });
+      });
+    }
+    return out;
   }
 
   // Schematic X/Y from PlotLayoutElements for one layout, scaled uniformly (Y grows downward).
   function plotLayoutPositions(layout, W, H) {
     const nodeRaw = new Map();
     const siteRaw = new Map();
+    const l1Raw = new Map();
     for (const e of plan.plotElements) {
-      if (e.PlotLayoutName !== layout || !isBlank(e.ElementInterface) || !isBlank(e.ElementL1Node)) continue;
+      if (e.PlotLayoutName !== layout || !isBlank(e.ElementInterface)) continue;
       const x = num(e.X);
       const y = num(e.Y);
       if (x === null || y === null) continue;
-      if (!isBlank(e.ElementNode)) nodeRaw.set(e.ElementNode, { x, y });
+      if (!isBlank(e.ElementL1Node)) {
+        if (isBlank(e.ElementNode)) l1Raw.set(e.ElementL1Node, { x, y });
+      } else if (!isBlank(e.ElementNode)) nodeRaw.set(e.ElementNode, { x, y });
       else if (!isBlank(e.ElementSite)) siteRaw.set(e.ElementSite, { x, y });
     }
-    return anchoredPositions(nodeRaw, siteRaw, W, H, { uniform: true, flipY: false });
+    const res = anchoredPositions(nodeRaw, siteRaw, W, H, { uniform: true, flipY: false });
+    if (res && plan.l1Nodes.length) res.l1Positions = l1AnchoredPositions(res, l1Raw, siteRaw);
+    return res;
   }
 
   // Web Mercator in world units: x and y run 0..1 across the whole map, y downward (as in map tiles).
@@ -3235,7 +3479,16 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     const nodeRaw = new Map(plan.nodes.map(n => [n.Name, coords(n)]).filter(([, p]) => p));
     const siteRaw = new Map(plan.sites.map(st => [st.Name, coords(st)]).filter(([, p]) => p));
     const res = anchoredPositions(nodeRaw, siteRaw, W, H, map ? { uniform: true, flipY: false } : { uniform: false, flipY: true });
-    return res && res.positions.size === plan.nodes.length ? res : null;
+    if (!res || res.positions.size !== plan.nodes.length) return null;
+    if (plan.l1Nodes.length) {
+      res.l1Positions = l1AnchoredPositions(res, new Map(plan.l1Nodes.map(n => [n.Name, coords(n)]).filter(([, p]) => p)), siteRaw);
+      res.l1Waypoints = new Map();
+      for (const [key, rows] of groupBy(plan.l1Waypoints, w => l1LinkKey(w.L1LinkName, w.L1NodeA, w.L1NodeB))) {
+        const pts = rows.filter(w => coords(w)).sort((a, b) => (num(a.Order) ?? 0) - (num(b.Order) ?? 0));
+        if (pts.length) res.l1Waypoints.set(key, { from: rows[0].L1NodeA, pts: pts.map(w => res.place(coords(w))) });
+      }
+    }
+    return res;
   }
 
   const OFM_STYLE = 'https://tiles.openfreemap.org/styles/dark';
@@ -3531,6 +3784,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     if (prevState && prevState.sim) prevState.sim.stop();
     const prev = prevState && !shuffle ? new Map(prevState.nodes.map(n => [n.id, n])) : null;
     const mode = currentTopoLayout();
+    if (l1View3dActive()) { initL1View3D(svgEl, mode, { prev, shuffle, prevState }); return; }
     if (flex3dActive()) { initFlexAlgo3D(svgEl, mode, { prev, shuffle, prevState }); return; }
     const grouped = topoGroups && mode.sites.length > 0;
     const { nodes, links, sim } = placeTopoNodes(mode, { grouped, prev, shuffle });
@@ -3665,60 +3919,31 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     };
   }
 
-  // One tilted pane per visible algorithm, stacked bottom (first) to top. Each pane repeats the layout's node
-  // positions; links are split per direction (solid = usable, dashed = pruned) and pillars join a node's copies.
-  function initFlexAlgo3D(svgEl, mode, { prev, shuffle, prevState }) {
-    const model = flexAlgoModel();
-    const panes = faVisiblePanes(model);
-    const pos = topoBasePositions(mode, { prev, shuffle });
-    const names = plan.nodes.map(n => n.Name);
-    const big = names.length * panes.length > FA_BIG_SCENE;
-    const xs = [...pos.values()].map(p => p.x);
-    const ys = [...pos.values()].map(p => p.y);
+  // Signed offsets that fan out parallel links between the same two ends, as in the 2D graph.
+  function fanOffsets(items, ends) {
+    const offsets = new Array(items.length).fill(0);
+    for (const group of groupBy(items.map((it, k) => ({ it, k })), ({ it }) => ends(it).slice().sort().join('\u0000')).values()) {
+      group.forEach(({ it, k }, j) => {
+        const [a, b] = ends(it);
+        offsets[k] = (j - (group.length - 1) / 2) * TOPO_LINK_SPACING * (a <= b ? 1 : -1);
+      });
+    }
+    return offsets;
+  }
+
+  // Frame, projection, pane outlines and rotate / pan / zoom shared by the stacked 3D views. Pane i is lifted by i gaps.
+  function paneScene(svgEl, pts) {
+    const xs = pts.map(p => p.x);
+    const ys = pts.map(p => p.y);
     const pad = 60;
     const [x0, x1, y0, y1] = [Math.min(...xs) - pad, Math.max(...xs) + pad, Math.min(...ys) - pad, Math.max(...ys) + pad];
     const mid = { x: (x0 + x1) / 2, y: (y0 + y1) / 2 };
     const ext = Math.max(x1 - x0, y1 - y0);
-
-    const offsets = new Array(model.circuits.length).fill(0);
-    for (const group of groupBy(model.circuits.map((c, k) => ({ c, k })), ({ c }) => [c.NodeA, c.NodeB].sort().join('\u0000')).values()) {
-      group.forEach(({ c, k }, j) => { offsets[k] = (j - (group.length - 1) / 2) * TOPO_LINK_SPACING * (c.NodeA <= c.NodeB ? 1 : -1); });
-    }
-
     const svg = d3.select(svgEl);
     svg.selectAll('*').remove();
     svgEl.classList.remove('node-hover', 'fa-hover');
     destroyBaseMap();
     const root = svg.append('g').attr('class', 'fa-scene');
-    const span = names.map(n => {
-      const idx = panes.map((p, i) => (p.nodes.has(n) ? i : -1)).filter(i => i >= 0);
-      return { n, lo: idx.length ? idx[0] : -1, hi: idx.length ? idx[idx.length - 1] : -1 };
-    });
-    const layers = panes.map((pane, i) => {
-      const pillars = i === 0 ? null : root.append('g').attr('class', 'fa-pillars').selectAll('line')
-        .data(span.filter(s => s.lo >= 0 && s.lo <= i - 1 && s.hi >= i)).join('line')
-        .attr('class', 'fa-pillar').attr('data-name', s => s.n);
-      const g = root.append('g').attr('class', `fa-pane${pane.base ? ' fa-base' : ''}`).attr('data-algo', pane.algo);
-      const plane = g.append('polygon').attr('class', 'fa-plane').attr('fill', pane.color).attr('stroke', pane.color);
-      const label = g.append('text').attr('class', 'fa-pane-label').attr('text-anchor', 'end').attr('fill', pane.color).text(pane.label);
-      const shown = pane.links.map((l, k) => ({ l, k })).filter(({ l }) => !big || l.status !== 'pruned');
-      const halves = g.append('g').selectAll('path')
-        .data(shown.flatMap(({ l, k }) => [{ l, k, half: 'a', ok: l.a.ok }, { l, k, half: 'b', ok: l.b.ok }])).join('path')
-        .attr('class', d => `fa-half ${d.ok ? 'fa-ok' : 'fa-pruned'}`)
-        .attr('data-a', d => d.l.c.NodeA).attr('data-b', d => d.l.c.NodeB)
-        .attr('stroke', pane.color);
-      const hits = g.append('g').selectAll('path').data(shown).join('path')
-        .attr('class', ({ l }) => `fa-link fa-${l.status}`)
-        .attr('data-algo', pane.algo).attr('data-i', ({ k }) => k)
-        .attr('data-a', ({ l }) => l.c.NodeA).attr('data-b', ({ l }) => l.c.NodeB);
-      const node = g.append('g').selectAll('g').data(names.filter(n => pane.nodes.has(n) || !big)).join('g')
-        .attr('class', n => `fa-node${pane.nodes.has(n) ? '' : ' ghost'}`)
-        .attr('data-name', n => n).attr('data-algo', pane.algo);
-      node.append('circle').attr('r', 10).attr('stroke', pane.color);
-      node.append('text').attr('class', 'node-label').attr('text-anchor', 'middle').attr('dy', 3.5)
-        .text(n => (n.length > 8 ? `${n.slice(0, 7)}…` : n));
-      return { pane, pillars, plane, label, halves, hits, node };
-    });
 
     const rad = Math.PI / 180;
     const projector = () => {
@@ -3735,12 +3960,91 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     };
     const corners = [[x0, y0], [x1, y0], [x1, y1], [x0, y1]];
     const leftCorner = (P, i) => corners.map(([x, y]) => P(x, y, i)).reduce((m, p) => (p[0] < m[0] ? p : m));
-    const draw = () => {
+    const addPane = (g, color, text) => ({
+      text,
+      plane: g.append('polygon').attr('class', 'fa-plane').attr('fill', color).attr('stroke', color),
+      label: g.append('text').attr('class', 'fa-pane-label').attr('text-anchor', 'end').attr('fill', color).text(text),
+    });
+    const drawPane = (P, pane, i) => {
+      pane.plane.attr('points', corners.map(([x, y]) => P(x, y, i).join(',')).join(' '));
+      const [lx, ly] = leftCorner(P, i);
+      pane.label.attr('x', lx - 12).attr('y', ly + 4);
+    };
+    const bounds = panes => () => {
       const P = projector();
-      layers.forEach(({ pillars, plane, label, halves, hits, node }, i) => {
-        plane.attr('points', corners.map(([x, y]) => P(x, y, i).join(',')).join(' '));
+      return panes.flatMap((pane, i) => {
+        const box = corners.map(([x, y]) => ({ x: P(x, y, i)[0], y: P(x, y, i)[1], r: 14 }));
         const [lx, ly] = leftCorner(P, i);
-        label.attr('x', lx - 12).attr('y', ly + 4);
+        return [...box, { x: lx - 12 - 6.5 * pane.text.length, y: ly, r: 0 }];
+      });
+    };
+    const interact = draw => {
+      const zoom = d3.zoom()
+        .scaleExtent([0.05, 8])
+        .filter(e => e.type === 'wheel' || (e.shiftKey && !e.button))
+        .on('start', e => { if (e.sourceEvent && e.sourceEvent.type !== 'wheel') svgEl.classList.add('panning'); })
+        .on('zoom', e => { root.attr('transform', e.transform); topoState.transform = e.transform; })
+        .on('end', () => svgEl.classList.remove('panning'));
+      svg.call(zoom).on('dblclick.zoom', null);
+      svg.call(d3.drag()
+        .filter(e => !e.shiftKey && !e.button)
+        .on('start', () => svgEl.classList.add('panning'))
+        .on('drag', e => {
+          topoYaw = (((topoYaw + e.dx * 0.4) % 360) + 540) % 360 - 180;
+          topoTilt = Math.max(0, Math.min(85, topoTilt - e.dy * 0.3));
+          draw();
+        })
+        .on('end', () => svgEl.classList.remove('panning')));
+      return zoom;
+    };
+    return { svg, root, projector, addPane, drawPane, bounds, interact };
+  }
+
+  // One tilted pane per visible algorithm, stacked bottom (first) to top. Each pane repeats the layout's node
+  // positions; links are split per direction (solid = usable, dashed = pruned) and pillars join a node's copies.
+  function initFlexAlgo3D(svgEl, mode, { prev, shuffle, prevState }) {
+    const model = flexAlgoModel();
+    const panes = faVisiblePanes(model);
+    const pos = topoBasePositions(mode, { prev, shuffle });
+    const names = plan.nodes.map(n => n.Name);
+    const big = names.length * panes.length > FA_BIG_SCENE;
+    const offsets = fanOffsets(model.circuits, c => [c.NodeA, c.NodeB]);
+
+    const scene = paneScene(svgEl, [...pos.values()]);
+    const { root } = scene;
+    const span = names.map(n => {
+      const idx = panes.map((p, i) => (p.nodes.has(n) ? i : -1)).filter(i => i >= 0);
+      return { n, lo: idx.length ? idx[0] : -1, hi: idx.length ? idx[idx.length - 1] : -1 };
+    });
+    const layers = panes.map((pane, i) => {
+      const pillars = i === 0 ? null : root.append('g').attr('class', 'fa-pillars').selectAll('line')
+        .data(span.filter(s => s.lo >= 0 && s.lo <= i - 1 && s.hi >= i)).join('line')
+        .attr('class', 'fa-pillar').attr('data-name', s => s.n);
+      const g = root.append('g').attr('class', `fa-pane${pane.base ? ' fa-base' : ''}`).attr('data-algo', pane.algo);
+      const frame = scene.addPane(g, pane.color, pane.label);
+      const shown = pane.links.map((l, k) => ({ l, k })).filter(({ l }) => !big || l.status !== 'pruned');
+      const halves = g.append('g').selectAll('path')
+        .data(shown.flatMap(({ l, k }) => [{ l, k, half: 'a', ok: l.a.ok }, { l, k, half: 'b', ok: l.b.ok }])).join('path')
+        .attr('class', d => `fa-half ${d.ok ? 'fa-ok' : 'fa-pruned'}`)
+        .attr('data-a', d => d.l.c.NodeA).attr('data-b', d => d.l.c.NodeB)
+        .attr('stroke', pane.color);
+      const hits = g.append('g').selectAll('path').data(shown).join('path')
+        .attr('class', ({ l }) => `fa-link fa-${l.status}`)
+        .attr('data-algo', pane.algo).attr('data-i', ({ k }) => k)
+        .attr('data-a', ({ l }) => l.c.NodeA).attr('data-b', ({ l }) => l.c.NodeB);
+      const node = g.append('g').selectAll('g').data(names.filter(n => pane.nodes.has(n) || !big)).join('g')
+        .attr('class', n => `fa-node${pane.nodes.has(n) ? '' : ' ghost'}`)
+        .attr('data-name', n => n).attr('data-algo', pane.algo);
+      node.append('circle').attr('r', 10).attr('stroke', pane.color);
+      node.append('text').attr('class', 'node-label').attr('text-anchor', 'middle').attr('dy', 3.5)
+        .text(n => (n.length > 8 ? `${n.slice(0, 7)}…` : n));
+      return { pane, frame, pillars, halves, hits, node };
+    });
+
+    const draw = () => {
+      const P = scene.projector();
+      layers.forEach(({ frame, pillars, halves, hits, node }, i) => {
+        scene.drawPane(P, frame, i);
         const curve = new Map();
         const curveOf = k => {
           if (!curve.has(k)) {
@@ -3763,42 +4067,260 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       });
     };
     draw();
-
-    const bounds = () => {
-      const P = projector();
-      return layers.flatMap((layer, i) => {
-        const pts = corners.map(([x, y]) => ({ x: P(x, y, i)[0], y: P(x, y, i)[1], r: 14 }));
-        const [lx, ly] = leftCorner(P, i);
-        return [...pts, { x: lx - 12 - 6.5 * layer.pane.label.length, y: ly, r: 0 }];
-      });
-    };
-
-    const zoom = d3.zoom()
-      .scaleExtent([0.05, 8])
-      .filter(e => e.type === 'wheel' || (e.shiftKey && !e.button))
-      .on('start', e => { if (e.sourceEvent && e.sourceEvent.type !== 'wheel') svgEl.classList.add('panning'); })
-      .on('zoom', e => { root.attr('transform', e.transform); topoState.transform = e.transform; })
-      .on('end', () => svgEl.classList.remove('panning'));
-    svg.call(zoom).on('dblclick.zoom', null);
-    svg.call(d3.drag()
-      .filter(e => !e.shiftKey && !e.button)
-      .on('start', () => svgEl.classList.add('panning'))
-      .on('drag', e => {
-        topoYaw = (((topoYaw + e.dx * 0.4) % 360) + 540) % 360 - 180;
-        topoTilt = Math.max(0, Math.min(85, topoTilt - e.dy * 0.3));
-        draw();
-      })
-      .on('end', () => svgEl.classList.remove('panning')));
+    const zoom = scene.interact(draw);
 
     topoState = {
       fa: { model, byAlgo: new Map(model.panes.map(p => [p.algo, p])), big },
-      nodes: names.map(n => ({ id: n, ...pos.get(n) })), sites: [], edges: [], sim: null, zoom, bounds,
+      nodes: names.map(n => ({ id: n, ...pos.get(n) })), sites: [], edges: [], sim: null, zoom, bounds: scene.bounds(layers.map(l => l.frame)),
       redraw: draw, resize: draw, transform: null, nodesByName: new Map(plan.nodes.map(n => [n.Name, n])),
     };
-    if (prevState && prevState.transform && !shuffle) svg.call(zoom.transform, prevState.transform);
+    if (prevState && prevState.transform && !shuffle) scene.svg.call(zoom.transform, prevState.transform);
     else fitTopology();
     attachTopologyEvents(svgEl);
     highlightTopology();
+  }
+
+  /* ---------------- 3D L1 / L3 panes ---------------- */
+
+  const L1_COLOR = '#c08cff';
+  const L3_COLOR = '#5db6ff';
+  const l1View3dActive = () => topoL1 && Boolean(plan) && plan.l1Nodes.length > 0;
+  const L1_ROUTE_SOURCE = {
+    actual: 'Route from ActualL1CircuitPathHops',
+    hops: 'Route from the L1 circuit path hops',
+    shortest: 'Lowest L1 Metric route, estimated by the viewer (the plan has no path hops for it)',
+  };
+
+  // L1 node positions: the layout's own (site or L1 node X/Y, or longitude/latitude), else under the L3 nodes
+  // attached to it, else settled by a force layout along the L1 links around the placed ones.
+  function l1ScenePositions(mode, model, l3pos) {
+    const pos = new Map();
+    for (const n of model.nodes) if (mode.l1Positions && mode.l1Positions.has(n)) pos.set(n, mode.l1Positions.get(n));
+    for (const n of model.nodes) {
+      const under = [...(model.l1To3.get(n) || [])].map(m => l3pos.get(m)).filter(Boolean);
+      if (!pos.has(n) && under.length) pos.set(n, { x: d3.mean(under, p => p.x), y: d3.mean(under, p => p.y) });
+    }
+    if (pos.size === model.nodes.length) return pos;
+    const nbrs = groupBy(model.links.flatMap(k => [{ n: k.a, m: k.b }, { n: k.b, m: k.a }]), e => e.n);
+    const sims = model.nodes.map((n, i) => {
+      if (pos.has(n)) return { id: n, ...pos.get(n), fx: pos.get(n).x, fy: pos.get(n).y };
+      const near = (nbrs.get(n) || []).map(e => pos.get(e.m)).filter(Boolean);
+      return near.length ? { id: n, x: d3.mean(near, p => p.x) + 30 * Math.cos(i), y: d3.mean(near, p => p.y) + 30 * Math.sin(i) } : { id: n };
+    });
+    const sim = d3.forceSimulation(sims)
+      .force('link', d3.forceLink(model.links.map(k => ({ source: k.a, target: k.b }))).id(d => d.id).distance(90))
+      .force('charge', d3.forceManyBody().strength(-300))
+      .force('collide', d3.forceCollide(28))
+      .stop();
+    for (let i = 0; i < 300; i++) sim.tick();
+    for (const d of sims) if (!pos.has(d.id)) pos.set(d.id, { x: d.x, y: d.y });
+    return pos;
+  }
+
+  // The L1 topology as the bottom pane and the L3 topology above it, over the layout's node positions. Pillars join
+  // each L3 node to its L1 node; hovering shows an L3 circuit's L1 route or the L3 circuits an L1 link carries.
+  function initL1View3D(svgEl, mode, { prev, shuffle, prevState }) {
+    const model = l1Model();
+    const l3pos = topoBasePositions(mode, { prev, shuffle });
+    const l1pos = l1ScenePositions(mode, model, l3pos);
+    const names = plan.nodes.map(n => n.Name);
+    const l1Rows = new Map(plan.l1Nodes.map(n => [n.Name, n]));
+    const l3Rows = new Map(plan.nodes.map(n => [n.Name, n]));
+    const up = r => isTrue(r.Active ?? 'T') && !isTrue(r.Failed);
+    const pal = mode.palette;
+    const colorOf = u => (pal ? paletteColor(pal, u ?? null) : null);
+    const bandOf = u => (colorOf(u) ? 'u-pal' : utilClass(u ?? null));
+    const maxCap = model.circuits.reduce((m, r) => Math.max(m, r.c._cap || 0), 0);
+    const width = c => (maxCap && c._cap ? 1.5 + 3.5 * Math.sqrt(c._cap / maxCap) : 2);
+    const maxRiders = model.links.reduce((m, k) => Math.max(m, k.riders.length), 0);
+    const wireWidth = k => (k.riders.length ? 2 + 4 * Math.sqrt(k.riders.length / maxRiders) : 1.5);
+    const offsets = fanOffsets(model.circuits, r => [r.c.NodeA, r.c.NodeB]);
+    const l1Offsets = fanOffsets(model.links, k => [k.a, k.b]);
+    const carrying = model.links.filter(k => k.riders.length).length;
+    const overL1 = model.circuits.filter(r => r.route && r.route.links).length;
+
+    const scene = paneScene(svgEl, [...l3pos.values(), ...l1pos.values()]);
+    const { root } = scene;
+    const g1 = root.append('g').attr('class', 'fa-pane l1-pane').attr('data-layer', 'l1');
+    const f1 = scene.addPane(g1, L1_COLOR, `L1 · ${model.nodes.length} nodes · ${model.links.length} links · ${carrying} carry L3 circuits`);
+    const wires = g1.append('g').selectAll('path').data(model.links).join('path')
+      .attr('class', k => `l1-wire${k.riders.length ? '' : ' idle'}${k.up ? '' : ' inactive'}`)
+      .attr('data-i', k => k.i).attr('stroke', L1_COLOR).attr('stroke-width', wireWidth);
+    const wireHits = g1.append('g').selectAll('path').data(model.links).join('path')
+      .attr('class', 'fa-link l1-link').attr('data-i', k => k.i).attr('data-a', k => k.a).attr('data-b', k => k.b);
+    const l1Node = g1.append('g').selectAll('g').data(model.nodes).join('g')
+      .attr('class', n => `fa-node l1-node${up(l1Rows.get(n) || {}) ? '' : ' inactive'}`).attr('data-l1', n => n);
+    l1Node.append('rect').attr('x', -9).attr('y', -9).attr('width', 18).attr('height', 18).attr('rx', 3).attr('stroke', L1_COLOR);
+    l1Node.append('text').attr('class', 'node-label').attr('text-anchor', 'middle').attr('dy', 3)
+      .text(n => (n.length > 6 ? `${n.slice(0, 5)}…` : n));
+
+    const pillarData = [...model.l3To1].flatMap(([l3, l1s]) => [...l1s].map(l1 => ({ l3, l1 })));
+    const pillars = root.append('g').attr('class', 'fa-pillars').selectAll('line').data(pillarData).join('line')
+      .attr('class', 'fa-pillar').attr('data-name', d => d.l3).attr('data-l1', d => d.l1);
+
+    const g3 = root.append('g').attr('class', 'fa-pane l3-pane').attr('data-layer', 'l3');
+    const f3 = scene.addPane(g3, L3_COLOR, `L3 · ${names.length} nodes · ${model.circuits.length} circuits · ${overL1} over L1`);
+    const halfData = model.circuits.flatMap(r => [
+      { r, half: 'a', u: topoDirectional ? r.c._uA : r.c._maxU },
+      { r, half: 'b', u: topoDirectional ? r.c._uB : r.c._maxU },
+    ]);
+    const halves = g3.append('g').selectAll('path').data(halfData).join('path')
+      .attr('class', d => `l3-half half-${d.half} ${bandOf(d.u)}${up(d.r.c) ? '' : ' inactive'}`)
+      .attr('data-i', d => d.r.i).attr('stroke', d => colorOf(d.u)).attr('stroke-width', d => width(d.r.c));
+    const hits = g3.append('g').selectAll('path').data(model.circuits).join('path')
+      .attr('class', r => `fa-link l3-link${r.l1c ? '' : ' no-l1'}`)
+      .attr('data-i', r => r.i).attr('data-a', r => r.c.NodeA).attr('data-b', r => r.c.NodeB);
+    const l3Node = g3.append('g').selectAll('g').data(names).join('g')
+      .attr('class', n => `fa-node l3-node${up(l3Rows.get(n)) ? '' : ' inactive'}`).attr('data-name', n => n);
+    l3Node.append('circle').attr('r', 10).attr('stroke', L3_COLOR);
+    l3Node.append('text').attr('class', 'node-label').attr('text-anchor', 'middle').attr('dy', 3.5)
+      .text(n => (n.length > 8 ? `${n.slice(0, 7)}…` : n));
+
+    const l1Path = (P, k) => {
+      const wp = mode.l1Waypoints && mode.l1Waypoints.get(l1LinkKey(k.l.Name, k.a, k.b));
+      if (!wp) return faCurve(P, l1pos.get(k.a), l1pos.get(k.b), l1Offsets[k.i], 0).full;
+      const via = wp.from === k.a ? wp.pts : [...wp.pts].reverse();
+      return `M${[l1pos.get(k.a), ...via, l1pos.get(k.b)].map(p => P(p.x, p.y, 0).join(',')).join('L')}`;
+    };
+    const at = (P, p, i) => {
+      const [sx, sy] = P(p.x, p.y, i);
+      return `translate(${sx},${sy}) scale(${topoNodeScale})`;
+    };
+    const draw = () => {
+      const P = scene.projector();
+      scene.drawPane(P, f1, 0);
+      scene.drawPane(P, f3, 1);
+      const wireD = model.links.map(k => l1Path(P, k));
+      wires.attr('d', k => wireD[k.i]);
+      wireHits.attr('d', k => wireD[k.i]);
+      l1Node.attr('transform', n => at(P, l1pos.get(n), 0));
+      pillars.each(function (d) {
+        const [ax, ay] = P(l1pos.get(d.l1).x, l1pos.get(d.l1).y, 0);
+        const [bx, by] = P(l3pos.get(d.l3).x, l3pos.get(d.l3).y, 1);
+        d3.select(this).attr('x1', ax).attr('y1', ay).attr('x2', bx).attr('y2', by);
+      });
+      const curves = model.circuits.map(r => faCurve(P, l3pos.get(r.c.NodeA), l3pos.get(r.c.NodeB), offsets[r.i], 1));
+      halves.attr('d', d => curves[d.r.i][d.half]);
+      hits.attr('d', r => curves[r.i].full);
+      l3Node.attr('transform', n => at(P, l3pos.get(n), 1));
+    };
+    draw();
+    const zoom = scene.interact(draw);
+
+    topoState = {
+      l1: { model, nodesByName: l1Rows },
+      nodes: names.map(n => ({ id: n, ...l3pos.get(n) })), sites: [], edges: [], sim: null, zoom, bounds: scene.bounds([f1, f3]),
+      redraw: draw, resize: draw, transform: null, nodesByName: l3Rows,
+    };
+    if (prevState && prevState.transform && !shuffle) scene.svg.call(zoom.transform, prevState.transform);
+    else fitTopology();
+    attachTopologyEvents(svgEl);
+    highlightTopology();
+  }
+
+  // Hovered element and what is layered with it: an L3 node's or circuit's L1 route, or the L3 circuits an L1 link
+  // or node carries. Pillars light up when both their ends do.
+  function highlightL1(svg, el) {
+    svg.classList.toggle('fa-hover', Boolean(el));
+    for (const x of svg.querySelectorAll('.fa-scene .hl')) x.classList.remove('hl');
+    if (!el) return;
+    const m = topoState.l1.model;
+    const l3 = new Set();
+    const l1 = new Set();
+    const cs = new Set();
+    const ws = new Set();
+    const addWire = k => { ws.add(k.i); l1.add(k.a); l1.add(k.b); };
+    const addCircuit = (r, withRoute) => {
+      cs.add(r.i);
+      l3.add(r.c.NodeA);
+      l3.add(r.c.NodeB);
+      if (withRoute && r.route && r.route.links) r.route.links.forEach(addWire);
+    };
+    const d = el.dataset;
+    if (el.classList.contains('l3-link')) addCircuit(m.circuits[Number(d.i)], true);
+    else if (el.classList.contains('l1-link')) {
+      const k = m.links[Number(d.i)];
+      addWire(k);
+      for (const i of k.riders) addCircuit(m.circuits[i], false);
+    } else if (d.l1) {
+      l1.add(d.l1);
+      for (const n of m.l1To3.get(d.l1) || []) l3.add(n);
+      for (const k of m.links) if (k.a === d.l1 || k.b === d.l1) addWire(k);
+      for (const r of m.circuits) if (r.route && r.route.nodes.includes(d.l1)) addCircuit(r, false);
+    } else if (d.name) {
+      l3.add(d.name);
+      for (const n of m.l3To1.get(d.name) || []) l1.add(n);
+      for (const r of m.circuits) if (r.c.NodeA === d.name || r.c.NodeB === d.name) addCircuit(r, true);
+    }
+    const mark = (sel, hit) => { for (const x of svg.querySelectorAll(sel)) if (hit(x.dataset)) x.classList.add('hl'); };
+    mark('.l3-node', x => l3.has(x.name));
+    mark('.l1-node', x => l1.has(x.l1));
+    mark('.l3-half, .l3-link', x => cs.has(Number(x.i)));
+    mark('.l1-wire, .l1-link', x => ws.has(Number(x.i)));
+    mark('.fa-pillar', x => l3.has(x.name) && l1.has(x.l1));
+  }
+
+  function l3CircuitTip(i) {
+    const r = topoState.l1.model.circuits[i];
+    if (!r) return null;
+    const c = r.c;
+    const u = v => (v === null || v === undefined ? '—' : `${v.toFixed(1)}%`);
+    let l1 = h`<span class="muted">No L1 circuit: L3 only</span>`;
+    if (r.missing) {
+      l1 = h`<span class="fa-tip-pruned">L1 circuit not found</span> for <span class="mono">${c.L1CircuitNodeA} ${c.L1CircuitPortA} ↔ ${c.L1CircuitNodeB} ${c.L1CircuitPortB}</span>`;
+    } else if (r.l1c && !r.route.links) {
+      l1 = h`L1 circuit <b>${r.l1c.Name}</b> · <span class="fa-tip-pruned">no L1 route</span> from ${r.l1c.L1NodeA} to ${r.l1c.L1NodeB}`;
+    } else if (r.l1c) {
+      l1 = h`L1 circuit <b>${r.l1c.Name}</b> · ${r.route.links.length} L1 link${r.route.links.length === 1 ? '' : 's'}, metric ${r.route.metric}<br>
+        Route <span class="mono">${r.route.nodes.join(' → ')}</span><br><span class="muted">${L1_ROUTE_SOURCE[r.route.source]}</span>`;
+    }
+    return h`<b>${c.NodeA}</b> <span class="mono muted">${c.InterfaceA}</span> ↔ <b>${c.NodeB}</b> <span class="mono muted">${c.InterfaceB}</span><br>
+      Capacity ${fmtBw(c._cap) || '—'} · A→B ${u(c._uA)} · B→A ${u(c._uB)}<br>${l1}`;
+  }
+
+  function l1LinkTip(i) {
+    const m = topoState.l1.model;
+    const k = m.links[i];
+    if (!k) return null;
+    const riders = k.riders.map(j => m.circuits[j].c);
+    const shown = riders.slice(0, 10);
+    return h`<b>${isBlank(k.l.Name) ? `${k.a}–${k.b}` : k.l.Name}</b> <span class="muted">L1 link</span>${k.up ? '' : h` · <span class="fa-tip-pruned">down</span>`}<br>
+      <b>${k.a}</b> ↔ <b>${k.b}</b> · Metric ${k.l.Metric ?? '—'}${isBlank(k.l.Delay) ? '' : ` · Delay ${k.l.Delay} ms`}${isBlank(k.l.Distance) ? '' : ` · Distance ${k.l.Distance}`}<br>
+      ${riders.length
+    ? h`Carries ${riders.length} L3 circuit${riders.length === 1 ? '' : 's'} over ${k.l1cs.size} L1 circuit${k.l1cs.size === 1 ? '' : 's'}:<br>
+        ${shown.map(c => h`<span class="mono">${c.NodeA} ↔ ${c.NodeB}</span><br>`)}${riders.length > shown.length ? h`<span class="muted">+${riders.length - shown.length} more</span>` : ''}`
+    : h`<span class="muted">Carries no L3 circuit</span>`}`;
+  }
+
+  function l1NodeTip(name) {
+    const m = topoState.l1.model;
+    const n = topoState.l1.nodesByName.get(name) || {};
+    const l3 = [...(m.l1To3.get(name) || [])].sort(naturalCompare);
+    const links = m.links.filter(k => k.a === name || k.b === name).length;
+    const through = m.circuits.filter(r => r.route && r.route.nodes.includes(name)).length;
+    return h`<b>${name}</b> <span class="muted">L1 node${isBlank(n.Site) ? '' : ` @ ${n.Site}`}</span>${isBlank(n.Type) ? '' : ` · ${n.Type}`}<br>
+      ${l3.length ? `L3 nodes: ${l3.join(', ')}` : h`<span class="muted">No L3 node attached</span>`}<br>
+      ${links} L1 link${links === 1 ? '' : 's'} · ${through} L3 circuit${through === 1 ? '' : 's'} routed over it`;
+  }
+
+  function l3NodeTip(name) {
+    const n = topoState.nodesByName.get(name);
+    if (!n) return null;
+    const m = topoState.l1.model;
+    const l1 = [...(m.l3To1.get(name) || [])].sort(naturalCompare);
+    const mine = m.circuits.filter(r => r.c.NodeA === name || r.c.NodeB === name);
+    return h`<b>${n.Name}</b>${n.Site ? h` <span class="muted">@ ${n.Site}</span>` : ''}<br>
+      ${l1.length ? `Attached to L1 node ${l1.join(', ')}` : h`<span class="muted">Not attached to an L1 node</span>`}<br>
+      ${mine.length} circuit${mine.length === 1 ? '' : 's'}, ${mine.filter(r => r.l1c).length} over L1<br><span class="muted">Double-click to open in Nodes</span>`;
+  }
+
+  function l1Tip(target) {
+    const el = target.closest('.l1-node, .l3-node, .l1-link, .l3-link');
+    if (!el) return null;
+    if (el.dataset.l1) return l1NodeTip(el.dataset.l1);
+    if (el.classList.contains('l1-link')) return l1LinkTip(Number(el.dataset.i));
+    if (el.classList.contains('l3-link')) return l3CircuitTip(Number(el.dataset.i));
+    return l3NodeTip(el.dataset.name);
   }
 
   // Hovered node: its copies, pillars and links on every pane stay bright; everything else fades.
@@ -3861,18 +4383,23 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     const wrap = $('topoWrap');
     svg.addEventListener('pointermove', e => { if (!svg.classList.contains('panning')) showTip(e, tip, wrap); });
     svg.addEventListener('pointerleave', () => { tip.style.display = 'none'; });
-    const highlight = (name) => (topoState && topoState.fa ? highlightFaNode(svg, name) : highlightNodeLinks(svg, name));
+    const hoverable = '.node, .fa-node, .l1-link, .l3-link';
+    const highlight = el => {
+      if (topoState && topoState.l1) highlightL1(svg, el);
+      else if (topoState && topoState.fa) highlightFaNode(svg, el && el.dataset.name);
+      else highlightNodeLinks(svg, el && el.dataset.name);
+    };
     svg.addEventListener('pointerover', e => {
-      const g = e.target.closest('.node, .fa-node');
-      if (g && !svg.classList.contains('panning')) highlight(g.dataset.name);
+      const g = e.target.closest(hoverable);
+      if (g && !svg.classList.contains('panning')) highlight(g);
     });
     svg.addEventListener('pointerout', e => {
-      const g = e.target.closest('.node, .fa-node');
+      const g = e.target.closest(hoverable);
       if (g && !(e.relatedTarget && g.contains(e.relatedTarget))) highlight(null);
     });
     svg.addEventListener('dblclick', e => {
       const g = e.target.closest('.node, .fa-node');
-      if (!g) return;
+      if (!g || !g.dataset.name) return;
       let filter = g.dataset.name;
       if (g.dataset.site) {
         const own = new Set(topoState.nodes.find(d => d.id === g.dataset.name).site.members.map(m => topoState.nodesByName.get(m).Site));
@@ -3909,7 +4436,8 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     const groupDeg = id => topoState.edges.filter(x => x.a === id || x.b === id);
     const faNode = e.target.closest('.fa-node');
     const faLink = e.target.closest('.fa-link');
-    if (faNode) content = faNodeTip(faNode.dataset.name);
+    if (topoState.l1) content = l1Tip(e.target);
+    else if (faNode) content = faNodeTip(faNode.dataset.name);
     else if (faLink) content = faLinkTip(faLink.dataset.algo, Number(faLink.dataset.i));
     else if (node && node.dataset.site) {
       const s = topoState.nodes.find(d => d.id === node.dataset.name).site;
@@ -3962,6 +4490,11 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     const f = $('filterText').value.trim().toLowerCase();
     const matches = n => n && [n.Name, n.Site, n.IPAddress, n.IPV6Address].some(v => String(v ?? '').toLowerCase().includes(f));
     for (const g of svg.querySelectorAll('.node, .fa-node')) {
+      if (g.dataset.l1) {
+        const n = topoState.l1.nodesByName.get(g.dataset.l1) || {};
+        g.classList.toggle('dim', Boolean(f) && ![g.dataset.l1, n.Site].some(v => String(v ?? '').toLowerCase().includes(f)));
+        continue;
+      }
       const s = g.dataset.site && topoState.nodes.find(d => d.id === g.dataset.name).site;
       const hit = !f || (s
         ? s.name.toLowerCase().includes(f) || s.members.some(m => matches(topoState.nodesByName.get(m)))
@@ -3996,8 +4529,15 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       case 'topo-layout': topoLayout = e.target.value; topoState = null; render(); break;
       case 'topo-map': topoMap = e.target.checked; topoState = null; render(); break;
       case 'topo-flex3d':
-        topoFlex3d = e.target.checked;
-        if (topoFlex3d) { topoYaw = FA_START_YAW; topoTilt = FA_START_TILT; }
+      case 'topo-l1':
+        if (e.target.dataset.action === 'topo-l1') topoL1 = e.target.checked;
+        else topoFlex3d = e.target.checked;
+        if (e.target.checked) {
+          if (e.target.dataset.action === 'topo-l1') topoFlex3d = false;
+          else topoL1 = false;
+          topoYaw = FA_START_YAW;
+          topoTilt = FA_START_TILT;
+        }
         if (topoState) topoState.transform = null;
         render();
         break;
@@ -4026,7 +4566,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     if (e.target.dataset.action === 'topo-pane-gap') {
       topoPaneGap = Math.max(0.2, Math.min(3, Number(e.target.value) || 1));
       $('topoPaneGapValue').textContent = scaleLabel(topoPaneGap);
-      if (topoState && topoState.fa) topoState.redraw();
+      if (topoState && (topoState.fa || topoState.l1)) topoState.redraw();
       return;
     }
     if (e.target.dataset.action === 'topo-node-scale') {
