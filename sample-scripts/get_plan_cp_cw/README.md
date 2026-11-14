@@ -142,14 +142,15 @@ python get_plan_cp_cw.py <baseplan> <output_planfile> <device_auth_file> <networ
 | `home_dir` | Home directory — searched for trim configuration files |
 | `user_upload_dir` | Path where user uploaded external files are available — searched for trim configuration files |
 | `archive_root_dir` | Path to access archive root directory — accepted but not used |
-| `--tmpfile` | Intermediate plan file name (default: `TMP_PLANFILE`, `/tmp/planfile.pln`); extension determines download format |
+| `--tmpfile` | Intermediate plan file path; extension determines download format. By default, `TMP_PLANFILE` (`planfile.pln`) is created in a private per-run temporary directory (see [Temporary files](#temporary-files)) |
 | `--ip` | Crosswork Network Controller IP address *(optional, for testing only)* |
 | `--username`, `-u` | CNC username *(optional, for testing only)* |
 | `--password`, `-p` | CNC password *(optional, for testing only)* |
 | `--jwt`, `-j` | Path to a JWT file. When `--username`, `--password`, and `--jwt` are omitted, a non-empty `~/.crosswork/<ip>.jwt` is used. A missing or empty file falls back to CLI flags, then `CW_USERNAME` / `CW_PASSWORD`, then the script constants |
 | `-k`, `--insecure` | Disable SSL certificate verification (default: `INSECURE`, `False`) |
 | `--version`, `-v` | Planfile version (default: `PLAN_VERSION`, empty string) |
-| `--geoloc` | Populate node `Longitude` and `Latitude` in the `<Nodes>` table from DLM Inventory (default: `GEOLOC`, `False`). It changes the default intermediate file from `/tmp/planfile.pln` to `/tmp/planfile.txt`; when supplying `--tmpfile`, it must end in `.txt`. |
+| `--geoloc` | Populate node `Longitude` and `Latitude` in the `<Nodes>` table from DLM Inventory (default: `GEOLOC`, `False`). It changes the default intermediate file from `planfile.pln` to `planfile.txt`; when supplying `--tmpfile`, it must end in `.txt`. |
+| `--debug` | Enable DEBUG logging: per-request HTTP lines, trim file paths, unmatched geoloc node names, and Python tracebacks. Overrides `CW_LOG_LEVEL` (see [Troubleshooting](#troubleshooting)) |
 
 > **Note**: The `--ip`, `--username`, `--password`, `--version`, `-k` and `--geoloc` parameters are optional and intended for quick testing purposes only. For production deployments, configure these values as constants within the script (`CROSSWORK_IP`, `PLAN_VERSION`, `INSECURE`, `GEOLOC`, etc.) or use environment variables for credentials. Because `-k` and `--geoloc` are on/off flags, setting `INSECURE` or `GEOLOC` to `True` in the script cannot be overridden back to `False` from the command line.
 
@@ -163,9 +164,9 @@ python get_plan_cp_cw.py ignored output.db devauth.txt netaccess.txt /home/user 
 python get_plan_cp_cw.py ignored output.db devauth.txt netaccess.txt /home/user /uploads /archive --ip 10.58.239.120 --geoloc
 
 # The script internally:
-# 1. Downloads plan as /tmp/planfile.pln (/tmp/planfile.txt with --geoloc)
+# 1. Downloads plan as <private temp dir>/planfile.pln (planfile.txt with --geoloc)
 # 2. Optionally trims nodes (if trim config files exist in home_dir or user_upload_dir)
-# 3. Converts /tmp/planfile.pln → output.db using mate_convert
+# 3. Converts planfile.pln → output.db using mate_convert, then removes the temp directory
 ```
 
 With `--geoloc`, the script calls `POST /crosswork/inventory/v1/nodes/query` after retrieving the plan. It matches each plan-node `Name` to the DLM Inventory `host_name` case-insensitively, then writes `geo_info.coordinates.longitude.value` and `latitude.value` into the text plan's `<Nodes>` table. Nodes with no match or no complete coordinate pair remain unchanged.
@@ -184,7 +185,7 @@ CROSSWORK_IP = "198.18.134.219"
 CROSSWORK_USERNAME = "admin"
 CROSSWORK_PASSWORD = "PASSWORD"
 PLAN_VERSION = ""
-TMP_PLANFILE = "/tmp/planfile.pln"
+TMP_PLANFILE = "planfile.pln"
 INSECURE = False
 GEOLOC = False
 ```
@@ -263,9 +264,13 @@ Calls the CNC Optimization Engine REST API to retrieve the plan file:
 - **Authorization**: Bearer token obtained from `get_token()`
 - **Returns**: Base64-decoded plan file content
 
+### `plan_inventory(path, plan_format)`
+
+Counts nodes, circuits, interfaces, SR policies, RSVP LSPs, demands, flex-algos, and SRLGs in a `.txt` or `.pln` plan using only the Python standard library. See [Plan inventory](#plan-inventory).
+
 ### `run_command(cmd, description)`
 
-Runs a subprocess command, logs its stdout/stderr via the `logging` module, and raises `RuntimeError` if the command exits with a non-zero return code.
+Runs a subprocess command, logs its command line, stdout/stderr, return code, and duration, and raises `CommandError` (a `RuntimeError`) if the command is not found or exits with a non-zero return code.
 
 ### `find_trim_file(filename, search_dirs, dir_labels)`
 
@@ -284,9 +289,10 @@ Orchestrates the workflow:
 4. Creates an HTTP session and authenticates to CNC (ticket + token exchange)
 5. Retrieves plan file
 6. Saves intermediate file (`.pln` or `.txt`)
-7. Delegates node trimming to `find_and_apply_trim()` (see [Node Trimming](#node-trimming))
-8. Converts to `.db` format using `mate_convert` via `run_command()`
-9. Cleans up temporary files (downloaded plan file and trimmed output) in a `finally` block
+7. Logs the plan inventory of the received plan (see [Plan inventory](#plan-inventory))
+8. Delegates node trimming to `find_and_apply_trim()` (see [Node Trimming](#node-trimming)), then logs the trimmed inventory
+9. Converts to `.db` format using `mate_convert` via `run_command()` and checks the output is non-empty
+10. Cleans up temporary files (downloaded plan file and trimmed output) in a `finally` block and logs the summary line
 
 ## Node Trimming
 
@@ -341,24 +347,46 @@ CROSSWORK_IP = "198.18.134.219"      # CNC IP address
 CROSSWORK_USERNAME = "admin"         # CNC username  
 CROSSWORK_PASSWORD = "PASSWORD"      # CNC password (update for production!)
 PLAN_VERSION = ""                    # Plan version (empty = latest); default for --version
-TMP_PLANFILE = "/tmp/planfile.pln"   # Intermediate plan file; extension (.pln/.txt) sets download format
+TMP_PLANFILE = "planfile.pln"        # Intermediate plan file name; extension (.pln/.txt) sets download format
 INSECURE = False                     # True disables SSL verification; default for -k
 GEOLOC = False                       # True adds DLM Inventory coordinates; default for --geoloc
 CONNECT_TIMEOUT = 20                 # HTTP connect timeout in seconds
+SCRIPT_VERSION = "1.5"               # Logged on the start line of every run
+JWT_EXPIRY_WARNING_SECONDS = 300     # Warn when the JWT expires within this many seconds
 ```
 
-When `GEOLOC = True` (or `--geoloc` is passed) and `--tmpfile` is not supplied, the script replaces the extension of `TMP_PLANFILE` with `.txt` and downloads a text plan (for example, `/tmp/planfile.pln` becomes `/tmp/planfile.txt`). An explicit `--tmpfile` must already end in `.txt`.
+When `GEOLOC = True` (or `--geoloc` is passed) and `--tmpfile` is not supplied, the script replaces the extension of `TMP_PLANFILE` with `.txt` and downloads a text plan (for example, `planfile.pln` becomes `planfile.txt`). An explicit `--tmpfile` must already end in `.txt`.
+
+### Temporary files
+
+When `--tmpfile` is not supplied, each run creates a private directory with `tempfile.mkdtemp()` (for example `/tmp/get_plan_cp_cw-k3j9x2ab/`, under `$TMPDIR` if set). The directory is readable only by the account running the script (mode `0700`) and has a unique name, so:
+
+- The downloaded plan, which describes the full network topology, is not readable by other local users.
+- Another user cannot pre-create or symlink the path to redirect the write.
+- Concurrent collections do not overwrite each other's intermediate files.
+
+The downloaded plan and the trimmed plan are written inside that directory, and the whole directory is removed at the end of the run, on success or failure. An explicit `--tmpfile` path is used as given and only the files are removed; choose a location that is not shared with other users.
 
 > **Security Note**: For production deployments, consider using environment variables or a secure credential store instead of hardcoded credentials.
 
 ## Error Handling
 
-The script handles common error scenarios:
-- **HTTP errors**: Authentication failures, API errors
-- **Connection errors**: Network unreachability
-- **File format errors**: Invalid planfile extensions
-- **Subprocess failures**: Non-zero return codes from `trim_nodes` or `mate_convert` raise `RuntimeError`
-- **Temporary file cleanup**: Intermediate files (downloaded plan file and trimmed output) are removed in a `finally` block regardless of success or failure
+Every failure is assigned an `error_class`, logged with a hint, and mapped to a distinct exit code:
+
+| Exit | `error_class` | Typical cause | First check |
+|------|---------------|---------------|-------------|
+| 0 | — | Success | — |
+| 1 | `unknown` | Unexpected exception | Re-run with `--debug` for the traceback |
+| 2 | `config` | Invalid `--tmpfile` extension, `--geoloc` with a `.pln` file, or bad arguments | Script constants and arguments |
+| 3 | `auth` | HTTP 401/403, SSO ticket/token failure, empty JWT file | Credentials, JWT expiry (`jwt_exp` on the `auth` line), AAA session limits |
+| 4 | `connect` | Connection refused, DNS failure, TLS verification failure | CNC IP, port 30603, firewall, CA certificate or `-k` |
+| 5 | `timeout` | CNC did not respond within `CONNECT_TIMEOUT` | CNC load, network latency, `CONNECT_TIMEOUT` |
+| 6 | `http` | Other non-2xx responses from CNC | Response body in the `error=` field |
+| 7 | `parse` | Invalid JSON, empty plan, missing `<Nodes>` table for `--geoloc` | CNC version and get-plan response |
+| 8 | `subprocess` | `trim_nodes` or `mate_convert` missing, non-zero exit, or no output `.db` | `phase=subprocess` stdout/stderr lines |
+| 9 | `io` | File read/write errors | Paths and permissions |
+
+Intermediate files (downloaded plan file and trimmed output) are removed in a `finally` block regardless of success or failure.
 
 ## Troubleshooting
 
@@ -370,26 +398,84 @@ For troubleshooting script execution issues, please refer to the logs on the Cro
 
 This log file contains output from the script execution, including any error messages or exceptions that may help diagnose issues with authentication, API calls, or file conversion.
 
-Example invocation:
+### Log format
+
+Each line has a UTC timestamp, a level, a per-run ID, and `key=value` fields. Every step logs one `phase=<name> status=ok|failed duration_ms=...` line, and the run always ends with a `phase=summary` line, even on failure. Credentials, tickets, and tokens are never logged; only the JWT subject and expiry are decoded.
+
+Example run (paths shortened):
 
 ```
-026-03-22 03:53:15,061 | DEBUG | src.common.utils | 126 | Startup script get_plan_cp_cw.py is initializing...
-Authenticating to Crosswork at 10.58.239.120...
-Retrieving plan using get-plan: planfile.pln...
-  Retrieved 52446 bytes
-Plan saved to: planfile.pln
-Checking for trim config files in ['home_dir', 'user_upload_dir']...
-  Not found: trim_include.txt (include node table) - skipped
-  Found trim_exclude.txt in home_dir (exclude node table)
-  Not found: trim_include_regex.txt (include nodes regex) - skipped
-  Not found: trim_exclude_regex.txt (exclude nodes regex) - skipped
-Trimming nodes: trim_nodes -plan-file planfile.pln -out-file planfile.trim.pln -node-table /app/external-executor/linux/work/data/7_NETWORK/21_EXTERNAL_SCRIPT/input/trim_exclude.txt -exclude-node-table true
-22-3-2026::3:53:14.530918  Notice [30]: 12 nodes trimmed, 13 nodes in plan post trimming
-
-Converting plan: planfile.trim.pln -> /app/external-executor/linux/work/data/7_NETWORK/21_EXTERNAL_SCRIPT/sys-out/21_EXTERNAL_SCRIPT.db: mate_convert -plan-file planfile.trim.pln -out-file /app/external-executor/linux/work/data/7_NETWORK/21_EXTERNAL_SCRIPT/sys-out/21_EXTERNAL_SCRIPT.db
-Cleaned up temporary file: planfile.pln
-Cleaned up temporary file: planfile.trim.pln
+2026-11-14T07:38:20.293Z INFO  run=45180697 phase=start script=get_plan_cp_cw.py script_version=1.5 python=3.11.4 requests=2.31.0 host=cp-collector pid=812 cwd=/app/... base_url=https://10.58.239.120:30603 out=/app/.../21_EXTERNAL_SCRIPT.db tmpfile=auto home_dir=/app/... user_upload_dir=/app/... plan_version=default geoloc=false insecure=false timeout_s=20
+2026-11-14T07:38:20.299Z INFO  run=45180697 phase=auth status=ok duration_ms=85 source=credentials user=cpuser user_source=script_constant password_source=env jwt_sub=cpuser jwt_exp=2026-11-14T08:38:20Z jwt_ttl_s=3599
+2026-11-14T07:38:21.610Z INFO  run=45180697 phase=get_plan status=ok duration_ms=1310 format=pln plan_version=default http=200 http_ms=1290 resp_bytes=75556 bytes=56639
+2026-11-14T07:38:21.611Z INFO  run=45180697 phase=write_tmp status=ok duration_ms=0 path=/tmp/get_plan_cp_cw-k3j9x2ab/planfile.pln bytes=56639
+2026-11-14T07:38:21.619Z INFO  run=45180697 phase=plan_inventory status=ok duration_ms=7 stage=received nodes=19 circuits=32 interfaces=64 sr_policies=85 sr_policies_srv4=73 sr_policies_srv6=12 cs_sr_policies=3 rsvp_lsps=2 lsps_total=87 demands=2 flex_algos=5 node_flex_algos=32 srlgs=0 pln_format_version=7.10.-1
+2026-11-14T07:38:21.619Z INFO  run=45180697 phase=trim_config searched=home_dir,user_upload_dir found=trim_exclude.txt@home_dir not_found=trim_include.txt,trim_include_regex.txt,trim_exclude_regex.txt
+2026-11-14T07:38:21.619Z INFO  run=45180697 phase=subprocess tool=trim_nodes description="Trimming nodes" cmd="trim_nodes -plan-file /tmp/get_plan_cp_cw-k3j9x2ab/planfile.pln -out-file /tmp/get_plan_cp_cw-k3j9x2ab/planfile.trim.pln -node-table /app/.../trim_exclude.txt -exclude-node-table true"
+2026-11-14T07:38:22.330Z INFO  run=45180697 phase=subprocess tool=trim_nodes stream=stdout Notice [30]: 6 nodes trimmed, 13 nodes in plan post trimming
+2026-11-14T07:38:22.330Z INFO  run=45180697 phase=subprocess tool=trim_nodes rc=0 duration_ms=711
+2026-11-14T07:38:22.330Z INFO  run=45180697 phase=trim status=ok duration_ms=713 applied=true
+2026-11-14T07:38:22.347Z INFO  run=45180697 phase=plan_inventory status=ok duration_ms=16 stage=trimmed nodes=13 circuits=20 interfaces=40 ... delta_nodes=-6 delta_circuits=-12 delta_interfaces=-24 ...
+2026-11-14T07:38:22.347Z INFO  run=45180697 phase=subprocess tool=mate_convert description="Converting plan" cmd="mate_convert -plan-file /tmp/get_plan_cp_cw-k3j9x2ab/planfile.trim.pln -out-file /app/.../21_EXTERNAL_SCRIPT.db"
+2026-11-14T07:38:22.654Z INFO  run=45180697 phase=subprocess tool=mate_convert rc=0 duration_ms=305
+2026-11-14T07:38:22.654Z INFO  run=45180697 phase=convert status=ok duration_ms=306 input=/tmp/get_plan_cp_cw-k3j9x2ab/planfile.trim.pln out=/app/.../21_EXTERNAL_SCRIPT.db out_bytes=88112
+2026-11-14T07:38:22.655Z INFO  run=45180697 phase=cleanup removed=/tmp/get_plan_cp_cw-k3j9x2ab/planfile.trim.pln
+2026-11-14T07:38:22.655Z INFO  run=45180697 phase=cleanup removed=/tmp/get_plan_cp_cw-k3j9x2ab/planfile.pln
+2026-11-14T07:38:22.655Z INFO  run=45180697 phase=cleanup removed=/tmp/get_plan_cp_cw-k3j9x2ab
+2026-11-14T07:38:22.655Z INFO  run=45180697 phase=summary status=ok exit=0 total_ms=2362 auth_ms=85 get_plan_ms=1310 write_tmp_ms=0 trim_ms=713 convert_ms=306 plan_bytes=56639 nodes=19 circuits=32 interfaces=64 sr_policies=85 rsvp_lsps=2 demands=2 flex_algos=5 srlgs=0 trim_applied=true out_bytes=88112
 ```
+
+Example failure (expired stored JWT):
+
+```
+2026-11-14T07:38:21.706Z WARNING run=2260d57a phase=auth warning="JWT is expired" jwt_exp=2026-11-14T07:37:21Z source=stored_jwt
+2026-11-14T07:38:21.712Z ERROR run=2260d57a phase=get_plan status=failed error_class=auth duration_ms=5 format=pln plan_version=default http=401 error="get_plan /crosswork/nbi/optima/v2/restconf/operations/...:get-plan returned HTTP 401 Unauthorized: ..."
+2026-11-14T07:38:21.712Z ERROR run=2260d57a phase=error error_class=auth hint="JWT may be expired or invalid; refresh it or remove it to fall back to credentials"
+2026-11-14T07:38:21.712Z ERROR run=2260d57a phase=summary status=failed exit=3 error_class=auth total_ms=7 auth_ms=0 get_plan_ms=5 plan_bytes=n/a nodes=n/a ...
+```
+
+### Log verbosity
+
+- Default level is `INFO`.
+- `--debug` (or `CW_LOG_LEVEL=DEBUG`) adds a line per HTTP request (method, path, status, time, size), the path of each trim file found, the first 20 plan nodes that did not match DLM Inventory with `--geoloc`, and the Python traceback on failure.
+- `CW_LOG_LEVEL=WARNING` keeps only warnings, errors, and failed phases.
+
+### Useful searches
+
+```bash
+LOG=/mnt/cw_logfs/external-executor-service/1/external-executor.log
+grep 'phase=summary' $LOG                      # one line per run: status, timings, counts
+grep 'phase=summary status=failed' $LOG        # failed runs only
+grep 'run=45180697' $LOG                       # every line of a single run
+grep 'phase=plan_inventory stage=received' $LOG  # plan size trend over time
+grep -E ' (WARNING|ERROR) run=' $LOG          # warnings and errors from this script
+```
+
+### Plan inventory
+
+After the plan is written to the temporary file, the script counts the main objects in the plan received from CNC and logs them on a `phase=plan_inventory stage=received` line. When trimming runs, a second `stage=trimmed` line logs the trimmed counts and `delta_<counter>` values relative to the received plan. The main counts are repeated on the summary line.
+
+| Counter | Plan table | Notes |
+|---------|------------|-------|
+| `nodes` | `Nodes` | |
+| `circuits` | `Circuits` | |
+| `interfaces` | `Interfaces` | |
+| `sr_policies` | `LSPs` | Rows with `Type` `SRv4` or `SRv6`; also split into `sr_policies_srv4` and `sr_policies_srv6` |
+| `cs_sr_policies` | `CircuitStyleSRPolicies` | Circuit-style SR policies |
+| `rsvp_lsps` | `LSPs` | Rows with `Type` `RSVP` |
+| `other_lsps` | `LSPs` | Any other `Type`; only logged when non-zero |
+| `lsps_total` | `LSPs` | All rows |
+| `demands` | `Demands` | |
+| `flex_algos` | `FlexAlgorithms` | Flex-algorithm definitions |
+| `node_flex_algos` | `NodeFlexAlgorithms` | Per-node flex-algorithm participation |
+| `srlgs` | `SRLGs` | |
+| `pln_format_version` | `version.dat` | `.pln` only |
+
+- `.txt` plans are counted by reading the data rows under each `<Table>` header.
+- `.pln` plans are zip archives containing a SQLite `network.db`; the script extracts it to a temporary directory and counts rows with read-only SQL queries.
+- A table that is not present in the plan is reported as `n/a`, which is different from `0`.
+- Warnings are logged when the plan has no nodes, when it has nodes but no interfaces (an empty or partial model from CNC), or when trimming removes every node.
+- Counting is diagnostic only: if it fails, a warning with `error_class=parse` is logged and the collection continues.
 
 ## Relationship to Crosswork Planning Documentation
 
@@ -418,6 +504,6 @@ This script fulfills that role by providing the network model from CNC, enabling
 
 ---
 
-*Document Version: 1.4*  
+*Document Version: 1.5*  
 *Script: get_plan_cp_cw.py*  
 *Platform: Cisco Crosswork Planning 7.2 or later (verified on 7.2 and 8.0)*
