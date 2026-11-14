@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-IPwA9EKAAB7RuuI2ndSWRzX0JV5LDndWI64i5b8gJtE=' 'wasm-unsafe-eval'; style-src 'sha256-iYCHjwmHoPiw2nYX0cnGJlrbrWooAwwG0o+OXPD0bqU='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-NC+GkJ7L2i//GfQ8gUBwH6d3w6ZpX3or1KsDGCMWQ34=' 'wasm-unsafe-eval'; style-src 'sha256-iYCHjwmHoPiw2nYX0cnGJlrbrWooAwwG0o+OXPD0bqU='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
   <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="plan-viewer 1.1.0; sql.js 1.12.0; d3 7.9.2; maplibre-gl 6.18.0; sql-wasm.wasm sha256 083460b3e9d428ebbbbaa03918ba55da33d810e0fb3470d4b5d8677b462b2c2b">
@@ -3302,9 +3302,9 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     const mapOn = mode.kind === 'geo' && topoMap && !in3d;
     const shownPanes = algos.filter(a => !topoHiddenAlgos.has(a)).length + (topoShowAlgo0 ? 1 : 0);
     const faNote = fa3d
-      ? h`<b>3D Flex-Algo:</b> one pane per Flex-Algorithm (${shownPanes} shown), stacked over the layout's node positions. A link is on a pane when, in that direction, its interface's IGP process defines the algorithm, both nodes take part in it, its affinities pass the algorithm's exclude / include-any / include-all rules and it is in no excluded SRLG. Each link is split in two: the half next to a node shows the direction leaving that node, solid when usable and dashed when pruned. Faded nodes are not in the algorithm; dashed pillars join a node's copies. Drag to rotate, Shift+drag to pan, scroll to zoom; hover a node or link for details. ` : '';
+      ? h`<b>3D Flex-Algo:</b> one pane per Flex-Algorithm (${shownPanes} shown), stacked over the layout's node positions. A link is on a pane when, in that direction, its interface's IGP process defines the algorithm, both nodes take part in it, its affinities pass the algorithm's exclude / include-any / include-all rules and it is in no excluded SRLG. Each link is split in two: the half next to a node shows the direction leaving that node, solid when usable and dashed when pruned. Faded nodes are not in the algorithm; dashed pillars join a node's copies. Drag a pane to rotate; drag outside the panes or Shift+drag to pan; scroll to zoom; hover a node or link for details. ` : '';
     const l1Note = l13d
-      ? h`<b>3D L1/L3:</b> the L1 (optical) topology is the bottom pane and the L3 (IP) topology sits above it, over the layout's node positions. L1 nodes are placed at their site's or their own location in the layout, else under the L3 nodes attached to them. Dashed pillars join each L3 node to its L1 node (<b>L3L1Links</b>). L3 circuits are coloured by utilisation${topoDirectional ? ', each half by the direction leaving the nearer node' : ''}. Each L3 circuit is matched to its L1 circuit by its L1 ports. The L1 circuit's route comes from <b>ActualL1CircuitPathHops</b>, else from its path hops, else it is the lowest L1 <b>Metric</b> path, which the viewer estimates. L1 links are thicker when they carry more L3 circuits, dotted when they carry none${mode.l1Waypoints && mode.l1Waypoints.size ? ', and follow their waypoints' : ''}. Hover an L3 node or circuit to see its L1 route, or an L1 node or link to see the L3 circuits that ride it. Drag to rotate, Shift+drag to pan, scroll to zoom. ` : '';
+      ? h`<b>3D L1/L3:</b> the L1 (optical) topology is the bottom pane and the L3 (IP) topology sits above it, over the layout's node positions. L1 nodes are placed at their site's or their own location in the layout, else under the L3 nodes attached to them. Dashed pillars join each L3 node to its L1 node (<b>L3L1Links</b>). L3 circuits are coloured by utilisation${topoDirectional ? ', each half by the direction leaving the nearer node' : ''}. Each L3 circuit is matched to its L1 circuit by its L1 ports. The L1 circuit's route comes from <b>ActualL1CircuitPathHops</b>, else from its path hops, else it is the lowest L1 <b>Metric</b> path, which the viewer estimates. L1 links are thicker when they carry more L3 circuits, dotted when they carry none${mode.l1Waypoints && mode.l1Waypoints.size ? ', and follow their waypoints' : ''}. Hover an L3 node or circuit to see its L1 route, or an L1 node or link to see the L3 circuits that ride it. Drag a pane to rotate; drag outside the panes or Shift+drag to pan; scroll to zoom. ` : '';
     return h`
       <div class="section-title">Topology <span class="badge badge-blue">${plan.nodes.length} nodes · ${plan.circuits.length} circuits${l13d ? ` · ${plan.l1Nodes.length} L1 nodes · ${plan.l1Links.length} L1 links` : ''}</span>
         <div class="actions">
@@ -3960,11 +3960,33 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     };
     const corners = [[x0, y0], [x1, y0], [x1, y1], [x0, y1]];
     const leftCorner = (P, i) => corners.map(([x, y]) => P(x, y, i)).reduce((m, p) => (p[0] < m[0] ? p : m));
-    const addPane = (g, color, text) => ({
-      text,
-      plane: g.append('polygon').attr('class', 'fa-plane').attr('fill', color).attr('stroke', color),
-      label: g.append('text').attr('class', 'fa-pane-label').attr('text-anchor', 'end').attr('fill', color).text(text),
-    });
+    let paneCount = 0;
+    const addPane = (g, color, text) => {
+      paneCount++;
+      return {
+        text,
+        plane: g.append('polygon').attr('class', 'fa-plane').attr('fill', color).attr('stroke', color),
+        label: g.append('text').attr('class', 'fa-pane-label').attr('text-anchor', 'end').attr('fill', color).text(text),
+      };
+    };
+    // Whether a press lands on any pane's projected outline (ray casting in scene coordinates).
+    const onPane = e => {
+      const pt = e.touches ? e.touches[0] : e;
+      if (!pt || pt.clientX === undefined) return false;
+      const [px, py] = d3.pointer(pt, root.node());
+      const P = projector();
+      for (let i = 0; i < paneCount; i++) {
+        const poly = corners.map(([x, y]) => P(x, y, i));
+        let inside = false;
+        for (let j = 0, k = poly.length - 1; j < poly.length; k = j++) {
+          const [xj, yj] = poly[j];
+          const [xk, yk] = poly[k];
+          if ((yj > py) !== (yk > py) && px < ((xk - xj) * (py - yj)) / (yk - yj) + xj) inside = !inside;
+        }
+        if (inside) return true;
+      }
+      return false;
+    };
     const drawPane = (P, pane, i) => {
       pane.plane.attr('points', corners.map(([x, y]) => P(x, y, i).join(',')).join(' '));
       const [lx, ly] = leftCorner(P, i);
@@ -3981,13 +4003,13 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     const interact = draw => {
       const zoom = d3.zoom()
         .scaleExtent([0.05, 8])
-        .filter(e => e.type === 'wheel' || (e.shiftKey && !e.button))
+        .filter(e => e.type === 'wheel' || (!e.button && (e.shiftKey || !onPane(e))))
         .on('start', e => { if (e.sourceEvent && e.sourceEvent.type !== 'wheel') svgEl.classList.add('panning'); })
         .on('zoom', e => { root.attr('transform', e.transform); topoState.transform = e.transform; })
         .on('end', () => svgEl.classList.remove('panning'));
       svg.call(zoom).on('dblclick.zoom', null);
       svg.call(d3.drag()
-        .filter(e => !e.shiftKey && !e.button)
+        .filter(e => !e.shiftKey && !e.button && onPane(e))
         .on('start', () => svgEl.classList.add('panning'))
         .on('drag', e => {
           topoYaw = (((topoYaw + e.dx * 0.4) % 360) + 540) % 360 - 180;
