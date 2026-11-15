@@ -45,7 +45,7 @@ Open `bgp-ls-parser.html` by double-clicking the file or dragging it into a brow
 After a file is loaded, the drop zone shrinks to an **Open another capture** bar, and the page shows:
 
 - a **toolbar** with the file summary, filter controls, *Export JSON* and *Close*;
-- **tabs** with entry counts: **Overview**, **Topology**, **Nodes**, **Links**, **Prefixes**, **SRv6 SIDs**, **SR Policies** and **SRv6 Health**.
+- **tabs** with entry counts: **Overview**, **Topology**, **Nodes**, **Links**, **Prefixes**, **SRv4 SIDs**, **SRv6 Locators**, **SR Policies** and **SRv6 Health**.
 
 ---
 
@@ -140,6 +140,26 @@ The **SR Policy NLRIs** section appears when SR Policy (`[SP]`) entries are foun
 | **Origin** | BGP origin code (IGP / EGP / Incomplete). |
 | **NLRI Size** | NLRI byte length. |
 
+### Segment list hops
+
+With `detail`, the **Segment list hops** column resolves every segment to the router, or router and interface, it steers through. Like plan-viewer, each segment list is drawn as a chain: the headend, then one chip per hop showing the hop type, the target and the SID. When a candidate path has several segment lists, each chain is prefixed with its weight (`w1`). Hover a chip to see how it was resolved. The **Headend** and **Endpoint** columns show the router name above the address when the address is a TE router ID or a host route in the dump.
+
+| Hop type | Meaning |
+|----------|---------|
+| **Node** | A prefix SID, or an SRv6 uN or End SID, of that router. |
+| **Interface** | An adjacency SID, or an SRv6 End.X or uA SID: the local router, its interface address, and the neighbor (`R1 10.0.12.1 → R2`). |
+| **Anycast** | A prefix SID advertised by more than one router. |
+| **Function** | Another local SRv6 function on the router, such as uDT. |
+| **Unresolved** | Shown in red. The tooltip explains what was missing. |
+
+The hops are walked from the headend, and each segment is looked up where it takes effect:
+
+- **SR-MPLS label:** the label is first matched against prefix SIDs, using the SRGB of the router reached so far. Copies of a prefix SID re-advertised by another router (R-flag) are ignored. If no prefix SID matches, the label is looked up in the adjacency SIDs of **the router reached so far only**. Adjacency SIDs are local, and the same label often means a different link on each router. After an anycast SID or an unresolved hop, the walk no longer knows the current router, so a following adjacency SID is reported as unresolved rather than guessed.
+- **SRv6 SID:** an exact End.X or SRv6 SID NLRI match resolves directly. Otherwise, if the covering locator's owner advertises micro-SID (NEXT-CSID) behaviors, the SID is treated as a uSID container. Each 16-bit uSID after the block is then either a node locator (`block:uSID::/48`, the uN of that router) or a local uSID of the router reached so far: its uA (End.X, giving an Interface hop) or another local function. Classic SIDs resolve to the locator's owner and, when advertised, its function. Where a locator is advertised by several routers, the originator wins: own (no D-flag) over leaked, then the lowest metric, which handles redistribution between IGP instances.
+- **Segments without a SID** (node address types): matched by address.
+
+When the walk ends somewhere other than the endpoint, the chain is tagged **ends at …**. Search also matches hop router names and interface addresses.
+
 ---
 
 ## 8. Parsing Your Own Data
@@ -161,6 +181,27 @@ The **SR Policy NLRIs** section appears when SR Policy (`[SP]`) entries are foun
 3. Alternatively, copy the output, open **Or paste CLI output**, paste it (`Ctrl+V` / `Cmd+V`) and click **Parse** (or press `Ctrl+Enter` / `Cmd+Enter`).
 
 The tabs and counts update to reflect your data. **Close** returns to the empty drop zone.
+
+### SRv4 SIDs tab
+
+Lists every SR-MPLS **prefix SID** (from Prefix NLRIs) and **adjacency SID** (from Link NLRIs) in one table. It needs `detail` output.
+
+| Column | Meaning |
+|---|---|
+| **Type** | *Prefix-SID* or *Adj-SID*. Type `prefix-sid` or `adj-sid` in the filter to show one kind. |
+| **Node** | Advertising router: the prefix originator, or the local end of the adjacency. |
+| **Prefix / Adjacency** | The prefix, or the remote router with the interface → neighbor addresses. |
+| **Algo** | Prefix-SID algorithm (0 = SPF, 128+ = Flex-Algo). Adjacency SIDs carry no algorithm. |
+| **Index / Label** | The advertised value: an SRGB index, or an absolute label when the V-flag is set. |
+| **MPLS Label** | The resolved label. An index is resolved against the advertising node's SRGB ranges (in order) in the same IGP domain. |
+| **Flags** | Hex value and decoded RFC 8667 flags. Prefix SIDs: R, N, P, E, V, L. Adjacency SIDs: F (IPv6), B (backup), V, L, S, P. |
+| **Notes** | *node SID* (N-flag), *backup* (B-flag), **SID conflict** (the same algo and index used for a different prefix in the same domain; anycast prefixes advertised by several nodes are not conflicts), and issues such as an index outside the SRGB or a missing Node NLRI. |
+
+The tab count turns red when any row has a conflict or an issue.
+
+### SRv6 Locators tab
+
+Lists the SRv6 SID NLRIs (`[S]`). The **Locator Prefix** column shows the SRv6-Locator prefix (with its algo and D-flag) of the same node and IGP instance that covers each SID. A node's own locators are preferred over leaked ones, then the most specific. When no advertised locator covers a SID, the cell shows the SID itself marked *no locator* (see the SRv6 Health checks). The SID address stays searchable in the filter, and clicking a row shows the full SID NLRI.
 
 ---
 

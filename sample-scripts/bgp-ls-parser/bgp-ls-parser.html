@@ -135,6 +135,14 @@ tr.detail-row td { background: var(--panel-2); white-space: pre; font-family: 'S
 .tag-low { background: rgba(93, 182, 255, .12); color: var(--blue); }
 .tag-info { background: rgba(159, 176, 202, .10); color: var(--muted); }
 
+.hops { display: flex; flex-wrap: wrap; gap: 3px; align-items: center; white-space: normal; width: max-content; max-width: 900px; }
+.hops + .hops { margin-top: 4px; }
+.hop { background: var(--panel-2); border: 1px solid var(--line); border-radius: 4px; padding: 0 6px; font-size: .72rem; white-space: nowrap; }
+.hop .sid { color: var(--amber); font-family: 'SF Mono', 'Fira Code', monospace; margin-left: 4px; }
+.hop.unresolved { border-color: rgba(255, 126, 135, .6); }
+.hop.unresolved .sid { color: var(--red); }
+.arrow { color: var(--muted); font-size: .7rem; }
+
 .mono { font-family: 'SF Mono', 'Fira Code', monospace; }
 .muted { color: var(--muted); }
 .warn { color: var(--red); }
@@ -205,7 +213,7 @@ tr.detail-row td { background: var(--panel-2); white-space: pre; font-family: 'S
 <body>
 
 <h1>🔍 BGP-LS Parser</h1>
-<p class="subtitle">Open <code>show lslib server topology-db [detail]</code> or <code>show bgp link-state link-state</code> output to browse Nodes, Links, Prefixes, SRv6 SIDs and SR Policy NLRIs, check SRv6 attributes and view the topology. Everything is parsed locally in your browser; nothing is uploaded.</p>
+<p class="subtitle">Open <code>show lslib server topology-db [detail]</code> or <code>show bgp link-state link-state</code> output to browse Nodes, Links, Prefixes, SRv4 SIDs, SRv6 Locators and SR Policy NLRIs, check SRv6 attributes and view the topology. Everything is parsed locally in your browser; nothing is uploaded.</p>
 
 <button type="button" class="dropzone" id="dropzone" data-action="open-file">
   <span class="icon" aria-hidden="true">📂</span>
@@ -1233,7 +1241,271 @@ function buildFlexAlgoModel(topo) {
   return { panes, metricNames: FA_METRIC_NAMES };
 }
 
-root.BGPLS = { parseText, analyzeSrv6, buildTopology, buildFlexAlgoModel, parseHeader, parseBlockFields, hexToDec, behaviorName, PROTOCOL_ORIGINS, MSD_TYPES, SRV6_MSD_TYPES, SRV6_BEHAVIORS, SEGMENT_TYPES, SRV6_SEGMENT_TYPES };
+// ---------- SR-MPLS SIDs (prefix SIDs and adjacency SIDs, RFC 8667 flags) ----------
+
+const PFX_SID_FLAGS = [[0x80, 'R'], [0x40, 'N'], [0x20, 'P'], [0x10, 'E'], [0x08, 'V'], [0x04, 'L']];
+const ADJ_SID_FLAGS = [[0x80, 'F'], [0x40, 'B'], [0x20, 'V'], [0x10, 'L'], [0x08, 'S'], [0x04, 'P']];
+const flagNames = (hex, table) => { const v = parseInt(hex, 16); return table.filter(([b]) => v & b).map(([, n]) => n).join(''); };
+
+// Absolute label of an SRGB index, walking the node's SRGB ranges in order; undefined when out of range.
+function srgbLabel(ranges, index) {
+  let i = index;
+  for (const r of ranges) {
+    if (i < r.size) return r.start + i;
+    i -= r.size;
+  }
+  return undefined;
+}
+
+function buildMplsSids(model) {
+  const dom = e => `${e.instanceHex}|${e.asn !== undefined ? e.asn : e.localAsn}|${e.bgpRouterId !== undefined ? e.bgpRouterId : e.localBgpRouterId}`;
+  const nodeAttrs = new Map();
+  for (const n of model.nodes) if (n.attrs) nodeAttrs.set(`${dom(n)}|${n.systemId}`, n.attrs);
+  const rows = [];
+  for (const p of model.prefixes) {
+    for (const s of (p.attrs && p.attrs.prefixSids) || []) {
+      const na = nodeAttrs.get(`${dom(p)}|${p.systemId}`);
+      const fl = parseInt(s.flags, 16);
+      const isValue = (fl & 0x08) !== 0;
+      const srgb = na ? na.srgb : [];
+      const label = isValue ? s.index : srgbLabel(srgb, s.index);
+      rows.push({
+        kind: 'prefix', src: p, domain: dom(p), instanceHex: p.instanceHex, level: p.level, systemId: p.systemId, prefix: p.prefix,
+        af: p.prefix.includes(':') ? 'IPv6' : 'IPv4', algo: s.algo, value: s.index, isValue, label, flags: s.flags,
+        flagNames: flagNames(s.flags, PFX_SID_FLAGS), nodeSid: (fl & 0x40) !== 0, srgb,
+        issue: isValue ? undefined : !na ? 'no Node NLRI with SRGB' : label === undefined ? `index outside SRGB ${srgb.map(r => `${r.start}/${r.size}`).join(' ') || 'none'}` : undefined,
+      });
+    }
+  }
+  for (const l of model.links) {
+    for (const s of (l.attrs && l.attrs.adjSids) || []) {
+      const fl = parseInt(s.flags, 16);
+      rows.push({
+        kind: 'adjacency', src: l, domain: dom(l), instanceHex: l.instanceHex, level: l.level, systemId: l.localSystemId, remoteSystemId: l.remoteSystemId,
+        interfaceAddr: l.interfaceAddr, neighborAddr: l.neighborAddr, af: (fl & 0x80) || (l.af === 'IPv6') ? 'IPv6' : 'IPv4',
+        value: s.label, isValue: (fl & 0x20) !== 0, label: (fl & 0x20) !== 0 ? s.label : undefined, flags: s.flags,
+        flagNames: flagNames(s.flags, ADJ_SID_FLAGS), backup: (fl & 0x40) !== 0,
+        issue: (fl & 0x20) === 0 ? 'index-based adjacency SID (V-flag clear)' : undefined,
+      });
+    }
+  }
+  // Same algo/index in one domain for different prefixes is a SID conflict (anycast shares the prefix).
+  const byIndex = new Map();
+  for (const r of rows) {
+    if (r.kind !== 'prefix') continue;
+    const k = `${r.domain}|${r.algo}|${r.isValue ? 'v' : 'i'}${r.value}`;
+    if (!byIndex.has(k)) byIndex.set(k, new Set());
+    byIndex.get(k).add(r.prefix);
+  }
+  for (const r of rows) {
+    if (r.kind !== 'prefix') continue;
+    const others = [...byIndex.get(`${r.domain}|${r.algo}|${r.isValue ? 'v' : 'i'}${r.value}`)].filter(x => x !== r.prefix);
+    if (others.length) r.conflict = others;
+  }
+  return rows;
+}
+
+// ---------- SR Policy segment-list hops ----------
+
+// Inverse of srgbLabel: the SRGB index of an absolute label, or undefined when outside every range.
+function srgbIndex(ranges, label) {
+  let base = 0;
+  for (const r of ranges) {
+    if (label >= r.start && label < r.start + r.size) return base + label - r.start;
+    base += r.size;
+  }
+  return undefined;
+}
+
+const bigToV6 = n => {
+  const g = [];
+  for (let i = 7; i >= 0; i--) g.push(((n >> BigInt(i * 16)) & 0xffffn).toString(16));
+  return g.join(':').replace(/(^|:)0(:0)+(:|$)/, '::').replace(/:{3,}/, '::');
+};
+
+// Resolves every segment of every candidate path to plan-viewer style hops (Node / Interface / Anycast / Function).
+// Hops are walked from the headend: an SR-MPLS adjacency SID or an SRv6 local uSID (uA, uDT…) only has meaning at the
+// router reached by the previous segment, so it is looked up in that router's SIDs alone. Prefix SIDs and SRv6 uN
+// locators are global and move the walk to their owner.
+function buildPolicyHops(model, mplsRows) {
+  const nodeName = id => model.nodeNames[id] || id;
+  const addrOwner = new Map();
+  const own = (addr, id) => { if (addr && id && !addrOwner.has(addr.toLowerCase())) addrOwner.set(addr.toLowerCase(), id); };
+  for (const n of model.nodes) if (n.attrs) { own(n.attrs.teRouterIdV4, n.systemId); own(n.attrs.teRouterIdV6, n.systemId); }
+  for (const l of model.links) if (l.attrs) for (const a of l.attrs.localTeRouterIds || []) own(a, l.localSystemId);
+  const hostRoutes = model.prefixes.filter(p => /\/(32|128)$/.test(p.prefix) && !((p.attrs && p.attrs.prefixSids) || []).some(s => parseInt(s.flags, 16) & 0x80))
+    .sort((a, b) => ((a.attrs && a.attrs.metric) || 0) - ((b.attrs && b.attrs.metric) || 0));
+  for (const p of hostRoutes) own(p.prefix.split('/')[0], p.systemId);
+  const srgbOf = new Map();
+  for (const n of model.nodes) if (n.attrs && n.attrs.srgb.length && !srgbOf.has(n.systemId)) srgbOf.set(n.systemId, n.attrs.srgb);
+
+  const adjOf = new Map();
+  const pfxByIndex = new Map(), pfxByLabel = new Map();
+  const push = (m, k, v) => { if (!m.has(k)) m.set(k, []); m.get(k).push(v); };
+  for (const r of mplsRows) {
+    if (r.kind === 'adjacency') push(adjOf, `${r.systemId}|${r.label !== undefined ? r.label : r.value}`, r);
+    else {
+      if (r.isValue) push(pfxByLabel, r.value, r);
+      else { push(pfxByIndex, r.value, r); if (r.label !== undefined) push(pfxByLabel, r.label, r); }
+    }
+  }
+  const endx = new Map();
+  for (const l of model.links) for (const x of (l.attrs && l.attrs.srv6AdjSids) || []) push(endx, v6ToBig(x.sid), { link: l, x });
+  const sidNlri = new Map();
+  for (const s of model.srv6Sids) push(sidNlri, v6ToBig(s.sid), s);
+  // Per node: does it advertise NEXT-CSID (micro-SID) behaviors? Undefined when it advertises no behaviors at all.
+  const behaviorsOf = new Map();
+  const noteBehavior = (id, name) => {
+    if (!name) return;
+    const b = behaviorsOf.get(id) || { csid: false };
+    if (/NEXT-CSID/.test(name)) b.csid = true;
+    behaviorsOf.set(id, b);
+  };
+  for (const s of model.srv6Sids) if (s.attrs) noteBehavior(s.systemId, s.attrs.behaviorName);
+  for (const l of model.links) for (const x of (l.attrs && l.attrs.srv6AdjSids) || []) noteBehavior(l.localSystemId, x.behaviorName);
+  const locators = model.prefixes.filter(p => p.attrs && p.attrs.srv6Locator).map(p => {
+    const [a, len] = p.prefix.split('/');
+    const metric = p.attrs.metric !== undefined ? p.attrs.metric : p.attrs.srv6Locator.metric;
+    return { p, net: v6ToBig(a), plen: Number(len), systemId: p.systemId, leaked: p.attrs.srv6Locator.dFlag, algo: p.attrs.srv6Locator.algo, metric };
+  });
+  // The originator: a redistributed copy may lack the D-flag in another instance, but carries a higher metric.
+  const byOwner = (a, b) => (a.leaked - b.leaked) || (a.metric - b.metric) || b.plen - a.plen;
+  const covers = (l, addr) => (l.net >> BigInt(128 - l.plen)) === (addr >> BigInt(128 - l.plen));
+  const findLocator = addr => locators.filter(l => covers(l, addr)).sort(byOwner)[0];
+  const structCount = new Map();
+  for (const s of model.srv6Sids) {
+    const st = s.attrs && s.attrs.struct;
+    if (st && /\(uN\)/.test(s.attrs.behaviorName || '')) { const k = `${st.lbl}/${st.lnl}`; structCount.set(k, (structCount.get(k) || 0) + 1); }
+  }
+  const modal = [...structCount].sort((a, b) => b[1] - a[1])[0];
+  const uStruct = modal ? { lbl: +modal[0].split('/')[0], lnl: +modal[0].split('/')[1] } : null;
+
+  const ifaceOf = l => l.interfaceAddr || (l.attrs && l.attrs.linkId ? `link-id ${l.attrs.linkId.local}` : '');
+  const adjHop = (l, sid, extra) => ({
+    type: 'Interface', node: l.localSystemId, nodeName: nodeName(l.localSystemId), iface: ifaceOf(l), neighbor: l.neighborAddr,
+    remote: l.remoteSystemId, remoteName: nodeName(l.remoteSystemId), sid, ...extra,
+  });
+  const nodeHop = (id, sid, via) => ({ type: 'Node', node: id, nodeName: nodeName(id), sid, via });
+  const bad = (sid, warn) => ({ type: 'Unresolved', sid, warn });
+
+  function mplsHops(label, cur) {
+    const srgb = cur && srgbOf.get(cur);
+    const idx = srgb ? srgbIndex(srgb, label) : undefined;
+    let rows = idx !== undefined ? [...(pfxByIndex.get(idx) || []), ...(pfxByLabel.get(label) || []).filter(r => r.isValue)] : pfxByLabel.get(label) || [];
+    const orig = rows.filter(r => !(parseInt(r.flags, 16) & 0x80));
+    if (orig.length) rows = orig;
+    const owners = [...new Set(rows.map(r => r.systemId))];
+    if (!owners.length && cur) {
+      const adj = adjOf.get(`${cur}|${label}`);
+      if (adj) {
+        const a = adj.find(x => !x.backup) || adj[0];
+        return { hops: [adjHop(a.src, label, { via: `Adj-SID ${label} of ${nodeName(cur)}${a.backup ? ' (backup)' : ''}` })], cur: a.src.remoteSystemId };
+      }
+    }
+    if (owners.length === 1) {
+      const r = rows.find(x => x.systemId === owners[0]);
+      return { hops: [nodeHop(owners[0], label, `Prefix-SID ${r.prefix} algo ${r.algo}${r.isValue ? '' : ` (index ${r.value})`}`)], cur: owners[0] };
+    }
+    if (owners.length > 1) return { hops: [{ type: 'Anycast', nodes: owners, nodeName: owners.map(nodeName).join(' | '), sid: label, via: `Prefix-SID ${rows[0].prefix} advertised by ${owners.length} nodes` }], cur: null };
+    if (!cur) return { hops: [bad(label, 'not a prefix SID; an adjacency SID cannot be resolved without the previous hop')], cur: null };
+    return { hops: [bad(label, `neither a prefix SID nor an adjacency SID of ${nodeName(cur)}`)], cur: null };
+  }
+
+  function srv6Hops(sid, seg, cur) {
+    const addr = v6ToBig(sid);
+    const ex = endx.get(addr);
+    if (ex) {
+      const e = ex.find(x => x.link.localSystemId === cur) || ex[0];
+      return { hops: [adjHop(e.link, sid, { via: `End.X ${e.x.behaviorName} algo ${e.x.algo}${e.x.backup ? ' (backup)' : ''}` })], cur: e.link.remoteSystemId };
+    }
+    const loc = findLocator(addr);
+    const cands = sidNlri.get(addr) || [];
+    const exact = cands.find(s => loc && s.systemId === loc.systemId && s.attrs) || cands.find(s => s.attrs) || cands[0];
+    if (exact && !(loc && exact.systemId !== loc.systemId && loc.net === addr)) {
+      const fn = exact.attrs && exact.attrs.behaviorName ? exact.attrs.behaviorName : 'SRv6 SID';
+      const isNode = /^End( |$)/.test(fn) && !/NEXT-ONLY/.test(fn);
+      return { hops: [{ ...nodeHop(exact.systemId, sid, fn), type: isNode ? 'Node' : 'Function' }], cur: exact.systemId };
+    }
+    if (!loc) return { hops: [bad(sid, 'no SRv6 locator covers this SID')], cur: null };
+    const st = seg.struct || (((sidNlri.get(loc.net) || []).find(s => s.attrs && s.attrs.struct) || {}).attrs || {}).struct || uStruct;
+    const lnl = st && st.lnl ? st.lnl : 16;
+    const lbl = st && st.lbl ? st.lbl : loc.plen - lnl;
+    const fns = behaviorsOf.get(loc.systemId);
+    const compressed = fns ? fns.csid : lbl + lnl === loc.plen && lnl === 16;
+    if (!compressed) {
+      // Classic SID: locator, then a function (default 16 bits); any remaining bits are arguments.
+      const fl = BigInt(st && st.fl ? st.fl : 16);
+      const keep = BigInt(loc.plen) + fl;
+      const fnSid = (addr >> (128n - keep)) << (128n - keep);
+      const lx = (endx.get(fnSid) || []).find(x => x.link.localSystemId === loc.systemId);
+      if (lx) return { hops: [adjHop(lx.link, sid, { via: `End.X ${bigToV6(fnSid)} ${lx.x.behaviorName} algo ${lx.x.algo}${lx.x.backup ? ' (backup)' : ''}` })], cur: lx.link.remoteSystemId };
+      const fn = (sidNlri.get(fnSid) || []).find(s => s.systemId === loc.systemId);
+      if (fn) {
+        const name = fn.attrs && fn.attrs.behaviorName ? fn.attrs.behaviorName : 'SRv6 SID';
+        return { hops: [{ ...nodeHop(loc.systemId, sid, `${bigToV6(fnSid)} ${name}`), type: /^End( |$)/.test(name) ? 'Node' : 'Function' }], cur: loc.systemId };
+      }
+      return { hops: [nodeHop(loc.systemId, sid, `locator ${loc.p.prefix}${addr === loc.net ? '' : `; function ${bigToV6(fnSid)} not advertised`}`)], cur: loc.systemId };
+    }
+    // Micro-SID container: block, then 16-bit uSIDs until the first zero.
+    const W = BigInt(lnl), B = BigInt(lbl);
+    const block = addr >> BigInt(128 - lbl);
+    const mask = (1n << W) - 1n;
+    const hops = [];
+    let at = cur;
+    for (let off = lbl; off + lnl <= 128; off += lnl) {
+      const c = (addr >> BigInt(128 - off - lnl)) & mask;
+      if (c === 0n) break;
+      const uN = ((block << W) | c) << (128n - B - W);
+      const node = locators.filter(l => l.plen === lbl + lnl && l.net === uN).sort(byOwner)[0];
+      const usid = c.toString(16);
+      if (node) {
+        hops.push(nodeHop(node.systemId, usid, `uN ${node.p.prefix} algo ${node.algo}`));
+        at = node.systemId;
+        continue;
+      }
+      const notNode = `no node locator ${bigToV6(uN)}/${lbl + lnl}`;
+      if (!at) { hops.push(bad(usid, `${notNode}; a local uSID cannot be resolved without the previous hop`)); continue; }
+      const mine = locators.filter(l => l.systemId === at && l.plen === lbl + lnl && (l.net >> BigInt(128 - lbl)) === block).sort(byOwner)[0];
+      if (!mine) { hops.push(bad(usid, `${notNode}, and ${nodeName(at)} has no locator in block ${bigToV6(block << (128n - B))}/${lbl}`)); at = null; continue; }
+      const local = mine.net | (c << (128n - B - 2n * W));
+      const lx = (endx.get(local) || []).find(x => x.link.localSystemId === at);
+      if (lx) {
+        hops.push(adjHop(lx.link, usid, { via: `uA ${bigToV6(local)} ${lx.x.behaviorName}${lx.x.backup ? ' (backup)' : ''}` }));
+        at = lx.link.remoteSystemId;
+        continue;
+      }
+      const fn = (sidNlri.get(local) || []).find(s => s.systemId === at);
+      if (fn) { hops.push({ ...nodeHop(at, usid, `${bigToV6(local)} ${fn.attrs ? fn.attrs.behaviorName : ''}`), type: 'Function' }); continue; }
+      hops.push(bad(usid, `${notNode}, and ${nodeName(at)} advertises no local SID ${bigToV6(local)}`));
+    }
+    return { hops, cur: at };
+  }
+
+  return model.policies.map(p => {
+    const headend = addrOwner.get(String(p.headend).toLowerCase()) || null;
+    const endpoint = addrOwner.get(String(p.endpoint).toLowerCase()) || null;
+    const lists = ((p.attrs && p.attrs.segmentLists) || []).map(sl => {
+      let cur = headend;
+      const hops = [];
+      for (const seg of sl.segments) {
+        let r;
+        if (seg.label !== undefined) r = mplsHops(seg.label, cur);
+        else if (seg.sid) r = srv6Hops(seg.sid, seg, cur);
+        else if (seg.localNode && addrOwner.has(seg.localNode.toLowerCase())) {
+          const id = addrOwner.get(seg.localNode.toLowerCase());
+          r = { hops: [nodeHop(id, seg.localNode, seg.typeName)], cur: id };
+        } else r = { hops: [bad('', `segment type ${seg.typeName} without a resolvable SID`)], cur: null };
+        for (const h of r.hops) h.segment = seg;
+        hops.push(...r.hops);
+        cur = r.cur;
+      }
+      return { weight: sl.weight, hops, end: cur };
+    });
+    return { headend, headendName: headend ? nodeName(headend) : null, endpoint, endpointName: endpoint ? nodeName(endpoint) : null, lists };
+  });
+}
+
+root.BGPLS = { parseText, analyzeSrv6, buildTopology, buildFlexAlgoModel, buildMplsSids, buildPolicyHops, v6Contains, parseHeader, parseBlockFields, hexToDec, behaviorName, PROTOCOL_ORIGINS, MSD_TYPES, SRV6_MSD_TYPES, SRV6_BEHAVIORS, SEGMENT_TYPES, SRV6_SEGMENT_TYPES };
 })(typeof window !== 'undefined' ? window : globalThis);
 </script>
 
@@ -1243,7 +1515,7 @@ root.BGPLS = { parseText, analyzeSrv6, buildTopology, buildFlexAlgoModel, parseH
 </script>
 
 <script>
-const { parseText, analyzeSrv6, buildTopology, buildFlexAlgoModel, hexToDec, SRV6_MSD_TYPES, SRV6_SEGMENT_TYPES } = window.BGPLS;
+const { parseText, analyzeSrv6, buildTopology, buildFlexAlgoModel, buildMplsSids, buildPolicyHops, v6Contains, hexToDec, SRV6_MSD_TYPES, SRV6_SEGMENT_TYPES } = window.BGPLS;
 
 const SAMPLE = `RP/0/RP0/CPU0:sr-pce-lab#show lslib server topology-db detail
 Mon May  4 16:26:59.068 EEST
@@ -1370,6 +1642,21 @@ function pathMarkerTags(pm) {
 function list(arr) { return arr && arr.length ? esc(arr.join(', ')) : dash; }
 function opt(v) { return v === undefined || v === null || v === '' ? dash : esc(v); }
 
+let mplsSids = [];
+let policyHops = new Map();
+let locatorCache = new Map();
+
+// Most specific SRv6-Locator prefix of the same node and IGP instance that covers the SID; own locators win over leaked ones.
+function sidLocator(s) {
+  if (locatorCache.has(s)) return locatorCache.get(s);
+  const plen = p => Number(p.prefix.split('/')[1]);
+  const hit = model.prefixes
+    .filter(p => p.attrs && p.attrs.srv6Locator && p.systemId === s.systemId && p.instanceHex === s.instanceHex && v6Contains(p.prefix, s.sid))
+    .sort((a, b) => (a.attrs.srv6Locator.dFlag - b.attrs.srv6Locator.dFlag) || plen(b) - plen(a))[0] || null;
+  locatorCache.set(s, hit);
+  return hit;
+}
+
 function isSrv6Entry(e) {
   const a = e.attrs;
   if (e.type === 'node') return !!(a && a.srv6Capable);
@@ -1393,15 +1680,40 @@ function endxCell(a) {
   return a.srv6AdjSids.map(x => `<span class="mono" title="${esc(x.behaviorName)} flags ${esc(x.flags)}">${esc(x.sid)}</span> <span class="muted">a${x.algo}${x.backup ? ' B' : ''}</span>`).join('<br>');
 }
 
-function segmentsCell(a) {
+// One chip per hop, as in plan-viewer: segment type, target (node, or node + egress interface → remote) and SID.
+function hopChip(h) {
+  const seg = h.segment || {};
+  const title = [h.warn || h.via, seg.typeName && `segment ${seg.typeName} ${seg.sid || seg.label || ''}`,
+    seg.endpointBehavior && `fn ${seg.endpointBehavior.behavior} ${seg.endpointBehavior.behaviorName}`].filter(Boolean).join('\n');
+  const target = h.type === 'Interface'
+    ? `${esc(h.nodeName)} <span class="mono">${esc(h.iface)}</span> <span class="arrow">→</span> ${esc(h.remoteName)}`
+    : h.type === 'Unresolved' ? '<span class="warn">?</span>' : esc(h.nodeName);
+  const sid = h.sid !== undefined && h.sid !== '' ? `<span class="sid">${esc(h.sid)}</span>` : '';
+  return `<span class="hop${h.warn ? ' unresolved' : ''}" title="${esc(title)}"><span class="muted">${esc(h.type)}</span> ${target}${sid}</span>`;
+}
+
+function hopEndpoint(e, r) {
+  return r && r.endpointName ? esc(r.endpointName) : `<span class="mono">${esc(e.endpoint)}</span>`;
+}
+
+function segmentsCell(e) {
+  const a = e.attrs;
   if (!a) return dash;
-  const lists = a.segmentLists.filter(l => l.segments.length);
+  const r = policyHops.get(e);
+  const lists = r ? r.lists.filter(l => l.hops.length) : [];
   if (!lists.length) return a.segmentLists.length ? '<span class="tag tag-medium">empty</span>' : dash;
-  return lists.map(l => l.segments.map(s => {
-    const v = s.sid || s.label || '';
-    const b = s.endpointBehavior ? ` <span class="muted">fn ${s.endpointBehavior.behavior}</span>` : '';
-    return `<span class="mono" title="${esc(s.typeName)}">${esc(v)}</span>${b}`;
-  }).join(' → ')).join('<br>');
+  const head = `<span class="hop">${r.headendName ? esc(r.headendName) : `<span class="mono">${esc(e.headend)}</span>`}</span>`;
+  return lists.map(l => {
+    const off = r.endpoint && l.end && l.end !== r.endpoint
+      ? ` <span class="tag tag-medium" title="The last resolved hop is not the endpoint ${esc(r.endpointName)}">ends at ${esc(nm(l.end) || l.end)}</span>` : '';
+    const w = lists.length > 1 ? `<span class="muted">w${esc(l.weight)}</span> ` : '';
+    return `<div class="hops">${w}${head}${l.hops.map(h => `<span class="arrow">→</span>${hopChip(h)}`).join('')}${off}</div>`;
+  }).join('');
+}
+
+function policyHopText(e) {
+  const r = policyHops.get(e);
+  return r ? [r.headendName, r.endpointName, ...r.lists.flatMap(l => l.hops.flatMap(h => [h.nodeName, h.remoteName, h.iface, h.sid]))] : [];
 }
 
 const TABLES = {
@@ -1469,14 +1781,44 @@ const TABLES = {
     ],
     search: e => [e.prefix, e.systemId, nm(e.systemId), e.asn, e.level, e.bgpRouterId, e.nextHop, e.instanceHex],
   },
+  mpls: {
+    title: 'SR-MPLS Prefix and Adjacency SIDs', data: () => mplsSids, badge: 'badge-blue', type: 'sr-mpls',
+    cols: [
+      ['kind', 'Type', e => `<span class="tag ${e.kind === 'prefix' ? 'tag-ipv4' : 'tag-bgp'}">${e.kind === 'prefix' ? 'Prefix-SID' : 'Adj-SID'}</span>`],
+      ['instanceDec', 'Instance', e => fmtHex(e.instanceHex), e => parseInt(e.instanceHex, 16)],
+      ['level', 'Level', e => esc(e.level)],
+      ['systemId', 'Node', e => nodeCell(e.systemId), e => nm(e.systemId) || e.systemId],
+      ['target', 'Prefix / Adjacency', e => (e.kind === 'prefix'
+        ? `<span class="mono" style="color:var(--teal)">${esc(e.prefix)}</span>`
+        : `→ ${nodeCell(e.remoteSystemId)}<br><span class="mono muted">${esc(e.interfaceAddr || '')}${e.neighborAddr ? ' → ' + esc(e.neighborAddr) : ''}</span>`),
+      e => e.prefix || nm(e.remoteSystemId) || e.remoteSystemId],
+      ['af', 'AF', e => `<span class="tag tag-${e.af.toLowerCase()}">${e.af}</span>`],
+      ['algo', 'Algo', e => opt(e.algo)],
+      ['value', 'Index / Label', e => `<span class="mono">${esc(e.value)}</span> <span class="muted">${e.isValue ? 'label' : 'index'}</span>`],
+      ['label', 'MPLS Label', e => (e.label !== undefined ? `<span class="mono" style="color:var(--teal)">${esc(e.label)}</span>` : dash)],
+      ['flags', 'Flags', e => `<span class="mono">${esc(e.flags)}</span> <span class="muted">${esc(e.flagNames)}</span>`, e => e.flagNames],
+      ['notes', 'Notes', e => [
+        e.nodeSid ? '<span class="tag tag-config">node SID</span>' : '',
+        e.backup ? '<span class="tag tag-medium">backup (B)</span>' : '',
+        e.conflict ? `<span class="tag tag-high" title="${esc(e.conflict.join(', '))}">SID conflict</span> <span class="muted">${esc(e.conflict.slice(0, 2).join(', '))}${e.conflict.length > 2 ? '…' : ''}</span>` : '',
+        e.issue ? `<span class="warn">${esc(e.issue)}</span>` : '',
+      ].filter(Boolean).join(' ') || dash, e => (e.conflict ? 3 : e.issue ? 2 : e.backup ? 1 : 0)],
+    ],
+    search: e => [e.kind === 'prefix' ? 'prefix-sid' : 'adj-sid', e.prefix, e.systemId, nm(e.systemId), e.remoteSystemId, nm(e.remoteSystemId), e.interfaceAddr, e.neighborAddr, e.value, e.label, e.instanceHex, e.flagNames, e.conflict ? 'conflict' : '', e.backup ? 'backup' : ''],
+  },
   sid: {
-    section: 'sidSection', title: 'SRv6 SID NLRIs (S)', data: () => model.srv6Sids, badge: 'badge-green', type: 'srv6-sid',
+    title: 'SRv6 Locators — SID NLRIs (S)', data: () => model.srv6Sids, badge: 'badge-green', type: 'srv6-sid',
     cols: [
       ['path', 'Status', e => pathMarkerTags(e.pathMarker), e => e.pathMarker.raw],
       ['level', 'Level', e => esc(e.level)],
       ['instanceDec', 'Instance', e => fmtHex(e.instanceHex)],
       ['systemId', 'Node / System ID (s)', e => nodeCell(e.systemId)],
-      ['sid', 'SID (sd)', e => `<span class="mono" style="color:var(--teal)">${esc(e.sid)}</span>`],
+      ['locator', 'Locator Prefix', e => {
+        const l = sidLocator(e);
+        if (!l) return `<span class="mono">${esc(e.sid)}</span> <span class="warn">no locator</span>`;
+        const t = l.attrs.srv6Locator;
+        return `<span class="mono">${esc(l.prefix)}</span> <span class="tag tag-ipv6">algo ${t.algo}</span>${t.dFlag ? '<span class="tag tag-info">D (leaked)</span>' : ''}`;
+      }, e => { const l = sidLocator(e); return l ? l.prefix : e.sid; }],
       ['behavior', 'Endpoint Behavior', e => e.attrs && e.attrs.behavior !== undefined ? `${e.attrs.behavior} <span class="muted">${esc(e.attrs.behaviorName)}</span>` : dash, e => e.attrs && e.attrs.behavior],
       ['algo', 'Algo', e => e.attrs ? opt(e.attrs.algo) : dash, e => e.attrs && e.attrs.algo],
       ['flags', 'Flags', e => e.attrs ? opt(e.attrs.flags) : dash],
@@ -1484,25 +1826,31 @@ const TABLES = {
       ['topologyId', 'MT', e => opt(e.topologyId)],
       ['nlriSize', 'NLRI Size', e => esc(e.nlriSize)],
     ],
-    search: e => [e.sid, e.systemId, nm(e.systemId), e.instanceHex, e.attrs && e.attrs.behaviorName],
+    search: e => [e.sid, e.systemId, nm(e.systemId), e.instanceHex, e.attrs && e.attrs.behaviorName, sidLocator(e) && sidLocator(e).prefix],
   },
   policy: {
     section: 'policySection', title: 'SR Policy NLRIs (SP)', data: () => model.policies, badge: 'badge-blue', type: 'sr-policy',
     cols: [
       ['path', 'Status', e => pathMarkerTags(e.pathMarker), e => e.pathMarker.raw],
-      ['headend', 'Headend (N.te)', e => `<span class="mono">${esc(e.headend)}</span>`],
-      ['endpoint', 'Endpoint (C.e)', e => `<span class="mono" style="color:var(--teal)">${esc(e.endpoint)}</span> <span class="tag tag-${e.isIPv6Endpoint ? 'ipv6' : 'ipv4'}">${e.isIPv6Endpoint ? 'IPv6' : 'IPv4'}</span>`],
+      ['headend', 'Headend (N.te)', e => {
+        const r = policyHops.get(e);
+        return `${r && r.headendName ? `<b>${esc(r.headendName)}</b><br>` : ''}<span class="mono${r && r.headendName ? ' muted' : ''}">${esc(e.headend)}</span>`;
+      }, e => (policyHops.get(e) || {}).headendName || e.headend],
+      ['endpoint', 'Endpoint (C.e)', e => {
+        const r = policyHops.get(e);
+        return `${r && r.endpointName ? `<b>${esc(r.endpointName)}</b><br>` : ''}<span class="mono" style="color:var(--teal)">${esc(e.endpoint)}</span> <span class="tag tag-${e.isIPv6Endpoint ? 'ipv6' : 'ipv4'}">${e.isIPv6Endpoint ? 'IPv6' : 'IPv4'}</span>`;
+      }, e => (policyHops.get(e) || {}).endpointName || e.endpoint],
       ['colorDec', 'Color (C.cl)', e => `<span class="mono">${esc(e.colorDec)}</span> <span class="muted">(${esc(e.colorHex)})</span>`],
+      ['segments', 'Segment list hops', e => segmentsCell(e), e => e.attrs ? e.attrs.segmentLists.reduce((n, l) => n + l.segments.length, 0) : 0],
       ['protocolOriginName', 'Origin (C.po)', e => `<span class="tag ${e.protocolOriginClass}">${esc(e.protocolOriginName)}</span>`],
       ['name', 'Policy / CP Name', e => e.attrs ? `${opt(e.attrs.policyName)}<br><span class="muted">${opt(e.attrs.cpName)}</span>` : dash, e => e.attrs && e.attrs.policyName],
       ['state', 'Pref / State', e => e.attrs && e.attrs.state ? `${opt(e.attrs.state.preference)} <span class="muted">${esc(e.attrs.state.flags)} ${esc(e.attrs.state.flagNames)}</span>` : dash, e => e.attrs && e.attrs.state && e.attrs.state.preference],
       ['bsid', 'BSID', e => e.attrs && e.attrs.bsid ? `<span class="mono">${esc(e.attrs.bsid.value)}</span> <span class="muted">${e.attrs.bsid.dataplane}${e.attrs.bsid.endpointBehavior ? ' fn ' + e.attrs.bsid.endpointBehavior.behavior : ''}</span>` : dash],
-      ['segments', 'Segments', e => segmentsCell(e.attrs), e => e.attrs ? e.attrs.segmentLists.reduce((n, l) => n + l.segments.length, 0) : 0],
       ['originatorNode', 'Orig Node (N.q)', e => opt(e.originatorNode)],
       ['discriminator', 'Disc (C.di)', e => esc(e.discriminator)],
       ['nlriSize', 'NLRI Size', e => esc(e.nlriSize)],
     ],
-    search: e => [e.headend, e.endpoint, e.colorDec, e.colorHex, e.protocolOriginName, e.originatorNode, e.originatorAddr, e.discriminator, e.nodeAsn, e.bgpRouterId, e.cpAsn, e.nextHop, e.instanceHex, e.flagsHex, e.attrs && e.attrs.policyName, e.attrs && e.attrs.cpName],
+    search: e => [e.headend, e.endpoint, e.colorDec, e.colorHex, e.protocolOriginName, e.originatorNode, e.originatorAddr, e.discriminator, e.nodeAsn, e.bgpRouterId, e.cpAsn, e.nextHop, e.instanceHex, e.flagsHex, e.attrs && e.attrs.policyName, e.attrs && e.attrs.cpName, ...policyHopText(e)],
   },
 };
 
@@ -1536,6 +1884,10 @@ function loadText(text, meta) {
   analysis = analyzeSrv6(m);
   topo = buildTopology(m);
   faModel = buildFlexAlgoModel(topo);
+  mplsSids = buildMplsSids(m);
+  const hops = buildPolicyHops(m, mplsSids);
+  policyHops = new Map(m.policies.map((p, i) => [p, hops[i]]));
+  locatorCache = new Map();
   fileMeta = { ...meta, ms: Math.round(performance.now() - t0) };
   topoState = null;
   Object.assign(topoOpts, { algo: topo.algos[0] ?? null, instance: 'all', flex3d: false, yaw: FA_START_YAW, tilt: FA_START_TILT, showBase: true });
@@ -1580,6 +1932,9 @@ function loadSample() {
 function closeFile() {
   if (topoState) topoState.sim.stop();
   model = analysis = topo = faModel = fileMeta = topoState = null;
+  mplsSids = [];
+  policyHops = new Map();
+  locatorCache = new Map();
   $('app').classList.add('hidden');
   $('view').innerHTML = '';
   $('dropzone').classList.remove('compact');
@@ -1606,7 +1961,8 @@ const TAB_DEFS = [
   { id: 'nodes', label: 'Nodes', table: 'node', count: () => model.nodes.length },
   { id: 'links', label: 'Links', table: 'link', count: () => model.links.length },
   { id: 'prefixes', label: 'Prefixes', table: 'prefix', count: () => model.prefixes.length },
-  { id: 'sids', label: 'SRv6 SIDs', table: 'sid', count: () => model.srv6Sids.length },
+  { id: 'mpls', label: 'SRv4 SIDs', table: 'mpls', count: () => mplsSids.length, alert: () => mplsSids.some(r => r.conflict || r.issue) },
+  { id: 'sids', label: 'SRv6 Locators', table: 'sid', count: () => model.srv6Sids.length },
   { id: 'policies', label: 'SR Policies', table: 'policy', count: () => model.policies.length },
   { id: 'health', label: 'SRv6 Health', render: renderHealth, count: () => analysis.findings.length, alert: () => analysis.findings.some(f => f.severity === 'high') },
 ];
@@ -1643,7 +1999,7 @@ function renderOverview() {
   const s = analysis.summary;
   const card = (label, value, cls = '', tab = '') => `<div class="stat-card"${tab ? ` data-action="tab" data-tab="${tab}" style="cursor:pointer"` : ''}><div class="label">${label}</div><div class="value ${cls}">${value}</div></div>`;
   let html = `<div class="stats">${card('Total Entries', model.meta.total, 'blue')}${card('Nodes (V)', model.nodes.length, '', 'nodes')}${card('Links (E)', model.links.length, '', 'links')}`
-    + `${card('Prefixes (T)', model.prefixes.length, 'green', 'prefixes')}${card('SRv6 SIDs (S)', model.srv6Sids.length, 'orange', 'sids')}${card('SR Policies (SP)', pol.length, 'orange', 'policies')}`
+    + `${card('Prefixes (T)', model.prefixes.length, 'green', 'prefixes')}${card('SRv4 SIDs', `${mplsSids.filter(r => r.kind === 'prefix').length}<span class="sub"> prefix / ${mplsSids.filter(r => r.kind === 'adjacency').length} adj</span>`, 'blue', 'mpls')}${card('SRv6 SIDs (S)', model.srv6Sids.length, 'orange', 'sids')}${card('SR Policies (SP)', pol.length, 'orange', 'policies')}`
     + `${card('IGP Instances', topo.instances.length)}${card('Routers / Adjacencies', `${topo.nodes.length}<span class="sub"> / ${topo.edges.length}</span>`, 'blue', 'topology')}</div>`;
   if (model.meta.detailEntries) {
     const hi = analysis.findings.filter(f => f.severity === 'high').length;
@@ -1716,7 +2072,8 @@ function renderTable(key) {
 function toggleDetail(row) {
   const next = row.nextElementSibling;
   if (next && next.classList.contains('detail-row')) { next.remove(); return; }
-  const e = TABLES[row.dataset.table].data()[Number(row.dataset.row)];
+  const r = TABLES[row.dataset.table].data()[Number(row.dataset.row)];
+  const e = r.src || r;
   const tr = document.createElement('tr');
   tr.className = 'detail-row';
   const td = document.createElement('td');
