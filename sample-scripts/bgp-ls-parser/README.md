@@ -7,14 +7,19 @@
 
 ## 1. Introduction
 
-The **BGP-LS Parser** is a standalone, browser-based tool that parses raw output from the IOS-XR command `show bgp link-state link-state` and presents it in a structured, sortable, and filterable dashboard.
+The **BGP-LS Parser** is a standalone, browser-based tool that parses raw output from the IOS-XR commands `show bgp link-state link-state`, `show lslib server topology-db` and `show lslib server topology-db detail`, and presents it in a structured, sortable, and filterable dashboard.
 
-It extracts and decodes two types of Network Layer Reachability Information (NLRI):
+It extracts and decodes all BGP-LS Network Layer Reachability Information (NLRI) types:
 
-- **IS-IS Prefix NLRIs** — topology prefix advertisements (`[T]` entries).
-- **SR Policy NLRIs** — Segment Routing policy candidate paths (`[SP]` entries).
+- **Node NLRIs** (`[V]`) — with `detail`: hostname, TE router-IDs, SR-ALG, SRGB/SRLB, SRv6-Capabilities, MSD (MPLS and SRv6 types 41/42/44/45), Flex-Algo Definitions.
+- **Link NLRIs** (`[E]`) — IPv4 and IPv6 (MT 0x0002); with `detail`: IGP/TE metric, bandwidths, delay, admin groups, SRLG, MPLS ADJ-SIDs, **SRv6 End.X SIDs** (behavior, algo, B/S/P flags, SID structure) and ASLA (flex-algo application attributes).
+- **Prefix NLRIs** (`[T]`) — IPv4 and IPv6; with `detail`: metric, prefix-SIDs per algo, IGP flags and the **SRv6-Locator TLV** (algo, metric, D-flag for leaked locators).
+- **SRv6 SID NLRIs** (`[S]`) — SID, endpoint behavior (e.g. 48 = uN), algo, SID structure.
+- **SR Policy NLRIs** (`[SP]`) — candidate paths; with `detail`: policy/CP name, state, MPLS or **SRv6 BSID**, constraints, segment lists including **SRv6 segments and their endpoint behavior**.
 
-By the end of this tutorial you will be able to paste router output into the parser, understand every column in the resulting tables, and use filters and sorting to find the data you need.
+When `detail` output is parsed, an **SRv6 Health** tab cross-checks the topology (see section 8a), and the **Topology** tab draws the IGP graph (see section 8b).
+
+By the end of this tutorial you will be able to drop a CLI capture onto the parser, understand every column in the resulting tables, use filters and sorting to find the data you need, and explore the topology.
 
 ---
 
@@ -34,21 +39,25 @@ No installation, server, or internet connection is required — the tool runs en
 Open `bgp-ls-parser.html` by double-clicking the file or dragging it into a browser window. You will see:
 
 - A **title bar** ("🔍 BGP-LS Parser").
-- A **text area** for pasting BGP-LS output.
-- A **toolbar** with *Parse*, *Load Sample*, and *Clear* buttons, plus filter controls.
-- An **empty-state prompt** asking you to paste data.
+- A **drop zone**. Drop a `.txt` / `.log` CLI capture anywhere on the page, or click the drop zone to browse for one.
+- An **Or paste CLI output** panel with a text area plus *Parse* and *Load Sample* buttons.
+
+After a file is loaded, the drop zone shrinks to an **Open another capture** bar, and the page shows:
+
+- a **toolbar** with the file summary, filter controls, *Export JSON* and *Close*;
+- **tabs** with entry counts: **Overview**, **Topology**, **Nodes**, **Links**, **Prefixes**, **SRv6 SIDs**, **SR Policies** and **SRv6 Health**.
 
 ---
 
 ## 4. Your First Parse: Loading Sample Data
 
-Click the **Load Sample** button in the toolbar. The text area populates with example `show bgp link-state link-state` output filtered for endpoint `66.66.66.66`, and the parser runs automatically.
+Open **Or paste CLI output** and click **Load Sample**. The text area fills with a small synthetic `show lslib server topology-db detail` capture, and the parser runs automatically.
 
 You should now see:
 
-1. **Stat cards** across the top of the page.
-2. An **IS-IS Prefix NLRIs** table (if prefix entries exist in the sample).
-3. An **SR Policy NLRIs** table listing parsed candidate paths.
+1. The **Overview** tab, with stat cards for every NLRI type plus SRv6 and SR Policy summaries.
+2. Tabs for each NLRI table. Clicking a stat card opens the matching tab.
+3. A **Topology** tab with two routers and one adjacency.
 
 This confirms the tool is working. The rest of this tutorial explains what you are looking at.
 
@@ -147,32 +156,115 @@ The **SR Policy NLRIs** section appears when SR Policy (`[SP]`) entries are foun
    show bgp link-state link-state | include 66.66.66.66
    ```
 
-2. Copy the output from the terminal.
+2. Save the terminal session to a file, then **drag the file onto the page** (or click the drop zone to browse). Parsing starts immediately. Extract `.tar.gz` bundles first; binary files are rejected.
 
-3. In the BGP-LS Parser, **click inside the text area** and paste (`Ctrl+V` / `Cmd+V`).
+3. Alternatively, copy the output, open **Or paste CLI output**, paste it (`Ctrl+V` / `Cmd+V`) and click **Parse** (or press `Ctrl+Enter` / `Cmd+Enter`).
 
-4. Click **Parse** (or press `Ctrl+Enter` / `Cmd+Enter`).
+The tabs and counts update to reflect your data. **Close** returns to the empty drop zone.
 
-The stat cards and tables update to reflect your data.
+---
+
+## 8a. SRv6 Health and Detail Views
+
+Paste `show lslib server topology-db detail` output to enable the SRv6 attributes. The summary listing printed before the detail section is merged automatically (the **Duplicates Merged** card shows how many).
+
+- **Click any row** to expand the parsed attributes (JSON) and the raw attribute text.
+- **Export JSON** downloads the full parsed model and the SRv6 analysis.
+- Node, link, prefix and SID tables show hostnames resolved from the Node NLRIs.
+
+The **SRv6 Health** tab lists findings by severity. The Overview tab repeats the high and medium ones, and the tab count turns red when any finding is high:
+
+| Check | Severity | Meaning |
+|---|---|---|
+| SRv6 nodes without SRv6 MSD | High | No MSD types 41/42/44/45; consumers such as CNC fall back to the MPLS MSD for SRv6 SID depth |
+| SRv6-capable nodes with no SRv6-Locator TLV | High | SRv6-Capabilities present but no locator from the node in any domain |
+| Locators not leaked between IGP instances | High | Other locators of the same algo are leaked into the instance, but these are not; shows whether the SR-MPLS prefix-SID for the same node/algo is leaked |
+| Locator prefixes without SRv6-Locator TLV | Medium | SIDs fall in a plain IPv6 prefix with no locator TLV |
+| SRv6 SIDs not covered / owned by several nodes | Medium | SID outside every prefix of its node, or several nodes own it with non-leaked locators |
+| IPv6 links of SRv6 nodes without End.X | Medium | No SRv6 adjacency SID on the link |
+| Hostname with several ISO system IDs | Medium | E.g. a mistyped NET in one IS-IS instance |
+| SR policy CPs with no segments | Medium | Empty segment lists (no path / invalid) |
+| Links without reservable bandwidth | Low/Medium | No max-reservable / unreserved BW |
+| IPv4/IPv6 TE metric mismatch, unidirectional links, locator/SID only in another domain | Low | Consistency checks |
+| FAD Excl-Min-BW / Excl-Max-Delay, opaque SRv6 behavior 65535 | Info | Constraints not modelled by CNC; segment behavior to be resolved from the SID |
+
+Node identity is the full node descriptor (instance, ASN, BGP-LS identifier, ISO ID), so feeds that export the same IGP via several BGP-LS producers are analysed per domain. SIDs carried inside leaked locators (re-advertised by ABRs) are counted as leaked, not flagged.
+
+Tick **SRv6 only** in the toolbar to show only SRv6-capable nodes, links with End.X, locators, SRv6 SIDs and SRv6 policies.
+
+### Running the tests
+
+The parser and analysis run without a browser. From this directory:
+
+```
+node test/run-tests.mjs [dump1.txt dump2.txt ...]
+```
+
+The script runs header unit tests, the built-in sample, a synthetic multi-instance topology and topology edge-merging cases. For each dump given, it cross-checks every parsed count (NLRIs per type, End.X, locators, SIDs, MSDs, FADs, prefix/adj SIDs, ASLA, policy segments) against independent raw-text counts, checks that every link NLRI lands in exactly one topology edge, and prints the SRv6 findings. No dependencies are required (Node.js 18+).
+
+---
+
+## 8b. Topology View
+
+The **Topology** tab draws a force-directed graph, using the same renderer as the plan-viewer tool (d3 v7 is embedded, so it still works offline).
+
+- **Nodes** are routers, one per IS-IS system ID. A router present in several IGP instances is drawn once. Labels are hostnames from the Node NLRIs. A dashed node has links but no Node NLRI of its own.
+- **Edges** are adjacencies. Both directions and IPv4/IPv6 of one adjacency merge into one edge: link NLRIs are matched on address pairs, or on IS-IS link IDs when `detail` is present. When several IGP instances (or BGP-LS producers) export the same adjacency, it is drawn as parallel curved edges.
+- **Width** follows the maximum link bandwidth. **Dashed** edges are advertised in only one direction.
+- **Hover** a router to highlight its adjacencies and see TE router-IDs, SR-ALG, MSD, locators and SID counts. Hover an edge to see A→B / B→A IGP and TE metrics, delay, admin group, bandwidth and End.X counts per algo.
+- **Drag** nodes, **scroll** to zoom and drag the background to pan. **Double-click** a router to filter the tables to it and jump to the Nodes tab.
+- The **text filter** and **SRv6 only** dim routers that don't match.
+
+Controls:
+
+| Control | Effect |
+|---|---|
+| **Colour → IGP instance** | Edges and node outlines use one colour per instance. An outer ring marks a router in a second instance. |
+| **Colour → SRv6 End.X / MSD** | Edges are green with End.X in both directions, amber with End.X in one direction, red with none between two SRv6 nodes, and grey when the link is not SRv6. Node outlines are green with an SRv6 MSD, red for SRv6 without one, and grey when not SRv6. A dotted ring means the router owns a locator. |
+| **Colour → Flex-Algo participation** | Pick an algo. Edges are solid when usable both ways, dashed when usable one way, and faded when pruned (see the pruning rules below). Routers outside the algo fade out. Hover an edge to see the FAD and the verdict for each direction. |
+| **3D Flex-Algo** | Stack one tilted pane per Flex-Algorithm over the 2D layout (see below). |
+| **Show** | Draw one IGP instance only (shown when the capture has several). |
+| **Labels / Node size / Curvature** | Display options. In 3D, *Pane spacing* replaces *Curvature*. |
+| **Re-layout / Reset view / Fit** | Recompute the layout from scratch, restore the 3D camera, or zoom to fit. |
+
+### 3D Flex-Algo view
+
+Tick **3D Flex-Algo** to stack one pane per algorithm found in SR-ALG above an **Algo 0 (IGP)** baseline pane, the same way the plan-viewer tool does.
+- **Layout:** every pane reuses the 2D router positions. Dotted pillars join the copies of the same router across panes.
+- **Pane labels** show the FAD metric type, the member routers and how many adjacencies are usable.
+- **Pane chips** above the view show or hide individual panes.
+- **Link halves:** each half of a link shows the direction leaving its nearer router. It is solid in the pane colour when that direction is usable, and grey and dashed when it is pruned. Routers that don't advertise the algo are drawn as faded ghosts.
+- **Navigation:** drag on a pane to rotate and tilt the stack. Drag outside the panes, or Shift-drag, to pan, and scroll to zoom.
+- **Hover:** hovering a router highlights its copies, pillars and links on every pane, and the tooltip lists its algos and FADs for each instance (marking the winning FAD). Hovering a link shows the winning FAD with its constraints, the verdict and metric for each direction, and that direction's SRv6 End.X SIDs for the algo.
+
+Pruning rules (RFC 9350), applied per IGP instance and per link direction using the link NLRI advertised by the router the link leaves:
+
+1. **Winning FAD:** the highest priority wins, with the highest system ID as tie-break. Without a FAD, the algo is unusable in that instance.
+2. **Participation:** both ends must advertise the algo in SR-ALG in that instance.
+3. **Affinities:** Excl-Any, Incl-Any and Incl-All are checked against the admin group (or extended admin group) from the ASLA with the Flex-Algo bit. When the link has no Flex-Algo ASLA, the legacy TE attributes are used instead, and the tooltip says which source was used.
+4. **Other constraints:** Excl-Min-BW (against max link bandwidth), Excl-Max-Delay (against min delay) and Excl-SRLG.
+5. **Metric:** the FAD metric type (IGP, min delay or TE) must be advertised on the link. Otherwise that direction is pruned.
+
+Links in summary-only captures are marked usable but unchecked, because they carry no attributes.
 
 ---
 
 ## 9. Filtering Results
 
-The toolbar provides three filter controls that work in combination:
+Each tab shows one NLRI type. The toolbar filters apply to the active tab and stay set when you switch tabs:
 
 | Control | Location | Usage |
 |---------|----------|-------|
-| **Text filter** | Text input field | Type any string (IP address, color value, headend, etc.). Matches against all visible fields in a row. Case-insensitive. |
-| **Type dropdown** | "All Types" select | Restrict to **Prefix** or **SR Policy** entries only. |
-| **Origin dropdown** | "All Origins" select | Restrict to **PCEP**, **BGP**, or **Config** originated SR Policies. |
+| **Text filter** | Text input field | Type any string (IP address, color value, headend, etc.). Matches against all visible fields in a row. Case-insensitive. Also filters SRv6 Health findings and dims routers in the Topology tab. |
+| **SRv6 only** | Checkbox | Show only SRv6-related entries. |
+| **Origin dropdown** | "All Origins" select (SR Policies tab only) | Restrict to **PCEP**, **BGP**, or **Config** originated SR Policies. |
 
-Filters apply **instantly** as you type or change a dropdown — no need to click Parse again.
+Filters apply **instantly** as you type or change a dropdown — no need to click Parse again. The table badge shows `visible / total`.
 
 ### Example: Find all Config-originated policies for endpoint 66.66.66.66
 
-1. Type `66.66.66.66` in the text filter.
-2. Select **SR Policy** from the Type dropdown.
+1. Open the **SR Policies** tab.
+2. Type `66.66.66.66` in the text filter.
 3. Select **Config** from the Origin dropdown.
 
 Only matching rows remain visible.
@@ -181,7 +273,7 @@ Only matching rows remain visible.
 
 ## 10. Sorting Columns
 
-Click any **column header** in either table to sort by that column:
+Click any **column header** to sort by that column (an arrow marks the sorted column):
 
 - **First click** → ascending order (A→Z, 0→9).
 - **Second click** → descending order (Z→A, 9→0).
@@ -199,6 +291,8 @@ The raw BGP-LS NLRI lines use bracket-encoded fields. Here is a quick reference 
 | Code | Full Name | Context |
 |------|-----------|---------|
 | `[T]` | Topology | Identifies an IS-IS Prefix NLRI. |
+| `[V]` / `[E]` | Node / Link | Node and Link NLRIs. |
+| `[S]` | SRv6 SID | Identifies an SRv6 SID NLRI; the `S` block contains `t` (multi-topology) and `sd` (SID). |
 | `[SP]` | SR Policy | Identifies an SR Policy NLRI. |
 | `[SR]` | Segment Routing | Marks the policy as SR-based. |
 | `[L1]` / `[L2]` | IS-IS Level 1 / Level 2 | IS-IS level for prefix NLRIs. |
@@ -228,7 +322,7 @@ The raw BGP-LS NLRI lines use bracket-encoded fields. Here is a quick reference 
 
 | Shortcut | Action |
 |----------|--------|
-| `Ctrl+Enter` (Windows/Linux) or `Cmd+Enter` (macOS) | Parse the current text area content. |
+| `Ctrl+Enter` (Windows/Linux) or `Cmd+Enter` (macOS) | Parse the content of the paste text area. |
 
 ---
 
@@ -237,10 +331,11 @@ The raw BGP-LS NLRI lines use bracket-encoded fields. Here is a quick reference 
 In this tutorial you learned how to:
 
 - ✅ Open the BGP-LS Parser in a browser.
-- ✅ Load sample data and parse your own `show bgp link-state link-state` output.
-- ✅ Read the stat card dashboard for a quick summary.
-- ✅ Interpret every column in the IS-IS Prefix and SR Policy tables.
-- ✅ Use text filters, type filters, and origin filters to narrow results.
+- ✅ Drag and drop or paste your own `show lslib` / `show bgp link-state link-state` output.
+- ✅ Read the Overview tab for a quick summary.
+- ✅ Interpret every column in the per-NLRI tabs.
+- ✅ Explore the topology, coloured by IGP instance, SRv6 End.X / MSD or Flex-Algo.
+- ✅ Use the text, SRv6 and origin filters to narrow results.
 - ✅ Sort columns to find specific entries.
 - ✅ Decode raw NLRI bracket field codes.
 
