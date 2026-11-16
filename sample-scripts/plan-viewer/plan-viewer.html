@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-NC+GkJ7L2i//GfQ8gUBwH6d3w6ZpX3or1KsDGCMWQ34=' 'wasm-unsafe-eval'; style-src 'sha256-iYCHjwmHoPiw2nYX0cnGJlrbrWooAwwG0o+OXPD0bqU='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-hOZObFj3/NeyVHjIeKoe8hy2uwmNw64Qf5zmSWallnU=' 'wasm-unsafe-eval'; style-src 'sha256-iYCHjwmHoPiw2nYX0cnGJlrbrWooAwwG0o+OXPD0bqU='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
   <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="plan-viewer 1.1.0; sql.js 1.12.0; d3 7.9.2; maplibre-gl 6.18.0; sql-wasm.wasm sha256 083460b3e9d428ebbbbaa03918ba55da33d810e0fb3470d4b5d8677b462b2c2b">
@@ -2453,6 +2453,8 @@ uniform ${n} ${r} u_${i};
       utilCol('Util', 'Utilisation', r => d.ifUtil(r)),
       col('IGPMetric', 'IGP', { type: 'num' }),
       col('TEMetric', 'TE', { type: 'num' }),
+      col('IPv6IGPMetric', 'IGPv6', { type: 'num' }),
+      col('IPv6TEMetric', 'TEv6', { type: 'num' }),
       col('Delay', 'Delay (ms)', { type: 'num' }),
       col('AdjSIDs', 'Adj SIDs', { value: r => sids(r).join(' '), html: r => h`${sids(r).map(s => h`<span class="tag tag-amber">${s}</span>`)}`, cls: 'wrap' }),
       col('ISISLevel', 'IS-IS level'),

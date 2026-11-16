@@ -21,12 +21,33 @@ The script is designed to run as a **Crosswork Planning external script** within
 4. **Copy if Different** — If the IPv6 IGP metric is a valid integer and differs from the current IPv4 IGP metric (`interface.igp_metric`), the IPv6 value overwrites the IPv4 value. The same logic applies to the TE metric (`interface.te_metric`).
 5. **Write Output** — Saves the modified network model to the destination plan file via `network.write(dest)`.
 
-Each copy operation is logged to stdout for auditability:
+## Logging
+
+The script uses the same log format as `get_plan_cp_cw.py`. Each line has a UTC timestamp, a level, a per-run ID, and `key=value` fields. Every step logs one `phase=<name> status=ok|failed duration_ms=...` line. Each run ends with a `phase=summary` line, even when the run fails.
 
 ```
-Copying IPv6 IGP Metric for node-1 GigabitEthernet0/0/0/0: 100 -> 10
-Copying IPv6 TE Metric for node-1 GigabitEthernet0/0/0/0: 200 -> 20
+2026-11-16T08:28:53.722Z INFO  run=67d5edac phase=start script=update_interface_metric.py script_version=2.0 python=3.11.4 host=cp-collector pid=5906 cwd=/app/... src=/app/.../in.db out=/app/.../out.db extra_args=5
+2026-11-16T08:28:53.736Z INFO  run=67d5edac phase=load_plan status=ok duration_ms=12 path=/app/.../in.db bytes=56639
+2026-11-16T08:28:53.736Z INFO  run=67d5edac phase=copy_metrics node=pe1 interface=GigabitEthernet0/0/0/0 metric=igp old=10 new=100
+2026-11-16T08:28:53.736Z INFO  run=67d5edac phase=copy_metrics node=pe1 interface=GigabitEthernet0/0/0/0 metric=te old=20 new=200
+2026-11-16T08:28:53.736Z INFO  run=67d5edac phase=copy_metrics status=ok duration_ms=0 nodes=19 interfaces=64 v6_igp_present=64 v6_te_present=64 igp_updated=1 te_updated=1 interfaces_updated=1 interface_errors=0
+2026-11-16T08:28:53.737Z INFO  run=67d5edac phase=write_plan status=ok duration_ms=40 path=/app/.../out.db out_bytes=88112
+2026-11-16T08:28:53.737Z INFO  run=67d5edac phase=summary status=ok exit=0 total_ms=55 load_plan_ms=12 copy_metrics_ms=0 write_plan_ms=40 plan_bytes=56639 nodes=19 interfaces=64 igp_updated=1 te_updated=1 interfaces_updated=1 interface_errors=0 out_bytes=88112
 ```
+
+- Each metric change logs one line with its `old` and `new` value. The first 50 change lines are logged at INFO. Any further change lines are logged only with `--debug`, and `change_lines_suppressed` on the `copy_metrics` line records how many were hidden.
+- If reading or updating one interface fails, the script skips that interface and continues. It logs a warning for the first failure and counts all failures in `interface_errors`. In that case the summary reports `status=partial`, and the exit code is still 0.
+- A warning is logged when the plan has no nodes, has no interfaces, or has no interface with IPv6 metrics.
+- Log verbosity: `--debug`, or set `CW_LOG_LEVEL` (`DEBUG`, `INFO`, `WARNING`, `ERROR`).
+
+| Exit | `error_class` | Cause |
+|------|---------------|-------|
+| 0 | | Success (`status=ok` or `status=partial`) |
+| 1 | `unknown` | Unexpected exception; re-run with `--debug` for the traceback |
+| 2 | `config` | Base plan file or output directory not found |
+| 7 | `parse` | OPM could not load the base plan |
+| 9 | `io` | OPM could not write the output plan, or the output is missing or empty |
+| 10 | `dependency` | OPM Python library (`com.cisco.wae.opm`) not available |
 
 ## Deploying as a Crosswork Planning External Script
 
@@ -104,5 +125,5 @@ This script uses the following components from the Crosswork Planning OPM Python
 
 - The script only copies a metric value when the IPv6 value is a valid integer **and** differs from the current IPv4 value. Interfaces without IPv6 metrics are left unchanged.
 - The `rpc_record` accessor is used because `ipv6IGPMetric` and `ipv6TEMetric` are not exposed as first-class properties on the OPM `interface` object.
-- When running inside the Collector framework, stdout output (the copy log messages) is captured in the collection logs accessible via the Crosswork Planning UI under **Administration > Show Tech**.
+- When running inside the Collector framework, stdout output (the log lines) is captured in the collection logs accessible via the Crosswork Planning UI under **Administration > Show Tech**.
 - If migrating this script from Cisco WAE, verify that file path references are compatible with the Crosswork Planning architecture, as noted in the [external scripts documentation](https://www.cisco.com/c/en/us/td/docs/cloud-systems-management/crosswork-planning/7-2/setup-guide/cisco-crosswork-planning-7-2-collection-setup-and-administration/m-collectors-in-cp.html#run-external-scripts).
