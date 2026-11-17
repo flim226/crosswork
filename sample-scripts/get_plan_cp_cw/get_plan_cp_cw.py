@@ -1,3 +1,4 @@
+"""Crosswork Planning collector startup script that retrieves a plan file from CNC."""
 import argparse
 import base64
 import json
@@ -192,12 +193,12 @@ def phase(stats: RunStats, name: str, **fields: object) -> Iterator[Dict[str, ob
         line = {"phase": name, "status": "failed", "error_class": classify_error(exc),
                 "duration_ms": stats.durations[key]}
         line.update({k: v for k, v in extra.items() if k not in line})
-        if isinstance(exc, CrossworkAuthError) and exc.status is not None:
-            line["http"] = exc.status
+        if isinstance(exc, CrossworkAuthError) and exc.status is not None:  # pylint: disable=no-member
+            line["http"] = exc.status  # pylint: disable=no-member
         line["error"] = str(exc)
         logger.error(kv(**line))
         try:
-            exc._logged = True  # type: ignore[attr-defined]
+            exc._logged = True  # type: ignore[attr-defined]  # pylint: disable=protected-access
         except AttributeError:
             pass
         raise
@@ -235,7 +236,7 @@ def _create_session(verify_ssl: bool = True) -> requests.Session:
     session.mount("http://", adapter)
     session.last_http = {}  # type: ignore[attr-defined]
 
-    def record_http(resp: requests.Response, *args, **kwargs) -> None:
+    def record_http(resp: requests.Response, *_args, **_kwargs) -> None:
         info = _http_info(resp)
         session.last_http = info  # type: ignore[attr-defined]
         logger.debug(kv(phase="http", method=resp.request.method, path=urlparse(resp.url).path, **info))
@@ -639,7 +640,7 @@ def log_plan_inventory(stats: RunStats, path: str, plan_format: str, stage: str,
     with phase(stats, "plan_inventory", stage=stage) as ph:
         try:
             inventory = plan_inventory(path, plan_format)
-        except Exception as exc:  # inventory is diagnostic only
+        except Exception as exc:  # pylint: disable=broad-exception-caught  # inventory is diagnostic only
             ph["inventory"] = "unavailable"
             logger.warning(kv(phase="plan_inventory", stage=stage, warning="could not count plan objects",
                               error_class="parse", error=str(exc)))
@@ -668,7 +669,7 @@ def run_command(cmd: List[str], description: str) -> None:
     logger.info(kv(phase="subprocess", tool=tool, description=description, cmd=" ".join(cmd)))
     start = time.monotonic()
     try:
-        result = subprocess.run(cmd, capture_output=True, text=True)
+        result = subprocess.run(cmd, capture_output=True, text=True, check=False)
     except FileNotFoundError as exc:
         raise CommandError(f"{tool} not found on PATH") from exc
     duration_ms = int((time.monotonic() - start) * 1000)
@@ -721,7 +722,7 @@ def find_and_apply_trim(
     for fname, flag in [("trim_include_regex.txt", "-include-nodes-regex"),
                         ("trim_exclude_regex.txt", "-exclude-nodes-regex")]:
         if fname in found_trim_files:
-            with open(found_trim_files[fname], "r") as rf:
+            with open(found_trim_files[fname], "r", encoding="utf-8") as rf:
                 regex = rf.read().strip()
             trim_args.extend([flag, regex])
             regexes[flag.lstrip("-").replace("-", "_")] = regex
@@ -845,6 +846,7 @@ def error_hint(exc: BaseException, error_class: str, stats: RunStats) -> Optiona
 
 def log_summary(stats: RunStats, status: str, exit_code: int, error_class: Optional[str],
                 total_ms: int) -> None:
+    """Log the final one-line run summary with status, exit code, and phase timings."""
     fields: Dict[str, object] = {"phase": "summary", "status": status, "exit": exit_code}
     if error_class:
         fields["error_class"] = error_class
@@ -863,6 +865,7 @@ def log_summary(stats: RunStats, status: str, exit_code: int, error_class: Optio
 
 
 def main() -> None:
+    """Parse arguments, run the collection, and exit with a classified status code."""
     parser = argparse.ArgumentParser(
         description="Retrieve a plan file from Crosswork Network Controller",
         epilog=(
@@ -915,7 +918,7 @@ def main() -> None:
     try:
         run_collection(args, stats, temp_files)
         status, exit_code = "ok", 0
-    except Exception as exc:
+    except Exception as exc:  # pylint: disable=broad-exception-caught
         error_class = classify_error(exc)
         status, exit_code = "failed", EXIT_CODES[error_class]
         fields: Dict[str, object] = {"phase": "error", "error_class": error_class}
