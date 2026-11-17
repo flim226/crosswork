@@ -27,7 +27,7 @@ l1-tutorial/
 ```
 
 `l1_gnpy_collect.py`, `gnpy2cp.py` and `check_cp_l1.py` need only the Python 3 standard library.
-`gnpy_oms_noise.py` and `gnpy-path-request` need GNPy, which supports Python 3.12 or earlier.
+`gnpy_oms_noise.py` and `gnpy-path-request` need GNPy. GNPy 3.0.1 supports Python 3.11 and 3.12 only.
 
 ## Quick Start
 
