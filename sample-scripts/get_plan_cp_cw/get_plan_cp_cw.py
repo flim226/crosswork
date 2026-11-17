@@ -29,7 +29,9 @@ CROSSWORK_IP = "198.18.134.219"
 CROSSWORK_USERNAME = "admin"
 CROSSWORK_PASSWORD = "PASSWORD"
 PLAN_VERSION = ""
-TMP_PLANFILE = "planfile.pln"  # Created in a private per-run temp directory unless --tmpfile is given
+PLAN_FORMAT = "txt"  # get-plan download format: "txt" or "pln"
+PLAN_FORMATS = ("txt", "pln")
+TMP_PLANFILE = "planfile"  # Extension comes from PLAN_FORMAT; created in a private per-run temp directory unless --tmpfile is given
 INSECURE = False
 GEOLOC = False
 BASE_PORT = 30603
@@ -745,30 +747,27 @@ def run_collection(args: argparse.Namespace, stats: RunStats, temp_files: List[s
         python=platform.python_version(), requests=requests.__version__, host=socket.gethostname(),
         pid=os.getpid(), cwd=os.getcwd(), base_url=base_url, out=args.planfile, tmpfile=args.tmpfile or "auto",
         home_dir=args.home_dir, user_upload_dir=args.user_upload_dir, plan_version=args.version or "default",
-        geoloc=args.geoloc, insecure=args.insecure, timeout_s=CONNECT_TIMEOUT,
+        plan_format=args.format, geoloc=args.geoloc, insecure=args.insecure, timeout_s=CONNECT_TIMEOUT,
     ))
 
+    file_format = args.format
+    if file_format not in PLAN_FORMATS:
+        raise ConfigError(f"PLAN_FORMAT must be one of {', '.join(PLAN_FORMATS)}, got '{file_format}'")
+    # DLM coordinates are written into the text plan before it is converted to .db.
+    if args.geoloc and file_format != "txt":
+        raise ConfigError("--geoloc requires the txt plan format; use --format txt")
+
     if args.tmpfile is None:
-        name = TMP_PLANFILE
-        # DLM coordinates are written into the text plan before it is converted to .db.
-        if args.geoloc:
-            name = os.path.splitext(name)[0] + ".txt"
         # mkdtemp creates a unique 0700 directory, so the plan (network topology) is not
         # readable by other local users and cannot be pre-planted or symlinked.
         private_dir = tempfile.mkdtemp(prefix="get_plan_cp_cw-")
         temp_files.append(private_dir)
-        args.tmpfile = os.path.join(private_dir, name)
-
-    # Deduce format from temporary planfile extension
-    ext = os.path.splitext(args.tmpfile)[1].lower()
-    if ext == ".txt":
-        file_format = "txt"
-    elif ext == ".pln":
-        file_format = "pln"
+        args.tmpfile = os.path.join(private_dir, f"{TMP_PLANFILE}.{file_format}")
     else:
-        raise ConfigError(f"Temporary planfile must have .txt or .pln, got '{ext}'")
-    if args.geoloc and file_format != "txt":
-        raise ConfigError("--geoloc requires a .txt temporary plan file; use --tmpfile planfile.txt")
+        ext = os.path.splitext(args.tmpfile)[1].lower()
+        if ext != f".{file_format}":
+            raise ConfigError(f"--tmpfile extension '{ext}' does not match plan format '{file_format}'; "
+                              f"use a .{file_format} file or change --format")
 
     if args.insecure:
         logger.warning(kv(phase="start", warning="SSL verification disabled"))
@@ -823,7 +822,7 @@ def run_collection(args: argparse.Namespace, stats: RunStats, temp_files: List[s
 
 
 ERROR_HINTS = {
-    "config": "check --tmpfile extension and --geoloc settings",
+    "config": "check --format, --tmpfile extension, and --geoloc settings",
     "connect": "check that the CNC address and port 30603 are reachable from the Crosswork Planning collector",
     "timeout": "CNC did not respond within CONNECT_TIMEOUT; check CNC load or raise CONNECT_TIMEOUT",
     "subprocess": "see the subprocess stdout/stderr lines above",
@@ -884,8 +883,10 @@ def main() -> None:
     parser.add_argument("user_upload_dir", help="Path where user uploaded external files are available")
     parser.add_argument("archive_root_dir", help="Path to access archive root directory")
     parser.add_argument("--tmpfile", default=None,
-                        help=f"Intermediate plan file; extension (.pln/.txt) sets download format "
-                             f"(default: {TMP_PLANFILE} in a private per-run temp directory)")
+                        help=f"Intermediate plan file; extension must match --format "
+                             f"(default: {TMP_PLANFILE}.<format> in a private per-run temp directory)")
+    parser.add_argument("--format", "-f", choices=PLAN_FORMATS, default=PLAN_FORMAT,
+                        help=f"Plan format requested from get-plan (default: {PLAN_FORMAT})")
     parser.add_argument("--ip", default=CROSSWORK_IP, help=f"Crosswork controller IP address (default: {CROSSWORK_IP})")
     parser.add_argument("--username", "-u", default=None,
                         help=f"Username (or set {ENV_USERNAME}; otherwise the script constant)")
@@ -898,7 +899,7 @@ def main() -> None:
                         help=f"Planfile version (default: {PLAN_VERSION or 'empty'})")
     parser.add_argument("--geoloc", action="store_true", default=GEOLOC,
                         help="Populate <Nodes> Longitude and Latitude from DLM Inventory "
-                             f"(uses a text temporary plan) (default: {GEOLOC})")
+                             f"(requires --format txt) (default: {GEOLOC})")
     parser.add_argument("--debug", action="store_true",
                         help=f"Enable DEBUG logging (overrides {ENV_LOG_LEVEL})")
 
