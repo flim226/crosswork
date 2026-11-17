@@ -1,7 +1,7 @@
 # L1 Topology Collection with External Scripts: Tutorial Files
 
 These are the files for the xrdocs tutorial
-[Using External Scripts for L1 Topology Collection in Crosswork Planning](https://xrdocs.io/automation/tutorials/tutorial-external-scripts-l1-topology).
+[Using External Scripts for L1 Topology Collection in Crosswork Planning](https://xrdocs.io/automation/tutorials/using-external-scripts-for-l1-collection-in-crosswork-planning).
 
 The tutorial shows how to add an optical (Layer 1) network, computed with
 [GNPy](https://github.com/Telecominfraproject/oopt-gnpy), to a network model collected by the
@@ -22,7 +22,8 @@ l1-tutorial/
     ├── gnpy_services.json    17 wavelength services
     ├── eqpt_config.json      GNPy equipment library
     ├── l1_site_map.csv       which ROADM serves each IP site
-    └── l1_circuit_map.csv    which wavelength service carries each IP link
+    ├── l1_circuit_map.csv    which wavelength service carries each IP link
+    └── LICENSE-GNPy          license for the files taken from GNPy
 ```
 
 `l1_gnpy_collect.py`, `gnpy2cp.py` and `check_cp_l1.py` need only the Python 3 standard library.
@@ -77,15 +78,32 @@ python3 gnpy2cp.py --topology example/gnpy_topology.json \
 
 Run `python3 gnpy2cp.py --help` for all options.
 
-## Notes
+## Attribution
 
-- `example/gnpy_topology.json` is `CORONET_CONUS_Topology.json` from the
-  [GNPy example data](https://github.com/Telecominfraproject/oopt-gnpy/tree/master/gnpy/example-data),
-  with two changes so that current GNPy releases accept it: the top-level `metadata` key is removed,
-  and `→` in element names is replaced with `->`.
-- `example/eqpt_config.json` is the unmodified GNPy example equipment library.
+Two example files come from the
+[GNPy example data](https://github.com/Telecominfraproject/oopt-gnpy/tree/master/gnpy/example-data)
+in the [Telecom Infra Project oopt-gnpy repository](https://github.com/Telecominfraproject/oopt-gnpy),
+taken at commit `3b0cf09`:
+
+| File | Original GNPy file | Changes |
+| --- | --- | --- |
+| `example/gnpy_topology.json` | [`gnpy/example-data/CORONET_CONUS_Topology.json`](https://github.com/Telecominfraproject/oopt-gnpy/blob/master/gnpy/example-data/CORONET_CONUS_Topology.json) | Top-level `metadata` key removed, and `→` in element names replaced with `->`, so that current GNPy releases accept the file |
+| `example/eqpt_config.json` | [`gnpy/example-data/eqpt_config.json`](https://github.com/Telecominfraproject/oopt-gnpy/blob/master/gnpy/example-data/eqpt_config.json) | None |
+
+GNPy is Copyright (c) 2018, Telecom Infra Project, and is distributed under the BSD 3-Clause
+License. A copy of the license is in [`example/LICENSE-GNPy`](example/LICENSE-GNPy).
+
+The other files were written for this tutorial:
+
+- `example/gnpy_services.json` uses the GNPy service format, but its 17 requests were generated
+  from the L1 circuits of the sample Crosswork Planning plan.
 - `example/us_backbone_l3.txt` is a sample Crosswork Planning plan file with its L1 tables removed,
   standing in for an IGP database or SR-PCE collection.
+- The Python scripts are original. `gnpy_oms_noise.py` imports the GNPy library, which you install
+  separately with `pip install gnpy`.
+
+## Notes
+
 - The extended output (`l1_options.json` with `{"extended": true}`, or `gnpy2cp.py --extended`)
   writes L1 columns whose plan file names are not yet confirmed against a Crosswork Planning
   export. See Appendix B of the tutorial before relying on it.
