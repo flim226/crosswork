@@ -2,3 +2,7 @@
 # macOS
 .DS_Store
 **/.DS_Store
+.pylintrc
+**/.pylintrc
+.ruff_cache
+**/.ruff_cache
