@@ -148,11 +148,16 @@ def add_l1_topology(src, dest, search_dirs):
         tables.insert(1, sites)
     known_sites = {r['Name'] for r in sites[2]}
     gnpy_sites = {r['Name']: r for r in l1_tables['Sites'][2]}
+    added_sites = []
     for row in l1_tables['L1Nodes'][2]:
-        row['Site'] = l1_site.get(row['Name'], row['Site'])
+        gnpy_site = row['Site']
+        row['Site'] = l1_site.get(row['Name'], gnpy_site)
         if row['Site'] not in known_sites:
-            sites[2].append(gnpy_sites[row['Site']])
+            site_row = dict(gnpy_sites[gnpy_site], Name=row['Site'])
+            sites[2].append(site_row)
             known_sites.add(row['Site'])
+            if row['Site'] in site_map:
+                added_sites.append(row['Site'])
     for col in ('Longitude', 'Latitude'):
         if col not in sites[1]:
             sites[1].append(col)
@@ -167,6 +172,7 @@ def add_l1_topology(src, dest, search_dirs):
     nodes = table(tables, 'Nodes')[2]
     node_site = {n['Name']: n.get('Site') for n in nodes}
     l3l1 = [{'Node': n, 'L1Node': site_map[s]} for n, s in node_site.items() if s in site_map]
+    no_site = sorted(n for n, s in node_site.items() if not s)
     tables.append(['L3L1Links', ['Node', 'L1Node'], l3l1])
 
     # 5. Map L3 circuits onto L1 circuits by service ID.
@@ -182,7 +188,7 @@ def add_l1_topology(src, dest, search_dirs):
         by_key[(c['NodeA'], c['InterfaceA'], c['NodeB'], c['InterfaceB'])] = c
         by_key[(c['NodeB'], c['InterfaceB'], c['NodeA'], c['InterfaceA'])] = c
 
-    mapped, unmatched = 0, []
+    mapped, unmatched, unsited = 0, [], []
     for m in read_csv(files['l1_circuit_map.csv']):
         key = (m['NodeA'], m['InterfaceA'], m['NodeB'], m['InterfaceB'])
         circuit = by_key.get(key)
@@ -192,7 +198,10 @@ def add_l1_topology(src, dest, search_dirs):
                                               else 'no GNPy service'))
             continue
         a_side = site_map.get(node_site.get(circuit['NodeA']))
-        same = a_side == l1['L1NodeA']
+        b_side = site_map.get(node_site.get(circuit['NodeB']))
+        if a_side is None and b_side is None:
+            unsited.append(m['ServiceId'])
+        same = a_side == l1['L1NodeA'] if a_side is not None else b_side != l1['L1NodeA']
         circuit['L1CircuitNodeA'] = l1['L1NodeA'] if same else l1['L1NodeB']
         circuit['L1CircuitPortA'] = l1['L1PortA'] if same else l1['L1PortB']
         circuit['L1CircuitNodeB'] = l1['L1NodeB'] if same else l1['L1NodeA']
@@ -204,8 +213,17 @@ def add_l1_topology(src, dest, search_dirs):
     print('L1 nodes: {}, L1 links: {}, L1 circuits: {}, hop rows: {}'.format(
         len(l1_tables['L1Nodes'][2]), len(links), len(l1_tables['L1Circuits'][2]), len(hops)))
     print('L3L1 links: {}, L3 circuits mapped to L1: {}'.format(len(l3l1), mapped))
+    if added_sites:
+        print('WARNING sites in l1_site_map.csv missing from the source plan, added from GNPy: {}'
+              .format(', '.join(sorted(added_sites))))
+    if no_site:
+        print('WARNING {} L3 nodes have no Site and are not connected to an L1 node: {}'
+              .format(len(no_site), ', '.join(no_site[:10]) + (' ...' if len(no_site) > 10 else '')))
     for u in unmatched:
         print('WARNING circuit map row not applied: {}'.format(u))
+    if unsited:
+        print('WARNING {} L3 circuits mapped with neither end in a mapped site; their A and B ends '
+              'follow the L1 circuit and may be reversed: {}'.format(len(unsited), ', '.join(unsited)))
     for r in report:
         if r['gnpy_status'] != 'OK':
             print('WARNING GNPy reports {} as {}'.format(r['circuit'], r['gnpy_status']))
