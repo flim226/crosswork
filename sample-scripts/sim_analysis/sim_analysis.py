@@ -138,7 +138,7 @@ DEFAULT_PORT = 30603
 DEFAULT_TIMEOUT = 30
 ENV_USERNAME = "CW_USERNAME"
 # Name of the password environment variable. This is not a password value.
-ENV_PASSWORD = "CW_PASSWORD"  # noqa: S105  # nosec B105
+ENV_PASSWORD = "CW_PASSWORD"  # nosec B105
 ENV_HOST = "CW_HOST"
 DEFAULT_PROFILE = "4000m vCPU, 16Gi Mem"
 DEFAULT_POLL_INTERVAL = 5.0
@@ -534,7 +534,11 @@ def _validate_bool(value: str) -> str:
 
 
 def _bounded_int(value: int, name: str, *, lower: int, upper: int) -> int:
-    if isinstance(value, bool) or not isinstance(value, int) or not lower <= value <= upper:
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, int)
+        or not lower <= value <= upper
+    ):
         raise ValueError(f"{name} must be an integer from {lower} to {upper}")
     return value
 
@@ -542,7 +546,7 @@ def _bounded_int(value: int, name: str, *, lower: int, upper: int) -> int:
 def _format_percent(value: float, name: str) -> str:
     """Format a 0-100 bound. Integers stay integers so the CLI token is stable."""
     if isinstance(value, bool) or not isinstance(value, (int, float)):
-        raise ValueError(f"{name} must be a number from 0 to 100")
+        raise TypeError(f"{name} must be a number from 0 to 100")
     number = float(value)
     if not math.isfinite(number) or number < 0 or number > 100:
         raise ValueError(f"{name} must be a number from 0 to 100")
@@ -595,9 +599,7 @@ def _validate_pairwise_failure(value: str) -> str:
     mapped = folded.get(key)
     if mapped is None:
         allowed = ", ".join(PAIRWISE_FAILURES)
-        raise ValueError(
-            f"pairwise_failure must be one of: {allowed}; got {value!r}"
-        )
+        raise ValueError(f"pairwise_failure must be one of: {allowed}; got {value!r}")
     return mapped
 
 
@@ -775,9 +777,7 @@ def build_sim_analysis_options(
         upper = 9_999 if num_partitions is None else num_partitions - 1
         if upper < 0:
             raise ValueError("partition_index requires num_partitions >= 1")
-        number = _bounded_int(
-            partition_index, "partition_index", lower=0, upper=upper
-        )
+        number = _bounded_int(partition_index, "partition_index", lower=0, upper=upper)
         args.extend(["-partition-index", str(number)])
     result_name = _optional_engine_name(result_file)
     if result_name is not None:
@@ -1575,7 +1575,8 @@ def main() -> int:
             "  -pairwise-failure              distinct-sets | all-sets |\n"
             "                                 distinct-sets-and-single |\n"
             "                                 all-sets-and-single\n"
-            "                                 (one or two failure sets; CP 7.2 pairwise)\n"
+            "                                 "
+            "(one or two failure sets; CP 7.2 pairwise)\n"
             "  -traffic-levels                comma-separated level names "
             "(e.g. Default)\n"
             "  -record-failures-within-bound  0-100 (0 = worst case only)\n"
@@ -1730,8 +1731,7 @@ def main() -> int:
         required=True,
         metavar="<filename>",
         help=(
-            "Local path for the output plan (.txt, .pln, or .db). "
-            "Use '-' for stdout"
+            "Local path for the output plan (.txt, .pln, or .db). Use '-' for stdout"
         ),
     )
     parser.add_argument(
@@ -1988,6 +1988,7 @@ def main() -> int:
         SimAnalysisError,
         CrossworkAuthError,
         ValueError,
+        TypeError,
         requests.RequestException,
         OSError,
         json.JSONDecodeError,
