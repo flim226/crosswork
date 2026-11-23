@@ -1,0 +1,7 @@
+{
+  "url": "https://<onc-host>:8443",
+  "username": "<read-only ONC user>",
+  "password": "<password>",
+  "verify_tls": true,
+  "ca_file": "onc-ca.pem"
+}

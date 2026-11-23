@@ -1,0 +1,4 @@
+NodeA,InterfaceA,NodeB,InterfaceB,OncChannel
+Battipaglia-54,FourHundredGigE0/0/0/6,Picerno-58,FourHundredGigE0/3/0/9,Battipaglia_43_roadm_Benevento_42_roadm_138ba1a9
+Battipaglia-54,FourHundredGigE0/0/0/2,Picerno-58,FourHundredGigE0/3/0/8,Battipaglia_43_roadm_Benevento_42_roadm_50bacabf
+Ischia-21,FourHundredGigE0/1/0/0,Ravello-51,FourHundredGigE0/0/3/0,Roma_roadm_Frosinone73_roadm_4dd2ed4e
