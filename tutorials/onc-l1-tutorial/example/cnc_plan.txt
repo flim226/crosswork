@@ -2246,7 +2246,7 @@ srte_c_4003_ep_10.144.92.92	Ischia-21			2	200			83ecb5f2-d745-4e80-b937-f37d0890
 srte_c_4003_ep_10.144.92.92	Ercolano-27			1	100			e18bb8d5-60a2-48a2-9da3-11ee65bb88bd							T				bgp_c_4003_ep_10.144.92.92_discr_100	Delay	F
 srte_c_4003_ep_10.144.92.92	Ercolano-27			2	200			852f7168-8447-4d92-ac5f-bbd44f3383ff							F				bgp_c_4003_ep_10.144.92.92_discr_200	Delay	F
 srte_c_4003_ep_10.141.21.21	Positano-92			1	100			ac1c0278-a5fb-42e7-b71d-9b3c8d5dccee							T				bgp_c_4003_ep_10.141.21.21_discr_100	Delay	F
-srte_c_102_ep_10.124.51.51	Battipaglia-54			1	100			84ae8a68-6d06-4395-8a57-04dcc39e7f42							F				EVPN-VPWS_Partner_for_Prem	TE Metric	F
+srte_c_102_ep_10.124.51.51	Battipaglia-54			1	100			84ae8a68-6d06-4395-8a57-04dcc39e7f42							F				EVPN-VPWS_POLICY_1	TE Metric	F
 srte_c_131_ep_10.116.113.113	Lviv-31			1	100			c73f7d16-31c3-4bed-9df0-06af9baedfb9							T				FOR_L2VPN	IGP Metric	F
 srte_c_201_ep_10.142.29.29	Ischia-21			1	100			d48e043b-c6a1-455e-94b0-e71a36d72199							F				TO_PALINURO_default	TE Metric	F
 srte_c_101_ep_10.134.54.54	Krakow-30			1	100			6efedfb1-3009-442e-94de-54835d46e39b							T				srte_c_101_ep_10.134.54.54	Delay	F
@@ -2265,7 +2265,7 @@ srte_c_10_ep_10.120.27.27	Perugia-138			2	200			7db24449-a0f2-425b-834c-3b417ed0
 srte_c_200_ep_10.142.29.29	Ischia-21			1	100			1aefe726-0395-48b1-846e-c0dd3a5d641d							F				TO_PALINURO	TE Metric	F
 srte_c_2000_ep_10.118.45.45	Ercolano-27			1	100			122f2dbb-d009-4577-8738-9942d8c9f669							T				Ercolano-Napoli-srpolicy-2000	TE Metric	F
 srte_c_2127_ep_10.120.27.27	Ischia-21			1	100			763ecd38-2ea4-4159-9619-a3f9f34141c9							F				ISCHIA_ERCOLANO_AGG-R	TE Metric	F
-srte_c_999_ep_10.144.92.92	Palinuro-29			1	50			d010d7db-21fc-4f6d-84dc-13a067e35fec							T				cschmutz	TE Metric	F
+srte_c_999_ep_10.144.92.92	Palinuro-29			1	50			d010d7db-21fc-4f6d-84dc-13a067e35fec							T				USER_POLICY_1	TE Metric	F
 srte_c_131_ep_10.131.31.31	Chernivtsi-113			1	100			709639db-b9c7-49b5-ad49-f769be02b995							T				FOR_L2VPN	TE Metric	F
 srte_c_13_ep_10.120.27.27	Ischia-21			1	100			8057aedf-8de6-4212-836e-3e26b57bc380							F				srte_c_13_ep_10.120.27.27	TE Metric	F
 srte_c_2930_ep_10.119.30.30	Positano-92			1	100			3ecb5189-3b75-4d63-9752-7c3ffeb271c2							F				PWR_MODELING	TE Metric	F
@@ -2297,12 +2297,12 @@ srte_c_4003_ep_10.141.21.21	Ercolano-27			1	200			b55bb6e0-6afb-4cf4-b040-c88cee
 srte_c_4003_ep_10.141.21.21	Ercolano-27			2	100			74afa7c3-2431-47a1-8821-59ae86c5d704							T				bgp_c_4003_ep_10.141.21.21_discr_100	Delay	F
 srte_c_4004_ep_10.141.21.21	Ercolano-27			1	200			6bcf74c7-c84b-4bc1-9cda-884485ee564e							F				bgp_c_4004_ep_10.141.21.21_discr_200	Delay	F
 srte_c_4004_ep_10.141.21.21	Ercolano-27			2	100			13718356-d685-44a1-9a06-4c2b353f4fba							T				bgp_c_4004_ep_10.141.21.21_discr_100	Delay	F
-srte_c_13822_ep_10.115.22.22	Perugia-138			1	100			cec68b9a-17a2-473c-a761-07f605315271							T				Arelion-CFM_to-Aquilla	TE Metric	F
+srte_c_13822_ep_10.115.22.22	Perugia-138			1	100			cec68b9a-17a2-473c-a761-07f605315271							T				CFM_to-Aquilla	TE Metric	F
 srte_c_1381_ep_10.118.45.45	Perugia-138			1	100			7e263af5-0caa-489d-bf06-e16313971666							F				GR-EXP-P	TE Metric	F
 srte_c_1381_ep_10.118.45.45	Perugia-138			2	50			8d0fb79d-92f7-43dd-b3e3-31b2f3ef10f5							F				GR-EXP-P	TE Metric	F
 srte_c_1382_ep_10.118.45.45	Perugia-138			1	100			d329301a-cb63-4b50-9f9d-84fcceebafb6							F				GR-EXP-U	TE Metric	F
 srte_c_1382_ep_10.118.45.45	Perugia-138			2	50			e67841aa-4a84-45d0-9ff5-1d798b5d0495							F				GR-EXP-U	TE Metric	F
-srte_c_22138_ep_10.132.138.138	Aquila-22			1	100			9777b7de-2b09-49a6-bc57-659eba087096							T				Arelion-CFM_to-Perugia	TE Metric	F
+srte_c_22138_ep_10.132.138.138	Aquila-22			1	100			9777b7de-2b09-49a6-bc57-659eba087096							T				CFM_to-Perugia	TE Metric	F
 srte_c_4518_ep_10.143.18.18	Napoli-45			1	100			42f3c073-8c46-47a3-8936-95c1e4a1a3ac							F				Napoli_Ancona	TE Metric	F
 srte_c_11_ep_10.118.45.45	Ercolano-27			1	100			ee1c2d52-a8ba-479f-8b64-a2dd236eb169							T				PW-HE-1201-SRTE	IGP Metric	F
 srte_c_7477132_ep_10.141.21.21	Caserta-38			1	100			99a49a4c-26df-43a2-9aca-d26451f3621d							T				bgp_c_7477132_ep_10.141.21.21_discr_100	Delay	F
@@ -2310,7 +2310,7 @@ srte_c_27512_ep_10.124.51.51	Ercolano-27			1	100			d5c8e9e9-3d7b-4fb8-88e7-181e5
 srte_c_7477131_ep_10.118.45.45	Ercolano-27			1	200			2efa0ebe-6301-48de-82ae-e78b378c419f							F				bgp_c_7477131_ep_10.118.45.45_discr_200	IGP Metric	F
 srte_c_7477131_ep_10.118.45.45	Ercolano-27			2	100			92c3aa62-adcd-47f5-aaf8-6b0c9b91875d							T				bgp_c_7477131_ep_10.118.45.45_discr_100	Delay	F
 srte_c_5100_ep_10.120.27.27	Positano-92			1	100			e3fe79d7-0514-466a-8d19-8ac65feb3264							T				bgp_c_5100_ep_10.120.27.27_discr_100	IGP Metric	F
-srte_c_999_ep_10.142.29.29	Positano-92			1	50			58e80654-a918-4459-9724-feeed925ef7d							T				cschmutz	TE Metric	F
+srte_c_999_ep_10.142.29.29	Positano-92			1	50			58e80654-a918-4459-9724-feeed925ef7d							T				USER_POLICY_1	TE Metric	F
 srte_c_2152_ep_10.124.51.51	Ischia-21			1	100			61e6e42e-315b-4e91-bf7e-b9d16da00ae9							T				ISchia-Ravello-2152	TE Metric	T
 srte_c_103_ep_10.138.86.86	Mainz-65			1	100			75afd59a-5f33-4d2a-9034-48d2b68213ab							T				bgp_c_103_ep_10.138.86.86_discr_100	Delay	F
 srte_c_4003_ep_10.120.27.27	Positano-92			1	100			17a97126-74e4-42a9-a9f9-c3ef2392ce35							T				bgp_c_4003_ep_10.120.27.27_discr_100	Delay	F
@@ -2382,7 +2382,7 @@ srte_c_101_ep_10.142.29.29	Positano-92			1	100			70e61791-0bb2-46ca-8f39-c3c0907
 srte_c_101_ep_10.142.29.29	Positano-92			2	50			f1752f28-21b3-405e-9aa0-0902801e7f34							T				PLE_CS	TE Metric	F
 srte_c_101_ep_10.144.92.92	Palinuro-29			1	50			ae8e93ee-53f3-4333-a1bd-74d2e0f78a90							T				PLE_CS	TE Metric	F
 srte_c_101_ep_10.144.92.92	Palinuro-29			2	100			91ecdedd-c843-4cfd-9f88-a250a7f2891d							T				PLE_CS	TE Metric	F
-srte_c_555_ep_10.146.50.29	Kyiv-47			1	100			57bdbd33-51ca-4e32-aad2-217a941ce584							F				donz_epe	Delay	F
+srte_c_555_ep_10.146.50.29	Kyiv-47			1	100			57bdbd33-51ca-4e32-aad2-217a941ce584							F				EPE_POLICY_1	Delay	F
 srte_c_61006_ep_3fff:2:0:100:21::	Aquila-22			1	100			712b1e1a-d9c6-410e-9b06-a9e5889425ba							T				COLOR-61006-Ischia	IGP Metric	F
 Tunnel65670	Torre-125			1	80			84e9d055-2f29-439a-b35d-e56d161e5c7f			20;21				F				bgp_color_100_ep_10.121.123.123_discr_80	IGP Metric	F
 Tunnel65670	Torre-125			2	90			be302a86-860b-4d6e-8160-7a163a060a1f			20;22;23				F				bgp_color_100_ep_10.121.123.123_discr_90	IGP Metric	F

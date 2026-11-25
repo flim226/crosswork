@@ -1,0 +1,1402 @@
+<Network>
+Property	Value
+Title	
+Version	7.0
+
+<Sites>
+Name	LocationCode	Longitude	Latitude
+atl	ATL	-84.43	33.65
+bos	BOS	-71.0	42.37
+chi	CHI	-87.77	41.88
+hst	HOU	-95.3	29.65
+kcy	MCI	-94.73	39.29
+lax	LAX	-118.4	33.93
+mia	MIA	-80.28	25.8
+nyc	JFK	-73.78	40.63
+sea	SEA	-122.3	47.45
+sjc	SJC	-121.92	37.35
+wdc	DCA	-77.03	38.85
+slc	SLC	-111.97	40.78
+Abilene		-99.74	32.45
+Albany		-73.8	42.67
+Albuquerque		-106.62	35.12
+Austin		-97.75	30.31
+Baltimore		-76.61	39.3
+Baton_Rouge		-91.13	30.45
+Billings		-108.54	45.79
+Birmingham		-86.8	33.53
+Bismarck		-100.77	46.81
+Buffalo		-78.86	42.89
+Charleston		-79.99	32.79
+Charlotte		-80.83	35.2
+Cincinnati		-84.51	39.14
+Cleveland		-81.68	41.48
+Columbus		-82.99	39.99
+Dallas		-96.77	32.79
+Denver		-104.87	39.77
+Detroit		-83.1	42.38
+El_Paso		-106.44	31.8498
+Fresno		-119.79	36.78
+Greensboro		-79.83	36.08
+Hartford		-72.68	41.77
+Jacksonville		-81.66	30.33
+Las_Vegas		-115.22	36.21
+Little_Rock		-92.35	34.72
+Long_Island		-73.67	40.59
+Louisville		-85.74	38.22
+Memphis		-90.01	35.11
+Milwaukee		-87.97	43.06
+Minneapolis		-93.27	44.96
+Nashville		-86.78	36.17
+New_Orleans		-89.93	30.07
+Newark		-74.17	40.72
+Norfolk		-76.24	36.92
+Oakland		-122.22	37.77
+Oklahoma_City		-97.51	35.47
+Omaha		-96.01	41.26
+Orlando		-81.37	28.5
+Philadelphia		-75.13	40.01
+Phoenix		-112.07	33.54
+Pittsburgh		-80.13	40.3
+Portland		-122.66	45.54
+Providence		-71.42	41.82
+Raleigh		-78.66	35.82
+Richmond		-77.47	37.53
+Rochester		-77.62	43.17
+Sacramento		-121.47	38.57
+San_Antonio		-98.51	29.46
+San_Diego		-117.14	32.81
+San_Francisco		-122.42	37.66
+Santa_Barbara		-119.72	34.43
+Scranton		-75.67	41.4
+Spokane		-117.41	47.67
+Springfield		-89.4	39.5
+St_Louis		-90.24	38.64
+Syracuse		-76.14	43.04
+Tallahassee		-84.28	30.46
+Tampa		-82.48	27.96
+Toledo		-83.58	41.66
+Tucson		-110.89	32.2
+Tulsa		-95.92	36.13
+West_Palm_Beach		-80.13	26.75
+Wilmington		-75.53	39.74
+
+<Nodes>
+Name	Site	Function	Protected
+cr1.atl	atl	core	F
+cr1.bos	bos	core	F
+cr1.chi	chi	core	F
+cr1.hst	hst	core	F
+cr1.kcy	kcy	core	F
+cr1.lax	lax	core	F
+cr1.mia	mia	core	F
+cr1.nyc	nyc	core	F
+cr1.sea	sea	core	F
+cr1.sjc	sjc	core	F
+cr1.wdc	wdc	core	F
+cr2.atl	atl	core	F
+cr2.bos	bos	core	F
+cr2.chi	chi	core	F
+cr2.hst	hst	core	F
+cr2.kcy	kcy	core	F
+cr2.lax	lax	core	F
+cr2.mia	mia	core	F
+cr2.nyc	nyc	core	F
+cr2.sea	sea	core	F
+cr2.sjc	sjc	core	F
+cr2.wdc	wdc	core	F
+er1.atl	atl	edge	T
+er1.bos	bos	edge	T
+er1.chi	chi	edge	T
+er1.hst	hst	edge	T
+er1.kcy	kcy	edge	T
+er1.lax	lax	edge	T
+er1.mia	mia	edge	T
+er1.nyc	nyc	edge	T
+er1.sea	sea	edge	T
+er1.sjc	sjc	edge	T
+er1.wdc	wdc	edge	T
+
+<Circuits>
+Name	NodeA	InterfaceA	NodeB	InterfaceB	Capacity	Protected	L1CircuitNodeA	L1CircuitPortA	L1CircuitNodeB	L1CircuitPortB
+cr1.atl-cr1.hst	cr1.atl	to_cr1.hst	cr1.hst	to_cr1.atl	2488.0	F	Atlanta	Atlanta-Houston-atl_hst	Houston	Houston-Atlanta-atl_hst
+cr1.sjc-cr1.kcy	cr1.kcy	to_cr1.sjc	cr1.sjc	to_cr1.kcy	2488.0	F	Kansas_City	Kansas_City-San_Jose-kcy_sjc	San_Jose	San_Jose-Kansas_City-kcy_sjc
+cr1.kcy-cr1.wdc	cr1.kcy	to_cr1.wdc	cr1.wdc	to_cr1.kcy	2488.0	F	Kansas_City	Kansas_City-Washington_DC-kcy_wdc	Washington_DC	Washington_DC-Kansas_City-kcy_wdc
+cr1.atl-cr2.atl	cr1.atl	to_cr2.atl	cr2.atl	to_cr1.atl	10000.0	F				
+cr2.atl-cr1.wdc	cr1.wdc	to_cr2.atl	cr2.atl	to_cr1.wdc	2488.0	F	Washington_DC	Washington_DC-Atlanta-atl_wdc	Atlanta	Atlanta-Washington_DC-atl_wdc
+cr1.bos-cr2.bos	cr1.bos	to_cr2.bos	cr2.bos	to_cr1.bos	10000.0	F				
+cr2.bos-cr1.nyc	cr1.nyc	to_cr2.bos	cr2.bos	to_cr1.nyc	2488.0	F	New_York	New_York-Boston-bos_nyc	Boston	Boston-New_York-bos_nyc
+cr1.bos-cr2.chi	cr1.bos	to_cr2.chi	cr2.chi	to_cr1.bos	2488.0	F	Boston	Boston-Chicago-bos_chi	Chicago	Chicago-Boston-bos_chi
+cr1.chi-cr2.chi	cr1.chi	to_cr2.chi	cr2.chi	to_cr1.chi	10000.0	F				
+cr2.chi-cr1.sjc	cr1.sjc	to_cr2.chi	cr2.chi	to_cr1.sjc	2488.0	F	San_Jose	San_Jose-Chicago-chi_sjc	Chicago	Chicago-San_Jose-chi_sjc
+cr1.hst-cr2.hst	cr1.hst	to_cr2.hst	cr2.hst	to_cr1.hst	10000.0	F				
+cr2.hst-cr1.lax	cr1.lax	to_cr2.hst	cr2.hst	to_cr1.lax	2488.0	F	Los_Angeles	Los_Angeles-Houston-hst_lax	Houston	Houston-Los_Angeles-hst_lax
+cr2.kcy-cr1.hst	cr1.hst	to_cr2.kcy	cr2.kcy	to_cr1.hst	2488.0	F	Houston	Houston-Kansas_City-hst_kcy	Kansas_City	Kansas_City-Houston-hst_kcy
+cr1.kcy-cr2.kcy	cr1.kcy	to_cr2.kcy	cr2.kcy	to_cr1.kcy	10000.0	F				
+cr2.chi-cr2.kcy	cr2.chi	to_cr2.kcy	cr2.kcy	to_cr2.chi	2488.0	F	Chicago	Chicago-Kansas_City-chi_kcy	Kansas_City	Kansas_City-Chicago-chi_kcy
+cr1.lax-cr2.lax	cr1.lax	to_cr2.lax	cr2.lax	to_cr1.lax	10000.0	F				
+cr1.atl-cr2.mia	cr1.atl	to_cr2.mia	cr2.mia	to_cr1.atl	2488.0	F	Atlanta	Atlanta-Miami-atl_mia	Miami	Miami-Atlanta-atl_mia
+cr1.mia-cr2.mia	cr1.mia	to_cr2.mia	cr2.mia	to_cr1.mia	10000.0	F				
+cr1.chi-cr2.nyc	cr1.chi	to_cr2.nyc	cr2.nyc	to_cr1.chi	2488.0	F	Chicago	Chicago-New_York-chi_nyc	New_York	New_York-Chicago-chi_nyc
+cr1.nyc-cr2.nyc	cr1.nyc	to_cr2.nyc	cr2.nyc	to_cr1.nyc	10000.0	F				
+cr1.chi-cr2.sea	cr1.chi	to_cr2.sea	cr2.sea	to_cr1.chi	2488.0	F	Chicago	Chicago-Seattle-chi_sea	Seattle	Seattle-Chicago-chi_sea
+cr1.sea-cr2.sea	cr1.sea	to_cr2.sea	cr2.sea	to_cr1.sea	10000.0	F				
+cr2.sjc-cr1.sea	cr1.sea	to_cr2.sjc	cr2.sjc	to_cr1.sea	2488.0	F	Seattle	Seattle-San_Jose-sea_sjc	San_Jose	San_Jose-Seattle-sea_sjc
+cr1.sjc-cr2.sjc	cr1.sjc	to_cr2.sjc	cr2.sjc	to_cr1.sjc	10000.0	F				
+cr2.lax-cr2.sjc	cr2.lax	to_cr2.sjc	cr2.sjc	to_cr2.lax	2488.0	F	Los_Angeles	Los_Angeles-San_Jose-lax_sjc	San_Jose	San_Jose-Los_Angeles-lax_sjc
+cr1.mia-cr2.wdc	cr1.mia	to_cr2.wdc	cr2.wdc	to_cr1.mia	2488.0	F	Miami	Miami-Washington_DC-mia_wdc	Washington_DC	Washington_DC-Miami-mia_wdc
+cr1.nyc-cr2.wdc	cr1.nyc	to_cr2.wdc	cr2.wdc	to_cr1.nyc	2488.0	F	New_York	New_York-Washington_DC-nyc_wdc	Washington_DC	Washington_DC-New_York-nyc_wdc
+cr1.wdc-cr2.wdc	cr1.wdc	to_cr2.wdc	cr2.wdc	to_cr1.wdc	10000.0	F				
+er1.atl-cr1.atl	cr1.atl	to_er1.atl	er1.atl	to_cr1.atl		T				
+er1.atl-cr2.atl	cr2.atl	to_er1.atl	er1.atl	to_cr2.atl		T				
+er1.bos-cr1.bos	cr1.bos	to_er1.bos	er1.bos	to_cr1.bos		T				
+er1.bos-cr2.bos	cr2.bos	to_er1.bos	er1.bos	to_cr2.bos		T				
+er1.chi-cr1.chi	cr1.chi	to_er1.chi	er1.chi	to_cr1.chi		T				
+er1.chi-cr2.chi	cr2.chi	to_er1.chi	er1.chi	to_cr2.chi		T				
+er1.hst-cr1.hst	cr1.hst	to_er1.hst	er1.hst	to_cr1.hst		T				
+er1.hst-cr2.hst	cr2.hst	to_er1.hst	er1.hst	to_cr2.hst		T				
+er1.kcy-cr1.kcy	cr1.kcy	to_er1.kcy	er1.kcy	to_cr1.kcy		T				
+er1.kcy-cr2.kcy	cr2.kcy	to_er1.kcy	er1.kcy	to_cr2.kcy		T				
+er1.lax-cr1.lax	cr1.lax	to_er1.lax	er1.lax	to_cr1.lax		T				
+er1.lax-cr2.lax	cr2.lax	to_er1.lax	er1.lax	to_cr2.lax		T				
+er1.mia-cr1.mia	cr1.mia	to_er1.mia	er1.mia	to_cr1.mia		T				
+er1.mia-cr2.mia	cr2.mia	to_er1.mia	er1.mia	to_cr2.mia		T				
+er1.nyc-cr1.nyc	cr1.nyc	to_er1.nyc	er1.nyc	to_cr1.nyc		T				
+er1.nyc-cr2.nyc	cr2.nyc	to_er1.nyc	er1.nyc	to_cr2.nyc		T				
+er1.sea-cr1.sea	cr1.sea	to_er1.sea	er1.sea	to_cr1.sea		T				
+er1.sea-cr2.sea	cr2.sea	to_er1.sea	er1.sea	to_cr2.sea		T				
+er1.sjc-cr1.sjc	cr1.sjc	to_er1.sjc	er1.sjc	to_cr1.sjc		T				
+er1.sjc-cr2.sjc	cr2.sjc	to_er1.sjc	er1.sjc	to_cr2.sjc		T				
+er1.wdc-cr1.wdc	cr1.wdc	to_er1.wdc	er1.wdc	to_cr1.wdc		T				
+er1.wdc-cr2.wdc	cr2.wdc	to_er1.wdc	er1.wdc	to_cr2.wdc		F				
+
+<Interfaces>
+Node	Interface	IGPMetric	SRFRREnabled	Area
+cr1.atl	to_cr1.hst	37	F	0.0.0.0
+cr1.atl	to_cr2.atl	1	F	0.0.0.0
+cr1.atl	to_cr2.mia	36	F	0.0.0.0
+cr1.atl	to_er1.atl	1000	F	0.0.0.0
+cr1.bos	to_cr2.bos	1	F	0.0.0.0
+cr1.bos	to_cr2.chi	43	F	0.0.0.0
+cr1.bos	to_er1.bos	1000	F	0.0.0.0
+cr1.chi	to_cr2.chi	1	F	0.0.0.0
+cr1.chi	to_cr2.nyc	38	F	0.0.0.0
+cr1.chi	to_cr2.sea	87	F	0.0.0.0
+cr1.chi	to_er1.chi	1000	F	0.0.0.0
+cr1.hst	to_cr1.atl	37	F	0.0.0.0
+cr1.hst	to_cr2.hst	1	F	0.0.0.0
+cr1.hst	to_cr2.kcy	63	F	0.0.0.0
+cr1.hst	to_er1.hst	1000	F	0.0.0.0
+cr1.kcy	to_cr1.sjc	74	F	0.0.0.0
+cr1.kcy	to_cr1.wdc	48	F	0.0.0.0
+cr1.kcy	to_cr2.kcy	1	F	0.0.0.0
+cr1.kcy	to_er1.kcy	1000	F	0.0.0.0
+cr1.lax	to_cr2.hst	117	F	0.0.0.0
+cr1.lax	to_cr2.lax	1	F	0.0.0.0
+cr1.lax	to_er1.lax	1000	F	0.0.0.0
+cr1.mia	to_cr2.mia	1	F	0.0.0.0
+cr1.mia	to_cr2.wdc	46	F	0.0.0.0
+cr1.mia	to_er1.mia	1000	F	0.0.0.0
+cr1.nyc	to_cr2.bos	11	F	0.0.0.0
+cr1.nyc	to_cr2.nyc	1	F	0.0.0.0
+cr1.nyc	to_cr2.wdc	13	F	0.0.0.0
+cr1.nyc	to_er1.nyc	1000	F	0.0.0.0
+cr1.sea	to_cr2.sea	1	F	0.0.0.0
+cr1.sea	to_cr2.sjc	38	F	0.0.0.0
+cr1.sea	to_er1.sea	1000	F	0.0.0.0
+cr1.sjc	to_cr1.kcy	74	F	0.0.0.0
+cr1.sjc	to_cr2.chi	92	F	0.0.0.0
+cr1.sjc	to_cr2.sjc	1	F	0.0.0.0
+cr1.sjc	to_er1.sjc	1000	F	0.0.0.0
+cr1.wdc	to_cr1.kcy	48	F	0.0.0.0
+cr1.wdc	to_cr2.atl	33	F	0.0.0.0
+cr1.wdc	to_cr2.wdc	1	F	0.0.0.0
+cr1.wdc	to_er1.wdc	1000	F	0.0.0.0
+cr2.atl	to_cr1.atl	1	F	0.0.0.0
+cr2.atl	to_cr1.wdc	33	F	0.0.0.0
+cr2.atl	to_er1.atl	1000	F	0.0.0.0
+cr2.bos	to_cr1.bos	1	F	0.0.0.0
+cr2.bos	to_cr1.nyc	11	F	0.0.0.0
+cr2.bos	to_er1.bos	1000	F	0.0.0.0
+cr2.chi	to_cr1.bos	43	F	0.0.0.0
+cr2.chi	to_cr1.chi	1	F	0.0.0.0
+cr2.chi	to_cr1.sjc	92	F	0.0.0.0
+cr2.chi	to_cr2.kcy	25	F	0.0.0.0
+cr2.chi	to_er1.chi	1000	F	0.0.0.0
+cr2.hst	to_cr1.hst	1	F	0.0.0.0
+cr2.hst	to_cr1.lax	117	F	0.0.0.0
+cr2.hst	to_er1.hst	1000	F	0.0.0.0
+cr2.kcy	to_cr1.hst	63	F	0.0.0.0
+cr2.kcy	to_cr1.kcy	1	F	0.0.0.0
+cr2.kcy	to_cr2.chi	25	F	0.0.0.0
+cr2.kcy	to_er1.kcy	1000	F	0.0.0.0
+cr2.lax	to_cr1.lax	1	F	0.0.0.0
+cr2.lax	to_cr2.sjc	19	F	0.0.0.0
+cr2.lax	to_er1.lax	1000	F	0.0.0.0
+cr2.mia	to_cr1.atl	36	F	0.0.0.0
+cr2.mia	to_cr1.mia	1	F	0.0.0.0
+cr2.mia	to_er1.mia	1000	F	0.0.0.0
+cr2.nyc	to_cr1.chi	38	F	0.0.0.0
+cr2.nyc	to_cr1.nyc	1	F	0.0.0.0
+cr2.nyc	to_er1.nyc	1000	F	0.0.0.0
+cr2.sea	to_cr1.chi	87	F	0.0.0.0
+cr2.sea	to_cr1.sea	1	F	0.0.0.0
+cr2.sea	to_er1.sea	1000	F	0.0.0.0
+cr2.sjc	to_cr1.sea	38	F	0.0.0.0
+cr2.sjc	to_cr1.sjc	1	F	0.0.0.0
+cr2.sjc	to_cr2.lax	19	F	0.0.0.0
+cr2.sjc	to_er1.sjc	1000	F	0.0.0.0
+cr2.wdc	to_cr1.mia	46	F	0.0.0.0
+cr2.wdc	to_cr1.nyc	13	F	0.0.0.0
+cr2.wdc	to_cr1.wdc	1	F	0.0.0.0
+cr2.wdc	to_er1.wdc	1000	F	0.0.0.0
+er1.atl	to_cr1.atl	1000	F	0.0.0.0
+er1.atl	to_cr2.atl	1000	F	0.0.0.0
+er1.bos	to_cr1.bos	1000	F	0.0.0.0
+er1.bos	to_cr2.bos	1000	F	0.0.0.0
+er1.chi	to_cr1.chi	1000	F	0.0.0.0
+er1.chi	to_cr2.chi	1000	F	0.0.0.0
+er1.hst	to_cr1.hst	1000	F	0.0.0.0
+er1.hst	to_cr2.hst	1000	F	0.0.0.0
+er1.kcy	to_cr1.kcy	1000	F	0.0.0.0
+er1.kcy	to_cr2.kcy	1000	F	0.0.0.0
+er1.lax	to_cr1.lax	1000	F	0.0.0.0
+er1.lax	to_cr2.lax	1000	F	0.0.0.0
+er1.mia	to_cr1.mia	1000	F	0.0.0.0
+er1.mia	to_cr2.mia	1000	F	0.0.0.0
+er1.nyc	to_cr1.nyc	1000	F	0.0.0.0
+er1.nyc	to_cr2.nyc	1000	F	0.0.0.0
+er1.sea	to_cr1.sea	1000	F	0.0.0.0
+er1.sea	to_cr2.sea	1000	F	0.0.0.0
+er1.sjc	to_cr1.sjc	1000	F	0.0.0.0
+er1.sjc	to_cr2.sjc	1000	F	0.0.0.0
+er1.wdc	to_cr1.wdc	1000	F	0.0.0.0
+er1.wdc	to_cr2.wdc	1000	F	0.0.0.0
+
+<ServiceClasses>
+Name
+Default
+
+<Demands>
+Name	Source	Destination	ServiceClass
+er1.atl_er1.bos	er1.atl	er1.bos	Default
+er1.atl_er1.chi	er1.atl	er1.chi	Default
+er1.atl_er1.hst	er1.atl	er1.hst	Default
+er1.atl_er1.lax	er1.atl	er1.lax	Default
+er1.atl_er1.mia	er1.atl	er1.mia	Default
+er1.atl_er1.nyc	er1.atl	er1.nyc	Default
+er1.atl_er1.sea	er1.atl	er1.sea	Default
+er1.atl_er1.sjc	er1.atl	er1.sjc	Default
+er1.atl_er1.wdc	er1.atl	er1.wdc	Default
+er1.bos_er1.atl	er1.bos	er1.atl	Default
+er1.bos_er1.chi	er1.bos	er1.chi	Default
+er1.bos_er1.hst	er1.bos	er1.hst	Default
+er1.bos_er1.lax	er1.bos	er1.lax	Default
+er1.bos_er1.mia	er1.bos	er1.mia	Default
+er1.bos_er1.nyc	er1.bos	er1.nyc	Default
+er1.bos_er1.sea	er1.bos	er1.sea	Default
+er1.bos_er1.sjc	er1.bos	er1.sjc	Default
+er1.bos_er1.wdc	er1.bos	er1.wdc	Default
+er1.chi_er1.atl	er1.chi	er1.atl	Default
+er1.chi_er1.bos	er1.chi	er1.bos	Default
+er1.chi_er1.hst	er1.chi	er1.hst	Default
+er1.chi_er1.lax	er1.chi	er1.lax	Default
+er1.chi_er1.mia	er1.chi	er1.mia	Default
+er1.chi_er1.nyc	er1.chi	er1.nyc	Default
+er1.chi_er1.sea	er1.chi	er1.sea	Default
+er1.chi_er1.sjc	er1.chi	er1.sjc	Default
+er1.chi_er1.wdc	er1.chi	er1.wdc	Default
+er1.hst_er1.atl	er1.hst	er1.atl	Default
+er1.hst_er1.bos	er1.hst	er1.bos	Default
+er1.hst_er1.chi	er1.hst	er1.chi	Default
+er1.hst_er1.lax	er1.hst	er1.lax	Default
+er1.hst_er1.mia	er1.hst	er1.mia	Default
+er1.hst_er1.nyc	er1.hst	er1.nyc	Default
+er1.hst_er1.sea	er1.hst	er1.sea	Default
+er1.hst_er1.sjc	er1.hst	er1.sjc	Default
+er1.hst_er1.wdc	er1.hst	er1.wdc	Default
+er1.lax_er1.atl	er1.lax	er1.atl	Default
+er1.lax_er1.bos	er1.lax	er1.bos	Default
+er1.lax_er1.chi	er1.lax	er1.chi	Default
+er1.lax_er1.hst	er1.lax	er1.hst	Default
+er1.lax_er1.lax	er1.lax	er1.lax	Default
+er1.lax_er1.mia	er1.lax	er1.mia	Default
+er1.lax_er1.nyc	er1.lax	er1.nyc	Default
+er1.lax_er1.sea	er1.lax	er1.sea	Default
+er1.lax_er1.sjc	er1.lax	er1.sjc	Default
+er1.lax_er1.wdc	er1.lax	er1.wdc	Default
+er1.mia_er1.atl	er1.mia	er1.atl	Default
+er1.mia_er1.bos	er1.mia	er1.bos	Default
+er1.mia_er1.chi	er1.mia	er1.chi	Default
+er1.mia_er1.hst	er1.mia	er1.hst	Default
+er1.mia_er1.lax	er1.mia	er1.lax	Default
+er1.mia_er1.mia	er1.mia	er1.mia	Default
+er1.mia_er1.nyc	er1.mia	er1.nyc	Default
+er1.mia_er1.sea	er1.mia	er1.sea	Default
+er1.mia_er1.sjc	er1.mia	er1.sjc	Default
+er1.mia_er1.wdc	er1.mia	er1.wdc	Default
+er1.nyc_er1.atl	er1.nyc	er1.atl	Default
+er1.nyc_er1.bos	er1.nyc	er1.bos	Default
+er1.nyc_er1.chi	er1.nyc	er1.chi	Default
+er1.nyc_er1.hst	er1.nyc	er1.hst	Default
+er1.nyc_er1.lax	er1.nyc	er1.lax	Default
+er1.nyc_er1.mia	er1.nyc	er1.mia	Default
+er1.nyc_er1.sea	er1.nyc	er1.sea	Default
+er1.nyc_er1.sjc	er1.nyc	er1.sjc	Default
+er1.nyc_er1.wdc	er1.nyc	er1.wdc	Default
+er1.sea_er1.atl	er1.sea	er1.atl	Default
+er1.sea_er1.bos	er1.sea	er1.bos	Default
+er1.sea_er1.chi	er1.sea	er1.chi	Default
+er1.sea_er1.hst	er1.sea	er1.hst	Default
+er1.sea_er1.lax	er1.sea	er1.lax	Default
+er1.sea_er1.mia	er1.sea	er1.mia	Default
+er1.sea_er1.nyc	er1.sea	er1.nyc	Default
+er1.sea_er1.sea	er1.sea	er1.sea	Default
+er1.sea_er1.sjc	er1.sea	er1.sjc	Default
+er1.sea_er1.wdc	er1.sea	er1.wdc	Default
+er1.sjc_er1.atl	er1.sjc	er1.atl	Default
+er1.sjc_er1.bos	er1.sjc	er1.bos	Default
+er1.sjc_er1.chi	er1.sjc	er1.chi	Default
+er1.sjc_er1.hst	er1.sjc	er1.hst	Default
+er1.sjc_er1.lax	er1.sjc	er1.lax	Default
+er1.sjc_er1.mia	er1.sjc	er1.mia	Default
+er1.sjc_er1.nyc	er1.sjc	er1.nyc	Default
+er1.sjc_er1.sea	er1.sjc	er1.sea	Default
+er1.sjc_er1.sjc	er1.sjc	er1.sjc	Default
+er1.sjc_er1.wdc	er1.sjc	er1.wdc	Default
+er1.wdc_er1.atl	er1.wdc	er1.atl	Default
+er1.wdc_er1.bos	er1.wdc	er1.bos	Default
+er1.wdc_er1.chi	er1.wdc	er1.chi	Default
+er1.wdc_er1.hst	er1.wdc	er1.hst	Default
+er1.wdc_er1.lax	er1.wdc	er1.lax	Default
+er1.wdc_er1.mia	er1.wdc	er1.mia	Default
+er1.wdc_er1.nyc	er1.wdc	er1.nyc	Default
+er1.wdc_er1.sea	er1.wdc	er1.sea	Default
+er1.wdc_er1.sjc	er1.wdc	er1.sjc	Default
+er1.wdc_er1.wdc	er1.wdc	er1.wdc	Default
+
+<TrafficLevels>
+Name
+Default
+
+<DemandTraffic>
+Name	Source	Destination	ServiceClass	TrafficLevel	Traffic
+er1.atl_er1.bos	er1.atl	er1.bos	Default	Default	73.33
+er1.atl_er1.chi	er1.atl	er1.chi	Default	Default	105.71
+er1.atl_er1.hst	er1.atl	er1.hst	Default	Default	82.22
+er1.atl_er1.lax	er1.atl	er1.lax	Default	Default	153.19
+er1.atl_er1.mia	er1.atl	er1.mia	Default	Default	13.65
+er1.atl_er1.nyc	er1.atl	er1.nyc	Default	Default	207.86
+er1.atl_er1.sea	er1.atl	er1.sea	Default	Default	79.27
+er1.atl_er1.sjc	er1.atl	er1.sjc	Default	Default	168.8
+er1.atl_er1.wdc	er1.atl	er1.wdc	Default	Default	162.86
+er1.bos_er1.atl	er1.bos	er1.atl	Default	Default	34.0
+er1.bos_er1.chi	er1.bos	er1.chi	Default	Default	17.09
+er1.bos_er1.hst	er1.bos	er1.hst	Default	Default	36.0
+er1.bos_er1.lax	er1.bos	er1.lax	Default	Default	61.94
+er1.bos_er1.mia	er1.bos	er1.mia	Default	Default	14.05
+er1.bos_er1.nyc	er1.bos	er1.nyc	Default	Default	132.6
+er1.bos_er1.sea	er1.bos	er1.sea	Default	Default	32.0
+er1.bos_er1.sjc	er1.bos	er1.sjc	Default	Default	69.2
+er1.bos_er1.wdc	er1.bos	er1.wdc	Default	Default	69.33
+er1.chi_er1.atl	er1.chi	er1.atl	Default	Default	99.87
+er1.chi_er1.bos	er1.chi	er1.bos	Default	Default	39.4
+er1.chi_er1.hst	er1.chi	er1.hst	Default	Default	79.27
+er1.chi_er1.lax	er1.chi	er1.lax	Default	Default	160.05
+er1.chi_er1.mia	er1.chi	er1.mia	Default	Default	41.26
+er1.chi_er1.nyc	er1.chi	er1.nyc	Default	Default	150.16
+er1.chi_er1.sea	er1.chi	er1.sea	Default	Default	145.23
+er1.chi_er1.sjc	er1.chi	er1.sjc	Default	Default	178.81
+er1.chi_er1.wdc	er1.chi	er1.wdc	Default	Default	203.67
+er1.hst_er1.atl	er1.hst	er1.atl	Default	Default	124.28
+er1.hst_er1.bos	er1.hst	er1.bos	Default	Default	64.99
+er1.hst_er1.chi	er1.hst	er1.chi	Default	Default	97.81
+er1.hst_er1.lax	er1.hst	er1.lax	Default	Default	140.04
+er1.hst_er1.mia	er1.hst	er1.mia	Default	Default	38.51
+er1.hst_er1.nyc	er1.hst	er1.nyc	Default	Default	184.23
+er1.hst_er1.sea	er1.hst	er1.sea	Default	Default	90.41
+er1.hst_er1.sjc	er1.hst	er1.sjc	Default	Default	128.58
+er1.hst_er1.wdc	er1.hst	er1.wdc	Default	Default	144.35
+er1.lax_er1.atl	er1.lax	er1.atl	Default	Default	55.31
+er1.lax_er1.bos	er1.lax	er1.bos	Default	Default	74.32
+er1.lax_er1.chi	er1.lax	er1.chi	Default	Default	83.32
+er1.lax_er1.hst	er1.lax	er1.hst	Default	Default	126.02
+er1.lax_er1.lax	er1.lax	er1.lax	Default	Default	0.01
+er1.lax_er1.mia	er1.lax	er1.mia	Default	Default	36.98
+er1.lax_er1.nyc	er1.lax	er1.nyc	Default	Default	161.29
+er1.lax_er1.sea	er1.lax	er1.sea	Default	Default	88.32
+er1.lax_er1.sjc	er1.lax	er1.sjc	Default	Default	125.61
+er1.lax_er1.wdc	er1.lax	er1.wdc	Default	Default	157.26
+er1.mia_er1.atl	er1.mia	er1.atl	Default	Default	29.96
+er1.mia_er1.bos	er1.mia	er1.bos	Default	Default	28.25
+er1.mia_er1.chi	er1.mia	er1.chi	Default	Default	40.72
+er1.mia_er1.hst	er1.mia	er1.hst	Default	Default	55.91
+er1.mia_er1.lax	er1.mia	er1.lax	Default	Default	57.78
+er1.mia_er1.mia	er1.mia	er1.mia	Default	Default	6.28
+er1.mia_er1.nyc	er1.mia	er1.nyc	Default	Default	80.07
+er1.mia_er1.sea	er1.mia	er1.sea	Default	Default	30.53
+er1.mia_er1.sjc	er1.mia	er1.sjc	Default	Default	64.55
+er1.mia_er1.wdc	er1.mia	er1.wdc	Default	Default	72.83
+er1.nyc_er1.atl	er1.nyc	er1.atl	Default	Default	218.63
+er1.nyc_er1.bos	er1.nyc	er1.bos	Default	Default	300.82
+er1.nyc_er1.chi	er1.nyc	er1.chi	Default	Default	179.0
+er1.nyc_er1.hst	er1.nyc	er1.hst	Default	Default	231.53
+er1.nyc_er1.lax	er1.nyc	er1.lax	Default	Default	259.81
+er1.nyc_er1.mia	er1.nyc	er1.mia	Default	Default	90.33
+er1.nyc_er1.sea	er1.nyc	er1.sea	Default	Default	134.23
+er1.nyc_er1.sjc	er1.nyc	er1.sjc	Default	Default	290.27
+er1.nyc_er1.wdc	er1.nyc	er1.wdc	Default	Default	445.87
+er1.sea_er1.atl	er1.sea	er1.atl	Default	Default	90.07
+er1.sea_er1.bos	er1.sea	er1.bos	Default	Default	62.4
+er1.sea_er1.chi	er1.sea	er1.chi	Default	Default	174.66
+er1.sea_er1.hst	er1.sea	er1.hst	Default	Default	90.4
+er1.sea_er1.lax	er1.sea	er1.lax	Default	Default	109.21
+er1.sea_er1.mia	er1.sea	er1.mia	Default	Default	37.21
+er1.sea_er1.nyc	er1.sea	er1.nyc	Default	Default	135.43
+er1.sea_er1.sea	er1.sea	er1.sea	Default	Default	45.82
+er1.sea_er1.sjc	er1.sea	er1.sjc	Default	Default	140.15
+er1.sea_er1.wdc	er1.sea	er1.wdc	Default	Default	183.69
+er1.sjc_er1.atl	er1.sjc	er1.atl	Default	Default	248.66
+er1.sjc_er1.bos	er1.sjc	er1.bos	Default	Default	204.96
+er1.sjc_er1.chi	er1.sjc	er1.chi	Default	Default	229.79
+er1.sjc_er1.hst	er1.sjc	er1.hst	Default	Default	210.2
+er1.sjc_er1.lax	er1.sjc	er1.lax	Default	Default	253.96
+er1.sjc_er1.mia	er1.sjc	er1.mia	Default	Default	102.0
+er1.sjc_er1.nyc	er1.sjc	er1.nyc	Default	Default	444.8
+er1.sjc_er1.sea	er1.sjc	er1.sea	Default	Default	229.16
+er1.sjc_er1.sjc	er1.sjc	er1.sjc	Default	Default	0.01
+er1.sjc_er1.wdc	er1.sjc	er1.wdc	Default	Default	433.69
+er1.wdc_er1.atl	er1.wdc	er1.atl	Default	Default	183.09
+er1.wdc_er1.bos	er1.wdc	er1.bos	Default	Default	194.18
+er1.wdc_er1.chi	er1.wdc	er1.chi	Default	Default	279.92
+er1.wdc_er1.hst	er1.wdc	er1.hst	Default	Default	193.89
+er1.wdc_er1.lax	er1.wdc	er1.lax	Default	Default	296.25
+er1.wdc_er1.mia	er1.wdc	er1.mia	Default	Default	101.43
+er1.wdc_er1.nyc	er1.wdc	er1.nyc	Default	Default	550.44
+er1.wdc_er1.sea	er1.wdc	er1.sea	Default	Default	209.91
+er1.wdc_er1.sjc	er1.wdc	er1.sjc	Default	Default	330.97
+er1.wdc_er1.wdc	er1.wdc	er1.wdc	Default	Default	71.79
+
+<NodeTraffic>
+Node	TrafficLevel	SrcTraffMeas	DestTraffMeas
+cr1.atl	Default	0.0	0.0
+cr1.bos	Default	0.0	0.0
+cr1.chi	Default	0.0	0.0
+cr1.hst	Default	0.0	0.0
+cr1.kcy	Default	0.0	0.0
+cr1.lax	Default	0.0	0.0
+cr1.mia	Default	0.0	0.0
+cr1.nyc	Default	0.0	0.0
+cr1.sea	Default	0.0	0.0
+cr1.sjc	Default	0.0	0.0
+cr1.wdc	Default	0.0	0.0
+cr2.atl	Default	0.0	0.0
+cr2.bos	Default	0.0	0.0
+cr2.chi	Default	0.0	0.0
+cr2.hst	Default	0.0	0.0
+cr2.kcy	Default	0.0	0.0
+cr2.lax	Default	0.0	0.0
+cr2.mia	Default	0.0	0.0
+cr2.nyc	Default	0.0	0.0
+cr2.sea	Default	0.0	0.0
+cr2.sjc	Default	0.0	0.0
+cr2.wdc	Default	0.0	0.0
+er1.atl	Default	1046.89	1083.85
+er1.bos	Default	466.193	1042.65
+er1.chi	Default	1097.73	1208.01
+er1.hst	Default	1013.2	1105.45
+er1.kcy	Default	0.0	0.0
+er1.lax	Default	896.167	1492.24
+er1.mia	Default	466.868	481.692
+er1.nyc	Default	2150.49	2046.87
+er1.sea	Default	1069.03	1064.28
+er1.sjc	Default	2357.22	1496.95
+er1.wdc	Default	2411.86	1873.54
+
+<InterfaceTraffic>
+Node	Interface	TrafficLevel	TraffMeas
+cr1.atl	to_cr1.hst	Default	823.48
+cr1.atl	to_cr2.atl	Default	442.89
+cr1.atl	to_er1.atl	Default	209.55
+cr1.bos	to_cr2.bos	Default	0.0
+cr1.bos	to_cr2.chi	Default	272.19
+cr1.bos	to_er1.bos	Default	381.08
+cr1.chi	to_cr2.chi	Default	583.13
+cr1.chi	to_cr2.nyc	Default	1586.0
+cr1.chi	to_cr2.sea	Default	753.23
+cr1.chi	to_er1.chi	Default	780.0
+cr1.hst	to_cr1.atl	Default	528.75
+cr1.hst	to_cr2.hst	Default	132.39
+cr1.hst	to_cr2.kcy	Default	86.197
+cr1.hst	to_er1.hst	Default	678.83
+cr1.kcy	to_cr1.sjc	Default	1023.1
+cr1.kcy	to_cr1.wdc	Default	978.58
+cr1.kcy	to_cr2.kcy	Default	0.0
+cr1.kcy	to_er1.kcy	Default	0.0
+cr1.lax	to_cr2.hst	Default	481.93
+cr1.lax	to_cr2.lax	Default	218.99
+cr1.lax	to_er1.lax	Default	293.23
+cr1.mia	to_cr2.mia	Default	0.0
+cr1.mia	to_cr2.wdc	Default	396.99
+cr1.mia	to_er1.mia	Default	400.98
+cr1.nyc	to_cr2.bos	Default	647.46
+cr1.nyc	to_cr2.nyc	Default	746.04
+cr1.nyc	to_cr2.wdc	Default	1795.5
+cr1.nyc	to_er1.nyc	Default	1155.2
+cr1.sea	to_cr2.sea	Default	0.0
+cr1.sea	to_cr2.sjc	Default	306.91
+cr1.sea	to_er1.sea	Default	433.11
+cr1.sjc	to_cr1.kcy	Default	944.4
+cr1.sjc	to_cr2.chi	Default	909.95
+cr1.sjc	to_cr2.sjc	Default	835.83
+cr1.sjc	to_er1.sjc	Default	1102.6
+cr1.wdc	to_cr1.kcy	Default	834.68
+cr1.wdc	to_cr2.atl	Default	1283.5
+cr1.wdc	to_cr2.wdc	Default	854.39
+cr1.wdc	to_er1.wdc	Default	898.15
+cr2.atl	to_cr1.atl	Default	407.0
+cr2.atl	to_cr1.wdc	Default	1191.4
+cr2.atl	to_er1.atl	Default	874.3
+cr2.bos	to_cr1.bos	Default	0.0
+cr2.bos	to_cr1.nyc	Default	360.8
+cr2.bos	to_er1.bos	Default	661.57
+cr2.chi	to_cr1.bos	Default	426.04
+cr2.chi	to_cr1.chi	Default	716.92
+cr2.chi	to_cr1.sjc	Default	1161.6
+cr2.chi	to_cr2.kcy	Default	79.272
+cr2.chi	to_er1.chi	Default	428.01
+cr2.hst	to_cr1.hst	Default	72.12
+cr2.hst	to_cr1.lax	Default	532.0
+cr2.hst	to_er1.hst	Default	426.62
+cr2.kcy	to_cr1.hst	Default	70.001
+cr2.kcy	to_cr1.kcy	Default	0.0
+cr2.kcy	to_cr2.chi	Default	102.82
+cr2.kcy	to_er1.kcy	Default	0.0
+cr2.lax	to_cr1.lax	Default	300.58
+cr2.lax	to_cr2.sjc	Default	1047.7
+cr2.lax	to_er1.lax	Default	1199.0
+cr2.mia	to_cr1.atl	Default	82.519
+cr2.mia	to_cr1.mia	Default	0.0
+cr2.mia	to_er1.mia	Default	80.707
+cr2.nyc	to_cr1.chi	Default	1631.3
+cr2.nyc	to_cr1.nyc	Default	639.22
+cr2.nyc	to_er1.nyc	Default	891.68
+cr2.sea	to_cr1.chi	Default	676.94
+cr2.sea	to_cr1.sea	Default	0.0
+cr2.sea	to_er1.sea	Default	631.17
+cr2.sjc	to_cr1.sea	Default	407.89
+cr2.sjc	to_cr1.sjc	Default	652.03
+cr2.sjc	to_cr2.lax	Default	1443.8
+cr2.sjc	to_er1.sjc	Default	394.34
+cr2.wdc	to_cr1.mia	Default	423.26
+cr2.wdc	to_cr1.nyc	Default	1898.1
+cr2.wdc	to_cr1.wdc	Default	730.51
+cr2.wdc	to_er1.wdc	Default	975.39
+er1.atl	to_cr1.atl	Default	249.06
+er1.atl	to_cr2.atl	Default	797.83
+er1.bos	to_cr1.bos	Default	180.23
+er1.bos	to_cr2.bos	Default	285.97
+er1.chi	to_cr1.chi	Default	640.2
+er1.chi	to_cr2.chi	Default	457.53
+er1.hst	to_cr1.hst	Default	654.17
+er1.hst	to_cr2.hst	Default	359.03
+er1.kcy	to_cr1.kcy	Default	0.0
+er1.kcy	to_cr2.kcy	Default	0.0
+er1.lax	to_cr1.lax	Default	169.07
+er1.lax	to_cr2.lax	Default	727.1
+er1.mia	to_cr1.mia	Default	381.0
+er1.mia	to_cr2.mia	Default	85.867
+er1.nyc	to_cr1.nyc	Default	1287.2
+er1.nyc	to_cr2.nyc	Default	863.31
+er1.sea	to_cr1.sea	Default	339.76
+er1.sea	to_cr2.sea	Default	729.27
+er1.sjc	to_cr1.sjc	Default	1663.9
+er1.sjc	to_cr2.sjc	Default	693.32
+er1.wdc	to_cr1.wdc	Default	1004.2
+er1.wdc	to_cr2.wdc	Default	1407.7
+
+<PlotLayouts>
+Name	PlotLayoutType
+Default	Design
+Geo	Design
+Joint	Design
+
+<PlotLayoutElements>
+PlotLayoutName	ElementSite	ElementNode	ElementL1Node	X	Y	Shown
+Default	atl			1200.0	550.0	T
+Default	bos			1500.0	50.0	T
+Default	chi			900.0	50.0	T
+Default	hst			900.0	650.0	T
+Default	kcy			900.0	350.0	T
+Default	lax			100.0	550.0	T
+Default	mia			1400.0	750.0	T
+Default	nyc			1450.0	200.0	T
+Default	sea			50.0	50.0	T
+Default	sjc			50.0	350.0	T
+Default	wdc			1400.0	350.0	T
+Default	slc			240.4545455	349.7979798	T
+Default		cr1.atl		1192.75	546.5	T
+Default		cr2.atl		1207.25	546.5	T
+Default		er1.atl		1200.0	553.5	T
+Default		cr1.bos		1492.75	46.5	T
+Default		cr2.bos		1507.25	46.5	T
+Default		er1.bos		1500.0	53.5	T
+Default		cr1.chi		892.75	46.5	T
+Default		cr2.chi		907.25	46.5	T
+Default		er1.chi		900.0	53.5	T
+Default		cr1.hst		892.75	646.5	T
+Default		cr2.hst		907.25	646.5	T
+Default		er1.hst		900.0	653.5	T
+Default		cr1.kcy		892.75	346.5	T
+Default		cr2.kcy		907.25	346.5	T
+Default		er1.kcy		900.0	353.5	T
+Default		cr1.lax		92.75	546.5	T
+Default		cr2.lax		107.25	546.5	T
+Default		er1.lax		100.0	553.5	T
+Default		cr1.mia		1392.75	746.5	T
+Default		cr2.mia		1407.25	746.5	T
+Default		er1.mia		1400.0	753.5	T
+Default		cr1.nyc		1442.75	196.5	T
+Default		cr2.nyc		1457.25	196.5	T
+Default		er1.nyc		1450.0	203.5	T
+Default		cr1.sea		42.75	46.5	T
+Default		cr2.sea		57.25	46.5	T
+Default		er1.sea		50.0	53.5	T
+Default		cr1.sjc		42.75	346.5	T
+Default		cr2.sjc		57.25	346.5	T
+Default		er1.sjc		50.0	353.5	T
+Default		cr1.wdc		1392.75	346.5	T
+Default		cr2.wdc		1407.25	346.5	T
+Default		er1.wdc		1400.0	353.5	T
+Geo	atl			1200.0	550.0	T
+Geo	bos			1500.0	50.0	T
+Geo	chi			900.0	50.0	T
+Geo	hst			900.0	650.0	T
+Geo	kcy			900.0	350.0	T
+Geo	lax			100.0	550.0	T
+Geo	mia			1400.0	750.0	T
+Geo	nyc			1450.0	200.0	T
+Geo	sea			50.0	50.0	T
+Geo	sjc			50.0	350.0	T
+Geo	wdc			1400.0	350.0	T
+Geo	slc			240.4545455	349.7979798	T
+Geo		cr1.atl		1192.75	546.5	T
+Geo		cr2.atl		1207.25	546.5	T
+Geo		er1.atl		1200.0	553.5	T
+Geo		cr1.bos		1492.75	46.5	T
+Geo		cr2.bos		1507.25	46.5	T
+Geo		er1.bos		1500.0	53.5	T
+Geo		cr1.chi		892.75	46.5	T
+Geo		cr2.chi		907.25	46.5	T
+Geo		er1.chi		900.0	53.5	T
+Geo		cr1.hst		892.75	646.5	T
+Geo		cr2.hst		907.25	646.5	T
+Geo		er1.hst		900.0	653.5	T
+Geo		cr1.kcy		892.75	346.5	T
+Geo		cr2.kcy		907.25	346.5	T
+Geo		er1.kcy		900.0	353.5	T
+Geo		cr1.lax		92.75	546.5	T
+Geo		cr2.lax		107.25	546.5	T
+Geo		er1.lax		100.0	553.5	T
+Geo		cr1.mia		1392.75	746.5	T
+Geo		cr2.mia		1407.25	746.5	T
+Geo		er1.mia		1400.0	753.5	T
+Geo		cr1.nyc		1442.75	196.5	T
+Geo		cr2.nyc		1457.25	196.5	T
+Geo		er1.nyc		1450.0	203.5	T
+Geo		cr1.sea		42.75	46.5	T
+Geo		cr2.sea		57.25	46.5	T
+Geo		er1.sea		50.0	53.5	T
+Geo		cr1.sjc		42.75	346.5	T
+Geo		cr2.sjc		57.25	346.5	T
+Geo		er1.sjc		50.0	353.5	T
+Geo		cr1.wdc		1392.75	346.5	T
+Geo		cr2.wdc		1407.25	346.5	T
+Geo		er1.wdc		1400.0	353.5	T
+Joint	atl			1200.0	550.0	T
+Joint	bos			1500.0	50.0	T
+Joint	chi			900.0	50.0	T
+Joint	hst			900.0	650.0	T
+Joint	kcy			900.0	350.0	T
+Joint	lax			100.0	550.0	T
+Joint	mia			1400.0	750.0	T
+Joint	nyc			1450.0	200.0	T
+Joint	sea			50.0	50.0	T
+Joint	sjc			50.0	350.0	T
+Joint	wdc			1400.0	350.0	T
+Joint	slc			240.4545455	349.7979798	T
+Joint		cr1.atl		1192.75	546.5	T
+Joint		cr2.atl		1207.25	546.5	T
+Joint		er1.atl		1200.0	553.5	T
+Joint		cr1.bos		1492.75	46.5	T
+Joint		cr2.bos		1507.25	46.5	T
+Joint		er1.bos		1500.0	53.5	T
+Joint		cr1.chi		892.75	46.5	T
+Joint		cr2.chi		907.25	46.5	T
+Joint		er1.chi		900.0	53.5	T
+Joint		cr1.hst		892.75	646.5	T
+Joint		cr2.hst		907.25	646.5	T
+Joint		er1.hst		900.0	653.5	T
+Joint		cr1.kcy		892.75	346.5	T
+Joint		cr2.kcy		907.25	346.5	T
+Joint		er1.kcy		900.0	353.5	T
+Joint		cr1.lax		92.75	546.5	T
+Joint		cr2.lax		107.25	546.5	T
+Joint		er1.lax		100.0	553.5	T
+Joint		cr1.mia		1392.75	746.5	T
+Joint		cr2.mia		1407.25	746.5	T
+Joint		er1.mia		1400.0	753.5	T
+Joint		cr1.nyc		1442.75	196.5	T
+Joint		cr2.nyc		1457.25	196.5	T
+Joint		er1.nyc		1450.0	203.5	T
+Joint		cr1.sea		42.75	46.5	T
+Joint		cr2.sea		57.25	46.5	T
+Joint		er1.sea		50.0	53.5	T
+Joint		cr1.sjc		42.75	346.5	T
+Joint		cr2.sjc		57.25	346.5	T
+Joint		er1.sjc		50.0	353.5	T
+Joint		cr1.wdc		1392.75	346.5	T
+Joint		cr2.wdc		1407.25	346.5	T
+Joint		er1.wdc		1400.0	353.5	T
+
+<PlotLayoutOptions>
+PlotLayoutName	PlotLayoutType	Property	Value
+Geo	Common	BackgroundLayerOpacity	55
+Geo	Common	CanvasType	Geographic
+Joint	Common	BackgroundLayerOpacity	30
+Joint	Common	CanvasType	Geographic
+Joint	Common	ShowL1inL3	T
+Joint	Common	ShowL3inL1	T
+
+<L1Nodes>
+Name	Site
+Abilene	Abilene
+Albany	Albany
+Albuquerque	Albuquerque
+Atlanta	atl
+Austin	Austin
+Baltimore	Baltimore
+Baton_Rouge	Baton_Rouge
+Billings	Billings
+Birmingham	Birmingham
+Bismarck	Bismarck
+Boston	bos
+Buffalo	Buffalo
+Charleston	Charleston
+Charlotte	Charlotte
+Chicago	chi
+Cincinnati	Cincinnati
+Cleveland	Cleveland
+Columbus	Columbus
+Dallas	Dallas
+Denver	Denver
+Detroit	Detroit
+El_Paso	El_Paso
+Fresno	Fresno
+Greensboro	Greensboro
+Hartford	Hartford
+Houston	hst
+Jacksonville	Jacksonville
+Kansas_City	kcy
+Las_Vegas	Las_Vegas
+Little_Rock	Little_Rock
+Long_Island	Long_Island
+Los_Angeles	lax
+Louisville	Louisville
+Memphis	Memphis
+Miami	mia
+Milwaukee	Milwaukee
+Minneapolis	Minneapolis
+Nashville	Nashville
+New_Orleans	New_Orleans
+New_York	nyc
+Newark	Newark
+Norfolk	Norfolk
+Oakland	Oakland
+Oklahoma_City	Oklahoma_City
+Omaha	Omaha
+Orlando	Orlando
+Philadelphia	Philadelphia
+Phoenix	Phoenix
+Pittsburgh	Pittsburgh
+Portland	Portland
+Providence	Providence
+Raleigh	Raleigh
+Richmond	Richmond
+Rochester	Rochester
+Sacramento	Sacramento
+Salt_Lake_City	slc
+San_Antonio	San_Antonio
+San_Diego	San_Diego
+San_Francisco	San_Francisco
+San_Jose	sjc
+Santa_Barbara	Santa_Barbara
+Scranton	Scranton
+Seattle	sea
+Spokane	Spokane
+Springfield	Springfield
+St_Louis	St_Louis
+Syracuse	Syracuse
+Tallahassee	Tallahassee
+Tampa	Tampa
+Toledo	Toledo
+Tucson	Tucson
+Tulsa	Tulsa
+Washington_DC	wdc
+West_Palm_Beach	West_Palm_Beach
+Wilmington	Wilmington
+
+<L1Links>
+Name	L1NodeA	L1NodeB	Metric	Delay	MaxL1CircuitPaths
+Abilene-Dallas	Abilene	Dallas	337	1.651	76
+Abilene-El_Paso	Abilene	El_Paso	761.2	3.73	76
+Albany-Boston	Albany	Boston	277.1	1.358	76
+Albany-Syracuse	Albany	Syracuse	234.2	1.148	76
+Albuquerque-Dallas	Albuquerque	Dallas	1133.4	5.554	76
+Albuquerque-Denver	Albuquerque	Denver	647.7	3.174	76
+Albuquerque-El_Paso	Albuquerque	El_Paso	436.9	2.141	76
+Albuquerque-Las_Vegas	Albuquerque	Las_Vegas	943.5	4.623	76
+Atlanta-Birmingham	Atlanta	Birmingham	266.2	1.305	76
+Atlanta-Charlotte	Atlanta	Charlotte	439.2	2.152	76
+Atlanta-Jacksonville	Atlanta	Jacksonville	554.1	2.715	76
+Austin-Houston	Austin	Houston	282	1.382	76
+Austin-San_Antonio	Austin	San_Antonio	143.6	0.703	76
+Baltimore-Philadelphia	Baltimore	Philadelphia	179.2	0.878	76
+Baltimore-Pittsburgh	Baltimore	Pittsburgh	384.8	1.886	76
+Baltimore-Washington_DC	Baltimore	Washington_DC	67.2	0.329	76
+Baton_Rouge-Houston	Baton_Rouge	Houston	500.2	2.451	76
+Baton_Rouge-New_Orleans	Baton_Rouge	New_Orleans	147.3	0.722	76
+Billings-Bismarck	Billings	Bismarck	729	3.572	76
+Billings-Denver	Billings	Denver	880	4.312	76
+Billings-Spokane	Billings	Spokane	848.9	4.159	76
+Birmingham-Nashville	Birmingham	Nashville	352.4	1.727	76
+Birmingham-New_Orleans	Birmingham	New_Orleans	582.5	2.854	76
+Bismarck-Minneapolis	Bismarck	Minneapolis	738.9	3.621	76
+Boston-Providence	Boston	Providence	79.9	0.392	76
+Buffalo-Cleveland	Buffalo	Cleveland	336.4	1.649	76
+Buffalo-Rochester	Buffalo	Rochester	126.6	0.62	76
+Charleston-Jacksonville	Charleston	Jacksonville	379.3	1.859	76
+Charleston-Raleigh	Charleston	Raleigh	430.2	2.108	76
+Charlotte-Greensboro	Charlotte	Greensboro	159.9	0.783	76
+Chicago-Detroit	Chicago	Detroit	459.1	2.25	76
+Chicago-Milwaukee	Chicago	Milwaukee	165.3	0.81	76
+Chicago-Springfield	Chicago	Springfield	357.6	1.752	76
+Cincinnati-Columbus	Cincinnati	Columbus	193.2	0.947	76
+Cincinnati-Louisville	Cincinnati	Louisville	177.5	0.87	76
+Cincinnati-Washington_DC	Cincinnati	Washington_DC	777.1	3.808	76
+Cleveland-Columbus	Cleveland	Columbus	239	1.171	76
+Cleveland-Toledo	Cleveland	Toledo	191.2	0.937	76
+Columbus-Pittsburgh	Columbus	Pittsburgh	294.7	1.444	76
+Dallas-Houston	Dallas	Houston	432.7	2.12	76
+Dallas-Little_Rock	Dallas	Little_Rock	554	2.714	76
+Dallas-Oklahoma_City	Dallas	Oklahoma_City	366.9	1.798	76
+Denver-Omaha	Denver	Omaha	920.3	4.51	76
+Denver-Salt_Lake_City	Denver	Salt_Lake_City	731.3	3.583	76
+Detroit-Toledo	Detroit	Toledo	107.2	0.525	76
+El_Paso-San_Antonio	El_Paso	San_Antonio	964.5	4.726	76
+El_Paso-Tucson	El_Paso	Tucson	505.7	2.478	76
+Fresno-Las_Vegas	Fresno	Las_Vegas	496.2	2.431	76
+Fresno-Los_Angeles	Fresno	Los_Angeles	386.7	1.895	76
+Fresno-Oakland	Fresno	Oakland	289.9	1.421	76
+Greensboro-Louisville	Greensboro	Louisville	690.4	3.383	76
+Greensboro-Raleigh	Greensboro	Raleigh	131.1	0.642	76
+Greensboro-Richmond	Greensboro	Richmond	317.9	1.558	76
+Hartford-Long_Island	Hartford	Long_Island	186.3	0.913	76
+Hartford-Providence	Hartford	Providence	125.6	0.615	76
+Jacksonville-Orlando	Jacksonville	Orlando	246.6	1.208	76
+Kansas_City-Omaha	Kansas_City	Omaha	314	1.539	76
+Kansas_City-St_Louis	Kansas_City	St_Louis	470.9	2.307	76
+Kansas_City-Tulsa	Kansas_City	Tulsa	418.4	2.05	76
+Las_Vegas-Phoenix	Las_Vegas	Phoenix	495.9	2.43	76
+Las_Vegas-Salt_Lake_City	Las_Vegas	Salt_Lake_City	700	3.43	76
+Little_Rock-Memphis	Little_Rock	Memphis	261.3	1.281	76
+Long_Island-New_York	Long_Island	New_York	29.4	0.144	76
+Los_Angeles-San_Diego	Los_Angeles	San_Diego	223.8	1.097	76
+Los_Angeles-Santa_Barbara	Los_Angeles	Santa_Barbara	150.7	0.738	76
+Louisville-Nashville	Louisville	Nashville	295.1	1.446	76
+Louisville-St_Louis	Louisville	St_Louis	473.8	2.322	76
+Memphis-Nashville	Memphis	Nashville	377.8	1.851	76
+Miami-Tampa	Miami	Tampa	397.1	1.946	76
+Miami-West_Palm_Beach	Miami	West_Palm_Beach	129.8	0.636	76
+Milwaukee-Minneapolis	Milwaukee	Minneapolis	568.3	2.785	76
+Minneapolis-Omaha	Minneapolis	Omaha	561.3	2.751	76
+New_Orleans-Tallahassee	New_Orleans	Tallahassee	653.4	3.201	76
+New_York-Newark	New_York	Newark	24.2	0.119	76
+New_York-Scranton	New_York	Scranton	199.6	0.978	76
+New_York-Wilmington	New_York	Wilmington	204.2	1	76
+Newark-Philadelphia	Newark	Philadelphia	136.1	0.667	76
+Norfolk-Raleigh	Norfolk	Raleigh	298.7	1.463	76
+Norfolk-Wilmington	Norfolk	Wilmington	383.7	1.88	76
+Oakland-Sacramento	Oakland	Sacramento	132.6	0.65	76
+Oakland-Salt_Lake_City	Oakland	Salt_Lake_City	1135.7	5.565	76
+Oakland-San_Francisco	Oakland	San_Francisco	25.7	0.126	76
+Oklahoma_City-Tulsa	Oklahoma_City	Tulsa	193.4	0.947	76
+Orlando-West_Palm_Beach	Orlando	West_Palm_Beach	275.8	1.351	76
+Philadelphia-Scranton	Philadelphia	Scranton	193.4	0.948	76
+Phoenix-San_Diego	Phoenix	San_Diego	574.7	2.816	76
+Phoenix-Tucson	Phoenix	Tucson	222.5	1.09	76
+Pittsburgh-Scranton	Pittsburgh	Scranton	473.6	2.32	76
+Portland-Sacramento	Portland	Sacramento	937.7	4.595	76
+Portland-Salt_Lake_City	Portland	Salt_Lake_City	1221.2	5.984	76
+Portland-Seattle	Portland	Seattle	279.1	1.368	76
+Richmond-Washington_DC	Richmond	Washington_DC	190.1	0.932	76
+Rochester-Syracuse	Rochester	Syracuse	145.3	0.712	76
+San_Francisco-San_Jose	San_Francisco	San_Jose	77.2	0.378	76
+San_Jose-Santa_Barbara	San_Jose	Santa_Barbara	447	2.19	76
+Scranton-Syracuse	Scranton	Syracuse	223.8	1.096	76
+Seattle-Spokane	Seattle	Spokane	444.2	2.177	76
+Springfield-St_Louis	Springfield	St_Louis	144.1	0.706	76
+Tallahassee-Tampa	Tallahassee	Tampa	394.1	1.931	76
+
+<L1LinkWaypoints>
+L1NodeA	L1NodeB	L1LinkName	Order	Longitude	Latitude
+Abilene	Dallas	Abilene-Dallas	1	-98.9975	32.535
+Abilene	Dallas	Abilene-Dallas	2	-98.255	32.62
+Abilene	Dallas	Abilene-Dallas	3	-97.5125	32.705
+Abilene	El_Paso	Abilene-El_Paso	1	-100.577	32.375
+Abilene	El_Paso	Abilene-El_Paso	2	-101.415	32.3
+Abilene	El_Paso	Abilene-El_Paso	3	-102.252	32.2249
+Abilene	El_Paso	Abilene-El_Paso	4	-103.09	32.1499
+Abilene	El_Paso	Abilene-El_Paso	5	-103.927	32.0749
+Abilene	El_Paso	Abilene-El_Paso	6	-104.765	31.9999
+Abilene	El_Paso	Abilene-El_Paso	7	-105.602	31.9248
+Albany	Boston	Albany-Boston	1	-72.8733	42.56
+Albany	Boston	Albany-Boston	2	-71.9467	42.45
+Albany	Syracuse	Albany-Syracuse	1	-74.58	42.7933
+Albany	Syracuse	Albany-Syracuse	2	-75.36	42.9167
+Albuquerque	Dallas	Albuquerque-Dallas	1	-105.862	34.9407
+Albuquerque	Dallas	Albuquerque-Dallas	2	-105.105	34.7615
+Albuquerque	Dallas	Albuquerque-Dallas	3	-104.347	34.5823
+Albuquerque	Dallas	Albuquerque-Dallas	4	-103.589	34.4031
+Albuquerque	Dallas	Albuquerque-Dallas	5	-102.832	34.2238
+Albuquerque	Dallas	Albuquerque-Dallas	6	-102.074	34.0446
+Albuquerque	Dallas	Albuquerque-Dallas	7	-101.316	33.8654
+Albuquerque	Dallas	Albuquerque-Dallas	8	-100.558	33.6861
+Albuquerque	Dallas	Albuquerque-Dallas	9	-99.8008	33.5069
+Albuquerque	Dallas	Albuquerque-Dallas	10	-99.0431	33.3277
+Albuquerque	Dallas	Albuquerque-Dallas	11	-98.2854	33.1485
+Albuquerque	Dallas	Albuquerque-Dallas	12	-97.5277	32.9692
+Albuquerque	Denver	Albuquerque-Denver	1	-106.37	35.7843
+Albuquerque	Denver	Albuquerque-Denver	2	-106.12	36.4486
+Albuquerque	Denver	Albuquerque-Denver	3	-105.87	37.1128
+Albuquerque	Denver	Albuquerque-Denver	4	-105.62	37.7771
+Albuquerque	Denver	Albuquerque-Denver	5	-105.37	38.4414
+Albuquerque	Denver	Albuquerque-Denver	6	-105.12	39.1057
+Albuquerque	El_Paso	Albuquerque-El_Paso	1	-106.584	34.4659
+Albuquerque	El_Paso	Albuquerque-El_Paso	2	-106.548	33.8119
+Albuquerque	El_Paso	Albuquerque-El_Paso	3	-106.512	33.1579
+Albuquerque	El_Paso	Albuquerque-El_Paso	4	-106.476	32.5038
+Albuquerque	Las_Vegas	Albuquerque-Las_Vegas	1	-107.402	35.2191
+Albuquerque	Las_Vegas	Albuquerque-Las_Vegas	2	-108.184	35.3182
+Albuquerque	Las_Vegas	Albuquerque-Las_Vegas	3	-108.965	35.4173
+Albuquerque	Las_Vegas	Albuquerque-Las_Vegas	4	-109.747	35.5163
+Albuquerque	Las_Vegas	Albuquerque-Las_Vegas	5	-110.529	35.6154
+Albuquerque	Las_Vegas	Albuquerque-Las_Vegas	6	-111.311	35.7145
+Albuquerque	Las_Vegas	Albuquerque-Las_Vegas	7	-112.093	35.8136
+Albuquerque	Las_Vegas	Albuquerque-Las_Vegas	8	-112.874	35.9127
+Albuquerque	Las_Vegas	Albuquerque-Las_Vegas	9	-113.656	36.0118
+Albuquerque	Las_Vegas	Albuquerque-Las_Vegas	10	-114.438	36.1109
+Atlanta	Birmingham	Atlanta-Birmingham	1	-85.2133	33.6833
+Atlanta	Birmingham	Atlanta-Birmingham	2	-86.0067	33.6067
+Atlanta	Charlotte	Atlanta-Charlotte	1	-83.702	34.048
+Atlanta	Charlotte	Atlanta-Charlotte	2	-82.984	34.336
+Atlanta	Charlotte	Atlanta-Charlotte	3	-82.266	34.624
+Atlanta	Charlotte	Atlanta-Charlotte	4	-81.548	34.912
+Atlanta	Jacksonville	Atlanta-Jacksonville	1	-83.96	33.1883
+Atlanta	Jacksonville	Atlanta-Jacksonville	2	-83.5	32.6167
+Atlanta	Jacksonville	Atlanta-Jacksonville	3	-83.04	32.045
+Atlanta	Jacksonville	Atlanta-Jacksonville	4	-82.58	31.4733
+Atlanta	Jacksonville	Atlanta-Jacksonville	5	-82.12	30.9017
+Austin	Houston	Austin-Houston	1	-96.9633	30.13
+Austin	Houston	Austin-Houston	2	-96.1767	29.95
+Baltimore	Philadelphia	Baltimore-Philadelphia	1	-75.87	39.655
+Baltimore	Pittsburgh	Baltimore-Pittsburgh	1	-77.49	39.55
+Baltimore	Pittsburgh	Baltimore-Pittsburgh	2	-78.37	39.8
+Baltimore	Pittsburgh	Baltimore-Pittsburgh	3	-79.25	40.05
+Baton_Rouge	Houston	Baton_Rouge-Houston	1	-91.84	30.3367
+Baton_Rouge	Houston	Baton_Rouge-Houston	2	-92.55	30.2233
+Baton_Rouge	Houston	Baton_Rouge-Houston	3	-93.26	30.11
+Baton_Rouge	Houston	Baton_Rouge-Houston	4	-93.97	29.9967
+Baton_Rouge	Houston	Baton_Rouge-Houston	5	-94.68	29.8833
+Billings	Bismarck	Billings-Bismarck	1	-107.569	45.9175
+Billings	Bismarck	Billings-Bismarck	2	-106.597	46.045
+Billings	Bismarck	Billings-Bismarck	3	-105.626	46.1725
+Billings	Bismarck	Billings-Bismarck	4	-104.655	46.3
+Billings	Bismarck	Billings-Bismarck	5	-103.684	46.4275
+Billings	Bismarck	Billings-Bismarck	6	-102.712	46.555
+Billings	Bismarck	Billings-Bismarck	7	-101.741	46.6825
+Billings	Denver	Billings-Denver	1	-108.173	45.188
+Billings	Denver	Billings-Denver	2	-107.806	44.586
+Billings	Denver	Billings-Denver	3	-107.439	43.984
+Billings	Denver	Billings-Denver	4	-107.072	43.382
+Billings	Denver	Billings-Denver	5	-106.705	42.78
+Billings	Denver	Billings-Denver	6	-106.338	42.178
+Billings	Denver	Billings-Denver	7	-105.971	41.576
+Billings	Denver	Billings-Denver	8	-105.604	40.974
+Billings	Denver	Billings-Denver	9	-105.237	40.372
+Billings	Spokane	Billings-Spokane	1	-109.526	45.9989
+Billings	Spokane	Billings-Spokane	2	-110.511	46.2078
+Billings	Spokane	Billings-Spokane	3	-111.497	46.4167
+Billings	Spokane	Billings-Spokane	4	-112.482	46.6256
+Billings	Spokane	Billings-Spokane	5	-113.468	46.8344
+Billings	Spokane	Billings-Spokane	6	-114.453	47.0433
+Billings	Spokane	Billings-Spokane	7	-115.439	47.2522
+Billings	Spokane	Billings-Spokane	8	-116.424	47.4611
+Birmingham	Nashville	Birmingham-Nashville	1	-86.795	34.19
+Birmingham	Nashville	Birmingham-Nashville	2	-86.79	34.85
+Birmingham	Nashville	Birmingham-Nashville	3	-86.785	35.51
+Birmingham	New_Orleans	Birmingham-New_Orleans	1	-87.2471	33.0357
+Birmingham	New_Orleans	Birmingham-New_Orleans	2	-87.6943	32.5414
+Birmingham	New_Orleans	Birmingham-New_Orleans	3	-88.1414	32.0471
+Birmingham	New_Orleans	Birmingham-New_Orleans	4	-88.5886	31.5529
+Birmingham	New_Orleans	Birmingham-New_Orleans	5	-89.0357	31.0586
+Birmingham	New_Orleans	Birmingham-New_Orleans	6	-89.4829	30.5643
+Bismarck	Minneapolis	Bismarck-Minneapolis	1	-99.8325	46.5788
+Bismarck	Minneapolis	Bismarck-Minneapolis	2	-98.895	46.3475
+Bismarck	Minneapolis	Bismarck-Minneapolis	3	-97.9575	46.1163
+Bismarck	Minneapolis	Bismarck-Minneapolis	4	-97.02	45.885
+Bismarck	Minneapolis	Bismarck-Minneapolis	5	-96.0825	45.6537
+Bismarck	Minneapolis	Bismarck-Minneapolis	6	-95.145	45.4225
+Bismarck	Minneapolis	Bismarck-Minneapolis	7	-94.2075	45.1912
+Buffalo	Cleveland	Buffalo-Cleveland	1	-79.565	42.5375
+Buffalo	Cleveland	Buffalo-Cleveland	2	-80.27	42.185
+Buffalo	Cleveland	Buffalo-Cleveland	3	-80.975	41.8325
+Charleston	Jacksonville	Charleston-Jacksonville	1	-80.4075	32.175
+Charleston	Jacksonville	Charleston-Jacksonville	2	-80.825	31.56
+Charleston	Jacksonville	Charleston-Jacksonville	3	-81.2425	30.945
+Charleston	Raleigh	Charleston-Raleigh	1	-79.724	33.396
+Charleston	Raleigh	Charleston-Raleigh	2	-79.458	34.002
+Charleston	Raleigh	Charleston-Raleigh	3	-79.192	34.608
+Charleston	Raleigh	Charleston-Raleigh	4	-78.926	35.214
+Charlotte	Greensboro	Charlotte-Greensboro	1	-80.33	35.64
+Chicago	Detroit	Chicago-Detroit	1	-86.764	41.948
+Chicago	Detroit	Chicago-Detroit	2	-85.848	42.056
+Chicago	Detroit	Chicago-Detroit	3	-84.932	42.164
+Chicago	Detroit	Chicago-Detroit	4	-84.016	42.272
+Chicago	Milwaukee	Chicago-Milwaukee	1	-87.825	42.45
+Chicago	Springfield	Chicago-Springfield	1	-88.11	41.255
+Chicago	Springfield	Chicago-Springfield	2	-88.54	40.67
+Chicago	Springfield	Chicago-Springfield	3	-88.97	40.085
+Cincinnati	Columbus	Cincinnati-Columbus	1	-83.75	39.565
+Cincinnati	Louisville	Cincinnati-Louisville	1	-85.125	38.68
+Cincinnati	Washington_DC	Cincinnati-Washington_DC	1	-83.6778	39.1144
+Cincinnati	Washington_DC	Cincinnati-Washington_DC	2	-82.8456	39.0889
+Cincinnati	Washington_DC	Cincinnati-Washington_DC	3	-82.0133	39.0633
+Cincinnati	Washington_DC	Cincinnati-Washington_DC	4	-81.1811	39.0378
+Cincinnati	Washington_DC	Cincinnati-Washington_DC	5	-80.3489	39.0122
+Cincinnati	Washington_DC	Cincinnati-Washington_DC	6	-79.5167	38.9867
+Cincinnati	Washington_DC	Cincinnati-Washington_DC	7	-78.6844	38.9611
+Cincinnati	Washington_DC	Cincinnati-Washington_DC	8	-77.8522	38.9356
+Cleveland	Columbus	Cleveland-Columbus	1	-82.1167	40.9833
+Cleveland	Columbus	Cleveland-Columbus	2	-82.5533	40.4867
+Cleveland	Toledo	Cleveland-Toledo	1	-82.63	41.57
+Columbus	Pittsburgh	Columbus-Pittsburgh	1	-82.0367	40.0933
+Columbus	Pittsburgh	Columbus-Pittsburgh	2	-81.0833	40.1967
+Dallas	Houston	Dallas-Houston	1	-96.494	32.186
+Dallas	Houston	Dallas-Houston	2	-96.218	31.582
+Dallas	Houston	Dallas-Houston	3	-95.942	30.978
+Dallas	Houston	Dallas-Houston	4	-95.666	30.374
+Dallas	Little_Rock	Dallas-Little_Rock	1	-96.0333	33.1117
+Dallas	Little_Rock	Dallas-Little_Rock	2	-95.2967	33.4333
+Dallas	Little_Rock	Dallas-Little_Rock	3	-94.56	33.755
+Dallas	Little_Rock	Dallas-Little_Rock	4	-93.8233	34.0767
+Dallas	Little_Rock	Dallas-Little_Rock	5	-93.0867	34.3983
+Dallas	Oklahoma_City	Dallas-Oklahoma_City	1	-96.955	33.46
+Dallas	Oklahoma_City	Dallas-Oklahoma_City	2	-97.14	34.13
+Dallas	Oklahoma_City	Dallas-Oklahoma_City	3	-97.325	34.8
+Denver	Omaha	Denver-Omaha	1	-103.984	39.919
+Denver	Omaha	Denver-Omaha	2	-103.098	40.068
+Denver	Omaha	Denver-Omaha	3	-102.212	40.217
+Denver	Omaha	Denver-Omaha	4	-101.326	40.366
+Denver	Omaha	Denver-Omaha	5	-100.44	40.515
+Denver	Omaha	Denver-Omaha	6	-99.554	40.664
+Denver	Omaha	Denver-Omaha	7	-98.668	40.813
+Denver	Omaha	Denver-Omaha	8	-97.782	40.962
+Denver	Omaha	Denver-Omaha	9	-96.896	41.111
+Denver	Salt_Lake_City	Denver-Salt_Lake_City	1	-105.753	39.8963
+Denver	Salt_Lake_City	Denver-Salt_Lake_City	2	-106.635	40.0225
+Denver	Salt_Lake_City	Denver-Salt_Lake_City	3	-107.518	40.1488
+Denver	Salt_Lake_City	Denver-Salt_Lake_City	4	-108.4	40.275
+Denver	Salt_Lake_City	Denver-Salt_Lake_City	5	-109.283	40.4013
+Denver	Salt_Lake_City	Denver-Salt_Lake_City	6	-110.165	40.5275
+Denver	Salt_Lake_City	Denver-Salt_Lake_City	7	-111.048	40.6537
+El_Paso	San_Antonio	El_Paso-San_Antonio	1	-105.719	31.6326
+El_Paso	San_Antonio	El_Paso-San_Antonio	2	-104.998	31.4153
+El_Paso	San_Antonio	El_Paso-San_Antonio	3	-104.277	31.198
+El_Paso	San_Antonio	El_Paso-San_Antonio	4	-103.556	30.9808
+El_Paso	San_Antonio	El_Paso-San_Antonio	5	-102.835	30.7635
+El_Paso	San_Antonio	El_Paso-San_Antonio	6	-102.114	30.5463
+El_Paso	San_Antonio	El_Paso-San_Antonio	7	-101.393	30.329
+El_Paso	San_Antonio	El_Paso-San_Antonio	8	-100.673	30.1118
+El_Paso	San_Antonio	El_Paso-San_Antonio	9	-99.9517	29.8945
+El_Paso	San_Antonio	El_Paso-San_Antonio	10	-99.2309	29.6773
+El_Paso	Tucson	El_Paso-Tucson	1	-107.181	31.9082
+El_Paso	Tucson	El_Paso-Tucson	2	-107.923	31.9665
+El_Paso	Tucson	El_Paso-Tucson	3	-108.665	32.0249
+El_Paso	Tucson	El_Paso-Tucson	4	-109.407	32.0833
+El_Paso	Tucson	El_Paso-Tucson	5	-110.148	32.1416
+Fresno	Las_Vegas	Fresno-Las_Vegas	1	-119.028	36.685
+Fresno	Las_Vegas	Fresno-Las_Vegas	2	-118.267	36.59
+Fresno	Las_Vegas	Fresno-Las_Vegas	3	-117.505	36.495
+Fresno	Las_Vegas	Fresno-Las_Vegas	4	-116.743	36.4
+Fresno	Las_Vegas	Fresno-Las_Vegas	5	-115.982	36.305
+Fresno	Los_Angeles	Fresno-Los_Angeles	1	-119.445	36.1125
+Fresno	Los_Angeles	Fresno-Los_Angeles	2	-119.1	35.445
+Fresno	Los_Angeles	Fresno-Los_Angeles	3	-118.755	34.7775
+Fresno	Oakland	Fresno-Oakland	1	-120.6	37.11
+Fresno	Oakland	Fresno-Oakland	2	-121.41	37.44
+Greensboro	Louisville	Greensboro-Louisville	1	-80.5688	36.3475
+Greensboro	Louisville	Greensboro-Louisville	2	-81.3075	36.615
+Greensboro	Louisville	Greensboro-Louisville	3	-82.0463	36.8825
+Greensboro	Louisville	Greensboro-Louisville	4	-82.785	37.15
+Greensboro	Louisville	Greensboro-Louisville	5	-83.5237	37.4175
+Greensboro	Louisville	Greensboro-Louisville	6	-84.2625	37.685
+Greensboro	Louisville	Greensboro-Louisville	7	-85.0012	37.9525
+Greensboro	Richmond	Greensboro-Richmond	1	-79.24	36.4425
+Greensboro	Richmond	Greensboro-Richmond	2	-78.65	36.805
+Greensboro	Richmond	Greensboro-Richmond	3	-78.06	37.1675
+Hartford	Long_Island	Hartford-Long_Island	1	-73.175	41.18
+Jacksonville	Orlando	Jacksonville-Orlando	1	-81.5633	29.72
+Jacksonville	Orlando	Jacksonville-Orlando	2	-81.4667	29.11
+Kansas_City	Omaha	Kansas_City-Omaha	1	-95.05	39.655
+Kansas_City	Omaha	Kansas_City-Omaha	2	-95.37	40.19
+Kansas_City	Omaha	Kansas_City-Omaha	3	-95.69	40.725
+Kansas_City	St_Louis	Kansas_City-St_Louis	1	-93.832	39.024
+Kansas_City	St_Louis	Kansas_City-St_Louis	2	-92.934	38.928
+Kansas_City	St_Louis	Kansas_City-St_Louis	3	-92.036	38.832
+Kansas_City	St_Louis	Kansas_City-St_Louis	4	-91.138	38.736
+Kansas_City	Tulsa	Kansas_City-Tulsa	1	-94.968	38.522
+Kansas_City	Tulsa	Kansas_City-Tulsa	2	-95.206	37.924
+Kansas_City	Tulsa	Kansas_City-Tulsa	3	-95.444	37.326
+Kansas_City	Tulsa	Kansas_City-Tulsa	4	-95.682	36.728
+Las_Vegas	Phoenix	Las_Vegas-Phoenix	1	-114.695	35.765
+Las_Vegas	Phoenix	Las_Vegas-Phoenix	2	-114.17	35.32
+Las_Vegas	Phoenix	Las_Vegas-Phoenix	3	-113.645	34.875
+Las_Vegas	Phoenix	Las_Vegas-Phoenix	4	-113.12	34.43
+Las_Vegas	Phoenix	Las_Vegas-Phoenix	5	-112.595	33.985
+Las_Vegas	Salt_Lake_City	Las_Vegas-Salt_Lake_City	1	-114.809	36.7812
+Las_Vegas	Salt_Lake_City	Las_Vegas-Salt_Lake_City	2	-114.397	37.3525
+Las_Vegas	Salt_Lake_City	Las_Vegas-Salt_Lake_City	3	-113.986	37.9237
+Las_Vegas	Salt_Lake_City	Las_Vegas-Salt_Lake_City	4	-113.575	38.495
+Las_Vegas	Salt_Lake_City	Las_Vegas-Salt_Lake_City	5	-113.164	39.0662
+Las_Vegas	Salt_Lake_City	Las_Vegas-Salt_Lake_City	6	-112.752	39.6375
+Las_Vegas	Salt_Lake_City	Las_Vegas-Salt_Lake_City	7	-112.341	40.2087
+Little_Rock	Memphis	Little_Rock-Memphis	1	-91.57	34.85
+Little_Rock	Memphis	Little_Rock-Memphis	2	-90.79	34.98
+Los_Angeles	San_Diego	Los_Angeles-San_Diego	1	-117.987	33.6767
+Los_Angeles	San_Diego	Los_Angeles-San_Diego	2	-117.563	33.2433
+Los_Angeles	Santa_Barbara	Los_Angeles-Santa_Barbara	1	-119.065	34.27
+Louisville	Nashville	Louisville-Nashville	1	-86.0867	37.5367
+Louisville	Nashville	Louisville-Nashville	2	-86.4333	36.8533
+Louisville	St_Louis	Louisville-St_Louis	1	-86.64	38.304
+Louisville	St_Louis	Louisville-St_Louis	2	-87.54	38.388
+Louisville	St_Louis	Louisville-St_Louis	3	-88.44	38.472
+Louisville	St_Louis	Louisville-St_Louis	4	-89.34	38.556
+Memphis	Nashville	Memphis-Nashville	1	-89.2025	35.375
+Memphis	Nashville	Memphis-Nashville	2	-88.395	35.64
+Memphis	Nashville	Memphis-Nashville	3	-87.5875	35.905
+Miami	Tampa	Miami-Tampa	1	-80.7775	26.325
+Miami	Tampa	Miami-Tampa	2	-81.345	26.87
+Miami	Tampa	Miami-Tampa	3	-81.9125	27.415
+Milwaukee	Minneapolis	Milwaukee-Minneapolis	1	-88.8533	43.3767
+Milwaukee	Minneapolis	Milwaukee-Minneapolis	2	-89.7367	43.6933
+Milwaukee	Minneapolis	Milwaukee-Minneapolis	3	-90.62	44.01
+Milwaukee	Minneapolis	Milwaukee-Minneapolis	4	-91.5033	44.3267
+Milwaukee	Minneapolis	Milwaukee-Minneapolis	5	-92.3867	44.6433
+Minneapolis	Omaha	Minneapolis-Omaha	1	-93.7267	44.3433
+Minneapolis	Omaha	Minneapolis-Omaha	2	-94.1833	43.7267
+Minneapolis	Omaha	Minneapolis-Omaha	3	-94.64	43.11
+Minneapolis	Omaha	Minneapolis-Omaha	4	-95.0967	42.4933
+Minneapolis	Omaha	Minneapolis-Omaha	5	-95.5533	41.8767
+New_Orleans	Tallahassee	New_Orleans-Tallahassee	1	-89.1229	30.1257
+New_Orleans	Tallahassee	New_Orleans-Tallahassee	2	-88.3157	30.1814
+New_Orleans	Tallahassee	New_Orleans-Tallahassee	3	-87.5086	30.2371
+New_Orleans	Tallahassee	New_Orleans-Tallahassee	4	-86.7014	30.2929
+New_Orleans	Tallahassee	New_Orleans-Tallahassee	5	-85.8943	30.3486
+New_Orleans	Tallahassee	New_Orleans-Tallahassee	6	-85.0871	30.4043
+New_York	Scranton	New_York-Scranton	1	-74.805	41.035
+New_York	Wilmington	New_York-Wilmington	1	-74.735	40.205
+Norfolk	Raleigh	Norfolk-Raleigh	1	-77.0467	36.5533
+Norfolk	Raleigh	Norfolk-Raleigh	2	-77.8533	36.1867
+Norfolk	Wilmington	Norfolk-Wilmington	1	-76.0625	37.625
+Norfolk	Wilmington	Norfolk-Wilmington	2	-75.885	38.33
+Norfolk	Wilmington	Norfolk-Wilmington	3	-75.7075	39.035
+Oakland	Salt_Lake_City	Oakland-Salt_Lake_City	1	-121.428	38.0015
+Oakland	Salt_Lake_City	Oakland-Salt_Lake_City	2	-120.637	38.2331
+Oakland	Salt_Lake_City	Oakland-Salt_Lake_City	3	-119.845	38.4646
+Oakland	Salt_Lake_City	Oakland-Salt_Lake_City	4	-119.054	38.6962
+Oakland	Salt_Lake_City	Oakland-Salt_Lake_City	5	-118.262	38.9277
+Oakland	Salt_Lake_City	Oakland-Salt_Lake_City	6	-117.471	39.1592
+Oakland	Salt_Lake_City	Oakland-Salt_Lake_City	7	-116.679	39.3908
+Oakland	Salt_Lake_City	Oakland-Salt_Lake_City	8	-115.888	39.6223
+Oakland	Salt_Lake_City	Oakland-Salt_Lake_City	9	-115.096	39.8538
+Oakland	Salt_Lake_City	Oakland-Salt_Lake_City	10	-114.305	40.0854
+Oakland	Salt_Lake_City	Oakland-Salt_Lake_City	11	-113.513	40.3169
+Oakland	Salt_Lake_City	Oakland-Salt_Lake_City	12	-112.722	40.5485
+Oklahoma_City	Tulsa	Oklahoma_City-Tulsa	1	-96.715	35.8
+Orlando	West_Palm_Beach	Orlando-West_Palm_Beach	1	-80.9567	27.9167
+Orlando	West_Palm_Beach	Orlando-West_Palm_Beach	2	-80.5433	27.3333
+Philadelphia	Scranton	Philadelphia-Scranton	1	-75.4	40.705
+Phoenix	San_Diego	Phoenix-San_Diego	1	-112.915	33.4183
+Phoenix	San_Diego	Phoenix-San_Diego	2	-113.76	33.2967
+Phoenix	San_Diego	Phoenix-San_Diego	3	-114.605	33.175
+Phoenix	San_Diego	Phoenix-San_Diego	4	-115.45	33.0533
+Phoenix	San_Diego	Phoenix-San_Diego	5	-116.295	32.9317
+Phoenix	Tucson	Phoenix-Tucson	1	-111.677	33.0933
+Phoenix	Tucson	Phoenix-Tucson	2	-111.283	32.6467
+Pittsburgh	Scranton	Pittsburgh-Scranton	1	-79.238	40.52
+Pittsburgh	Scranton	Pittsburgh-Scranton	2	-78.346	40.74
+Pittsburgh	Scranton	Pittsburgh-Scranton	3	-77.454	40.96
+Pittsburgh	Scranton	Pittsburgh-Scranton	4	-76.562	41.18
+Portland	Sacramento	Portland-Sacramento	1	-122.541	44.843
+Portland	Sacramento	Portland-Sacramento	2	-122.422	44.146
+Portland	Sacramento	Portland-Sacramento	3	-122.303	43.449
+Portland	Sacramento	Portland-Sacramento	4	-122.184	42.752
+Portland	Sacramento	Portland-Sacramento	5	-122.065	42.055
+Portland	Sacramento	Portland-Sacramento	6	-121.946	41.358
+Portland	Sacramento	Portland-Sacramento	7	-121.827	40.661
+Portland	Sacramento	Portland-Sacramento	8	-121.708	39.964
+Portland	Sacramento	Portland-Sacramento	9	-121.589	39.267
+Portland	Salt_Lake_City	Portland-Salt_Lake_City	1	-121.894	45.2
+Portland	Salt_Lake_City	Portland-Salt_Lake_City	2	-121.127	44.86
+Portland	Salt_Lake_City	Portland-Salt_Lake_City	3	-120.361	44.52
+Portland	Salt_Lake_City	Portland-Salt_Lake_City	4	-119.594	44.18
+Portland	Salt_Lake_City	Portland-Salt_Lake_City	5	-118.828	43.84
+Portland	Salt_Lake_City	Portland-Salt_Lake_City	6	-118.061	43.5
+Portland	Salt_Lake_City	Portland-Salt_Lake_City	7	-117.295	43.16
+Portland	Salt_Lake_City	Portland-Salt_Lake_City	8	-116.529	42.82
+Portland	Salt_Lake_City	Portland-Salt_Lake_City	9	-115.762	42.48
+Portland	Salt_Lake_City	Portland-Salt_Lake_City	10	-114.996	42.14
+Portland	Salt_Lake_City	Portland-Salt_Lake_City	11	-114.229	41.8
+Portland	Salt_Lake_City	Portland-Salt_Lake_City	12	-113.463	41.46
+Portland	Salt_Lake_City	Portland-Salt_Lake_City	13	-112.696	41.12
+Portland	Seattle	Portland-Seattle	1	-122.557	46.2333
+Portland	Seattle	Portland-Seattle	2	-122.453	46.9267
+Richmond	Washington_DC	Richmond-Washington_DC	1	-77.245	38.22
+San_Jose	Santa_Barbara	San_Jose-Santa_Barbara	1	-121.424	36.726
+San_Jose	Santa_Barbara	San_Jose-Santa_Barbara	2	-120.998	36.152
+San_Jose	Santa_Barbara	San_Jose-Santa_Barbara	3	-120.572	35.578
+San_Jose	Santa_Barbara	San_Jose-Santa_Barbara	4	-120.146	35.004
+Scranton	Syracuse	Scranton-Syracuse	1	-75.8267	41.9467
+Scranton	Syracuse	Scranton-Syracuse	2	-75.9833	42.4933
+Seattle	Spokane	Seattle-Spokane	1	-121.362	47.63
+Seattle	Spokane	Seattle-Spokane	2	-120.374	47.64
+Seattle	Spokane	Seattle-Spokane	3	-119.386	47.65
+Seattle	Spokane	Seattle-Spokane	4	-118.398	47.66
+Tallahassee	Tampa	Tallahassee-Tampa	1	-83.83	29.835
+Tallahassee	Tampa	Tallahassee-Tampa	2	-83.38	29.21
+Tallahassee	Tampa	Tallahassee-Tampa	3	-82.93	28.585
+
+<L1Ports>
+L1Node	L1Port
+Atlanta	Atlanta-Houston-atl_hst
+Houston	Houston-Atlanta-atl_hst
+Atlanta	Atlanta-Miami-atl_mia
+Miami	Miami-Atlanta-atl_mia
+Atlanta	Atlanta-Washington_DC-atl_wdc
+Washington_DC	Washington_DC-Atlanta-atl_wdc
+Boston	Boston-Chicago-bos_chi
+Chicago	Chicago-Boston-bos_chi
+Boston	Boston-New_York-bos_nyc
+New_York	New_York-Boston-bos_nyc
+Chicago	Chicago-Kansas_City-chi_kcy
+Kansas_City	Kansas_City-Chicago-chi_kcy
+Chicago	Chicago-New_York-chi_nyc
+New_York	New_York-Chicago-chi_nyc
+Chicago	Chicago-Seattle-chi_sea
+Seattle	Seattle-Chicago-chi_sea
+Chicago	Chicago-San_Jose-chi_sjc
+San_Jose	San_Jose-Chicago-chi_sjc
+Houston	Houston-Kansas_City-hst_kcy
+Kansas_City	Kansas_City-Houston-hst_kcy
+Houston	Houston-Los_Angeles-hst_lax
+Los_Angeles	Los_Angeles-Houston-hst_lax
+Kansas_City	Kansas_City-San_Jose-kcy_sjc
+San_Jose	San_Jose-Kansas_City-kcy_sjc
+Kansas_City	Kansas_City-Washington_DC-kcy_wdc
+Washington_DC	Washington_DC-Kansas_City-kcy_wdc
+Los_Angeles	Los_Angeles-San_Jose-lax_sjc
+San_Jose	San_Jose-Los_Angeles-lax_sjc
+Miami	Miami-Washington_DC-mia_wdc
+Washington_DC	Washington_DC-Miami-mia_wdc
+New_York	New_York-Washington_DC-nyc_wdc
+Washington_DC	Washington_DC-New_York-nyc_wdc
+Seattle	Seattle-San_Jose-sea_sjc
+San_Jose	San_Jose-Seattle-sea_sjc
+
+<L1Circuits>
+Name	L1NodeA	L1PortA	L1NodeB	L1PortB
+Atlanta-Houston-atl_hst	Atlanta	Atlanta-Houston-atl_hst	Houston	Houston-Atlanta-atl_hst
+Atlanta-Miami-atl_mia	Atlanta	Atlanta-Miami-atl_mia	Miami	Miami-Atlanta-atl_mia
+Atlanta-Washington_DC-atl_wdc	Atlanta	Atlanta-Washington_DC-atl_wdc	Washington_DC	Washington_DC-Atlanta-atl_wdc
+Boston-Chicago-bos_chi	Boston	Boston-Chicago-bos_chi	Chicago	Chicago-Boston-bos_chi
+Boston-New_York-bos_nyc	Boston	Boston-New_York-bos_nyc	New_York	New_York-Boston-bos_nyc
+Chicago-Kansas_City-chi_kcy	Chicago	Chicago-Kansas_City-chi_kcy	Kansas_City	Kansas_City-Chicago-chi_kcy
+Chicago-New_York-chi_nyc	Chicago	Chicago-New_York-chi_nyc	New_York	New_York-Chicago-chi_nyc
+Chicago-Seattle-chi_sea	Chicago	Chicago-Seattle-chi_sea	Seattle	Seattle-Chicago-chi_sea
+Chicago-San_Jose-chi_sjc	Chicago	Chicago-San_Jose-chi_sjc	San_Jose	San_Jose-Chicago-chi_sjc
+Houston-Kansas_City-hst_kcy	Houston	Houston-Kansas_City-hst_kcy	Kansas_City	Kansas_City-Houston-hst_kcy
+Houston-Los_Angeles-hst_lax	Houston	Houston-Los_Angeles-hst_lax	Los_Angeles	Los_Angeles-Houston-hst_lax
+Kansas_City-San_Jose-kcy_sjc	Kansas_City	Kansas_City-San_Jose-kcy_sjc	San_Jose	San_Jose-Kansas_City-kcy_sjc
+Kansas_City-Washington_DC-kcy_wdc	Kansas_City	Kansas_City-Washington_DC-kcy_wdc	Washington_DC	Washington_DC-Kansas_City-kcy_wdc
+Los_Angeles-San_Jose-lax_sjc	Los_Angeles	Los_Angeles-San_Jose-lax_sjc	San_Jose	San_Jose-Los_Angeles-lax_sjc
+Miami-Washington_DC-mia_wdc	Miami	Miami-Washington_DC-mia_wdc	Washington_DC	Washington_DC-Miami-mia_wdc
+New_York-Washington_DC-nyc_wdc	New_York	New_York-Washington_DC-nyc_wdc	Washington_DC	Washington_DC-New_York-nyc_wdc
+Seattle-San_Jose-sea_sjc	Seattle	Seattle-San_Jose-sea_sjc	San_Jose	San_Jose-Seattle-sea_sjc
+
+<L1CircuitPaths>
+L1Circuit	L1NodeA	L1PortA	L1NodeB	L1PortB	PathOption	Standby	Active	AutoLambda
+Atlanta-Houston-atl_hst	Atlanta	Atlanta-Houston-atl_hst	Houston	Houston-Atlanta-atl_hst	1	T	T	F
+Atlanta-Miami-atl_mia	Atlanta	Atlanta-Miami-atl_mia	Miami	Miami-Atlanta-atl_mia	1	T	T	F
+Atlanta-Washington_DC-atl_wdc	Atlanta	Atlanta-Washington_DC-atl_wdc	Washington_DC	Washington_DC-Atlanta-atl_wdc	1	T	T	F
+Boston-Chicago-bos_chi	Boston	Boston-Chicago-bos_chi	Chicago	Chicago-Boston-bos_chi	1	T	T	F
+Boston-New_York-bos_nyc	Boston	Boston-New_York-bos_nyc	New_York	New_York-Boston-bos_nyc	1	T	T	F
+Chicago-Kansas_City-chi_kcy	Chicago	Chicago-Kansas_City-chi_kcy	Kansas_City	Kansas_City-Chicago-chi_kcy	1	T	T	F
+Chicago-New_York-chi_nyc	Chicago	Chicago-New_York-chi_nyc	New_York	New_York-Chicago-chi_nyc	1	T	T	F
+Chicago-Seattle-chi_sea	Chicago	Chicago-Seattle-chi_sea	Seattle	Seattle-Chicago-chi_sea	1	T	T	F
+Chicago-San_Jose-chi_sjc	Chicago	Chicago-San_Jose-chi_sjc	San_Jose	San_Jose-Chicago-chi_sjc	1	T	T	F
+Houston-Kansas_City-hst_kcy	Houston	Houston-Kansas_City-hst_kcy	Kansas_City	Kansas_City-Houston-hst_kcy	1	T	T	F
+Houston-Los_Angeles-hst_lax	Houston	Houston-Los_Angeles-hst_lax	Los_Angeles	Los_Angeles-Houston-hst_lax	1	T	T	F
+Kansas_City-San_Jose-kcy_sjc	Kansas_City	Kansas_City-San_Jose-kcy_sjc	San_Jose	San_Jose-Kansas_City-kcy_sjc	1	T	T	F
+Kansas_City-Washington_DC-kcy_wdc	Kansas_City	Kansas_City-Washington_DC-kcy_wdc	Washington_DC	Washington_DC-Kansas_City-kcy_wdc	1	T	T	F
+Los_Angeles-San_Jose-lax_sjc	Los_Angeles	Los_Angeles-San_Jose-lax_sjc	San_Jose	San_Jose-Los_Angeles-lax_sjc	1	T	T	F
+Miami-Washington_DC-mia_wdc	Miami	Miami-Washington_DC-mia_wdc	Washington_DC	Washington_DC-Miami-mia_wdc	1	T	T	F
+New_York-Washington_DC-nyc_wdc	New_York	New_York-Washington_DC-nyc_wdc	Washington_DC	Washington_DC-New_York-nyc_wdc	1	T	T	F
+Seattle-San_Jose-sea_sjc	Seattle	Seattle-San_Jose-sea_sjc	San_Jose	San_Jose-Seattle-sea_sjc	1	T	T	F
+
+<L3L1Links>
+Node	L1Node
+cr1.atl	Atlanta
+cr1.bos	Boston
+cr1.chi	Chicago
+cr1.hst	Houston
+cr1.kcy	Kansas_City
+cr1.lax	Los_Angeles
+cr1.mia	Miami
+cr1.nyc	New_York
+cr1.sea	Seattle
+cr1.sjc	San_Jose
+cr1.wdc	Washington_DC
+cr2.atl	Atlanta
+cr2.bos	Boston
+cr2.chi	Chicago
+cr2.hst	Houston
+cr2.kcy	Kansas_City
+cr2.lax	Los_Angeles
+cr2.mia	Miami
+cr2.nyc	New_York
+cr2.sea	Seattle
+cr2.sjc	San_Jose
+cr2.wdc	Washington_DC
+er1.atl	Atlanta
+er1.bos	Boston
+er1.chi	Chicago
+er1.hst	Houston
+er1.kcy	Kansas_City
+er1.lax	Los_Angeles
+er1.mia	Miami
+er1.nyc	New_York
+er1.sea	Seattle
+er1.sjc	San_Jose
+er1.wdc	Washington_DC
+

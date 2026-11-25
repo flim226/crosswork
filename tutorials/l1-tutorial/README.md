@@ -18,6 +18,7 @@ l1-tutorial/
 ├── check_cp_l1.py            checks a plan file's L1 tables for consistency
 └── example/
     ├── us_backbone_l3.txt    the collected IP network (12 sites, 33 routers, 50 IP links)
+    ├── us_backbone_l1l3.txt  the finished plan from Part 4, for comparison (IP and L1 layers)
     ├── gnpy_topology.json    the optical network (75 ROADMs, CORONET CONUS)
     ├── gnpy_services.json    17 wavelength services
     ├── eqpt_config.json      GNPy equipment library
@@ -45,15 +46,15 @@ cd ..
 mkdir -p lab/home lab/upload/gnpy
 cp example/l1_site_map.csv example/l1_circuit_map.csv lab/home/
 cp example/gnpy_*.json example/eqpt_config.json lab/upload/gnpy/
-python3 l1_gnpy_collect.py example/us_backbone_l3.txt lab/us_backbone_l1.txt \
+python3 l1_gnpy_collect.py example/us_backbone_l3.txt lab/us_backbone_l1l3.txt \
     /dev/null /dev/null lab/home lab/upload /tmp
-python3 check_cp_l1.py lab/us_backbone_l1.txt
+python3 check_cp_l1.py lab/us_backbone_l1l3.txt
 ```
 
 The last command should report:
 
 ```
-lab/us_backbone_l1.txt: 75 L1 nodes, 99 L1 links, 34 L1 ports, 17 L1 circuits, 17 paths, 0 hops, 50 L3 circuits (17 mapped to L1)
+lab/us_backbone_l1l3.txt: 75 L1 nodes, 99 L1 links, 34 L1 ports, 17 L1 circuits, 17 paths, 0 hops, 50 L3 circuits (17 mapped to L1)
   OK
 ```
 

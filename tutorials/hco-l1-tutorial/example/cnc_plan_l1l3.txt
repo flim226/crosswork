@@ -60,36 +60,38 @@ Tallinn-69		core	F	T	physical		100		No	T	T	10.111.69.69	3fff:1:0:1:69::		d090733
 Lyon-23		core	F	T	physical		64001		No	T	T	10.112.23.23			65a4a84a-8c06-4c44-b57c-c001a18da34b					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	12								
 Bordeaux-33		core	F	T	physical		64001		No	T	T	10.113.33.33			997d3b1c-865a-472b-bbaa-f6b6d72033c4					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	12								
 Rivne-67		core	F	T	physical		100		No	T	T	10.114.67.67	3fff:2:0:500:67::		e23b91d2-1d3c-42af-948c-917059e570cf					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	12								
-Aquila-22		core	F	T	physical		64100		No	T	T	10.115.22.22	3fff:2:0:300:22::		f25746fc-ac01-4bf5-9fd7-063fbeeb6d8a					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	8								
+Aquila-22	AQU	core	F	T	physical		64100		No	T	T	10.115.22.22	3fff:2:0:300:22::		f25746fc-ac01-4bf5-9fd7-063fbeeb6d8a					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	8								
 Chernivtsi-113		core	F	T	physical		100		No	T	T	10.116.113.113	3fff:2:0:500:113::		98addd6d-4901-49a1-aef4-4f7f3da579a7					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	12								
 RRv4-161		core	F	T	physical		64001		No	T	T	10.117.161.161			307a7d0c-b88f-4bc2-a0d3-84b05f7ff98f					0.0	0.0				F	clock-drift-check;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_cisco_pm_collector.snmp;reach-check;snmp;te-tunnel-id	10								
 Napoli-45		core	F	T	physical		64100		No	T	T	10.118.45.45	3fff:2:0:200:45::		65a3447c-fcd7-4352-b034-a7df898d77a2					0.0	0.0				F	cli;clock-drift-check;gnmi;gnmi_Cisco-IOS-XR-infra-xtc-agent-oper:pcc/peers/peer;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/sessions/session;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;snmp_CISCO-ENHANCED-MEMPOOL-MIB:CISCO-ENHANCED-MEMPOOL-MIB/cempMemPoolTable/cempMemPoolEntry;snmp_CISCO-PROCESS-MIB:CISCO-PROCESS-MIB/cpmCPUTotalTable/cpmCPUTotalEntry;te-tunnel-id	12								
 Krakow-30		core	F	T	physical		100		No	T	T	10.119.30.30	3fff:2:0:500:30::		c261fdf3-86a2-4588-bc1d-31e058e8dc39					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	10								
-Ercolano-27		core	F	T	physical		64100		No	T	T	10.120.27.27	3fff:2:0:100:27::		82846af2-86f2-4495-a456-97491b1455c1					0.0	0.0				F	cli;clock-drift-check;gnmi;gnmi_Cisco-IOS-XR-infra-xtc-agent-oper:pcc/peers/peer;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/sessions/session;gnmi_Cisco-IOS-XR-l2vpn-oper:l2vpnv2/active/bridge-domains/bridge-domain;gnmi_Cisco-IOS-XR-l2vpn-oper:l2vpnv2/active/bridge-domains/bridge-domain/bridge-acs/bridge-ac;gnmi_Cisco-IOS-XR-perf-meas-oper:performance-measurement/nodes/node/sr-policies/sr-policy-details/sr-policy-detail;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;snmp_CISCO-ENHANCED-MEMPOOL-MIB:CISCO-ENHANCED-MEMPOOL-MIB/cempMemPoolTable/cempMemPoolEntry;snmp_CISCO-PROCESS-MIB:CISCO-PROCESS-MIB/cpmCPUTotalTable/cpmCPUTotalEntry;te-tunnel-id	10								
+Ercolano-27		core	F	T	physical		64100		No	T	T	10.120.27.27	3fff:2:0:100:27::		82846af2-86f2-4495-a456-97491b1455c1					0.0	0.0				F	cli;clock-drift-check;gnmi;gnmi_Cisco-IOS-XR-infra-xtc-agent-oper:pcc/peers/peer;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/sessions/session;gnmi_Cisco-IOS-XR-l2vpn-oper:l2vpnv2/active/bridge-domains/bridge-domain;gnmi_Cisco-IOS-XR-l2vpn-oper:l2vpnv2/active/bridge-domains/bridge-domain/bridge-acs/bridge-ac;gnmi_Cisco-IOS-XR-perf-meas-oper:performance-measurement/nodes/node/sr-policies/sr-policy-details/sr-policy-detail;grpc_msl;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;snmp_CISCO-ENHANCED-MEMPOOL-MIB:CISCO-ENHANCED-MEMPOOL-MIB/cempMemPoolTable/cempMemPoolEntry;snmp_CISCO-PROCESS-MIB:CISCO-PROCESS-MIB/cpmCPUTotalTable/cpmCPUTotalEntry;te-tunnel-id	10								
 Badia-123		core	F	T	physical		64100		No	T	T	10.121.123.123	3fff:2:0:300:123::		e6546301-021e-4778-abc3-555089d0610b					0.0	0.0				F	PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_cisco_pm_collector.snmp;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;reach-check;snmp	13								
 Madrid-40		core	F	T	physical		100		No	T	T	10.122.40.40	3fff:1:0:1:40::		b675fa72-2762-498f-9a0b-e69fc2300b60					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	10								
 Sumy-52		core	F	T	physical		100		No	T	T	10.123.52.52	3fff:2:0:500:52::		1e66d48a-b810-4f5e-9952-68d5f04cba21					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	12								
-Ravello-51	Frosinone73	core	F	T	physical		64100		No	T	T	10.124.51.51	3fff:2:0:100:51::		312af4b1-752a-49ef-99b7-3f2796c32084					0.0	0.0				F	cli;clock-drift-check;gnmi;gnmi_Cisco-IOS-XR-ethernet-cfm-oper:cfm/global/peer-mep-v2s/peer-mep-v2;gnmi_Cisco-IOS-XR-infra-xtc-agent-oper:pcc/peers/peer;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/sessions/session;gnmi_Cisco-IOS-XR-l2vpn-oper:l2vpnv2/active/xconnects/xconnect;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;snmp_CISCO-ENHANCED-MEMPOOL-MIB:CISCO-ENHANCED-MEMPOOL-MIB/cempMemPoolTable/cempMemPoolEntry;snmp_CISCO-PROCESS-MIB:CISCO-PROCESS-MIB/cpmCPUTotalTable/cpmCPUTotalEntry;te-tunnel-id	12								
-Auletta-81	Battipaglia-97	core	F	T	physical		64100		No	T	T	10.125.150.150	3fff:2:0:100:150::		8d8f3cd2-d7ed-4c59-8190-bd1adea7113b					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	12								
+Ravello-51	FRO	core	F	T	physical		64100		No	T	T	10.124.51.51	3fff:2:0:100:51::		312af4b1-752a-49ef-99b7-3f2796c32084					0.0	0.0				F	cli;clock-drift-check;gnmi;gnmi_Cisco-IOS-XR-ethernet-cfm-oper:cfm/global/peer-mep-v2s/peer-mep-v2;gnmi_Cisco-IOS-XR-infra-xtc-agent-oper:pcc/peers/peer;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/sessions/session;gnmi_Cisco-IOS-XR-l2vpn-oper:l2vpnv2/active/xconnects/xconnect;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;snmp_CISCO-ENHANCED-MEMPOOL-MIB:CISCO-ENHANCED-MEMPOOL-MIB/cempMemPoolTable/cempMemPoolEntry;snmp_CISCO-PROCESS-MIB:CISCO-PROCESS-MIB/cpmCPUTotalTable/cpmCPUTotalEntry;te-tunnel-id	12								
+Auletta-81	BAT	core	F	T	physical		64100		No	T	T	10.125.150.150	3fff:2:0:100:150::		8d8f3cd2-d7ed-4c59-8190-bd1adea7113b					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	12								
 SR-PCE-48		core	F	T	physical		100		No	T	T	10.126.48.48	3fff:1:0:0:48::		4fb731c7-0b92-4bfa-8499-fbf5eec41427					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;reach-check;snmp;te-tunnel-id	10								
 Copenhagen-24		core	F	T	physical		64001		No	T	T	10.127.24.24			fb18cd0e-461a-44ef-a231-e52f54225d9b					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	12								
-Picerno-58	Benevento-42	core	F	T	physical		64100		No	T	T	10.128.58.58	3fff:2:0:100:58::		f9b9c065-9fce-40df-8de7-8e64951318eb					0.0	0.0				F	cli;clock-drift-check;gnmi;gnmi_Cisco-IOS-XR-ethernet-cfm-oper:cfm/global/peer-mep-v2s/peer-mep-v2;gnmi_Cisco-IOS-XR-infra-xtc-agent-oper:pcc/peers/peer;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/sessions/session;gnmi_Cisco-IOS-XR-l2vpn-oper:l2vpnv2/active/xconnects/xconnect;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;snmp_CISCO-ENHANCED-MEMPOOL-MIB:CISCO-ENHANCED-MEMPOOL-MIB/cempMemPoolTable/cempMemPoolEntry;snmp_CISCO-PROCESS-MIB:CISCO-PROCESS-MIB/cpmCPUTotalTable/cpmCPUTotalEntry;te-tunnel-id	12								
+Picerno-58	BEN	core	F	T	physical		64100		No	T	T	10.128.58.58	3fff:2:0:100:58::		f9b9c065-9fce-40df-8de7-8e64951318eb					0.0	0.0				F	cli;clock-drift-check;gnmi;gnmi_Cisco-IOS-XR-ethernet-cfm-oper:cfm/global/peer-mep-v2s/peer-mep-v2;gnmi_Cisco-IOS-XR-infra-xtc-agent-oper:pcc/peers/peer;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/sessions/session;gnmi_Cisco-IOS-XR-l2vpn-oper:l2vpnv2/active/xconnects/xconnect;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;snmp_CISCO-ENHANCED-MEMPOOL-MIB:CISCO-ENHANCED-MEMPOOL-MIB/cempMemPoolTable/cempMemPoolEntry;snmp_CISCO-PROCESS-MIB:CISCO-PROCESS-MIB/cpmCPUTotalTable/cpmCPUTotalEntry;te-tunnel-id	12								
 Kyiv-47		core	F	T	physical		100		No	T	T	10.129.47.47	3fff:1:0:0:47::		9cf18041-54b4-4eb5-bf18-a9511457a087					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	10								
-Caserta-38		core	F	T	physical		64100		No	T	T	10.130.38.38	3fff:2:0:200:38::		36a24e3d-a996-4e31-b10d-85818fb916f6					0.0	0.0				F	cli;clock-drift-check;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_cisco_pm_collector.snmp;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;reach-check;snmp;snmp_CISCO-ENHANCED-MEMPOOL-MIB:CISCO-ENHANCED-MEMPOOL-MIB/cempMemPoolTable/cempMemPoolEntry;snmp_CISCO-PROCESS-MIB:CISCO-PROCESS-MIB/cpmCPUTotalTable/cpmCPUTotalEntry;snmp_IF-MIB:IF-MIB/ifTable/ifEntry;te-tunnel-id	8								
+Caserta-38	CAS	core	F	T	physical		64100		No	T	T	10.130.38.38	3fff:2:0:200:38::		36a24e3d-a996-4e31-b10d-85818fb916f6					0.0	0.0				F	cli;clock-drift-check;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_cisco_pm_collector.snmp;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;reach-check;snmp;snmp_CISCO-ENHANCED-MEMPOOL-MIB:CISCO-ENHANCED-MEMPOOL-MIB/cempMemPoolTable/cempMemPoolEntry;snmp_CISCO-PROCESS-MIB:CISCO-PROCESS-MIB/cpmCPUTotalTable/cpmCPUTotalEntry;snmp_IF-MIB:IF-MIB/ifTable/ifEntry;te-tunnel-id	8								
 Lviv-31		core	F	T	physical		100		No	T	T	10.131.31.31	3fff:2:0:500:31::		d91003c0-d9ea-411f-9cf5-e889c2d2c0de					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	12								
-Perugia-138		core	F	T	physical		64100		No	T	T	10.132.138.138	3fff:2:0:300:138::		3b972a2d-46c4-46db-90c9-9e79be8cbf22					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	12								
+Perugia-138	PER	core	F	T	physical		64100		No	T	T	10.132.138.138	3fff:2:0:300:138::		3b972a2d-46c4-46db-90c9-9e79be8cbf22					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	12								
 Kyiv-28		core	F	T	physical		100		No	T	T	10.133.28.28	3fff:2:0:500:28::		782ed3d9-f950-4bbb-8742-0939d04c63f1					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	8								
-Battipaglia-54	Battipaglia-43	core	F	T	physical		64100		No	T	T	10.134.54.54	3fff:2:0:100:54::		a4ca9cb0-1eff-4042-87f2-8dd3808d3981					0.0	0.0				F	cli;clock-drift-check;gnmi;gnmi_Cisco-IOS-XR-infra-xtc-agent-oper:pcc/peers/peer;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/sessions/session;gnmi_Cisco-IOS-XR-l2vpn-oper:l2vpnv2/active/xconnects/xconnect;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;snmp_CISCO-ENHANCED-MEMPOOL-MIB:CISCO-ENHANCED-MEMPOOL-MIB/cempMemPoolTable/cempMemPoolEntry;snmp_CISCO-PROCESS-MIB:CISCO-PROCESS-MIB/cpmCPUTotalTable/cpmCPUTotalEntry;te-tunnel-id	8								
-Potenza-17	Potenza	core	F	T	physical		64100		No	T	T	10.135.17.17			59afb604-51c9-4b0c-8c0e-749793042e53					0.0	0.0				F	cli;clock-drift-check;gnmi;gnmi_Cisco-IOS-XR-infra-xtc-agent-oper:pcc/peers/peer;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/sessions/session;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;snmp_CISCO-ENHANCED-MEMPOOL-MIB:CISCO-ENHANCED-MEMPOOL-MIB/cempMemPoolTable/cempMemPoolEntry;snmp_CISCO-PROCESS-MIB:CISCO-PROCESS-MIB/cpmCPUTotalTable/cpmCPUTotalEntry;te-tunnel-id	12								
+Battipaglia-54	BAT	core	F	T	physical		64100		No	T	T	10.134.54.54	3fff:2:0:100:54::		a4ca9cb0-1eff-4042-87f2-8dd3808d3981					0.0	0.0				F	cli;clock-drift-check;gnmi;gnmi_Cisco-IOS-XR-ethernet-cfm-oper:cfm/global/peer-mep-v2s/peer-mep-v2;gnmi_Cisco-IOS-XR-infra-xtc-agent-oper:pcc/peers/peer;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/sessions/session;gnmi_Cisco-IOS-XR-l2vpn-oper:l2vpnv2/active/xconnects/xconnect;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;snmp_CISCO-ENHANCED-MEMPOOL-MIB:CISCO-ENHANCED-MEMPOOL-MIB/cempMemPoolTable/cempMemPoolEntry;snmp_CISCO-PROCESS-MIB:CISCO-PROCESS-MIB/cpmCPUTotalTable/cpmCPUTotalEntry;te-tunnel-id	8								
+Potenza-17	POT	core	F	T	physical		64100		No	T	T	10.135.17.17			59afb604-51c9-4b0c-8c0e-749793042e53					0.0	0.0				F	cli;clock-drift-check;gnmi;gnmi_Cisco-IOS-XR-ethernet-cfm-oper:cfm/global/peer-mep-v2s/peer-mep-v2;gnmi_Cisco-IOS-XR-infra-xtc-agent-oper:pcc/peers/peer;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/sessions/session;gnmi_Cisco-IOS-XR-l2vpn-oper:l2vpnv2/active/xconnects/xconnect;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;snmp_CISCO-ENHANCED-MEMPOOL-MIB:CISCO-ENHANCED-MEMPOOL-MIB/cempMemPoolTable/cempMemPoolEntry;snmp_CISCO-PROCESS-MIB:CISCO-PROCESS-MIB/cpmCPUTotalTable/cpmCPUTotalEntry;te-tunnel-id	12								
 Poltava-88		core	F	T	physical		100		No	T	T	10.136.88.88	3fff:2:0:500:88::		f9d65008-dd68-4d14-8ab6-4d5764403614					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	12								
 Zamosc-68		core	F	T	physical		100		No	T	T	10.137.68.68	3fff:2:0:500:68::		3c53b407-a6ec-4232-9dd6-d4bc01d3d872					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	8								
 Vilnius-86		core	F	T	physical		100		No	T	T	10.138.86.86	3fff:1:0:1:86::		994e06dc-f43d-482a-b31c-ee9c2723e20b					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	12								
 Mainz-65		core	F	T	physical		100		No	T	T	10.139.49.49	3fff:1:0:0:49::		ffb91315-e428-4360-9c5d-f3c3d3503d39					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	12								
 Oleksandriia-105		core	F	T	physical		100		No	T	T	10.140.105.105	3fff:2:0:500:105::		7e03dc18-ae94-4f82-ad0f-a35705db6807					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;PM_1_CEPMINTERFACE_cisco_pm_collector.snmp;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_gnmi_collector.snmp;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	10								
-Ischia-21	Roma	core	F	T	physical		64100		No	T	T	10.141.21.21	3fff:2:0:100:21::		67aac570-a629-4d1f-b4e1-96e6f8054d21					0.0	0.0				F	cli;clock-drift-check;gnmi;gnmi_Cisco-IOS-XR-infra-xtc-agent-oper:pcc/peers/peer;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/sessions/session;gnmi_Cisco-IOS-XR-l2vpn-oper:l2vpnv2/active/bridge-domains/bridge-domain;gnmi_Cisco-IOS-XR-l2vpn-oper:l2vpnv2/active/bridge-domains/bridge-domain/bridge-acs/bridge-ac;gnmi_Cisco-IOS-XR-l2vpn-oper:l2vpnv2/active/xconnects/xconnect;gnmi_Cisco-IOS-XR-perf-meas-oper:performance-measurement/nodes/node/sr-policies/sr-policy-details/sr-policy-detail;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;snmp_CISCO-ENHANCED-MEMPOOL-MIB:CISCO-ENHANCED-MEMPOOL-MIB/cempMemPoolTable/cempMemPoolEntry;snmp_CISCO-PROCESS-MIB:CISCO-PROCESS-MIB/cpmCPUTotalTable/cpmCPUTotalEntry;te-tunnel-id	10								
-Palinuro-29		core	F	T	physical		64100		No	T	T	10.142.29.29	3fff:2:0:100:29::		54e1f9c4-283f-47f9-a509-b9d4c88ddfdb					0.0	0.0				F	cli;clock-drift-check;gnmi;gnmi_Cisco-IOS-XR-infra-xtc-agent-oper:pcc/peers/peer;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/global-process-info;gnmi_Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/sessions/session;gnmi_Cisco-IOS-XR-l2vpn-oper:l2vpnv2/active/xconnects/xconnect;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;snmp_CISCO-ENHANCED-MEMPOOL-MIB:CISCO-ENHANCED-MEMPOOL-MIB/cempMemPoolTable/cempMemPoolEntry;snmp_CISCO-PROCESS-MIB:CISCO-PROCESS-MIB/cpmCPUTotalTable/cpmCPUTotalEntry;te-tunnel-id	12								
-Ancona-18		core	F	T	physical		64100		No	T	T	10.143.18.18	3fff:2:0:300:18::		c30bd5cd-1c20-4470-8151-4280fe49cd7a					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	12								
-Positano-92		core	F	T	physical		64100		No	T	T	10.144.92.92	3fff:2:0:100:92::		63a07f2e-e595-4300-a53b-e32ca80496d0					0.0	0.0				F	cli;clock-drift-check;gnmi;gnmi_Cisco-IOS-XR-infra-xtc-agent-oper:pcc/peers/peer;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/global-process-info;gnmi_Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/sessions/session;gnmi_Cisco-IOS-XR-l2vpn-oper:l2vpnv2/active/xconnects/xconnect;gnmi_Cisco-IOS-XR-perf-meas-oper:performance-measurement/nodes/node/sr-policies/sr-policy-details/sr-policy-detail;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;snmp_CISCO-ENHANCED-MEMPOOL-MIB:CISCO-ENHANCED-MEMPOOL-MIB/cempMemPoolTable/cempMemPoolEntry;snmp_CISCO-PROCESS-MIB:CISCO-PROCESS-MIB/cpmCPUTotalTable/cpmCPUTotalEntry;te-tunnel-id	12								
+Ischia-21	ROM	core	F	T	physical		64100		No	T	T	10.141.21.21	3fff:2:0:100:21::		67aac570-a629-4d1f-b4e1-96e6f8054d21					0.0	0.0				F	cli;clock-drift-check;gnmi;gnmi_Cisco-IOS-XR-infra-xtc-agent-oper:pcc/peers/peer;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/sessions/session;gnmi_Cisco-IOS-XR-l2vpn-oper:l2vpnv2/active/bridge-domains/bridge-domain;gnmi_Cisco-IOS-XR-l2vpn-oper:l2vpnv2/active/bridge-domains/bridge-domain/bridge-acs/bridge-ac;gnmi_Cisco-IOS-XR-l2vpn-oper:l2vpnv2/active/xconnects/xconnect;gnmi_Cisco-IOS-XR-perf-meas-oper:performance-measurement/nodes/node/sr-policies/sr-policy-details/sr-policy-detail;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;snmp_CISCO-ENHANCED-MEMPOOL-MIB:CISCO-ENHANCED-MEMPOOL-MIB/cempMemPoolTable/cempMemPoolEntry;snmp_CISCO-PROCESS-MIB:CISCO-PROCESS-MIB/cpmCPUTotalTable/cpmCPUTotalEntry;te-tunnel-id	10								
+Palinuro-29	PES	core	F	T	physical		64100		No	T	T	10.142.29.29	3fff:2:0:100:29::		54e1f9c4-283f-47f9-a509-b9d4c88ddfdb					0.0	0.0				F	cli;clock-drift-check;gnmi;gnmi_Cisco-IOS-XR-infra-xtc-agent-oper:pcc/peers/peer;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/global-process-info;gnmi_Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/sessions/session;gnmi_Cisco-IOS-XR-l2vpn-oper:l2vpnv2/active/xconnects/xconnect;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;snmp_CISCO-ENHANCED-MEMPOOL-MIB:CISCO-ENHANCED-MEMPOOL-MIB/cempMemPoolTable/cempMemPoolEntry;snmp_CISCO-PROCESS-MIB:CISCO-PROCESS-MIB/cpmCPUTotalTable/cpmCPUTotalEntry;te-tunnel-id	12								
+Ancona-18	ANC	core	F	T	physical		64100		No	T	T	10.143.18.18	3fff:2:0:300:18::		c30bd5cd-1c20-4470-8151-4280fe49cd7a					0.0	0.0				F	cli;clock-drift-check;gnmi;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;te-tunnel-id	12								
+Positano-92	TER	core	F	T	physical		64100		No	T	T	10.144.92.92	3fff:2:0:100:92::		63a07f2e-e595-4300-a53b-e32ca80496d0					0.0	0.0				F	cli;clock-drift-check;gnmi;gnmi_Cisco-IOS-XR-infra-xtc-agent-oper:pcc/peers/peer;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/bgp/as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/connected/non-as/information;gnmi_Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information;gnmi_Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/global-process-info;gnmi_Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/sessions/session;gnmi_Cisco-IOS-XR-l2vpn-oper:l2vpnv2/active/xconnects/xconnect;gnmi_Cisco-IOS-XR-perf-meas-oper:performance-measurement/nodes/node/sr-policies/sr-policy-details/sr-policy-detail;ios-xr;pm-openconfig;PM_1_CEPMINTERFACE_cisco_pm_openconfig_collector.gnmi;PM_2_SRPOLICY_ios_xr_pm_openconfig_collector.gnmi;PM_3_OPTICSLANE_ios_xr_pm_current_collector.gnmi;PM_3_OTUCONTROLLERSINFO_ios_xr_pm_collector.gnmi;PM_4_CEPMPTP_cisco_pm_collector.snmp;PM_4_CEPMSYNCE_cisco_pm_collector.snmp;PM_5_OPTICALSFP_cisco_pm_collector.snmp;PM_6_CEPMGNSS_cisco_pm_collector.snmp;PM_7_MACSEC_custom_cisco_custompolicy_ios_xr_pm_collector.gnmi;PM_8_SRV6LOCATOR_ios_xr_pm_collector.gnmi;reach-check;snmp;snmp_CISCO-ENHANCED-MEMPOOL-MIB:CISCO-ENHANCED-MEMPOOL-MIB/cempMemPoolTable/cempMemPoolEntry;snmp_CISCO-PROCESS-MIB:CISCO-PROCESS-MIB/cpmCPUTotalTable/cpmCPUTotalEntry;te-tunnel-id	12								
+junos49		core	F	T	physical				No	F	T				08641e23-2133-4c3f-8c77-80a89170b120					0.0	0.0				F	cli;fault-gnmi;gnmi;PM_1_CEPMINTERFACE_default_pm_collector.snmp;reach-check;snmp									
+junos50		core	F	T	physical				No	F	T				d6a8f6bb-b3bc-415a-8ead-c030399fc916					0.0	0.0				F	cli;fault-gnmi;gnmi;PM_1_CEPMINTERFACE_default_pm_collector.snmp;reach-check;snmp									
 
 <NodeSIDs>
 Node	SID	Type	SRAlgorithm	Protected	IPV6
@@ -149,7 +151,7 @@ Krakow-30	19030	FLEX-ALGO	130	T	F
 Ercolano-27	16027	REGULAR	0	T	F
 Ercolano-27	19027	STRICT	1	T	F
 Ercolano-27	17027	FLEX-ALGO	128	T	F
-Ercolano-27	18027	FLEX-ALGO	130	T	F
+Ercolano-27	18027	FLEX-ALGO	129	T	F
 Ercolano-27	17127	FLEX-ALGO	131	T	F
 Ercolano-27	17227	FLEX-ALGO	132	T	F
 Badia-123	16123	REGULAR	0	T	F
@@ -729,7 +731,7 @@ Ercolano-27	3fff:6:1027::/48	100	Level2	F	F	F	T	1	0
 Ercolano-27	3fff:2:0:100:27::/128	300	Level2	F	F	T	F	0	0
 Ercolano-27	3fff:2:0:101:27::/128	300	Level2	F	F	T	F	0	0
 Ercolano-27	3fff:6:1000::/36	300	Level2	F	F	F	T	11	0
-Ercolano-27	3fff:6:2000::/36	300	Level2	F	F	F	T	110	0
+Ercolano-27	3fff:6:2000::/36	300	Level2	F	F	F	T	30	0
 Ercolano-27	3fff:6:1027::/48	300	Level2	F	F	F	T	1	0
 Ercolano-27	3fff:6:3000::/36	100	Level2	T	F	F	T	11	0
 Badia-123	3fff:2:0:300:123::/128	300	Level2	F	F	T	F	0	0
@@ -790,7 +792,7 @@ Ischia-21	3fff:2:0:101:21::/128	300	Level2	F	F	T	F	0	0
 Ischia-21	3fff:6:1000::/36	300	Level2	F	F	F	T	11	0
 Ischia-21	3fff:6:1021::/48	300	Level2	F	F	F	T	1	0
 Ischia-21	3fff:6:3000::/36	100	Level2	T	F	F	T	11	0
-Ischia-21	3fff:6:2000::/36	300	Level2	F	F	F	T	120	0
+Ischia-21	3fff:6:2000::/36	300	Level2	T	F	F	T	20	0
 Palinuro-29	3fff:6:2000::/36	100	Level2	T	F	F	T	0	0
 Palinuro-29	3fff:7:1029::/48	100	Level2	F	F	F	T	1	128
 Palinuro-29	3fff:6:1029::/48	100	Level2	F	F	F	T	1	0
@@ -798,7 +800,7 @@ Palinuro-29	3fff:8:1029::/48	100	Level2	F	F	F	T	1	134
 Palinuro-29	3fff:6:1029::/48	200	Level2	F	F	F	T	1	0
 Palinuro-29	3fff:6:1000::/36	200	Level2	F	F	F	T	11	0
 Palinuro-29	3fff:2:0:100:29::/128	200	Level2	F	F	T	F	0	0
-Palinuro-29	3fff:6:3000::/36	200	Level2	F	F	F	T	71	0
+Palinuro-29	3fff:6:3000::/36	200	Level2	F	F	F	T	31	0
 Ancona-18	3fff:2:0:300:18::/128	300	Level2	F	F	T	F	0	0
 Ancona-18	3fff:6:3018::/48	300	Level2	F	F	F	T	1	0
 Positano-92	3fff:6:1092::/48	200	Level2	F	F	F	T	1	0
@@ -808,13 +810,13 @@ Positano-92	3fff:6:2000::/36	100	Level2	T	F	F	T	0	0
 Positano-92	3fff:6:1092::/48	100	Level2	F	F	F	T	1	0
 Positano-92	3fff:7:1092::/48	100	Level2	F	F	F	T	1	128
 Positano-92	3fff:8:1092::/48	100	Level2	F	F	F	T	1	134
-Positano-92	3fff:6:3000::/36	200	Level2	F	F	F	T	71	0
+Positano-92	3fff:6:3000::/36	200	Level2	F	F	F	T	41	0
 
 <Circuits>
 Name	NodeA	InterfaceA	NodeB	InterfaceB	Capacity	Delay	Distance	L1CircuitNodeA	L1CircuitPortA	L1CircuitNodeB	L1CircuitPortB	Protected	Active	Failed	CostInitial	CostPerPeriod	ParallelGroupName	LastTemplateUpdate	Tags
 	Ravello-51	HundredGigE0/0/0/26	Battipaglia-54	HundredGigE0/0/0/26								F	T	F	0.0	0.0			
-	Perugia-138	FourHundredGigE0/0/2/0	Ancona-18	FourHundredGigE0/0/2/0								F	T	F	0.0	0.0			
-	Perugia-138	FourHundredGigE0/0/2/2	Ancona-18	FourHundredGigE0/0/2/2								F	T	F	0.0	0.0			
+	Perugia-138	FourHundredGigE0/0/2/0	Ancona-18	FourHundredGigE0/0/2/0				Perugia-138-ols	Optics0/0/2/0	Ancona-18-ols	Optics0/0/2/0	F	T	F	0.0	0.0			
+	Perugia-138	FourHundredGigE0/0/2/2	Ancona-18	FourHundredGigE0/0/2/2				07.ROADM.191	LINE-6-12-RX&LINE-6-12-TX	31.Terminal.84	LINE-3-12-RX&LINE-3-12-TX	F	T	F	0.0	0.0			
 	Ravello-51	TenGigE0/0/0/2	Palinuro-29	TenGigE0/0/0/2								F	T	F	0.0	0.0			
 	Ravello-51	HundredGigE0/0/0/24	Palinuro-29	HundredGigE0/0/1/0								F	T	F	0.0	0.0			
 	Madrid-40	TenGigE0/0/0/25	Vilnius-86	TenGigE0/0/0/15								F	T	F	0.0	0.0			
@@ -869,11 +871,12 @@ Name	NodeA	InterfaceA	NodeB	InterfaceB	Capacity	Delay	Distance	L1CircuitNodeA	L1
 	Mainz-65	TenGigE0/0/0/1	Stuttgart-64	TenGigE0/0/0/15								F	T	F	0.0	0.0			
 	Paris-66	TenGigE0/0/0/5	Stuttgart-64	TenGigE0/0/0/20								F	T	F	0.0	0.0			
 	Kyiv-47	TenGigE0/0/0/30	Stuttgart-64	TenGigE0/0/0/10								F	T	F	0.0	0.0			
-	Battipaglia-54	FourHundredGigE0/0/0/6	Picerno-58	FourHundredGigE0/3/0/9				Battipaglia-43	2/PORT-1	Benevento-42	3/PORT-1	F	T	F	0.0	0.0			
-	Picerno-58	FourHundredGigE0/3/0/8	Battipaglia-54	FourHundredGigE0/0/0/2				Benevento-42	2/PORT-1	Battipaglia-43	3/PORT-1	F	T	F	0.0	0.0			
-	Battipaglia-54	FourHundredGigE0/0/0/14	Ischia-21	FourHundredGigE0/1/0/7								F	T	F	0.0	0.0			
+	Battipaglia-54	FourHundredGigE0/0/0/6	Picerno-58	FourHundredGigE0/3/0/9				Battipaglia-43-roadm	2/PORT-1	Benevento-42-roadm	3/PORT-1	F	T	F	0.0	0.0			
+	Picerno-58	FourHundredGigE0/3/0/8	Battipaglia-54	FourHundredGigE0/0/0/2								F	F	F	0.0	0.0			
+	Battipaglia-54	FourHundredGigE0/0/0/14	Ischia-21	FourHundredGigE0/1/0/7				Battipaglia-11	PLINE-3-9-RX&PLINE-3-9-TX	Roma-14	PLINE-3-9-RX&PLINE-3-9-TX	F	T	F	0.0	0.0			
 	Picerno-58	TenGigE0/3/0/1	Ischia-21	TenGigE0/0/0/18								F	T	F	0.0	0.0			
 	Aquila-22	TenGigE0/0/0/19/0	Ischia-21	TenGigE0/0/0/19								F	T	F	0.0	0.0			
+	Ravello-51	FourHundredGigE0/0/3/0	Ischia-21	FourHundredGigE0/1/0/0				Frosinone73-roadm	3/CH-6	Roma-roadm	4/CH-6	F	T	F	0.0	0.0			
 
 <IGPProcessProtocols>
 IGPProcessID	IGPProtocol
@@ -1011,6 +1014,8 @@ Picerno-58	TenGigE0/3/0/1	10		10000.0	Default		T	50			15.0		15.0					T	T		Level2
 Ischia-21	TenGigE0/0/0/18	20		10000.0	Default	20	T	300		20	11.0	20	11.0					T	T		Level2	100		11		bff671c8-02eb-420b-a670-2d875c230495										11.0		
 Aquila-22	TenGigE0/0/0/19/0	10		10000.0	Default		T	10										T	T		Level2	300				9835cb5f-4378-45c7-8103-d484deba1b7e										7.0		
 Ischia-21	TenGigE0/0/0/19	10		10000.0	Default	10	T	10	10									T	T		Level2	300				9fdbd2f8-134a-4b31-899e-9260d77cbd33										4.0		
+Ravello-51	FourHundredGigE0/0/3/0	10		399999.992	Default	10	T	10	10	10	527.0	10	527.0					T	T		Level2	100		10		089be19a-c9d6-441b-999d-63432261e980	3fff:2:0:100:51::(146)									527.0		
+Ischia-21	FourHundredGigE0/1/0/0	30		399999.992	Default	10	T	10	10	10	522.0	10	522.0					T	T		Level2	100		10		88e8ab8c-ff71-4a2b-9b6d-8bb6c9f3bc87	3fff:2:0:100:21::(114)									522.0		
 
 <InterfaceSIDs>
 Node	Interface	SID	Type	Protected	Persistent	ISISLevel	IPV6
@@ -1249,11 +1254,11 @@ Picerno-58	FourHundredGigE0/3/0/9	15154	ADJ	F	T	Level2	F
 Picerno-58	FourHundredGigE0/3/0/9	24021	ADJ	T	F	Level2	F
 Picerno-58	FourHundredGigE0/3/0/9	24033	ADJ	F	F	Level2	F
 Picerno-58	FourHundredGigE0/3/0/8	15284	ADJ	F	T	Level2	F
-Picerno-58	FourHundredGigE0/3/0/8	28313	ADJ	T	F	Level2	F
-Picerno-58	FourHundredGigE0/3/0/8	28314	ADJ	F	F	Level2	F
+Picerno-58	FourHundredGigE0/3/0/8	24044	ADJ	T	F	Level2	F
+Picerno-58	FourHundredGigE0/3/0/8	24050	ADJ	F	F	Level2	F
 Battipaglia-54	FourHundredGigE0/0/0/2	15248	ADJ	F	T	Level2	F
-Battipaglia-54	FourHundredGigE0/0/0/2	24044	ADJ	T	F	Level2	F
 Battipaglia-54	FourHundredGigE0/0/0/2	24045	ADJ	F	F	Level2	F
+Battipaglia-54	FourHundredGigE0/0/0/2	24039	ADJ	T	F	Level2	F
 Battipaglia-54	FourHundredGigE0/0/0/14	24055	ADJ	T	F	Level2	F
 Battipaglia-54	FourHundredGigE0/0/0/14	24056	ADJ	F	F	Level2	F
 Ischia-21	FourHundredGigE0/1/0/7	24107	ADJ	T	F	Level2	F
@@ -1266,6 +1271,12 @@ Aquila-22	TenGigE0/0/0/19/0	24013	ADJ	T	F	Level2	F
 Aquila-22	TenGigE0/0/0/19/0	24014	ADJ	F	F	Level2	F
 Ischia-21	TenGigE0/0/0/19	24059	ADJ	T	F	Level2	F
 Ischia-21	TenGigE0/0/0/19	24060	ADJ	F	F	Level2	F
+Ravello-51	FourHundredGigE0/0/3/0	15121	ADJ	F	T	Level2	F
+Ravello-51	FourHundredGigE0/0/3/0	32205	ADJ	T	F	Level2	F
+Ravello-51	FourHundredGigE0/0/3/0	32206	ADJ	F	F	Level2	F
+Ischia-21	FourHundredGigE0/1/0/0	15351	ADJ	F	T	Level2	F
+Ischia-21	FourHundredGigE0/1/0/0	24061	ADJ	T	F	Level2	F
+Ischia-21	FourHundredGigE0/1/0/0	24092	ADJ	F	F	Level2	F
 
 <SRv6InterfaceSIDs>
 Node	Interface	SID	SRAlgorithm	Protected	ISISLevel
@@ -1707,6 +1718,16 @@ Aquila-22	TenGigE0/0/0/19/0	3fff:6:3022:e000::/64	0	T	Level2
 Aquila-22	TenGigE0/0/0/19/0	3fff:6:3022:e003::/64	0	F	Level2
 Ischia-21	TenGigE0/0/0/19	3fff:6:1021:e003::/64	0	F	Level2
 Ischia-21	TenGigE0/0/0/19	3fff:6:1021:e002::/64	0	T	Level2
+Ravello-51	FourHundredGigE0/0/3/0	3fff:6:1051:e005::/64	0	F	Level2
+Ravello-51	FourHundredGigE0/0/3/0	3fff:6:1051:e004::/64	0	T	Level2
+Ravello-51	FourHundredGigE0/0/3/0	3fff:8:1051:e005::/64	134	F	Level2
+Ravello-51	FourHundredGigE0/0/3/0	3fff:8:1051:e004::/64	134	T	Level2
+Ischia-21	FourHundredGigE0/1/0/0	3fff:6:1021:e00b::/64	0	F	Level2
+Ischia-21	FourHundredGigE0/1/0/0	3fff:6:1021:e00a::/64	0	T	Level2
+Ischia-21	FourHundredGigE0/1/0/0	3fff:7:1021:e005::/64	128	F	Level2
+Ischia-21	FourHundredGigE0/1/0/0	3fff:7:1021:e004::/64	128	T	Level2
+Ischia-21	FourHundredGigE0/1/0/0	3fff:8:1021:e004::/64	134	T	Level2
+Ischia-21	FourHundredGigE0/1/0/0	3fff:8:1021:e005::/64	134	F	Level2
 
 <InterfaceAdjacencies>
 Node	Interface	Type	UUID	IGPMetric	TEMetric	ASLATEMetric	ASLADelay	Active
@@ -1926,8 +1947,8 @@ Stuttgart-64	TenGigE0/0/0/10	ISIS_IPv4_L2	d470c193-33fd-4834-a14f-53c35f1fdf43	1
 Stuttgart-64	TenGigE0/0/0/10	ISIS_IPv6_L2	170e8605-8407-435c-b47d-78121d00d314	10.0	10.0		7.0	T
 Battipaglia-54	FourHundredGigE0/0/0/6	ISIS_IPv4_L2	fbaa8923-2c3f-42de-bb8e-bdd8b1618e0b	300.0	11.0	11.0	7.0	T
 Picerno-58	FourHundredGigE0/3/0/9	ISIS_IPv4_L2	da5759c6-6a1b-40d5-b0ec-75ff7d355aac	10.0	10.0	10.0	7.0	T
-Picerno-58	FourHundredGigE0/3/0/8	ISIS_IPv4_L2	45436d65-d30c-4a61-bc0a-c8b71f5e7945	10.0	10.0	10.0	6.0	T
-Battipaglia-54	FourHundredGigE0/0/0/2	ISIS_IPv4_L2	11b9ee80-0778-4157-91de-3ba987c7fbbc	300.0			6.0	T
+Picerno-58	FourHundredGigE0/3/0/8	ISIS_IPv4_L2	45436d65-d30c-4a61-bc0a-c8b71f5e7945	10.0	10.0	10.0	6.0	F
+Battipaglia-54	FourHundredGigE0/0/0/2	ISIS_IPv4_L2	11b9ee80-0778-4157-91de-3ba987c7fbbc	300.0			6.0	F
 Battipaglia-54	FourHundredGigE0/0/0/14	ISIS_IPv4_L2	83ddaab3-6c6f-42c5-b41a-5898b3a411f2	10.0	100.0	100.0	23.0	T
 Ischia-21	FourHundredGigE0/1/0/7	ISIS_IPv4_L2	b79e5ebe-be13-4aff-96ff-0edc940a310e	30.0	100.0	100.0	18.0	T
 Picerno-58	TenGigE0/3/0/1	ISIS_IPv4_L2	8a284fb0-49ff-4002-9afd-a0ee2de43cf6	10.0			15.0	T
@@ -1938,6 +1959,10 @@ Aquila-22	TenGigE0/0/0/19/0	ISIS_IPv4_L2	9835cb5f-4378-45c7-8103-d484deba1b7e	10
 Aquila-22	TenGigE0/0/0/19/0	ISIS_IPv6_L2	86617f5c-f709-4b61-8420-d99c9df65bf7	10.0				T
 Ischia-21	TenGigE0/0/0/19	ISIS_IPv4_L2	9fdbd2f8-134a-4b31-899e-9260d77cbd33	10.0	10.0			T
 Ischia-21	TenGigE0/0/0/19	ISIS_IPv6_L2	21048c82-58a4-49f7-821e-a7dffcf9f721	10.0	10.0			T
+Ravello-51	FourHundredGigE0/0/3/0	ISIS_IPv4_L2	7c364954-dedf-423c-9283-23f74fbc9ec6	10.0	10.0	10.0	527.0	T
+Ravello-51	FourHundredGigE0/0/3/0	ISIS_IPv6_L2	089be19a-c9d6-441b-999d-63432261e980	10.0	10.0	10.0	527.0	T
+Ischia-21	FourHundredGigE0/1/0/0	ISIS_IPv4_L2	60fa71ff-ab18-4f5e-a2c1-69cf8f3b7b70	30.0	10.0	10.0	522.0	T
+Ischia-21	FourHundredGigE0/1/0/0	ISIS_IPv6_L2	88e8ab8c-ff71-4a2b-9b6d-8bb6c9f3bc87	10.0	10.0	10.0	522.0	T
 
 <FlexAlgorithms>
 SRAlgorithm	IGPProcessID	OSPFArea	ISISLevel	MetricType	IncludeAll	IncludeAny	ExcludeAll
@@ -1989,7 +2014,7 @@ srte_c_300_ep_10.144.92.92	Ischia-21	10.141.21.21	Positano-92	10.144.92.92			7	7
 srte_c_10102006_ep_10.141.21.21	Battipaglia-54	10.134.54.54	Ischia-21	10.141.21.21			7	7	T	F		Default		24012				1.0		1	NonTrafficSteering		SRv4	T			10102006		b6e2ebc5-8125-4b4e-b544-3671ab4eed97					F	F									
 srte_c_1822_ep_10.115.22.22	Ancona-18	10.143.18.18	Aquila-22	10.115.22.22			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			1822		5f54c225-dfb7-4bd6-9120-fc85f6f3cee9					F	F									
 srte_c_2930_ep_10.119.30.30	Palinuro-29	10.142.29.29	Krakow-30	10.119.30.30			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			2930		f906d807-9a1d-4abc-a43b-b8145d3075b9					F	F									
-srte_c_7477132_ep_10.141.21.21	Napoli-45	10.118.45.45	Ischia-21	10.141.21.21			7	7	T	F		Default		24034				1.0		1	NonTrafficSteering		SRv4	T			7477132		c0f3bea0-d1a4-40f4-8a91-775785e206fd					F	F									
+srte_c_7477132_ep_10.141.21.21	Napoli-45	10.118.45.45	Ischia-21	10.141.21.21			7	7	T	F		Default		24086				1.0		1	NonTrafficSteering		SRv4	T			7477132		c0f3bea0-d1a4-40f4-8a91-775785e206fd					F	F									
 srte_c_125_ep_10.141.21.21	Palinuro-29	10.142.29.29	Ischia-21	10.141.21.21			7	7	T	F		Default		24081				1.0		1	NonTrafficSteering		SRv4	T			125		75224009-aba1-44c7-8888-cc8966bdc604					F	F									
 srte_c_4004_ep_10.120.27.27	Positano-92	10.144.92.92	Ercolano-27	10.120.27.27			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			4004		0ef91f20-e482-4831-bd3b-2657fac7e83f					F	F									
 srte_c_20_ep_10.120.27.27	Perugia-138	10.132.138.138	Ercolano-27	10.120.27.27			7	7	T	F		Default		24036				1.0		2	NonTrafficSteering		SRv4	T			20		c4fefc0d-bcab-46ce-bd30-d59f02e12c38					F	F									
@@ -2003,7 +2028,7 @@ srte_c_130_ep_10.137.68.68	Krakow-30	10.119.30.30	Zamosc-68	10.137.68.68			7	7	T
 srte_c_4003_ep_10.141.21.21	Palinuro-29	10.142.29.29	Ischia-21	10.141.21.21			7	7	T	F		Default		24063				1.0		1	NonTrafficSteering		SRv4	T			4003		6024a8b8-bbc2-4bc6-92f4-ef3ada38c5f6					F	F									
 srte_c_4004_ep_10.141.21.21	Palinuro-29	10.142.29.29	Ischia-21	10.141.21.21			7	7	T	F		Default		24068				1.0		1	NonTrafficSteering		SRv4	T			4004		e87671bf-d2f0-4c1a-b025-f4d5a7545025					F	F									
 srte_c_1101_ep_10.118.45.45	Ischia-21	10.141.21.21	Napoli-45	10.118.45.45			7	7	T	F		Default		24165				1.0		1	NonTrafficSteering		SRv4	T			1101		d5b37e73-2f15-4645-b4b4-9749eca8d62d					F	F									
-srte_c_103_ep_10.125.150.150	Picerno-58	10.128.58.58	Auletta-81	10.125.150.150			7	7	T	F		Default		24026				1.0		1	NonTrafficSteering		SRv4	T			103		30c36dd4-11ce-4639-83a5-ae468efb043d					F	F									
+srte_c_103_ep_10.125.150.150	Picerno-58	10.128.58.58	Auletta-81	10.125.150.150			7	7	T	F		Default		28333				1.0		1	NonTrafficSteering		SRv4	T			103		30c36dd4-11ce-4639-83a5-ae468efb043d					F	F									
 srte_c_102_ep_10.125.150.150	Picerno-58	10.128.58.58	Auletta-81	10.125.150.150			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			102		02617f67-1af8-4cdd-8457-518f881643b7					F	F									
 srte_c_10_ep_10.120.27.27	Napoli-45	10.118.45.45	Ercolano-27	10.120.27.27			7	7	T	F		Default		24076				1.0		2	NonTrafficSteering		SRv4	T			10		18eae64a-43ca-4e4b-8f39-7432bb504a7b					F	F									
 srte_c_2278_ep_10.116.113.113	Oleksandriia-105	10.140.105.105	Chernivtsi-113	10.116.113.113			7	7	T	F		Default		24064				1.0		1	NonTrafficSteering		SRv4	T			2278		b78e8527-7ffe-4faa-824e-25920b98ebc3					F	F									
@@ -2012,12 +2037,12 @@ srte_c_4003_ep_10.144.92.92	Ischia-21	10.141.21.21	Positano-92	10.144.92.92			7	
 srte_c_4003_ep_10.144.92.92	Ercolano-27	10.120.27.27	Positano-92	10.144.92.92			7	7	T	F		Default		24150				1.0		1	NonTrafficSteering		SRv4	T			4003		a91d5aa9-5ee2-4bd8-8a83-f741efd53fa0					F	F									
 srte_c_4003_ep_10.141.21.21	Positano-92	10.144.92.92	Ischia-21	10.141.21.21			7	7	T	F		Default		26059				1.0		1	NonTrafficSteering		SRv4	T			4003		dd7430a2-c3c1-42fb-a94c-29ca14ac38a6					F	F									
 srte_c_102_ep_10.124.51.51	Battipaglia-54	10.134.54.54	Ravello-51	10.124.51.51			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			102		26a45d42-194d-4238-9b0b-f115c358a255					F	F									
-srte_c_131_ep_10.116.113.113	Lviv-31	10.131.31.31	Chernivtsi-113	10.116.113.113			7	7	T	F		Default		24057				1.0		1	NonTrafficSteering		SRv4	T			131		dfd0d403-4941-484d-98e3-0284f5826778					F	F									
+srte_c_131_ep_10.116.113.113	Lviv-31	10.131.31.31	Chernivtsi-113	10.116.113.113			7	7	T	F		Default		24063				1.0		1	NonTrafficSteering		SRv4	T			131		dfd0d403-4941-484d-98e3-0284f5826778					F	F									
 srte_c_201_ep_10.142.29.29	Ischia-21	10.141.21.21	Palinuro-29	10.142.29.29			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			201		fe418c09-ad9b-4880-beac-4c3f1ec13869					F	F									
 srte_c_101_ep_10.134.54.54	Krakow-30	10.119.30.30	Battipaglia-54	10.134.54.54			7	7	T	F		Default		24103				1.0		1	NonTrafficSteering		SRv4	T			101		b179d2ae-ced5-480a-9f5b-d0655bbbcc59					F	F									
 srte_c_101_ep_10.119.30.30	Battipaglia-54	10.134.54.54	Krakow-30	10.119.30.30			7	7	T	F		Default		24063				1.0		1	NonTrafficSteering		SRv4	T			101		29a3742f-947c-4156-a49f-27dedbd94be0					F	F									
-srte_c_7477131_ep_10.120.27.27	Ischia-21	10.141.21.21	Ercolano-27	10.120.27.27			7	7	T	F		Default		24198				1.0		2	NonTrafficSteering		SRv4	T			7477131		79ca1f57-2311-453f-8020-bb05817deac2					F	F									
-srte_c_5100_ep_10.120.27.27	Ischia-21	10.141.21.21	Ercolano-27	10.120.27.27			7	7	T	F		Default		24184				1.0		2	NonTrafficSteering		SRv4	T			5100		adf24e34-3ad1-4ef6-9b93-9f5c19bd8d5a					F	F									
+srte_c_7477131_ep_10.120.27.27	Ischia-21	10.141.21.21	Ercolano-27	10.120.27.27			7	7	T	F		Default		24303				1.0		2	NonTrafficSteering		SRv4	T			7477131		79ca1f57-2311-453f-8020-bb05817deac2					F	F									
+srte_c_5100_ep_10.120.27.27	Ischia-21	10.141.21.21	Ercolano-27	10.120.27.27			7	7	T	F		Default		24309				1.0		2	NonTrafficSteering		SRv4	T			5100		adf24e34-3ad1-4ef6-9b93-9f5c19bd8d5a					F	F									
 srte_c_124_ep_10.120.27.27	Positano-92	10.144.92.92	Ercolano-27	10.120.27.27			7	7	T	F		Default		26102				1.0		2	NonTrafficSteering		SRv4	T			124		779d4b2e-59e3-492f-9a20-0204819257d6					F	F									
 srte_c_4004_ep_10.144.92.92	Ercolano-27	10.120.27.27	Positano-92	10.144.92.92			7	7	T	F		Default		24104				1.0		1	NonTrafficSteering		SRv4	T			4004		de22eb5b-0984-4f04-9d0f-80eeeeb14914					F	F									
 srte_c_4004_ep_10.141.21.21	Positano-92	10.144.92.92	Ischia-21	10.141.21.21			7	7	T	F		Default		26117				1.0		1	NonTrafficSteering		SRv4	T			4004		e5a1f1a5-bef2-47e2-aa8c-5a45568ea197					F	F									
@@ -2025,18 +2050,18 @@ srte_c_10_ep_10.120.27.27	Perugia-138	10.132.138.138	Ercolano-27	10.120.27.27			
 srte_c_200_ep_10.142.29.29	Ischia-21	10.141.21.21	Palinuro-29	10.142.29.29			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			200		913ab1f2-9781-4b20-96a8-525129329cea					F	F									
 srte_c_2000_ep_10.118.45.45	Ercolano-27	10.120.27.27	Napoli-45	10.118.45.45			7	7	T	F		Default		24135				1.0		1	NonTrafficSteering		SRv4	T			2000		9c7aba53-12f0-4fe5-b24b-9207ed712c14					F	F									
 srte_c_2127_ep_10.120.27.27	Ischia-21	10.141.21.21	Ercolano-27	10.120.27.27			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			2127		7d985fc4-8fa0-42cd-94da-dc7d6e87cdf1					F	F									
-srte_c_999_ep_10.144.92.92	Palinuro-29	10.142.29.29	Positano-92	10.144.92.92			7	7	T	F		Default		26174				1.0		1	NonTrafficSteering		SRv4	T			999		7d4378c3-0745-4919-a7d5-c5c52a73b9d3					F	F									
-srte_c_131_ep_10.131.31.31	Chernivtsi-113	10.116.113.113	Lviv-31	10.131.31.31			7	7	T	F		Default		24077				1.0		1	NonTrafficSteering		SRv4	T			131		d64f4749-ce67-4682-809b-ce5121d80409					F	F									
+srte_c_999_ep_10.144.92.92	Palinuro-29	10.142.29.29	Positano-92	10.144.92.92			7	7	T	F		Default		26208				1.0		1	NonTrafficSteering		SRv4	T			999		7d4378c3-0745-4919-a7d5-c5c52a73b9d3					F	F									
+srte_c_131_ep_10.131.31.31	Chernivtsi-113	10.116.113.113	Lviv-31	10.131.31.31			7	7	T	F		Default		24084				1.0		1	NonTrafficSteering		SRv4	T			131		d64f4749-ce67-4682-809b-ce5121d80409					F	F									
 srte_c_13_ep_10.120.27.27	Ischia-21	10.141.21.21	Ercolano-27	10.120.27.27			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			13		61384756-9cb8-42d3-9fca-4f1359564814					F	F									
 srte_c_2930_ep_10.119.30.30	Positano-92	10.144.92.92	Krakow-30	10.119.30.30			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			2930		e7e52651-9125-437d-9507-35c590b435c0					F	F									
 srte_c_2721_ep_10.141.21.21	Ercolano-27	10.120.27.27	Ischia-21	10.141.21.21			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			2721		2c3b1fab-071e-4acc-bfb1-bca79c78054f					F	F									
 srte_c_451_ep_10.132.138.138	Napoli-45	10.118.45.45	Perugia-138	10.132.138.138			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			451		cd6e819a-2d97-406a-bfda-fabcd4f2ae28					F	F									
-srte_c_232_ep_10.134.54.54	Ischia-21	10.141.21.21	Battipaglia-54	10.134.54.54			7	7	T	F		Default		24159				1.0		1	NonTrafficSteering		SRv4	T			232		8e8c863a-84de-4a28-8e2d-6d734fae6cde					F	F									
+srte_c_232_ep_10.134.54.54	Ischia-21	10.141.21.21	Battipaglia-54	10.134.54.54			7	7	T	F		Default		24308				1.0		1	NonTrafficSteering		SRv4	T			232		8e8c863a-84de-4a28-8e2d-6d734fae6cde					F	F									
 srte_c_138123_ep_10.121.123.123	Perugia-138	10.132.138.138	Badia-123	10.121.123.123			7	7	T	F		Default		24033				1.0		1	NonTrafficSteering		SRv4	T			138123		13e05d22-2de8-4e0f-a204-2fccc3298667					F	F									
 srte_c_231_ep_10.141.21.21	Battipaglia-54	10.134.54.54	Ischia-21	10.141.21.21			7	7	T	F		Default		24085				1.0		1	NonTrafficSteering		SRv4	T			231		76e8eb8a-c1db-4e9d-9b68-d5a5845f59d9					F	F									
 srte_c_232_ep_10.141.21.21	Battipaglia-54	10.134.54.54	Ischia-21	10.141.21.21			7	7	T	F		Default		24087				1.0		1	NonTrafficSteering		SRv4	T			232		c5e41a51-5d7e-4bc0-89f7-9699ad5340de					F	F									
 srte_c_111_ep_10.119.30.30	Sumy-52	10.123.52.52	Krakow-30	10.119.30.30			7	7	T	F		Default		24053				1.0		2	NonTrafficSteering		SRv4	T			111		e2f32158-b9b4-4c5e-8712-41346c6e3e71					F	F									
-srte_c_7477132_ep_10.141.21.21	Ercolano-27	10.120.27.27	Ischia-21	10.141.21.21			7	7	T	F		Default		24076				1.0		2	NonTrafficSteering		SRv4	T			7477132		d6ca258d-ac80-4b55-adfa-fcd218bdf452					F	F									
+srte_c_7477132_ep_10.141.21.21	Ercolano-27	10.120.27.27	Ischia-21	10.141.21.21			7	7	F	F		Default		24076				1.0		1	NonTrafficSteering		SRv4	T			7477132		d6ca258d-ac80-4b55-adfa-fcd218bdf452					F	F									
 srte_c_4527_ep_10.120.27.27	Napoli-45	10.118.45.45	Ercolano-27	10.120.27.27			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			4527		fa953fba-28d9-4b36-a095-4c12b0f5e2c5					F	F									
 srte_c_3029_ep_10.142.29.29	Krakow-30	10.119.30.30	Palinuro-29	10.142.29.29			7	7	T	F		Default		24048				1.0		1	NonTrafficSteering		SRv4	T			3029		35845b00-8876-4e83-82bd-85bd52eb0e00					F	F									
 srte_c_3092_ep_10.144.92.92	Krakow-30	10.119.30.30	Positano-92	10.144.92.92			7	7	T	F		Default		24070				1.0		1	NonTrafficSteering		SRv4	T			3092		343c7453-0519-4a4b-92a2-fe3c52a801f9					F	F									
@@ -2047,19 +2072,19 @@ srte_c_1000_ep_10.124.51.51	Battipaglia-54	10.134.54.54	Ravello-51	10.124.51.51	
 srte_c_1101_ep_10.141.21.21	Napoli-45	10.118.45.45	Ischia-21	10.141.21.21			7	7	T	F		Default		24041				1.0		1	NonTrafficSteering		SRv4	T			1101		c6ea2bab-680e-4436-aae5-d91d3f6c8f6f					F	F									
 srte_c_231_ep_10.134.54.54	Ischia-21	10.141.21.21	Battipaglia-54	10.134.54.54			7	7	T	F		Default		24158				1.0		1	NonTrafficSteering		SRv4	T			231		b591de6c-2cbd-45f9-aee3-dfebb6751e96					F	F									
 srte_c_2287_ep_10.116.113.113	Oleksandriia-105	10.140.105.105	Chernivtsi-113	10.116.113.113			7	7	T	F		Default		24066				1.0		1	NonTrafficSteering		SRv4	T			2287		c6059fbd-6471-4f31-bd48-c4d31f4a16bb					F	F									
-srte_c_4003_ep_10.141.21.21	Ercolano-27	10.120.27.27	Ischia-21	10.141.21.21			7	7	T	F		Default		24187				1.0		2	NonTrafficSteering		SRv4	T			4003		538060b0-377e-45d7-8df6-afc44dd50d25					F	F									
-srte_c_4004_ep_10.141.21.21	Ercolano-27	10.120.27.27	Ischia-21	10.141.21.21			7	7	T	F		Default		24183				1.0		2	NonTrafficSteering		SRv4	T			4004		256c1265-1832-4063-8c48-ef70347960ca					F	F									
+srte_c_4003_ep_10.141.21.21	Ercolano-27	10.120.27.27	Ischia-21	10.141.21.21			7	7	T	F		Default		24261				1.0		2	NonTrafficSteering		SRv4	T			4003		538060b0-377e-45d7-8df6-afc44dd50d25					F	F									
+srte_c_4004_ep_10.141.21.21	Ercolano-27	10.120.27.27	Ischia-21	10.141.21.21			7	7	T	F		Default		24260				1.0		2	NonTrafficSteering		SRv4	T			4004		256c1265-1832-4063-8c48-ef70347960ca					F	F									
 srte_c_13822_ep_10.115.22.22	Perugia-138	10.132.138.138	Aquila-22	10.115.22.22			7	7	T	F		Default		24071				1.0		1	NonTrafficSteering		SRv4	T			13822		5e0ac1bd-75d5-4da7-831f-4ec36a96275f					F	F									
 srte_c_1381_ep_10.118.45.45	Perugia-138	10.132.138.138	Napoli-45	10.118.45.45			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			1381		d0f76657-1c58-489f-8911-eeb3035d775e					F	F									
 srte_c_1382_ep_10.118.45.45	Perugia-138	10.132.138.138	Napoli-45	10.118.45.45			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			1382		efeee085-362e-4a3d-a498-51fb293fe256					F	F									
 srte_c_22138_ep_10.132.138.138	Aquila-22	10.115.22.22	Perugia-138	10.132.138.138			7	7	T	F		Default		24057				1.0		1	NonTrafficSteering		SRv4	T			22138		9221a331-4f77-4e7e-9282-509613b6c269					F	F									
 srte_c_4518_ep_10.143.18.18	Napoli-45	10.118.45.45	Ancona-18	10.143.18.18			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			4518		915134cb-34a5-4c70-aae0-686b736ae239					F	F									
 srte_c_11_ep_10.118.45.45	Ercolano-27	10.120.27.27	Napoli-45	10.118.45.45			7	7	T	F		Default		24069				1.0		1	NonTrafficSteering		SRv4	T			11		76bbf898-f948-4f4d-abaf-bdea3d22d1c0					F	F									
-srte_c_7477132_ep_10.141.21.21	Caserta-38	10.130.38.38	Ischia-21	10.141.21.21			7	7	T	F		Default		24020				1.0		1	NonTrafficSteering		SRv4	T			7477132		1f99e006-9f7b-49e9-a5fc-47b4923510c3					F	F									
+srte_c_7477132_ep_10.141.21.21	Caserta-38	10.130.38.38	Ischia-21	10.141.21.21			7	7	T	F		Default		24031				1.0		1	NonTrafficSteering		SRv4	T			7477132		1f99e006-9f7b-49e9-a5fc-47b4923510c3					F	F									
 srte_c_27512_ep_10.124.51.51	Ercolano-27	10.120.27.27	Ravello-51	10.124.51.51			7	7	T	F		Default		24071				1.0		1	NonTrafficSteering		SRv4	T			27512		61f03510-ec6b-477d-ab43-2a8f061f0361					F	F									
 srte_c_7477131_ep_10.118.45.45	Ercolano-27	10.120.27.27	Napoli-45	10.118.45.45			7	7	T	F		Default		24155				1.0		2	NonTrafficSteering		SRv4	T			7477131		da9f8ccf-2364-4966-be88-9fe38cc184b4					F	F									
 srte_c_5100_ep_10.120.27.27	Positano-92	10.144.92.92	Ercolano-27	10.120.27.27			7	7	T	F		Default		26142				1.0		1	NonTrafficSteering		SRv4	T			5100		c3b0f3e8-c35b-4f1d-91c3-844b789a3ab5					F	F									
-srte_c_999_ep_10.142.29.29	Positano-92	10.144.92.92	Palinuro-29	10.142.29.29			7	7	T	F		Default		26127				1.0		1	NonTrafficSteering		SRv4	T			999		07626665-c289-4aea-8bf7-3a79dd038aae					F	F									
+srte_c_999_ep_10.142.29.29	Positano-92	10.144.92.92	Palinuro-29	10.142.29.29			7	7	T	F		Default		26146				1.0		1	NonTrafficSteering		SRv4	T			999		07626665-c289-4aea-8bf7-3a79dd038aae					F	F									
 srte_c_2152_ep_10.124.51.51	Ischia-21	10.141.21.21	Ravello-51	10.124.51.51			7	7	T	F		Default		24163				1.0		1	NonTrafficSteering		SRv4	T			2152		17cf6a96-a0d3-4e04-a9b3-a7a690959db0					F	F									
 srte_c_103_ep_10.138.86.86	Mainz-65	10.139.49.49	Vilnius-86	10.138.86.86			7	7	T	F		Default		26117				1.0		1	NonTrafficSteering		SRv4	T			103		9efc9da8-72b4-4c71-a83a-ddd7ae1ceed9					F	F									
 srte_c_4003_ep_10.120.27.27	Positano-92	10.144.92.92	Ercolano-27	10.120.27.27			7	7	T	F		Default		26119				1.0		1	NonTrafficSteering		SRv4	T			4003		23d396ea-cdf8-4a20-9adf-ef22611d5c33					F	F									
@@ -2077,18 +2102,18 @@ srte_c_44_ep_10.138.86.86	Kyiv-47	10.129.47.47	Vilnius-86	10.138.86.86			7	7	T	F
 srte_c_43_ep_10.138.86.86	Kyiv-47	10.129.47.47	Vilnius-86	10.138.86.86			7	7	T	F		Default		24011				1.0		1	NonTrafficSteering		SRv4	T			43		cee0916e-e24b-44cb-ad90-9ccd66544f44					F	F									
 srte_c_108_ep_10.119.30.30	Picerno-58	10.128.58.58	Krakow-30	10.119.30.30			7	7	T	F		Default		28325				1.0		1	NonTrafficSteering		SRv4	T			108		b30b6a26-8697-49dd-9cd3-7adf58575557					F	F									
 srte_c_4004_ep_10.120.27.27	Ischia-21	10.141.21.21	Ercolano-27	10.120.27.27			7	7	T	F		Default		24131				1.0		2	NonTrafficSteering		SRv4	T			4004		e9245505-9f2a-4c47-a58a-cbb409bba103					F	F									
-srte_c_7477131_ep_10.141.21.21	Napoli-45	10.118.45.45	Ischia-21	10.141.21.21			7	7	T	F		Default		24079				1.0		1	NonTrafficSteering		SRv4	T			7477131		2d4dfbe6-7ef1-4b0b-bf34-e945370d1eb6					F	F									
+srte_c_7477131_ep_10.141.21.21	Napoli-45	10.118.45.45	Ischia-21	10.141.21.21			7	7	T	F		Default		24085				1.0		1	NonTrafficSteering		SRv4	T			7477131		2d4dfbe6-7ef1-4b0b-bf34-e945370d1eb6					F	F									
 srte_c_4003_ep_10.120.27.27	Ischia-21	10.141.21.21	Ercolano-27	10.120.27.27			7	7	T	F		Default		24112				1.0		2	NonTrafficSteering		SRv4	T			4003		7389e39a-7166-45fe-9947-b4f5925f7c5b					F	F									
-srte_c_124_ep_10.141.21.21	Palinuro-29	10.142.29.29	Ischia-21	10.141.21.21			7	7	T	F		Default		24072				1.0		1	NonTrafficSteering		SRv4	T			124		b2012ba4-b4d3-4361-af6c-d31ef73af3e3					F	F									
+srte_c_124_ep_10.141.21.21	Palinuro-29	10.142.29.29	Ischia-21	10.141.21.21			7	7	T	F		Default		26212				1.0		1	NonTrafficSteering		SRv4	T			124		b2012ba4-b4d3-4361-af6c-d31ef73af3e3					F	F									
 srte_c_107_ep_10.128.58.58	Battipaglia-54	10.134.54.54	Picerno-58	10.128.58.58			7	7	T	F		Default		24083				1.0		1	NonTrafficSteering		SRv4	T			107		49664545-d3f5-49a8-920f-f3c7ea857fc2					F	F									
 srte_c_106_ep_10.134.54.54	Picerno-58	10.128.58.58	Battipaglia-54	10.134.54.54			7	7	T	F		Default		28323				1.0		1	NonTrafficSteering		SRv4	T			106		135a1998-889b-4333-aed3-1b92c02f9a1a					F	F									
 srte_c_107_ep_10.134.54.54	Picerno-58	10.128.58.58	Battipaglia-54	10.134.54.54			7	7	T	F		Default		28324				1.0		1	NonTrafficSteering		SRv4	T			107		9ad7c581-6071-44e6-9196-9568e666c9b8					F	F									
-srte_c_7477131_ep_10.141.21.21	Ercolano-27	10.120.27.27	Ischia-21	10.141.21.21			7	7	T	F		Default		24153				1.0		2	NonTrafficSteering		SRv4	T			7477131		79cd6b5e-78c1-4944-8835-f55e8b4f9023					F	F									
-srte_c_7477131_ep_10.118.45.45	Ischia-21	10.141.21.21	Napoli-45	10.118.45.45			7	7	T	F		Default		24197				1.0		2	NonTrafficSteering		SRv4	T			7477131		50f459cc-90bf-4b1c-b78a-78c081e19ffb					F	F									
+srte_c_7477131_ep_10.141.21.21	Ercolano-27	10.120.27.27	Ischia-21	10.141.21.21			7	7	T	F		Default		24299				1.0		2	NonTrafficSteering		SRv4	T			7477131		79cd6b5e-78c1-4944-8835-f55e8b4f9023					F	F									
+srte_c_7477131_ep_10.118.45.45	Ischia-21	10.141.21.21	Napoli-45	10.118.45.45			7	7	T	F		Default		24302				1.0		2	NonTrafficSteering		SRv4	T			7477131		50f459cc-90bf-4b1c-b78a-78c081e19ffb					F	F									
 srte_c_138221_ep_10.115.22.22	Perugia-138	10.132.138.138	Aquila-22	10.115.22.22			7	7	T	F		Default		24065				1.0		1	NonTrafficSteering		SRv4	T			138221		c4d6ba28-f3d4-4af8-92bb-63bd90b5c1bc					F	F									
 srte_c_7477131_ep_10.120.27.27	Napoli-45	10.118.45.45	Ercolano-27	10.120.27.27			7	7	T	F		Default		24114				1.0		1	NonTrafficSteering		SRv4	T			7477131		9f606be5-8465-471d-830b-2790ad4c1ca1					F	F									
 srte_c_14_ep_10.124.51.51	Ischia-21	10.141.21.21	Ravello-51	10.124.51.51			7	7	F	F		Default		24128				1.0		1	NonTrafficSteering		SRv4	T			14		ed225979-4dc3-4709-a79c-e9952a7b15f9					F	F									
-srte_c_7477131_ep_10.141.21.21	Caserta-38	10.130.38.38	Ischia-21	10.141.21.21			7	7	T	F		Default		24024				1.0		1	NonTrafficSteering		SRv4	T			7477131		994222f1-3f8a-48cd-9f81-073400d6f368					F	F									
+srte_c_7477131_ep_10.141.21.21	Caserta-38	10.130.38.38	Ischia-21	10.141.21.21			7	7	T	F		Default		24025				1.0		1	NonTrafficSteering		SRv4	T			7477131		994222f1-3f8a-48cd-9f81-073400d6f368					F	F									
 srte_c_10_ep_10.120.27.27	Aquila-22	10.115.22.22	Ercolano-27	10.120.27.27			7	7	T	F		Default		24025				1.0		2	NonTrafficSteering		SRv4	T			10		1747709c-c389-400f-a526-51ae1d833db0	100_node				F	F									
 srte_c_29123_ep_10.121.123.123	Palinuro-29	10.142.29.29	Badia-123	10.121.123.123			7	7	T	F		Default		24084				1.0		1	NonTrafficSteering		SRv4	T			29123		9d268453-9ab0-4230-8466-20792495c715					F	F									
 srte_c_129_ep_10.119.30.30	Oleksandriia-105	10.140.105.105	Krakow-30	10.119.30.30			7	7	T	F		Default		24051				1.0		1	NonTrafficSteering		SRv4	T			129		fe872fd6-3746-4c38-9936-166fbf156b62					F	F									
@@ -2097,10 +2122,10 @@ srte_c_4004_ep_10.120.27.27	Palinuro-29	10.142.29.29	Ercolano-27	10.120.27.27			
 srte_c_4003_ep_10.120.27.27	Palinuro-29	10.142.29.29	Ercolano-27	10.120.27.27			7	7	T	F		Default		24080				1.0		1	NonTrafficSteering		SRv4	T			4003		3e0d60c8-c2b6-4407-a614-ec7ad0cc8061					F	F									
 srte_c_3011_ep_10.138.86.86	Mainz-65	10.139.49.49	Vilnius-86	10.138.86.86			7	7	T	F		Default		26119				1.0		1	NonTrafficSteering		SRv4	T			3011		4f8f9a3f-e02a-4d01-ae78-387099081df9					F	F									
 srte_c_128_ep_10.129.47.47	Tallinn-69	10.111.69.69	Kyiv-47	10.129.47.47			7	7	T	F		Default		26130				1.0		1	NonTrafficSteering		SRv4	T			128		930af9fd-a141-4fab-aba6-3f9b2b9d3f08					F	F									
-srte_c_1010_ep_10.124.51.51	Ischia-21	10.141.21.21	Ravello-51	10.124.51.51			7	7	F	F		Default		24140				1.0		1	NonTrafficSteering		SRv4	T			1010		c102c7a5-5920-4014-966d-88bb357cde92					F	F									
+srte_c_1010_ep_10.124.51.51	Ischia-21	10.141.21.21	Ravello-51	10.124.51.51			7	7	T	F		Default		24172				1.0		1	NonTrafficSteering		SRv4	T			1010		c102c7a5-5920-4014-966d-88bb357cde92					F	F									
 srte_c_102_ep_10.120.27.27	Positano-92	10.144.92.92	Ercolano-27	10.120.27.27			7	7	T	F		Default		26120				1.0		1	NonTrafficSteering		SRv4	T			102		53ce1985-41cb-4ccf-b04e-ca2009cf1314					F	F									
-srte_c_101020062_ep_10.134.54.54	Ischia-21	10.141.21.21	Battipaglia-54	10.134.54.54			7	7	F	F		Default		24093				1.0		2	NonTrafficSteering		SRv4	T			101020062		3223fdd3-bf2b-4b20-8458-12b911b604f5					F	F									
-srte_c_101020061_ep_10.134.54.54	Ischia-21	10.141.21.21	Battipaglia-54	10.134.54.54			7	7	T	F		Default		24166				1.0		1	NonTrafficSteering		SRv4	T			101020061		82eec484-43d3-42c9-ab3e-59cb7c767059					F	F									
+srte_c_101020062_ep_10.134.54.54	Ischia-21	10.141.21.21	Battipaglia-54	10.134.54.54			7	7	T	F		Default		24174				1.0		1	NonTrafficSteering		SRv4	T			101020062		3223fdd3-bf2b-4b20-8458-12b911b604f5					F	F									
+srte_c_101020061_ep_10.134.54.54	Ischia-21	10.141.21.21	Battipaglia-54	10.134.54.54			7	7	F	F		Default		24139				1.0		1	NonTrafficSteering		SRv4	T			101020061		82eec484-43d3-42c9-ab3e-59cb7c767059					F	F									
 srte_c_6731_ep_10.131.31.31	Rivne-67	10.114.67.67	Lviv-31	10.131.31.31			7	7	T	F		Default		24026				1.0		1	NonTrafficSteering		SRv4	T			6731		3fdbe38e-2d9e-44d9-8c0a-d544ae8acf75					F	F									
 srte_c_101_ep_10.139.49.49	Tallinn-69	10.111.69.69	Mainz-65	10.139.49.49			7	7	T	F		Default		26128				1.0		1	NonTrafficSteering		SRv4	T			101		a8d17f43-d71d-44e7-9beb-36e0c6a42422					F	F									
 srte_c_3011_ep_10.138.86.86	Tallinn-69	10.111.69.69	Vilnius-86	10.138.86.86			7	7	T	F		Default		26139				1.0		1	NonTrafficSteering		SRv4	T			3011		fa5bc8b3-3fe9-4927-946e-62217cd27d74					F	F									
@@ -2109,7 +2134,7 @@ srte_c_100_ep_10.138.86.86	Tallinn-69	10.111.69.69	Vilnius-86	10.138.86.86			7	7
 srte_c_100_ep_10.111.69.69	Vilnius-86	10.138.86.86	Tallinn-69	10.111.69.69			7	7	T	F		Default		24086				1.0		1	NonTrafficSteering		SRv4	T			100		ed92dde4-bdc2-4b46-b6d7-da6e6cd31b0c					F	F									
 srte_c_103_ep_10.138.86.86	Tallinn-69	10.111.69.69	Vilnius-86	10.138.86.86			7	7	T	F		Default		26129				1.0		1	NonTrafficSteering		SRv4	T			103		b01e4439-3bbc-4b9c-b5a5-230e02be84fb					F	F									
 srte_c_400_ep_10.129.47.47	Vilnius-86	10.138.86.86	Kyiv-47	10.129.47.47			7	7	T	F		Default		24104				1.0		1	NonTrafficSteering		SRv4	T			400		cd9a691f-e064-4c83-9dd6-72ffe2a7ebf9					F	F									
-srte_c_1002_ep_10.124.51.51	Battipaglia-54	10.134.54.54	Ravello-51	10.124.51.51			7	7	T	F		Default		24084				1.0		1	NonTrafficSteering		SRv4	T			1002		935b9170-b32e-4c60-9077-c4eb91181254					F	F									
+srte_c_1002_ep_10.124.51.51	Battipaglia-54	10.134.54.54	Ravello-51	10.124.51.51			7	7	T	F		Default		24073				1.0		1	NonTrafficSteering		SRv4	T			1002		935b9170-b32e-4c60-9077-c4eb91181254					F	F									
 srte_c_6101_ep_3fff:1:0:1:86::	Tallinn-69	3fff:1:0:1:69::	Vilnius-86	3fff:1:0:1:86::			7	7	T	F		Default		3fff:3:2069:e00d::				1.0		1	NonTrafficSteering		SRv6	T			6101		86eee956-2502-415b-96c0-ce3d713cf41c					F	F									
 srte_c_6101_ep_3fff:1:0:1:86::	Mainz-65	3fff:1:0:0:49::	Vilnius-86	3fff:1:0:1:86::			7	7	T	F		Default		3fff:3:1049:e013::				1.0		1	NonTrafficSteering		SRv6	T			6101		ebc37bf5-f70e-402e-a907-ea063b78596e					F	F									
 srte_c_61006_ep_3fff:2:0:200:45::	Aquila-22	3fff:2:0:300:22::	Napoli-45	3fff:2:0:200:45::			7	7	T	F		Default		3fff:6:3022:e006::				1.0		1	NonTrafficSteering		SRv6	T			61006		4c66e6eb-1786-4d48-b5a5-b48a6123035f					F	F									
@@ -2146,36 +2171,36 @@ srte_c_5417_ep_10.135.17.17	Battipaglia-54	10.134.54.54	Potenza-17	10.135.17.17	
 srte_c_1754_ep_10.134.54.54	Potenza-17	10.135.17.17	Battipaglia-54	10.134.54.54			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			1754		2c77b76a-0479-4f23-9602-b3ee89d8a5f9					F	F									
 srte_c_1754_ep_10.135.17.17	Battipaglia-54	10.134.54.54	Potenza-17	10.135.17.17			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			1754		6538514c-12c4-44ba-a71e-c67b60a4fe41					F	F									
 srte_c_5417_ep_10.134.54.54	Potenza-17	10.135.17.17	Battipaglia-54	10.134.54.54			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			5417		833bdda4-5178-4c09-ba0c-469c11d86c57					F	F									
-srte_c_1_ep_10.144.92.92	Palinuro-29	10.142.29.29	Positano-92	10.144.92.92			7	7	T	F		Default		24065				1.0		1	NonTrafficSteering		SRv4	T			1		335a7a46-6e7a-4f90-8b2e-0efa3467886d	1_link				F	F									
+srte_c_1_ep_10.144.92.92	Palinuro-29	10.142.29.29	Positano-92	10.144.92.92			7	7	T	F		Default		24116				1.0		1	NonTrafficSteering		SRv4	T			1		335a7a46-6e7a-4f90-8b2e-0efa3467886d	1_link				F	F									
 Ercolano_Picerno	Ercolano-27	10.120.27.27	Picerno-58	10.128.58.58			7	7	T	F		Default		24052				1.0					RSVP	T					a64fe530-e802-4fde-b0cc-fb341e22f2ae					F	F									27581
 srte_c_3001_ep_10.124.51.51	Picerno-58	10.128.58.58	Ravello-51	10.124.51.51			7	7	T	F		Default		28288				1.0		1	NonTrafficSteering		SRv4	T			3001		d71d5b06-2632-4659-84aa-e0eee1b19e18					F	F									
-srte_c_2151_ep_10.124.51.51	Ischia-21	10.141.21.21	Ravello-51	10.124.51.51			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			2151		8400b848-567e-4db5-ae43-545e31b839b4					F	F									
+srte_c_2151_ep_10.124.51.51	Ischia-21	10.141.21.21	Ravello-51	10.124.51.51			7	7	T	F		Default		24161				1.0		1	NonTrafficSteering		SRv4	T			2151		8400b848-567e-4db5-ae43-545e31b839b4					F	F									
 srte_c_3002_ep_10.124.51.51	Picerno-58	10.128.58.58	Ravello-51	10.124.51.51			7	7	T	F		Default		24099				1.0		1	NonTrafficSteering		SRv4	T			3002		79c545b7-8531-4f40-a266-6b303b4d9178					F	F									
 srte_c_3015_ep_10.124.51.51	Picerno-58	10.128.58.58	Ravello-51	10.124.51.51			7	7	T	F		Default		24103				1.0		1	NonTrafficSteering		SRv4	T			3015		83a846df-ac5b-4ed3-9a0c-96407df22ceb					F	F									
-srte_c_21511_ep_10.124.51.51	Ischia-21	10.141.21.21	Ravello-51	10.124.51.51			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			21511		fe753e2c-3902-452b-b785-42cb4d312671					F	F									
+srte_c_21511_ep_10.124.51.51	Ischia-21	10.141.21.21	Ravello-51	10.124.51.51			7	7	T	F		Default		24167				1.0		1	NonTrafficSteering		SRv4	T			21511		fe753e2c-3902-452b-b785-42cb4d312671					F	F									
 srte_c_1_ep_10.142.29.29	Positano-92	10.144.92.92	Palinuro-29	10.142.29.29			7	7	T	F		Default		26080				1.0		1	NonTrafficSteering		SRv4	T			1		fe243e96-3c8a-4a25-949e-216051d1b1ad	2_link				F	F									
 srte_c_3018_ep_10.124.51.51	Picerno-58	10.128.58.58	Ravello-51	10.124.51.51			7	7	T	F		Default		28219				1.0		1	NonTrafficSteering		SRv4	T			3018		3ff6db42-0777-4344-b15f-9910e97aa4cb					F	F									
 srte_c_707_ep_10.124.51.51	Picerno-58	10.128.58.58	Ravello-51	10.124.51.51			7	7	T	F		Default		24031				1.0		1	NonTrafficSteering		SRv4	T			707		ab43e029-c1a1-42ce-8b2a-e4294ae7fbfb					F	F									
 srte_c_61021_ep_3fff:2:0:100:92::	Ischia-21	3fff:2:0:100:21::	Positano-92	3fff:2:0:100:92::			7	7	T	F		Default		3fff:8:1021:e006::				1.0		1	NonTrafficSteering		SRv6	T			61021		38303846-158c-4569-92a9-e830f82f7c80					F	F									
 srte_c_61021_ep_3fff:2:0:100:21::	Positano-92	3fff:2:0:100:92::	Ischia-21	3fff:2:0:100:21::			7	7	T	F		Default		3fff:8:1092:e000::				1.0		1	NonTrafficSteering		SRv6	T			61021		517030f9-3564-4aad-8d51-ab11efd0d0e8					F	F									
 srte_c_3000_ep_10.124.51.51	Picerno-58	10.128.58.58	Ravello-51	10.124.51.51			7	7	T	F		Default		24069				1.0		1	NonTrafficSteering		SRv4	T			3000		94ba14c7-0c4b-4bb1-8253-c1b9b191c6ae					F	F									
-Ercolano_Picerno_backup	Ercolano-27	10.120.27.27	Picerno-58	10.128.58.58			7	7	F	F		Default		24053				1.0					RSVP	T					9ed7a177-5a5c-46f2-ab8f-8a5a71afa4de					F	F									27582
+Ercolano_Picerno_backup	Ercolano-27	10.120.27.27	Picerno-58	10.128.58.58			7	7	T	F		Default		24053				1.0					RSVP	T					9ed7a177-5a5c-46f2-ab8f-8a5a71afa4de					F	F									27582
 Ravello-Picerno-5158	Ravello-51	10.124.51.51	Picerno-58	10.128.58.58			7	7	T	F		Default		32239				1.0					RSVP	T					26fc1ef7-ac55-42d8-a2d9-324b726e09a3					F	F									5158
-tunnel-te21511	Ischia-21	10.141.21.21	Ravello-51	10.124.51.51			7	7	F	F		Default		24077				1.0					RSVP	T					e41f0cfc-0d56-4e3c-b3da-9fd2245eca0d					F	F									21511
-srte_c_5100_ep_10.143.18.18	Ercolano-27	10.120.27.27	Ancona-18	10.143.18.18			7	7	T	F		Default		24170				1.0		2	NonTrafficSteering		SRv4	T			5100		305d1cb8-3f78-4a56-8d27-ee648597be14					F	F									
+tunnel-te21511	Ischia-21	10.141.21.21	Ravello-51	10.124.51.51			7	7	T	F		Default		24077				1.0					RSVP	T					e41f0cfc-0d56-4e3c-b3da-9fd2245eca0d					F	F									21511
+srte_c_5100_ep_10.143.18.18	Ercolano-27	10.120.27.27	Ancona-18	10.143.18.18			7	7	T	F		Default		24301				1.0		2	NonTrafficSteering		SRv4	T			5100		305d1cb8-3f78-4a56-8d27-ee648597be14					F	F									
 srte_c_5100_ep_10.144.92.92	Ercolano-27	10.120.27.27	Positano-92	10.144.92.92			7	7	T	F		Default		24078				1.0		1	NonTrafficSteering		SRv4	T			5100		6fd6c8fe-8849-4d44-a5b5-f160267892e5					F	F									
 srte_c_5100_ep_10.141.21.21	Positano-92	10.144.92.92	Ischia-21	10.141.21.21			7	7	T	F		Default		26139				1.0		1	NonTrafficSteering		SRv4	T			5100		6b6c585c-ecb6-468e-8b44-b778a1d2708d					F	F									
 srte_c_5100_ep_10.144.92.92	Ischia-21	10.141.21.21	Positano-92	10.144.92.92			7	7	T	F		Default		24051				1.0		1	NonTrafficSteering		SRv4	T			5100		7fcd1d77-63e9-4d46-881a-cc7406d60fd6					F	F									
-srte_c_5100_ep_10.132.138.138	Ercolano-27	10.120.27.27	Perugia-138	10.132.138.138			7	7	T	F		Default		24186				1.0		2	NonTrafficSteering		SRv4	T			5100		7943f034-eb42-4eef-af73-58cc86e88fd1					F	F									
-srte_c_5100_ep_10.141.21.21	Ercolano-27	10.120.27.27	Ischia-21	10.141.21.21			7	7	T	F		Default		24084				1.0		1	NonTrafficSteering		SRv4	T			5100		a9fc552c-ebb3-4b8f-b106-d338b3fd539b					F	F									
+srte_c_5100_ep_10.132.138.138	Ercolano-27	10.120.27.27	Perugia-138	10.132.138.138			7	7	T	F		Default		24302				1.0		2	NonTrafficSteering		SRv4	T			5100		7943f034-eb42-4eef-af73-58cc86e88fd1					F	F									
+srte_c_5100_ep_10.141.21.21	Ercolano-27	10.120.27.27	Ischia-21	10.141.21.21			7	7	T	F		Default		24300				1.0		1	NonTrafficSteering		SRv4	T			5100		a9fc552c-ebb3-4b8f-b106-d338b3fd539b					F	F									
 srte_c_5100_ep_10.132.138.138	Positano-92	10.144.92.92	Perugia-138	10.132.138.138			7	7	T	F		Default		26152				1.0		1	NonTrafficSteering		SRv4	T			5100		e7395c48-45e8-419a-a93b-0ad2fc95ad85					F	F									
 srte_c_5100_ep_10.132.138.138	Ischia-21	10.141.21.21	Perugia-138	10.132.138.138			7	7	T	F		Default		24138				1.0		2	NonTrafficSteering		SRv4	T			5100		63cfd7dc-8250-46bc-80b7-6765ae4cf656					F	F									
 srte_c_5100_ep_10.143.18.18	Ischia-21	10.141.21.21	Ancona-18	10.143.18.18			7	7	T	F		Default		24113				1.0		2	NonTrafficSteering		SRv4	T			5100		625f7a71-9e23-4d5a-97ce-00cbbd7808b2					F	F									
 srte_c_5100_ep_10.143.18.18	Positano-92	10.144.92.92	Ancona-18	10.143.18.18			7	7	T	F		Default		26151				1.0		1	NonTrafficSteering		SRv4	T			5100		18c621de-e8fb-4ada-b03d-c533a5f53a7e					F	F									
-tunnel-te51211	Ravello-51	10.124.51.51	Ischia-21	10.141.21.21			7	7	F	F		Default		32240				1.0					RSVP	T					eacc06b4-3d7a-41b5-8bb2-2644af31976a					F	F									51211
+tunnel-te51211	Ravello-51	10.124.51.51	Ischia-21	10.141.21.21			7	7	T	F		Default		32240				1.0					RSVP	T					eacc06b4-3d7a-41b5-8bb2-2644af31976a					F	F									51211
 srte_c_61004_ep_10.115.22.22	Ischia-21	10.141.21.21	Aquila-22	10.115.22.22			7	7	T	F		Default		24200				1.0		1	NonTrafficSteering		SRv4	T			61004		729ecd20-515a-453b-b15c-6e397398d056					F	F									
 srte_c_61004_ep_10.115.22.22	Napoli-45	10.118.45.45	Aquila-22	10.115.22.22			7	7	T	F		Default		24102				1.0		1	NonTrafficSteering		SRv4	T			61004		948487bc-e813-48f6-b1c5-32be393eb695					F	F									
-srte_c_61004_ep_10.115.22.22	Ercolano-27	10.120.27.27	Aquila-22	10.115.22.22			7	7	T	F		Default		24192				1.0		1	NonTrafficSteering		SRv4	T			61004		eb7e87d8-669a-435d-bf1d-b4a0a367af33					F	F									
+srte_c_61004_ep_10.115.22.22	Ercolano-27	10.120.27.27	Aquila-22	10.115.22.22			7	7	T	F		Default		24265				1.0		1	NonTrafficSteering		SRv4	T			61004		eb7e87d8-669a-435d-bf1d-b4a0a367af33					F	F									
 srte_c_61004_ep_10.115.22.22	Perugia-138	10.132.138.138	Aquila-22	10.115.22.22			7	7	T	F		Default		24037				1.0		1	NonTrafficSteering		SRv4	T			61004		0327c78a-b6c0-4099-9dcf-1cb7bda550cf					F	F									
 srte_c_61004_ep_10.115.22.22	Caserta-38	10.130.38.38	Aquila-22	10.115.22.22			7	7	T	F		Default		24049				1.0		1	NonTrafficSteering		SRv4	T			61004		d1765c40-7c43-4b49-a849-e541ee03d1f1					F	F									
 srte_c_61004_ep_3fff:2:0:100:27::	Ischia-21	3fff:2:0:100:21::	Ercolano-27	3fff:2:0:100:27::			7	7	F	F		Default						1.0		2	NonTrafficSteering		SRv4	T			61004		c1156d38-b514-4bb6-9da3-f6cd9262a466					F	F									
@@ -2184,7 +2209,7 @@ srte_c_61004_ep_10.120.27.27	Perugia-138	10.132.138.138	Ercolano-27	10.120.27.27
 srte_c_61004_ep_10.132.138.138	Napoli-45	10.118.45.45	Perugia-138	10.132.138.138			7	7	T	F		Default		24113				1.0		1	NonTrafficSteering		SRv4	T			61004		e1a567b3-3078-4c04-8224-be5c1ceedb77					F	F									
 srte_c_61004_ep_3fff:2:0:200:45::	Ercolano-27	3fff:2:0:100:27::	Napoli-45	3fff:2:0:200:45::			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			61004		ebd19067-2b3e-4ad5-a3c0-e7d6a24e290e					F	F									
 srte_c_61004_ep_3fff:2:0:300:138::	Ischia-21	3fff:2:0:100:21::	Perugia-138	3fff:2:0:300:138::			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			61004		bdf5d6c6-690c-47a9-a421-742e5194e82a					F	F									
-srte_c_61004_ep_10.120.27.27	Ischia-21	10.141.21.21	Ercolano-27	10.120.27.27			7	7	T	F		Default		24210				1.0		2	NonTrafficSteering		SRv4	T			61004		96734c56-38d3-469b-ad90-18d445a1a3c1					F	F									
+srte_c_61004_ep_10.120.27.27	Ischia-21	10.141.21.21	Ercolano-27	10.120.27.27			7	7	T	F		Default		24310				1.0		2	NonTrafficSteering		SRv4	T			61004		96734c56-38d3-469b-ad90-18d445a1a3c1					F	F									
 srte_c_61004_ep_10.120.27.27	Napoli-45	10.118.45.45	Ercolano-27	10.120.27.27			7	7	T	F		Default		24110				1.0		1	NonTrafficSteering		SRv4	T			61004		edf25cda-0fb7-4a8d-8ea2-69f92083a655					F	F									
 srte_c_61004_ep_10.118.45.45	Ercolano-27	10.120.27.27	Napoli-45	10.118.45.45			7	7	T	F		Default		24196				1.0		1	NonTrafficSteering		SRv4	T			61004		6c793a15-f253-4fcd-9d32-18f40aede66b					F	F									
 srte_c_61004_ep_10.132.138.138	Aquila-22	10.115.22.22	Perugia-138	10.132.138.138			7	7	T	F		Default		24064				1.0		1	NonTrafficSteering		SRv4	T			61004		b5dac84c-1de9-45f7-adf6-4d5ba9d4fe73					F	F									
@@ -2192,7 +2217,7 @@ srte_c_61004_ep_10.141.21.21	Aquila-22	10.115.22.22	Ischia-21	10.141.21.21			7	7
 srte_c_61004_ep_10.120.27.27	Aquila-22	10.115.22.22	Ercolano-27	10.120.27.27			7	7	T	F		Default		24058				1.0		1	NonTrafficSteering		SRv4	T			61004		1cbc4801-a448-45b7-834d-35aab3873ec1					F	F									
 srte_c_61004_ep_10.132.138.138	Caserta-38	10.130.38.38	Perugia-138	10.132.138.138			7	7	T	F		Default		24071				1.0		1	NonTrafficSteering		SRv4	T			61004		0ebe5c02-1445-4223-a107-afcddc4cda92					F	F									
 srte_c_61004_ep_3fff:2:0:300:22::	Ischia-21	3fff:2:0:100:21::	Aquila-22	3fff:2:0:300:22::			7	7	F	F		Default						1.0		2	NonTrafficSteering		SRv4	T			61004		5baca50f-0cdb-404e-b117-b64476aebcbc					F	F									
-srte_c_61004_ep_10.132.138.138	Ercolano-27	10.120.27.27	Perugia-138	10.132.138.138			7	7	T	F		Default		24198				1.0		2	NonTrafficSteering		SRv4	T			61004		f81372d5-eae6-4830-a2ae-08f0817f244f					F	F									
+srte_c_61004_ep_10.132.138.138	Ercolano-27	10.120.27.27	Perugia-138	10.132.138.138			7	7	T	F		Default		24267				1.0		2	NonTrafficSteering		SRv4	T			61004		f81372d5-eae6-4830-a2ae-08f0817f244f					F	F									
 srte_c_61004_ep_3fff:2:0:300:22::	Ercolano-27	3fff:2:0:100:27::	Aquila-22	3fff:2:0:300:22::			7	7	F	F		Default						1.0		2	NonTrafficSteering		SRv4	T			61004		2aeaef3b-2bc3-402c-99c2-20c572b19f09					F	F									
 srte_c_61004_ep_3fff:2:0:100:21::	Ercolano-27	3fff:2:0:100:27::	Ischia-21	3fff:2:0:100:21::			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			61004		099de60c-ee9f-4930-a39c-9711a78b93b1					F	F									
 srte_c_61004_ep_10.132.138.138	Ischia-21	10.141.21.21	Perugia-138	10.132.138.138			7	7	T	F		Default		24213				1.0		2	NonTrafficSteering		SRv4	T			61004		14bf52fd-8efc-4b89-8561-68ec5eed5574					F	F									
@@ -2207,8 +2232,26 @@ srte_c_61006_ep_3fff:2:0:300:18::	Napoli-45	3fff:2:0:200:45::	Ancona-18	3fff:2:0
 srte_c_61004_ep_10.118.45.45	Perugia-138	10.132.138.138	Napoli-45	10.118.45.45			7	7	T	F		Default		24047				1.0		1	NonTrafficSteering		SRv4	T			61004		cb452c59-3020-44ca-91c5-eda9a2365be2					F	F									
 srte_c_61004_ep_10.120.27.27	Caserta-38	10.130.38.38	Ercolano-27	10.120.27.27			7	7	T	F		Default		24056				1.0		1	NonTrafficSteering		SRv4	T			61004		f3ff900d-3238-4836-9298-77e97244a775					F	F									
 srte_c_61004_ep_10.118.45.45	Ischia-21	10.141.21.21	Napoli-45	10.118.45.45			7	7	T	F		Default		24211				1.0		2	NonTrafficSteering		SRv4	T			61004		94c91d9c-fba6-4f5e-b3c3-594f32c326a6					F	F									
-srte_c_61004_ep_10.141.21.21	Ercolano-27	10.120.27.27	Ischia-21	10.141.21.21			7	7	T	F		Default		24195				1.0		2	NonTrafficSteering		SRv4	T			61004		88aa352b-ff43-4a65-9733-dd82629bbfc0					F	F									
+srte_c_61004_ep_10.141.21.21	Ercolano-27	10.120.27.27	Ischia-21	10.141.21.21			7	7	T	F		Default		24266				1.0		2	NonTrafficSteering		SRv4	T			61004		88aa352b-ff43-4a65-9733-dd82629bbfc0					F	F									
 srte_c_61016_ep_3fff:2:0:300:18::	Napoli-45	3fff:2:0:200:45::	Ancona-18	3fff:2:0:300:18::			7	7	T	F		Default		3fff:6:2045:e006::				1.0		1	NonTrafficSteering		SRv6	T			61016		a638bb0a-9031-4ee8-8e78-70fcb51ac524					F	F									
+srte_c_1001_ep_10.134.54.54	Ravello-51	10.124.51.51	Battipaglia-54	10.134.54.54			7	7	F	F		Default						1.0		2	NonTrafficSteering		SRv4	T			1001		9b3624df-1601-48eb-b2c0-a5ffed9945c8					F	F									
+srte_c_2151_ep_10.141.21.21	Ravello-51	10.124.51.51	Ischia-21	10.141.21.21			7	7	T	F		Default		32252				1.0		1	NonTrafficSteering		SRv4	T			2151		838bb5f6-d227-44c7-87ea-a21b3c8f31f0					F	F									
+srte_c_7477131_ep_10.124.51.51	Ischia-21	10.141.21.21	Ravello-51	10.124.51.51			7	7	T	F		Default		24304				1.0		1	NonTrafficSteering		SRv4	T			7477131		85ec67a8-982b-45cf-a99f-e04fcdd8ef32					F	F									
+srte_c_3000_ep_10.128.58.58	Ravello-51	10.124.51.51	Picerno-58	10.128.58.58			7	7	T	F		Default		32246				1.0		1	NonTrafficSteering		SRv4	T			3000		e9234f68-9d62-4600-a1c4-47b768db2d91					F	F									
+srte_c_3020_ep_10.128.58.58	Ravello-51	10.124.51.51	Picerno-58	10.128.58.58			7	7	T	F		Default		32249				1.0		1	NonTrafficSteering		SRv4	T			3020		e45af8b3-4541-48a8-b944-ac2314e2554a	10_node				F	F									
+srte_c_7477131_ep_10.141.21.21	Ravello-51	10.124.51.51	Ischia-21	10.141.21.21			7	7	T	F		Default		32276				1.0		1	NonTrafficSteering		SRv4	T			7477131		7c7d719f-338a-482e-b552-479fcafea165					F	F									
+srte_c_2000_ep_10.134.54.54	Ravello-51	10.124.51.51	Battipaglia-54	10.134.54.54			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv4	T			2000		eedc7edd-ea85-423f-8dc2-be02717a31e3					F	F									
+srte_c_66666_ep_3fff:2:0:100:58::	Ravello-51	3fff:2:0:100:51::	Picerno-58	3fff:2:0:100:58::			7	7	F	F		Default						1.0		1	NonTrafficSteering		SRv6	T			66666		c0a152c7-5bfc-44ac-a357-7a183ba166e0					F	F									
+srte_c_21511_ep_10.141.21.21	Ravello-51	10.124.51.51	Ischia-21	10.141.21.21			7	7	T	F		Default		32269				1.0		1	NonTrafficSteering		SRv4	T			21511		03dae84b-fa24-4a3f-85fc-9523141952fc					F	F									
+srte_c_129_ep_10.142.29.29	Ravello-51	10.124.51.51	Palinuro-29	10.142.29.29			7	7	T	F		Default		32253				1.0		1	NonTrafficSteering		SRv4	T			129		6d84c2fc-325e-4a83-9250-09b954248a05					F	F									
+srte_c_7477131_ep_10.124.51.51	Napoli-45	10.118.45.45	Ravello-51	10.124.51.51			7	7	T	F		Default		24088				1.0		1	NonTrafficSteering		SRv4	T			7477131		c16d2d9e-d9a3-47cc-871b-f254c0244200					F	F									
+srte_c_7477131_ep_10.124.51.51	Ercolano-27	10.120.27.27	Ravello-51	10.124.51.51			7	7	T	F		Default		24199				1.0		2	NonTrafficSteering		SRv4	T			7477131		cdce6893-15e2-4270-8909-0f7479728dcc					F	F									
+srte_c_707_ep_10.128.58.58	Ravello-51	10.124.51.51	Picerno-58	10.128.58.58			7	7	T	F		Default		32254				1.0		1	NonTrafficSteering		SRv4	T			707		6f7743cb-b6eb-44ef-bb7c-a461cd6d59d2					F	F									
+srte_c_1002_ep_10.134.54.54	Ravello-51	10.124.51.51	Battipaglia-54	10.134.54.54			7	7	T	F		Default		32259				1.0		1	NonTrafficSteering		SRv4	T			1002		2d3f34a1-5b12-414e-9f5c-334722ed9ca0					F	F									
+srte_c_3019_ep_10.128.58.58	Ravello-51	10.124.51.51	Picerno-58	10.128.58.58			7	7	T	F		Default		32255				1.0		1	NonTrafficSteering		SRv4	T			3019		e5eb2379-1f7e-4903-bece-d5cd1c6cee01	10_node				F	F									
+srte_c_3018_ep_10.128.58.58	Ravello-51	10.124.51.51	Picerno-58	10.128.58.58			7	7	T	F		Default		32248				1.0		1	NonTrafficSteering		SRv4	T			3018		d1750499-45b1-4707-8747-2f6e4324cecd					F	F									
+srte_c_3015_ep_10.128.58.58	Ravello-51	10.124.51.51	Picerno-58	10.128.58.58			7	7	T	F		Default		32247				1.0		1	NonTrafficSteering		SRv4	T			3015		85f85f09-7644-4949-9c49-f3f4ddeb00b1					F	F									
+srte_c_7477131_ep_10.124.51.51	Caserta-38	10.130.38.38	Ravello-51	10.124.51.51			7	7	T	F		Default		24052				1.0		1	NonTrafficSteering		SRv4	T			7477131		3822876b-4288-4f99-8192-f9c46875da59					F	F									
 
 <LSPPaths>
 LSP	Source	PathName	SetupBW	PathOption	Preference	SetupPri	HoldPri	UUID	Include	IncludeAny	Exclude	HopLimit	Standby	PCEDelegated	Active	Tags	NetIntPathType	ProtocolOrigin	SRCandidatePathName	MetricType	Dynamic
@@ -2246,7 +2289,7 @@ srte_c_4003_ep_10.144.92.92	Ischia-21			2	200			83ecb5f2-d745-4e80-b937-f37d0890
 srte_c_4003_ep_10.144.92.92	Ercolano-27			1	100			e18bb8d5-60a2-48a2-9da3-11ee65bb88bd							T				bgp_c_4003_ep_10.144.92.92_discr_100	Delay	F
 srte_c_4003_ep_10.144.92.92	Ercolano-27			2	200			852f7168-8447-4d92-ac5f-bbd44f3383ff							F				bgp_c_4003_ep_10.144.92.92_discr_200	Delay	F
 srte_c_4003_ep_10.141.21.21	Positano-92			1	100			ac1c0278-a5fb-42e7-b71d-9b3c8d5dccee							T				bgp_c_4003_ep_10.141.21.21_discr_100	Delay	F
-srte_c_102_ep_10.124.51.51	Battipaglia-54			1	100			84ae8a68-6d06-4395-8a57-04dcc39e7f42							F				EVPN-VPWS_Partner_for_Prem	TE Metric	F
+srte_c_102_ep_10.124.51.51	Battipaglia-54			1	100			84ae8a68-6d06-4395-8a57-04dcc39e7f42							F				EVPN-VPWS_POLICY_1	TE Metric	F
 srte_c_131_ep_10.116.113.113	Lviv-31			1	100			c73f7d16-31c3-4bed-9df0-06af9baedfb9							T				FOR_L2VPN	IGP Metric	F
 srte_c_201_ep_10.142.29.29	Ischia-21			1	100			d48e043b-c6a1-455e-94b0-e71a36d72199							F				TO_PALINURO_default	TE Metric	F
 srte_c_101_ep_10.134.54.54	Krakow-30			1	100			6efedfb1-3009-442e-94de-54835d46e39b							T				srte_c_101_ep_10.134.54.54	Delay	F
@@ -2265,7 +2308,7 @@ srte_c_10_ep_10.120.27.27	Perugia-138			2	200			7db24449-a0f2-425b-834c-3b417ed0
 srte_c_200_ep_10.142.29.29	Ischia-21			1	100			1aefe726-0395-48b1-846e-c0dd3a5d641d							F				TO_PALINURO	TE Metric	F
 srte_c_2000_ep_10.118.45.45	Ercolano-27			1	100			122f2dbb-d009-4577-8738-9942d8c9f669							T				Ercolano-Napoli-srpolicy-2000	TE Metric	F
 srte_c_2127_ep_10.120.27.27	Ischia-21			1	100			763ecd38-2ea4-4159-9619-a3f9f34141c9							F				ISCHIA_ERCOLANO_AGG-R	TE Metric	F
-srte_c_999_ep_10.144.92.92	Palinuro-29			1	50			d010d7db-21fc-4f6d-84dc-13a067e35fec							T				cschmutz	TE Metric	F
+srte_c_999_ep_10.144.92.92	Palinuro-29			1	50			d010d7db-21fc-4f6d-84dc-13a067e35fec							T				USER_POLICY_1	TE Metric	F
 srte_c_131_ep_10.131.31.31	Chernivtsi-113			1	100			709639db-b9c7-49b5-ad49-f769be02b995							T				FOR_L2VPN	TE Metric	F
 srte_c_13_ep_10.120.27.27	Ischia-21			1	100			8057aedf-8de6-4212-836e-3e26b57bc380							F				srte_c_13_ep_10.120.27.27	TE Metric	F
 srte_c_2930_ep_10.119.30.30	Positano-92			1	100			3ecb5189-3b75-4d63-9752-7c3ffeb271c2							F				PWR_MODELING	TE Metric	F
@@ -2279,7 +2322,7 @@ srte_c_232_ep_10.141.21.21	Battipaglia-54			1	100			4b2ebd15-3774-437b-81fa-e3a9
 srte_c_111_ep_10.119.30.30	Sumy-52			1	50			19572df6-2a6d-4d0b-8688-b3b3869fc08e							F				TEST-1	IGP Metric	F
 srte_c_111_ep_10.119.30.30	Sumy-52			2	100			c94be66a-000b-40c7-8fda-5216875a40f9							T				TEST-1	IGP Metric	F
 srte_c_7477132_ep_10.141.21.21	Ercolano-27			1	200			f2bb9095-d47f-495c-babb-e17b7d9db658							F				bgp_c_7477132_ep_10.141.21.21_discr_200	IGP Metric	F
-srte_c_7477132_ep_10.141.21.21	Ercolano-27			2	100			c129f405-b5c0-4279-aa5c-d9979c37d445							T				bgp_c_7477132_ep_10.141.21.21_discr_100	Delay	F
+srte_c_7477132_ep_10.141.21.21	Ercolano-27			2	100			c129f405-b5c0-4279-aa5c-d9979c37d445							F				bgp_c_7477132_ep_10.141.21.21_discr_100	Delay	F
 srte_c_4527_ep_10.120.27.27	Napoli-45			1	100			6435b6f5-b628-45dc-8e23-f9a9b6c05a71							F				Napoli-Ercolano	TE Metric	F
 srte_c_3029_ep_10.142.29.29	Krakow-30			1	100			b2c0f947-b9c8-4c32-bf49-32253a29ef09							T				PWR_MODELING	TE Metric	F
 srte_c_3029_ep_10.142.29.29	Krakow-30			2	90			2fb80fa8-6d69-4169-9863-50424a103b56							F				PWR_MODELING	TE Metric	F
@@ -2297,12 +2340,12 @@ srte_c_4003_ep_10.141.21.21	Ercolano-27			1	200			b55bb6e0-6afb-4cf4-b040-c88cee
 srte_c_4003_ep_10.141.21.21	Ercolano-27			2	100			74afa7c3-2431-47a1-8821-59ae86c5d704							T				bgp_c_4003_ep_10.141.21.21_discr_100	Delay	F
 srte_c_4004_ep_10.141.21.21	Ercolano-27			1	200			6bcf74c7-c84b-4bc1-9cda-884485ee564e							F				bgp_c_4004_ep_10.141.21.21_discr_200	Delay	F
 srte_c_4004_ep_10.141.21.21	Ercolano-27			2	100			13718356-d685-44a1-9a06-4c2b353f4fba							T				bgp_c_4004_ep_10.141.21.21_discr_100	Delay	F
-srte_c_13822_ep_10.115.22.22	Perugia-138			1	100			cec68b9a-17a2-473c-a761-07f605315271							T				Arelion-CFM_to-Aquilla	TE Metric	F
+srte_c_13822_ep_10.115.22.22	Perugia-138			1	100			cec68b9a-17a2-473c-a761-07f605315271							T				CFM_to-Aquilla	TE Metric	F
 srte_c_1381_ep_10.118.45.45	Perugia-138			1	100			7e263af5-0caa-489d-bf06-e16313971666							F				GR-EXP-P	TE Metric	F
 srte_c_1381_ep_10.118.45.45	Perugia-138			2	50			8d0fb79d-92f7-43dd-b3e3-31b2f3ef10f5							F				GR-EXP-P	TE Metric	F
 srte_c_1382_ep_10.118.45.45	Perugia-138			1	100			d329301a-cb63-4b50-9f9d-84fcceebafb6							F				GR-EXP-U	TE Metric	F
 srte_c_1382_ep_10.118.45.45	Perugia-138			2	50			e67841aa-4a84-45d0-9ff5-1d798b5d0495							F				GR-EXP-U	TE Metric	F
-srte_c_22138_ep_10.132.138.138	Aquila-22			1	100			9777b7de-2b09-49a6-bc57-659eba087096							T				Arelion-CFM_to-Perugia	TE Metric	F
+srte_c_22138_ep_10.132.138.138	Aquila-22			1	100			9777b7de-2b09-49a6-bc57-659eba087096							T				CFM_to-Perugia	TE Metric	F
 srte_c_4518_ep_10.143.18.18	Napoli-45			1	100			42f3c073-8c46-47a3-8936-95c1e4a1a3ac							F				Napoli_Ancona	TE Metric	F
 srte_c_11_ep_10.118.45.45	Ercolano-27			1	100			ee1c2d52-a8ba-479f-8b64-a2dd236eb169							T				PW-HE-1201-SRTE	IGP Metric	F
 srte_c_7477132_ep_10.141.21.21	Caserta-38			1	100			99a49a4c-26df-43a2-9aca-d26451f3621d							T				bgp_c_7477132_ep_10.141.21.21_discr_100	Delay	F
@@ -2310,7 +2353,7 @@ srte_c_27512_ep_10.124.51.51	Ercolano-27			1	100			d5c8e9e9-3d7b-4fb8-88e7-181e5
 srte_c_7477131_ep_10.118.45.45	Ercolano-27			1	200			2efa0ebe-6301-48de-82ae-e78b378c419f							F				bgp_c_7477131_ep_10.118.45.45_discr_200	IGP Metric	F
 srte_c_7477131_ep_10.118.45.45	Ercolano-27			2	100			92c3aa62-adcd-47f5-aaf8-6b0c9b91875d							T				bgp_c_7477131_ep_10.118.45.45_discr_100	Delay	F
 srte_c_5100_ep_10.120.27.27	Positano-92			1	100			e3fe79d7-0514-466a-8d19-8ac65feb3264							T				bgp_c_5100_ep_10.120.27.27_discr_100	IGP Metric	F
-srte_c_999_ep_10.142.29.29	Positano-92			1	50			58e80654-a918-4459-9724-feeed925ef7d							T				cschmutz	TE Metric	F
+srte_c_999_ep_10.142.29.29	Positano-92			1	50			58e80654-a918-4459-9724-feeed925ef7d							T				USER_POLICY_1	TE Metric	F
 srte_c_2152_ep_10.124.51.51	Ischia-21			1	100			61e6e42e-315b-4e91-bf7e-b9d16da00ae9							T				ISchia-Ravello-2152	TE Metric	T
 srte_c_103_ep_10.138.86.86	Mainz-65			1	100			75afd59a-5f33-4d2a-9034-48d2b68213ab							T				bgp_c_103_ep_10.138.86.86_discr_100	Delay	F
 srte_c_4003_ep_10.120.27.27	Positano-92			1	100			17a97126-74e4-42a9-a9f9-c3ef2392ce35							T				bgp_c_4003_ep_10.120.27.27_discr_100	Delay	F
@@ -2358,11 +2401,11 @@ srte_c_4004_ep_10.120.27.27	Palinuro-29			1	100			fdd26902-a984-4d5a-8908-62abbd
 srte_c_4003_ep_10.120.27.27	Palinuro-29			1	100			efbe572d-132c-4273-b1d2-d15928fb6278							T				bgp_c_4003_ep_10.120.27.27_discr_100	Delay	F
 srte_c_3011_ep_10.138.86.86	Mainz-65			1	100			49cc9925-66eb-4e5c-ae26-8f42596f557c							T				bgp_c_3011_ep_10.138.86.86_discr_100	Delay	F
 srte_c_128_ep_10.129.47.47	Tallinn-69			1	100			2fa8f9ed-e0f9-4dee-bb01-f22eeaa771c6							T				bgp_c_128_ep_10.129.47.47_discr_100	Delay	F
-srte_c_1010_ep_10.124.51.51	Ischia-21			1	100			410e6412-38eb-47d2-8d61-fcef9d148b7a							F				Ischia_Ravello_RON	TE Metric	F
+srte_c_1010_ep_10.124.51.51	Ischia-21			1	100			410e6412-38eb-47d2-8d61-fcef9d148b7a							T				Ischia_Ravello_RON	TE Metric	F
 srte_c_102_ep_10.120.27.27	Positano-92			1	50			698c025a-5835-47b6-8eab-0528ebc52eb8							T				PCE-NONE_PCE	Delay	F
-srte_c_101020062_ep_10.134.54.54	Ischia-21			1	50			26f1bbd4-5537-468f-b849-9c23d26cf4a3							F				IPoDWDM_1010_2006_2	TE Metric	F
+srte_c_101020062_ep_10.134.54.54	Ischia-21			1	50			26f1bbd4-5537-468f-b849-9c23d26cf4a3							T				IPoDWDM_1010_2006_2	TE Metric	F
 srte_c_101020062_ep_10.134.54.54	Ischia-21			2	100			90189f69-82e8-4b48-a3a9-f5bdb5b45f0b							F				IPoDWDM_1010_2006_2	TE Metric	F
-srte_c_101020061_ep_10.134.54.54	Ischia-21			1	100			b366179a-4214-4e03-9c6d-27255eefe0b0							T				IPoDWDM_1010_2006_1	Delay	F
+srte_c_101020061_ep_10.134.54.54	Ischia-21			1	100			b366179a-4214-4e03-9c6d-27255eefe0b0							F				IPoDWDM_1010_2006_1	Delay	F
 srte_c_6731_ep_10.131.31.31	Rivne-67			1	100			abb71169-46ff-4086-87b5-113920283918							T				srte_c_6731_ep_10.131.31.31	TE Metric	F
 srte_c_6731_ep_10.131.31.31	Rivne-67			2	50			be785af2-252f-418e-9792-272ef5606eb3							T				srte_c_6731_ep_10.131.31.31	TE Metric	F
 srte_c_101_ep_10.139.49.49	Tallinn-69			1	100			d0ec0dcb-22fd-4a05-9512-3fba09d2946e							T				bgp_c_101_ep_10.139.49.49_discr_100	Delay	F
@@ -2382,7 +2425,7 @@ srte_c_101_ep_10.142.29.29	Positano-92			1	100			70e61791-0bb2-46ca-8f39-c3c0907
 srte_c_101_ep_10.142.29.29	Positano-92			2	50			f1752f28-21b3-405e-9aa0-0902801e7f34							T				PLE_CS	TE Metric	F
 srte_c_101_ep_10.144.92.92	Palinuro-29			1	50			ae8e93ee-53f3-4333-a1bd-74d2e0f78a90							T				PLE_CS	TE Metric	F
 srte_c_101_ep_10.144.92.92	Palinuro-29			2	100			91ecdedd-c843-4cfd-9f88-a250a7f2891d							T				PLE_CS	TE Metric	F
-srte_c_555_ep_10.146.50.29	Kyiv-47			1	100			57bdbd33-51ca-4e32-aad2-217a941ce584							F				donz_epe	Delay	F
+srte_c_555_ep_10.146.50.29	Kyiv-47			1	100			57bdbd33-51ca-4e32-aad2-217a941ce584							F				EPE_POLICY_1	Delay	F
 srte_c_61006_ep_3fff:2:0:100:21::	Aquila-22			1	100			712b1e1a-d9c6-410e-9b06-a9e5889425ba							T				COLOR-61006-Ischia	IGP Metric	F
 Tunnel65670	Torre-125			1	80			84e9d055-2f29-439a-b35d-e56d161e5c7f			20;21				F				bgp_color_100_ep_10.121.123.123_discr_80	IGP Metric	F
 Tunnel65670	Torre-125			2	90			be302a86-860b-4d6e-8160-7a163a060a1f			20;22;23				F				bgp_color_100_ep_10.121.123.123_discr_90	IGP Metric	F
@@ -2425,11 +2468,11 @@ srte_c_5417_ep_10.134.54.54	Potenza-17			1	123			c17245d5-9fc5-45ec-aa9b-ead4b9c
 srte_c_1_ep_10.144.92.92	Palinuro-29			1	100			eb200348-d81b-44be-9331-bc6bad77e321							T				srte_c_1_ep_10.144.92.92	Delay	F
 Ercolano_Picerno	Ercolano-27	a64fe530-e802-4fde-b0cc-fb341e22f2ae		1											T				Ercolano_Picerno		F
 srte_c_3001_ep_10.124.51.51	Picerno-58			1	1			6e11c697-9cff-4a4c-bde4-4de3e858b1fb							T				srte_c_3001_ep_10.124.51.51	IGP Metric	F
-srte_c_2151_ep_10.124.51.51	Ischia-21			1	123			5f6428a1-da10-45b7-bbba-971910f50534							F				srte_c_2151_ep_10.124.51.51	TE Metric	F
+srte_c_2151_ep_10.124.51.51	Ischia-21			1	123			5f6428a1-da10-45b7-bbba-971910f50534							T				srte_c_2151_ep_10.124.51.51	TE Metric	F
 srte_c_3002_ep_10.124.51.51	Picerno-58			1	1			7c26a3aa-c1c8-4c89-9826-28d53b217117							T				srte_c_3002_ep_10.124.51.51	TE Metric	F
 srte_c_3015_ep_10.124.51.51	Picerno-58			1	100			0585540c-01d6-4867-83f0-044b4f87dfe9							T				srte_c_3015_ep_10.124.51.51	TE Metric	F
 srte_c_1_ep_10.144.92.92	Palinuro-29			2	50			f8c2927b-f19e-4ab2-967d-44fc12ed26de							T				srte_c_1_ep_10.144.92.92	Delay	F
-srte_c_21511_ep_10.124.51.51	Ischia-21			1	123			6f460153-8a4c-436d-90fd-8187e7bb3a41							F				srte_c_21511_ep_10.124.51.51	TE Metric	F
+srte_c_21511_ep_10.124.51.51	Ischia-21			1	123			6f460153-8a4c-436d-90fd-8187e7bb3a41							T				srte_c_21511_ep_10.124.51.51	TE Metric	F
 srte_c_1_ep_10.142.29.29	Positano-92			1	100			cff23cee-fa5e-49c1-8367-4b02d20a5896							T				srte_c_1_ep_10.142.29.29	Delay	F
 srte_c_1_ep_10.142.29.29	Positano-92			2	50			2258d454-baa7-40af-9d1d-86d685eba292							T				srte_c_1_ep_10.142.29.29	Delay	F
 srte_c_3018_ep_10.124.51.51	Picerno-58			1	1			95b9fbf2-4025-4017-aaf2-727eb9ed6605							T				srte_c_3018_ep_10.124.51.51	Delay	F
@@ -2503,6 +2546,29 @@ srte_c_61004_ep_10.118.45.45	Ischia-21			2	100			6ad770d9-ca16-4e31-8489-73cd533
 srte_c_61004_ep_10.141.21.21	Ercolano-27			1	200			38902378-e42f-440a-8a9c-84b90b6186f3							F				bgp_c_61004_ep_10.141.21.21_discr_200	Delay	F
 srte_c_61004_ep_10.141.21.21	Ercolano-27			2	100			1e5e8858-bd4d-44e7-a830-e22442408694							T				bgp_c_61004_ep_10.141.21.21_discr_100	Delay	F
 srte_c_61016_ep_3fff:2:0:300:18::	Napoli-45			1	100			01ec3900-afbf-4a4a-9279-a699fd0da519							T				bgp_c_61016_ep_3fff:2:0:300:18::_discr_100	IGP Metric	F
+srte_c_1001_ep_10.134.54.54	Ravello-51			1	50			5133d832-f95c-4aaa-9fd9-50e030dc7bec							F				IPoDWDM_400G_TE_PROTECTION_NCS2K	TE Metric	F
+srte_c_2151_ep_10.141.21.21	Ravello-51			1	123			3af094d8-2f05-4c47-8cd2-0490f7c335bf							T				srte_c_2151_ep_10.141.21.21	TE Metric	F
+srte_c_7477131_ep_10.124.51.51	Ischia-21			1	100			18ea8785-11eb-436e-bc26-84b114cd58a6							T				bgp_c_7477131_ep_10.124.51.51_discr_100	Delay	F
+srte_c_3000_ep_10.128.58.58	Ravello-51			1	1			3990132f-1289-4b16-85a5-003efa3b12eb							T				srte_c_3000_ep_10.128.58.58	Delay	F
+srte_c_3020_ep_10.128.58.58	Ravello-51			1	20			864ed780-49e8-4de3-b6a5-37e1e939f9e5							T				srte_c_3020_ep_10.128.58.58	Delay	F
+srte_c_7477131_ep_10.141.21.21	Ravello-51			1	100			ce8b5b28-2b00-41c0-b91b-84ccd8f27b1b							T				bgp_c_7477131_ep_10.141.21.21_discr_100	Delay	F
+srte_c_2000_ep_10.134.54.54	Ravello-51			1	100			a51df22e-f923-4b82-a0f2-5e0001716ac1							F				IPoDWDM_NCS2K_FRR_FLA130	TE Metric	F
+srte_c_66666_ep_3fff:2:0:100:58::	Ravello-51			1	1			d4fda3a6-1126-42ca-99eb-4b1b9223798d							F				srte_c_66666_ep_3fff:2:0:100:58::	TE Metric	F
+srte_c_21511_ep_10.141.21.21	Ravello-51			1	123			441e3624-d029-4321-8a04-a9db2c9483bf							T				srte_c_21511_ep_10.141.21.21	TE Metric	F
+srte_c_129_ep_10.142.29.29	Ravello-51			1	100			5bf27190-4552-4f57-85eb-4b639956caec							T				PLE-2_FRR_IPoDWDM	Delay	F
+srte_c_7477131_ep_10.124.51.51	Napoli-45			1	100			cbd901a3-5c00-4ce3-9fac-7f73ce6b3149							T				bgp_c_7477131_ep_10.124.51.51_discr_100	Delay	F
+srte_c_7477131_ep_10.124.51.51	Ercolano-27			1	200			ad37c3a8-9ba3-4efa-a6ce-2b3607317b17							F				bgp_c_7477131_ep_10.124.51.51_discr_200	IGP Metric	F
+srte_c_7477131_ep_10.124.51.51	Ercolano-27			2	100			d4c83cd7-2350-44a2-92f4-ed53aac83ec9							T				bgp_c_7477131_ep_10.124.51.51_discr_100	Delay	F
+srte_c_707_ep_10.128.58.58	Ravello-51			1	1			33fed2a6-37df-4de1-af88-cdb975aca119							T				srte_c_707_ep_10.128.58.58	IGP Metric	F
+srte_c_1001_ep_10.134.54.54	Ravello-51			2	100			0c183721-60d2-4f80-a94f-b8a5da177af4							F				IPoDWDM_400G_TE_PROTECTION_NCS2K	TE Metric	F
+srte_c_1002_ep_10.134.54.54	Ravello-51			1	100			ab07dcd1-04cb-4444-9150-655fe88283a9							T				CREATE_CONGESTION	TE Metric	F
+srte_c_3019_ep_10.128.58.58	Ravello-51			1	10			0ed6424c-6279-4ad4-a9d3-043a970668ed							T				srte_c_3019_ep_10.128.58.58	Delay	F
+srte_c_3018_ep_10.128.58.58	Ravello-51			1	1			d6e8222b-5d92-4bf6-bf0f-7c36747f5f6a							T				srte_c_3018_ep_10.128.58.58	Delay	F
+srte_c_3015_ep_10.128.58.58	Ravello-51			1	100			2f14c0e1-25de-47b6-bf9e-dd09016290fa							T				srte_c_3015_ep_10.128.58.58	TE Metric	F
+srte_c_7477131_ep_10.124.51.51	Caserta-38			1	100			43ffa680-16fd-41aa-b669-66b270e8cddc							T				bgp_c_7477131_ep_10.124.51.51_discr_100	Delay	F
+srte_c_1_ep_10.144.92.92	Palinuro-29			3	10			2851bcae-b1bc-4843-89cd-6438c0014276							F				srte_c_1_ep_10.144.92.92	IGP Metric	F
+tunnel-te51211	Ravello-51	eacc06b4-3d7a-41b5-8bb2-2644af31976a		1											T				tunnel-te51211		F
+srte_c_7477131_ep_10.124.51.51	Ischia-21			2	200			768d1c80-4acb-4523-bf57-53abd3df7e77							F				bgp_c_7477131_ep_10.124.51.51_discr_200	IGP Metric	F
 
 <LSPPathWeightedSegmentLists>
 LSP	Source	PathOption	SLName	Weight
@@ -2791,6 +2857,28 @@ srte_c_61004_ep_10.118.45.45	Ischia-21	2	6ad770d9-ca16-4e31-8489-73cd533303a0	1.
 srte_c_61004_ep_10.141.21.21	Ercolano-27	1	38902378-e42f-440a-8a9c-84b90b6186f3	1.0
 srte_c_61004_ep_10.141.21.21	Ercolano-27	2	1e5e8858-bd4d-44e7-a830-e22442408694	1.0
 srte_c_61016_ep_3fff:2:0:300:18::	Napoli-45	1	01ec3900-afbf-4a4a-9279-a699fd0da519	1.0
+srte_c_1001_ep_10.134.54.54	Ravello-51	1	5133d832-f95c-4aaa-9fd9-50e030dc7bec	1.0
+srte_c_2151_ep_10.141.21.21	Ravello-51	1	3af094d8-2f05-4c47-8cd2-0490f7c335bf	1.0
+srte_c_7477131_ep_10.124.51.51	Ischia-21	1	18ea8785-11eb-436e-bc26-84b114cd58a6	1.0
+srte_c_3000_ep_10.128.58.58	Ravello-51	1	3990132f-1289-4b16-85a5-003efa3b12eb	1.0
+srte_c_3020_ep_10.128.58.58	Ravello-51	1	864ed780-49e8-4de3-b6a5-37e1e939f9e5	1.0
+srte_c_7477131_ep_10.141.21.21	Ravello-51	1	ce8b5b28-2b00-41c0-b91b-84ccd8f27b1b	1.0
+srte_c_2000_ep_10.134.54.54	Ravello-51	1	a51df22e-f923-4b82-a0f2-5e0001716ac1	1.0
+srte_c_66666_ep_3fff:2:0:100:58::	Ravello-51	1	d4fda3a6-1126-42ca-99eb-4b1b9223798d	1.0
+srte_c_21511_ep_10.141.21.21	Ravello-51	1	441e3624-d029-4321-8a04-a9db2c9483bf	1.0
+srte_c_129_ep_10.142.29.29	Ravello-51	1	5bf27190-4552-4f57-85eb-4b639956caec	1.0
+srte_c_7477131_ep_10.124.51.51	Napoli-45	1	cbd901a3-5c00-4ce3-9fac-7f73ce6b3149	1.0
+srte_c_7477131_ep_10.124.51.51	Ercolano-27	1	ad37c3a8-9ba3-4efa-a6ce-2b3607317b17	1.0
+srte_c_7477131_ep_10.124.51.51	Ercolano-27	2	d4c83cd7-2350-44a2-92f4-ed53aac83ec9	1.0
+srte_c_707_ep_10.128.58.58	Ravello-51	1	33fed2a6-37df-4de1-af88-cdb975aca119	1.0
+srte_c_1001_ep_10.134.54.54	Ravello-51	2	0c183721-60d2-4f80-a94f-b8a5da177af4	1.0
+srte_c_1002_ep_10.134.54.54	Ravello-51	1	ab07dcd1-04cb-4444-9150-655fe88283a9	1.0
+srte_c_3019_ep_10.128.58.58	Ravello-51	1	0ed6424c-6279-4ad4-a9d3-043a970668ed	1.0
+srte_c_3018_ep_10.128.58.58	Ravello-51	1	d6e8222b-5d92-4bf6-bf0f-7c36747f5f6a	1.0
+srte_c_3015_ep_10.128.58.58	Ravello-51	1	2f14c0e1-25de-47b6-bf9e-dd09016290fa	1.0
+srte_c_7477131_ep_10.124.51.51	Caserta-38	1	43ffa680-16fd-41aa-b669-66b270e8cddc	1.0
+srte_c_1_ep_10.144.92.92	Palinuro-29	3	ac24a0c8-2b42-497b-84a0-0d7dd15a4250	1.0
+srte_c_7477131_ep_10.124.51.51	Ischia-21	2	768d1c80-4acb-4523-bf57-53abd3df7e77	1.0
 
 <NamedPaths>
 Name	Source	Active
@@ -2800,6 +2888,7 @@ a64fe530-e802-4fde-b0cc-fb341e22f2ae	Ercolano-27	T
 9ed7a177-5a5c-46f2-ab8f-8a5a71afa4de	Ercolano-27	T
 26fc1ef7-ac55-42d8-a2d9-324b726e09a3	Ravello-51	T
 e41f0cfc-0d56-4e3c-b3da-9fd2245eca0d	Ischia-21	T
+eacc06b4-3d7a-41b5-8bb2-2644af31976a	Ravello-51	T
 
 <NamedPathHops>
 Name	Source	Step	Node	Interface	NetIntHop	Type
@@ -2817,8 +2906,10 @@ a64fe530-e802-4fde-b0cc-fb341e22f2ae	Ercolano-27	3	Picerno-58			strict
 9ed7a177-5a5c-46f2-ab8f-8a5a71afa4de	Ercolano-27	3	Picerno-58			loose
 26fc1ef7-ac55-42d8-a2d9-324b726e09a3	Ravello-51	1	Picerno-58	HundredGigE0/3/2/1		strict
 26fc1ef7-ac55-42d8-a2d9-324b726e09a3	Ravello-51	2	Picerno-58			strict
-e41f0cfc-0d56-4e3c-b3da-9fd2245eca0d	Ischia-21	1			ip{10.147.51.51}	strict
+e41f0cfc-0d56-4e3c-b3da-9fd2245eca0d	Ischia-21	1	Ravello-51	FourHundredGigE0/0/3/0		strict
 e41f0cfc-0d56-4e3c-b3da-9fd2245eca0d	Ischia-21	2	Ravello-51			strict
+eacc06b4-3d7a-41b5-8bb2-2644af31976a	Ravello-51	1	Ischia-21			strict
+eacc06b4-3d7a-41b5-8bb2-2644af31976a	Ravello-51	2	Ischia-21			strict
 
 <ActualPathHops>
 LSP	Source	PathOption	Step	Node	Interface	NetIntHop	NetIntCalculatedHop
@@ -3118,6 +3209,28 @@ Ischia-21	6ad770d9-ca16-4e31-8489-73cd533303a0
 Ercolano-27	38902378-e42f-440a-8a9c-84b90b6186f3
 Ercolano-27	1e5e8858-bd4d-44e7-a830-e22442408694
 Napoli-45	01ec3900-afbf-4a4a-9279-a699fd0da519
+Ravello-51	5133d832-f95c-4aaa-9fd9-50e030dc7bec
+Ravello-51	3af094d8-2f05-4c47-8cd2-0490f7c335bf
+Ischia-21	18ea8785-11eb-436e-bc26-84b114cd58a6
+Ravello-51	3990132f-1289-4b16-85a5-003efa3b12eb
+Ravello-51	864ed780-49e8-4de3-b6a5-37e1e939f9e5
+Ravello-51	ce8b5b28-2b00-41c0-b91b-84ccd8f27b1b
+Ravello-51	a51df22e-f923-4b82-a0f2-5e0001716ac1
+Ravello-51	d4fda3a6-1126-42ca-99eb-4b1b9223798d
+Ravello-51	441e3624-d029-4321-8a04-a9db2c9483bf
+Ravello-51	5bf27190-4552-4f57-85eb-4b639956caec
+Napoli-45	cbd901a3-5c00-4ce3-9fac-7f73ce6b3149
+Ercolano-27	ad37c3a8-9ba3-4efa-a6ce-2b3607317b17
+Ercolano-27	d4c83cd7-2350-44a2-92f4-ed53aac83ec9
+Ravello-51	33fed2a6-37df-4de1-af88-cdb975aca119
+Ravello-51	0c183721-60d2-4f80-a94f-b8a5da177af4
+Ravello-51	ab07dcd1-04cb-4444-9150-655fe88283a9
+Ravello-51	0ed6424c-6279-4ad4-a9d3-043a970668ed
+Ravello-51	d6e8222b-5d92-4bf6-bf0f-7c36747f5f6a
+Ravello-51	2f14c0e1-25de-47b6-bf9e-dd09016290fa
+Caserta-38	43ffa680-16fd-41aa-b669-66b270e8cddc
+Palinuro-29	ac24a0c8-2b42-497b-84a0-0d7dd15a4250
+Ischia-21	768d1c80-4acb-4523-bf57-53abd3df7e77
 
 <SegmentListHops>
 Source	Name	Step	SegmentNode	SegmentInterface	SegmentLSP	SegmentAnycastGroup	Type	SID	SRv6SID	NetIntHop
@@ -3159,8 +3272,8 @@ Ischia-21	4c340536-2106-4e54-b9b1-70e1d2ac4891	2	Picerno-58	HundredGigE0/3/2/0		
 Ischia-21	7a86b656-e691-42d8-87e9-20c8e63fe72d	1	Picerno-58				Node	16058		
 Ischia-21	7a86b656-e691-42d8-87e9-20c8e63fe72d	2	Picerno-58	HundredGigE0/3/2/0			Interface	24018		
 Ercolano-27	e18bb8d5-60a2-48a2-9da3-11ee65bb88bd	1	Ravello-51				Node	16051		
-Ercolano-27	e18bb8d5-60a2-48a2-9da3-11ee65bb88bd	2	Ravello-51	HundredGigE0/0/1/1			Interface	32231		uuid{6676d667-dad2-4488-bd03-dfba0af2f684}
-Ercolano-27	e18bb8d5-60a2-48a2-9da3-11ee65bb88bd	3	Picerno-58	HundredGigE0/3/2/0			Interface	24018		uuid{d455d6e6-2a05-47f1-a98a-f9cf1299c15a}
+Ercolano-27	e18bb8d5-60a2-48a2-9da3-11ee65bb88bd	2	Ravello-51	HundredGigE0/0/1/1			Interface	32231		
+Ercolano-27	e18bb8d5-60a2-48a2-9da3-11ee65bb88bd	3	Picerno-58	HundredGigE0/3/2/0			Interface	24018		
 Positano-92	ac1c0278-a5fb-42e7-b71d-9b3c8d5dccee	1	Ischia-21				Node	16021		
 Lviv-31	c73f7d16-31c3-4bed-9df0-06af9baedfb9	1	Chernivtsi-113				Node	16113		
 Krakow-30	6efedfb1-3009-442e-94de-54835d46e39b	1	Krakow-30	FourHundredGigE0/0/1/4			Interface	24099		uuid{636cecb3-fc66-40fa-9252-ff93c65a0e85}
@@ -3174,16 +3287,16 @@ Positano-92	615174a8-fa9d-404a-8c55-6d6deaaf4f0d	4	Picerno-58	FourHundredGigE0/3
 Positano-92	615174a8-fa9d-404a-8c55-6d6deaaf4f0d	5	Battipaglia-54	FourHundredGigE0/0/0/14			Interface	24056		
 Positano-92	615174a8-fa9d-404a-8c55-6d6deaaf4f0d	6						24135		uuid{53f8169c-a80a-43e7-9cb4-fb0cdfe9f688}
 Ercolano-27	b5a838ea-2209-4f92-9e88-7d3097038814	1	Ravello-51				Node	16051		
-Ercolano-27	b5a838ea-2209-4f92-9e88-7d3097038814	2	Ravello-51	HundredGigE0/0/1/1			Interface	32231		uuid{6676d667-dad2-4488-bd03-dfba0af2f684}
-Ercolano-27	b5a838ea-2209-4f92-9e88-7d3097038814	3	Picerno-58	HundredGigE0/3/2/0			Interface	24018		uuid{d455d6e6-2a05-47f1-a98a-f9cf1299c15a}
+Ercolano-27	b5a838ea-2209-4f92-9e88-7d3097038814	2	Ravello-51	HundredGigE0/0/1/1			Interface	32231		
+Ercolano-27	b5a838ea-2209-4f92-9e88-7d3097038814	3	Picerno-58	HundredGigE0/3/2/0			Interface	24018		
 Positano-92	911e600d-03a8-403d-af7c-514052724c6c	1	Ischia-21				Node	17421		
 Perugia-138	6ba4271e-4c03-4a3b-8440-5bef54d07f6a	1	Ercolano-27				Node	16027		
 Perugia-138	7db24449-a0f2-425b-834c-3b417ed001e8	1	Ercolano-27				Node	16027		
 Ercolano-27	122f2dbb-d009-4577-8738-9942d8c9f669	1	Ravello-51				Node	16051		
 Ercolano-27	122f2dbb-d009-4577-8738-9942d8c9f669	2	Palinuro-29				Node	16029		
 Ercolano-27	122f2dbb-d009-4577-8738-9942d8c9f669	3	Napoli-45				Node	16045		
-Palinuro-29	d010d7db-21fc-4f6d-84dc-13a067e35fec	1	Palinuro-29	HundredGigE0/0/1/2/0			Interface	15651		uuid{15af2ebf-d894-469b-b1db-565c71e133bc}
-Chernivtsi-113	709639db-b9c7-49b5-ad49-f769be02b995	1	Chernivtsi-113	Bundle-Ether15113			Interface	24033		uuid{4f476e3d-7f03-45f5-8b79-1e97f52669ce}
+Palinuro-29	d010d7db-21fc-4f6d-84dc-13a067e35fec	1	Palinuro-29	HundredGigE0/0/1/2/0			Interface	15651		
+Chernivtsi-113	709639db-b9c7-49b5-ad49-f769be02b995	1	Chernivtsi-113	Bundle-Ether15113			Interface	24033		
 Chernivtsi-113	709639db-b9c7-49b5-ad49-f769be02b995	2	Lviv-31				Node	16031		
 Ischia-21	8063cea6-cf32-4b2f-9527-689e23bf2bbe	1	Ercolano-27				Node	16027		
 Ischia-21	8063cea6-cf32-4b2f-9527-689e23bf2bbe	2	Battipaglia-54				Node	16054		
@@ -3199,8 +3312,8 @@ Napoli-45	0f3d2939-a7ad-4d66-a0ba-1997e378c8ca	2	Ischia-21				Node	16021
 Ischia-21	0acd3caf-a15c-4236-bd27-4d2b2caf9b0f	1	Picerno-58				Node	16058		
 Ischia-21	0acd3caf-a15c-4236-bd27-4d2b2caf9b0f	2	Battipaglia-54				Node	16054		
 Oleksandriia-105	51f5332d-056f-4871-bea1-38831c04aa4f	1	Chernivtsi-113				Node	16113		
-Ercolano-27	74afa7c3-2431-47a1-8821-59ae86c5d704	1	Ischia-21				Node	16021		
-Ercolano-27	13718356-d685-44a1-9a06-4c2b353f4fba	1	Ischia-21				Node	16021		
+Ercolano-27	74afa7c3-2431-47a1-8821-59ae86c5d704	1	Ercolano-27	TenGigE0/0/0/0			Interface	24062		
+Ercolano-27	13718356-d685-44a1-9a06-4c2b353f4fba	1	Ercolano-27	TenGigE0/0/0/0			Interface	24062		
 Perugia-138	cec68b9a-17a2-473c-a761-07f605315271	1	Perugia-138	FourHundredGigE0/0/2/0			Interface	24000		
 Perugia-138	cec68b9a-17a2-473c-a761-07f605315271	2	Ancona-18	TenGigE0/0/0/6			Interface	24008		
 Perugia-138	8d0fb79d-92f7-43dd-b3e3-31b2f3ef10f5	1	Perugia-138	FourHundredGigE0/0/2/0			Interface	24008		
@@ -3213,35 +3326,42 @@ Ercolano-27	d5c8e9e9-3d7b-4fb8-88e7-181e5261c591	1	Ravello-51				Node	16051
 Ercolano-27	92c3aa62-adcd-47f5-aaf8-6b0c9b91875d	1	Palinuro-29				Node	18029		
 Ercolano-27	92c3aa62-adcd-47f5-aaf8-6b0c9b91875d	2	Napoli-45				Node	18045		
 Positano-92	e3fe79d7-0514-466a-8d19-8ac65feb3264	1	Ercolano-27				Node	16027		
-Positano-92	58e80654-a918-4459-9724-feeed925ef7d	1	Positano-92	HundredGigE0/0/1/2/0			Interface	15929		uuid{78c40dc8-349c-4cc1-a344-d751ddb4101d}
-Ischia-21	61e6e42e-315b-4e91-bf7e-b9d16da00ae9	1	Ravello-51				Node	16051		
+Positano-92	58e80654-a918-4459-9724-feeed925ef7d	1	Positano-92	HundredGigE0/0/1/2/0			Interface	15929		
+Ischia-21	61e6e42e-315b-4e91-bf7e-b9d16da00ae9	1	Ischia-21	FourHundredGigE0/1/0/0			Interface	24061		
 Mainz-65	75afd59a-5f33-4d2a-9034-48d2b68213ab	1	Vilnius-86				Node	16186		
-Positano-92	17a97126-74e4-42a9-a9f9-c3ef2392ce35	1	Picerno-58				Node	16058		
-Positano-92	17a97126-74e4-42a9-a9f9-c3ef2392ce35	2	Picerno-58	FourHundredGigE0/3/0/8			Interface	28313		
-Positano-92	17a97126-74e4-42a9-a9f9-c3ef2392ce35	3	Ercolano-27				Node	16027		
+Positano-92	17a97126-74e4-42a9-a9f9-c3ef2392ce35	1	Battipaglia-54				Node	16054		
+Positano-92	17a97126-74e4-42a9-a9f9-c3ef2392ce35	2	Ercolano-27				Node	16027		
 Battipaglia-54	0f698bf2-8893-473a-9b58-486b55b33ead	1	Ischia-21				Node	18321		
 Perugia-138	6814d990-a050-4949-9bc2-864f1fbda909	1	Ischia-21				Node	16021		
-Perugia-138	6814d990-a050-4949-9bc2-864f1fbda909	2	Ercolano-27				Node	16027		
+Perugia-138	6814d990-a050-4949-9bc2-864f1fbda909	2	Ischia-21	TenGigE0/0/0/0			Interface	24054		
 Perugia-138	25bb072f-385d-4cb8-b190-e9d2b94a7c7a	1	Ischia-21				Node	16021		
 Perugia-138	25bb072f-385d-4cb8-b190-e9d2b94a7c7a	2	Ischia-21	TenGigE0/0/0/0			Interface	24054		
 Palinuro-29	92435427-1ccd-40ed-b6de-215d2f4c797b	1	Palinuro-29	HundredGigE0/0/1/2/0			Interface	15651		
 Palinuro-29	98d2751e-3039-4222-846e-9b22a4dabc48	1	Palinuro-29	HundredGigE0/0/1/0			Interface	15551		
 Palinuro-29	98d2751e-3039-4222-846e-9b22a4dabc48	2	Ravello-51	HundredGigE0/0/1/1			Interface	15558		
 Palinuro-29	98d2751e-3039-4222-846e-9b22a4dabc48	3	Picerno-58	HundredGigE0/3/2/0			Interface	15592		
+Ercolano-27	cea00813-edb4-4cb1-9be6-4cc6168dae0f	1	Ercolano-27	HundredGigE0/1/1/1			Interface	24086		
+Ercolano-27	cea00813-edb4-4cb1-9be6-4cc6168dae0f	2	Battipaglia-54	FourHundredGigE0/0/0/6			Interface	15158		
+Ercolano-27	cea00813-edb4-4cb1-9be6-4cc6168dae0f	3	Picerno-58	HundredGigE0/3/2/1			Interface	15551		
+Ercolano-27	cea00813-edb4-4cb1-9be6-4cc6168dae0f	4	Ravello-51	FourHundredGigE0/0/3/0			Interface	15121		
 Caserta-38	061fa325-015f-4123-88ab-e766fa060d5c	1	Palinuro-29				Node	18029		
 Caserta-38	061fa325-015f-4123-88ab-e766fa060d5c	2	Ercolano-27				Node	17127		
 Ancona-18	afb5e621-48a7-4a7c-8f81-6c5686258e16	1	Aquila-22				Node	16022		
 Krakow-30	98b5216e-9da6-4585-b997-66aff411398a	1	Krakow-30	FourHundredGigE0/0/1/4			Interface	24099		
 Krakow-30	98b5216e-9da6-4585-b997-66aff411398a	2	Picerno-58				Node	16058		
+Ischia-21	f1e1ca6e-e83f-480f-92ca-6ff0e9f86d32	1	Ischia-21	FourHundredGigE0/1/0/0			Interface	15351		
+Ischia-21	f1e1ca6e-e83f-480f-92ca-6ff0e9f86d32	2	Ravello-51	HundredGigE0/0/1/1			Interface	15558		
+Ischia-21	f1e1ca6e-e83f-480f-92ca-6ff0e9f86d32	3	Picerno-58	FourHundredGigE0/3/0/9			Interface	15154		
+Ischia-21	f1e1ca6e-e83f-480f-92ca-6ff0e9f86d32	4	Battipaglia-54	HundredGigE0/0/0/3			Interface	24078		
 Kyiv-47	cbf9b966-b732-4d46-8191-1a2e89108783	1	Vilnius-86				Node	16186		
 Kyiv-47	7b854f6b-7cb7-4b83-861b-3fe45f538868	1	Vilnius-86				Node	16186		
 Kyiv-47	a73382fe-00ae-4ec4-a9a7-a1e4424cba55	1	Vilnius-86				Node	16186		
 Picerno-58	6669e04d-93b6-4f2a-a7aa-e2d72445554d	1	Battipaglia-54				Node	16054		
 Picerno-58	6669e04d-93b6-4f2a-a7aa-e2d72445554d	2	Battipaglia-54	FourHundredGigE0/0/0/4			Interface	24059		
-Ischia-21	bc43b63e-7fb4-4abb-87d4-c3dc90ec083d	1	Ercolano-27				Node	16027		
+Ischia-21	bc43b63e-7fb4-4abb-87d4-c3dc90ec083d	1	Ischia-21	TenGigE0/0/0/0			Interface	24054		
 Napoli-45	df77815c-6a6d-45f6-8e53-a0664e2f8438	1	Palinuro-29				Node	18029		
 Napoli-45	df77815c-6a6d-45f6-8e53-a0664e2f8438	2	Ischia-21				Node	17121		
-Ischia-21	849fe3ff-51b4-46b2-8104-c469e1444c11	1	Ercolano-27				Node	16027		
+Ischia-21	849fe3ff-51b4-46b2-8104-c469e1444c11	1	Ischia-21	TenGigE0/0/0/0			Interface	24054		
 Palinuro-29	d2d8a15f-a6d3-498f-81fa-33fba7b03874	1	Ischia-21				Node	17021		
 Battipaglia-54	aa8b51e3-1143-4d64-8a99-422ae63abe7e	1	Picerno-58				Node	16058		
 Picerno-58	e84c39f1-08dd-4fd1-af9e-b5b317112325	1	Battipaglia-54				Node	16054		
@@ -3259,25 +3379,26 @@ Aquila-22	3cd319a5-c809-4777-a0d8-cc94e75dee7a	2	Perugia-138	FourHundredGigE0/0/
 Aquila-22	3cd319a5-c809-4777-a0d8-cc94e75dee7a	3	Ancona-18	TenGigE0/0/0/6			Interface	24008		
 Aquila-22	bc134e6c-5371-4774-b273-19ba1b3ae35c	1	Aquila-22	TenGigE0/0/0/19/0			Interface	24013		
 Aquila-22	bc134e6c-5371-4774-b273-19ba1b3ae35c	2	Ercolano-27				Node	16027		
-Palinuro-29	86ef99be-3788-4153-84a5-ecfc61abe4f0	1	Positano-92				Node	16092		
-Palinuro-29	86ef99be-3788-4153-84a5-ecfc61abe4f0	2	Ischia-21				Node	16021		
-Palinuro-29	86ef99be-3788-4153-84a5-ecfc61abe4f0	3	Badia-123				Node	16123		
+Palinuro-29	86ef99be-3788-4153-84a5-ecfc61abe4f0	1	Ischia-21				Node	16021		
+Palinuro-29	86ef99be-3788-4153-84a5-ecfc61abe4f0	2	Badia-123				Node	16123		
 Oleksandriia-105	2e3b95ca-4585-4e10-a3f2-7d29956bf5f2	1	Krakow-30				Node	18030		
 Oleksandriia-105	77ad71f2-ce39-469c-afd1-56fca39bc238	1	Krakow-30				Node	17030		
 Palinuro-29	fdd26902-a984-4d5a-8908-62abbdc716d9	1	Ravello-51				Node	16051		
 Palinuro-29	fdd26902-a984-4d5a-8908-62abbdc716d9	2	Ravello-51	HundredGigE0/0/1/1			Interface	32231		
-Palinuro-29	fdd26902-a984-4d5a-8908-62abbdc716d9	3	Picerno-58	FourHundredGigE0/3/0/8			Interface	28313		
+Palinuro-29	fdd26902-a984-4d5a-8908-62abbdc716d9	3	Battipaglia-54				Node	16054		
 Palinuro-29	fdd26902-a984-4d5a-8908-62abbdc716d9	4	Ercolano-27				Node	16027		
 Palinuro-29	efbe572d-132c-4273-b1d2-d15928fb6278	1	Ravello-51				Node	16051		
 Palinuro-29	efbe572d-132c-4273-b1d2-d15928fb6278	2	Ravello-51	HundredGigE0/0/1/1			Interface	32231		
-Palinuro-29	efbe572d-132c-4273-b1d2-d15928fb6278	3	Picerno-58	FourHundredGigE0/3/0/8			Interface	28313		
+Palinuro-29	efbe572d-132c-4273-b1d2-d15928fb6278	3	Battipaglia-54				Node	16054		
 Palinuro-29	efbe572d-132c-4273-b1d2-d15928fb6278	4	Ercolano-27				Node	16027		
 Mainz-65	49cc9925-66eb-4e5c-ae26-8f42596f557c	1	Vilnius-86				Node	16186		
 Tallinn-69	2fa8f9ed-e0f9-4dee-bb01-f22eeaa771c6	1	Kyiv-47				Node	17047		
-Positano-92	698c025a-5835-47b6-8eab-0528ebc52eb8	1	Picerno-58				Node	16058		
-Positano-92	698c025a-5835-47b6-8eab-0528ebc52eb8	2	Picerno-58	FourHundredGigE0/3/0/8			Interface	28313		
-Positano-92	698c025a-5835-47b6-8eab-0528ebc52eb8	3	Ercolano-27				Node	16027		
-Ischia-21	b366179a-4214-4e03-9c6d-27255eefe0b0	1	Battipaglia-54				Node	17254		
+Ischia-21	410e6412-38eb-47d2-8d61-fcef9d148b7a	1	Ischia-21	FourHundredGigE0/1/0/0			Interface	15351		
+Positano-92	698c025a-5835-47b6-8eab-0528ebc52eb8	1	Battipaglia-54				Node	16054		
+Positano-92	698c025a-5835-47b6-8eab-0528ebc52eb8	2	Ercolano-27				Node	16027		
+Ischia-21	26f1bbd4-5537-468f-b849-9c23d26cf4a3	1	Ischia-21	FourHundredGigE0/1/0/0			Interface	15351		
+Ischia-21	26f1bbd4-5537-468f-b849-9c23d26cf4a3	2	Ravello-51	HundredGigE0/0/1/1			Interface	15558		
+Ischia-21	26f1bbd4-5537-468f-b849-9c23d26cf4a3	3	Picerno-58	FourHundredGigE0/3/0/9			Interface	24021		
 Rivne-67	abb71169-46ff-4086-87b5-113920283918	1						24000		uuid{9b92a1f1-5f2a-4ef9-beaa-e0a3cbd0c4fd}
 Rivne-67	abb71169-46ff-4086-87b5-113920283918	2						24000		uuid{7a15baaa-1f62-4eac-83d7-b94742158214}
 Rivne-67	abb71169-46ff-4086-87b5-113920283918	3	Krakow-30	Bundle-Ether3031			Interface	24025		
@@ -3308,14 +3429,14 @@ Aquila-22	91a00d0a-a66f-4d98-b468-73df9003bc6b	3	Napoli-45				Node		3fff:6:2045:
 Aquila-22	8601de33-6b08-4315-a382-fee6cf535309	1	Perugia-138				Node		3fff:6:3138::/48	
 Aquila-22	68d0ec91-dfdd-4232-825d-64fde2cc57fb	1	Ischia-21				Node		3fff:6:1021::/48	
 Aquila-22	68d0ec91-dfdd-4232-825d-64fde2cc57fb	2	Ercolano-27				Node		3fff:6:1027::/48	
-Positano-92	70e61791-0bb2-46ca-8f39-c3c09074c38f	1	Positano-92	HundredGigE0/0/1/0			Interface	15958		uuid{f636f0c6-5324-4e47-9412-aff9cb67bbf0}
-Positano-92	70e61791-0bb2-46ca-8f39-c3c09074c38f	2	Picerno-58	HundredGigE0/3/2/1			Interface	15551		uuid{572610a5-8e7f-4029-bfa7-2e507459bafe}
-Positano-92	70e61791-0bb2-46ca-8f39-c3c09074c38f	3	Ravello-51	HundredGigE0/0/0/24			Interface	15229		uuid{57be0b8c-65c3-4a47-a4c0-17b3604bbee0}
-Positano-92	f1752f28-21b3-405e-9aa0-0902801e7f34	1	Positano-92	HundredGigE0/0/1/2/0			Interface	15929		uuid{78c40dc8-349c-4cc1-a344-d751ddb4101d}
-Palinuro-29	ae8e93ee-53f3-4333-a1bd-74d2e0f78a90	1	Palinuro-29	HundredGigE0/0/1/2/0			Interface	15651		uuid{15af2ebf-d894-469b-b1db-565c71e133bc}
-Palinuro-29	91ecdedd-c843-4cfd-9f88-a250a7f2891d	1	Palinuro-29	HundredGigE0/0/1/0			Interface	15551		uuid{22b09bbd-196d-4808-852c-d883684470b6}
-Palinuro-29	91ecdedd-c843-4cfd-9f88-a250a7f2891d	2	Ravello-51	HundredGigE0/0/1/1			Interface	15558		uuid{6676d667-dad2-4488-bd03-dfba0af2f684}
-Palinuro-29	91ecdedd-c843-4cfd-9f88-a250a7f2891d	3	Picerno-58	HundredGigE0/3/2/0			Interface	15592		uuid{d455d6e6-2a05-47f1-a98a-f9cf1299c15a}
+Positano-92	70e61791-0bb2-46ca-8f39-c3c09074c38f	1	Positano-92	HundredGigE0/0/1/0			Interface	15958		
+Positano-92	70e61791-0bb2-46ca-8f39-c3c09074c38f	2	Picerno-58	HundredGigE0/3/2/1			Interface	15551		
+Positano-92	70e61791-0bb2-46ca-8f39-c3c09074c38f	3	Ravello-51	HundredGigE0/0/0/24			Interface	15229		
+Positano-92	f1752f28-21b3-405e-9aa0-0902801e7f34	1	Positano-92	HundredGigE0/0/1/2/0			Interface	15929		
+Palinuro-29	ae8e93ee-53f3-4333-a1bd-74d2e0f78a90	1	Palinuro-29	HundredGigE0/0/1/2/0			Interface	15651		
+Palinuro-29	91ecdedd-c843-4cfd-9f88-a250a7f2891d	1	Palinuro-29	HundredGigE0/0/1/0			Interface	15551		
+Palinuro-29	91ecdedd-c843-4cfd-9f88-a250a7f2891d	2	Ravello-51	HundredGigE0/0/1/1			Interface	15558		
+Palinuro-29	91ecdedd-c843-4cfd-9f88-a250a7f2891d	3	Picerno-58	HundredGigE0/3/2/0			Interface	15592		
 Aquila-22	712b1e1a-d9c6-410e-9b06-a9e5889425ba	1	Ischia-21				Node		3fff:6:1021::/48	
 Torre-125	84e9d055-2f29-439a-b35d-e56d161e5c7f	1						22		uuid{8246195c-9b5d-4a24-a6c1-b9093a9d7cb0}
 Torre-125	84e9d055-2f29-439a-b35d-e56d161e5c7f	2	Positano-92				Node	16092		
@@ -3352,17 +3473,18 @@ Torre-125	7bb4c340-6994-4aea-b75a-986cfb0aafb4	1	Positano-92				Node	16092
 Torre-125	7bb4c340-6994-4aea-b75a-986cfb0aafb4	2	Ischia-21				Node	16021		
 Torre-125	7bb4c340-6994-4aea-b75a-986cfb0aafb4	3	Badia-123				Node	16123		
 Napoli-50	5206bed7-7ec9-4c91-b3f8-fdeef4eee5e4	1	Kyiv-47				Node	16147		
-Positano-92	7ad1bf05-a807-4b7f-bc5c-08d27e03405a	1	Picerno-58				Node	16058		
-Positano-92	7ad1bf05-a807-4b7f-bc5c-08d27e03405a	2	Picerno-58	FourHundredGigE0/3/0/8			Interface	28313		
-Positano-92	7ad1bf05-a807-4b7f-bc5c-08d27e03405a	3	Ercolano-27				Node	16027		
-Ischia-21	7066c3a4-270d-4494-a139-a98af2ced7a2	1	Ercolano-27				Node	16027		
+Positano-92	7ad1bf05-a807-4b7f-bc5c-08d27e03405a	1	Battipaglia-54				Node	16054		
+Positano-92	7ad1bf05-a807-4b7f-bc5c-08d27e03405a	2	Ercolano-27				Node	16027		
+Ischia-21	7066c3a4-270d-4494-a139-a98af2ced7a2	1	Ischia-21	TenGigE0/0/0/0			Interface	24054		
 Palinuro-29	eb200348-d81b-44be-9331-bc6bad77e321	1	Palinuro-29	HundredGigE0/0/1/0			Interface	15551		
 Palinuro-29	eb200348-d81b-44be-9331-bc6bad77e321	2	Ravello-51	HundredGigE0/0/1/1			Interface	15558		
 Palinuro-29	eb200348-d81b-44be-9331-bc6bad77e321	3	Picerno-58	HundredGigE0/3/2/0			Interface	15592		
 Picerno-58	6e11c697-9cff-4a4c-bde4-4de3e858b1fb	1	Ravello-51				Node	16051		
+Ischia-21	5f6428a1-da10-45b7-bbba-971910f50534	1	Ischia-21	FourHundredGigE0/1/0/0			Interface	24061		
 Picerno-58	7c26a3aa-c1c8-4c89-9826-28d53b217117	1	Picerno-58	HundredGigE0/3/2/1			Interface	24024		
 Picerno-58	0585540c-01d6-4867-83f0-044b4f87dfe9	1	Picerno-58	HundredGigE0/3/2/1			Interface	24024		
 Palinuro-29	f8c2927b-f19e-4ab2-967d-44fc12ed26de	1	Palinuro-29	HundredGigE0/0/1/2/0			Interface	15651		
+Ischia-21	6f460153-8a4c-436d-90fd-8187e7bb3a41	1	Ischia-21	FourHundredGigE0/1/0/0			Interface	24061		
 Positano-92	cff23cee-fa5e-49c1-8367-4b02d20a5896	1	Positano-92	HundredGigE0/0/1/0			Interface	15958		
 Positano-92	cff23cee-fa5e-49c1-8367-4b02d20a5896	2	Picerno-58	HundredGigE0/3/2/1			Interface	15551		
 Positano-92	cff23cee-fa5e-49c1-8367-4b02d20a5896	3	Ravello-51	HundredGigE0/0/0/24			Interface	15229		
@@ -3372,7 +3494,7 @@ Picerno-58	f8a3481a-43a5-4c46-bb65-6be7d29c039b	1	Picerno-58	HundredGigE0/3/2/1	
 Ischia-21	74a2f931-d25e-47bf-8df3-d2bacaddc55a	1	Ischia-21	TenGigE0/0/0/18			Interface		3fff:6:1021:e006::/64	
 Ischia-21	74a2f931-d25e-47bf-8df3-d2bacaddc55a	2	Picerno-58	HundredGigE0/3/2/0			Interface		3fff:6:1058:e002::/64	
 Positano-92	5a30d8d2-6186-4b9c-a04d-2c81fcb507ea	1	Positano-92	HundredGigE0/0/1/0			Interface		3fff:6:1092:e00c::/64	
-Positano-92	5a30d8d2-6186-4b9c-a04d-2c81fcb507ea	2	Ischia-21				Node		3fff:6:1021::/48	
+Positano-92	5a30d8d2-6186-4b9c-a04d-2c81fcb507ea	2	Picerno-58	TenGigE0/3/0/1			Interface		3fff:6:1058:e004::/64	
 Picerno-58	4ea99e11-1262-4761-9347-b499f97023f2	1	Picerno-58	HundredGigE0/3/2/1			Interface	24024		
 Ercolano-27	45fd3991-c111-4681-862a-d4cb6efc7ef9	1	Ischia-21				Node	16021		
 Ercolano-27	45fd3991-c111-4681-862a-d4cb6efc7ef9	2	Ancona-18				Node	16018		
@@ -3392,7 +3514,8 @@ Ischia-21	254ce977-3d77-4d0d-a98c-18c9039af132	1	Aquila-22				Node	16022
 Napoli-45	310a07d9-ee2b-44c6-b308-62f0fe811d98	1	Positano-92				Node	16092		
 Napoli-45	310a07d9-ee2b-44c6-b308-62f0fe811d98	2	Ischia-21				Node	16021		
 Napoli-45	310a07d9-ee2b-44c6-b308-62f0fe811d98	3	Aquila-22				Node	16022		
-Ercolano-27	5433689f-d3be-4a9a-aa96-5c7f42450b2c	1	Aquila-22				Node	16022		
+Ercolano-27	5433689f-d3be-4a9a-aa96-5c7f42450b2c	1	Ercolano-27	TenGigE0/0/0/0			Interface	24062		
+Ercolano-27	5433689f-d3be-4a9a-aa96-5c7f42450b2c	2	Aquila-22				Node	16022		
 Perugia-138	645967a0-4704-4a10-9317-34e93db3df99	1	Aquila-22				Node	16022		
 Caserta-38	8719f35d-23db-4945-9e21-dc41e139ed64	1	Palinuro-29				Node	16029		
 Caserta-38	8719f35d-23db-4945-9e21-dc41e139ed64	2	Ravello-51				Node	16051		
@@ -3405,9 +3528,8 @@ Napoli-45	7bc341a5-a6d3-4cc2-9e57-d7b4f9930057	1	Positano-92				Node	16092
 Napoli-45	7bc341a5-a6d3-4cc2-9e57-d7b4f9930057	2	Ischia-21				Node	16021		
 Napoli-45	7bc341a5-a6d3-4cc2-9e57-d7b4f9930057	3	Perugia-138				Node	16138		
 Napoli-45	7e0b4106-b6fe-4968-9b46-2ba5958baf12	1	Positano-92				Node	16092		
-Napoli-45	7e0b4106-b6fe-4968-9b46-2ba5958baf12	2	Picerno-58				Node	16058		
-Napoli-45	7e0b4106-b6fe-4968-9b46-2ba5958baf12	3	Picerno-58	FourHundredGigE0/3/0/8			Interface	28313		
-Napoli-45	7e0b4106-b6fe-4968-9b46-2ba5958baf12	4	Ercolano-27				Node	16027		
+Napoli-45	7e0b4106-b6fe-4968-9b46-2ba5958baf12	2	Battipaglia-54				Node	16054		
+Napoli-45	7e0b4106-b6fe-4968-9b46-2ba5958baf12	3	Ercolano-27				Node	16027		
 Ercolano-27	739d3f93-4380-4779-9641-fc5b8b1264de	1	Palinuro-29				Node	16029		
 Ercolano-27	739d3f93-4380-4779-9641-fc5b8b1264de	2	Napoli-45				Node	16045		
 Aquila-22	78abfdcf-037d-447b-85a2-f588e5fdadd8	1	Perugia-138				Node	16138		
@@ -3419,7 +3541,8 @@ Caserta-38	b986cede-6447-4f95-bb5f-05084804b7a0	2	Ravello-51				Node	16051
 Caserta-38	b986cede-6447-4f95-bb5f-05084804b7a0	3	Ravello-51	HundredGigE0/0/1/1			Interface	32231		
 Caserta-38	b986cede-6447-4f95-bb5f-05084804b7a0	4	Ischia-21				Node	16021		
 Caserta-38	b986cede-6447-4f95-bb5f-05084804b7a0	5	Perugia-138				Node	16138		
-Ercolano-27	71d300fe-e40a-42da-ae76-7482b254ec33	1	Perugia-138				Node	16138		
+Ercolano-27	71d300fe-e40a-42da-ae76-7482b254ec33	1	Ercolano-27	TenGigE0/0/0/0			Interface	24062		
+Ercolano-27	71d300fe-e40a-42da-ae76-7482b254ec33	2	Perugia-138				Node	16138		
 Ischia-21	999e0ff0-9118-4b63-8202-23aafd19c399	1	Perugia-138				Node	16138		
 Perugia-138	8cb60776-0ab3-4c61-b8c9-1841739bb8d9	1	Ischia-21				Node	16021		
 Aquila-22	4d15b038-2e90-4cef-9c3f-1ce984526775	1	Ischia-21				Node	16021		
@@ -3434,8 +3557,8 @@ Caserta-38	b20cd3df-f6cc-4c71-a13d-268e180ad396	3	Ravello-51	HundredGigE0/0/1/1	
 Caserta-38	b20cd3df-f6cc-4c71-a13d-268e180ad396	4	Ischia-21				Node	16021		
 Napoli-45	7cbf8d35-bf04-4ce5-ac1f-7733e739884a	1	Positano-92				Node		3fff:6:1092::/48	
 Napoli-45	7cbf8d35-bf04-4ce5-ac1f-7733e739884a	2	Positano-92	HundredGigE0/0/1/0			Interface		3fff:6:1092:e00c::/64	
-Napoli-45	7cbf8d35-bf04-4ce5-ac1f-7733e739884a	3	Ischia-21				Node		3fff:6:1021::/48	
-Napoli-45	7cbf8d35-bf04-4ce5-ac1f-7733e739884a	4	Ercolano-27				Node		3fff:6:1027::/48	
+Napoli-45	7cbf8d35-bf04-4ce5-ac1f-7733e739884a	3	Picerno-58	TenGigE0/3/0/1			Interface		3fff:6:1058:e004::/64	
+Napoli-45	7cbf8d35-bf04-4ce5-ac1f-7733e739884a	4	Ischia-21	TenGigE0/0/0/0			Interface		3fff:6:1021:e004::/64	
 Napoli-45	7cbf8d35-bf04-4ce5-ac1f-7733e739884a	5	Ancona-18				Node		3fff:6:3018::/48	
 Napoli-45	1ffd50e9-2339-4b6e-ad1e-f59b2bb4dda8	1	Palinuro-29				Node		3fff:6:1029::/48	
 Napoli-45	1ffd50e9-2339-4b6e-ad1e-f59b2bb4dda8	2	Ercolano-27				Node		3fff:6:1027::/48	
@@ -3446,14 +3569,34 @@ Perugia-138	8b591597-b0b4-4508-b8e9-7544880ed4dc	3	Napoli-45				Node	16045
 Caserta-38	d31c38b0-ee4d-4203-9d4b-c31d07607dec	1	Palinuro-29				Node	16029		
 Caserta-38	d31c38b0-ee4d-4203-9d4b-c31d07607dec	2	Ravello-51				Node	16051		
 Caserta-38	d31c38b0-ee4d-4203-9d4b-c31d07607dec	3	Ravello-51	HundredGigE0/0/1/1			Interface	32231		
-Caserta-38	d31c38b0-ee4d-4203-9d4b-c31d07607dec	4	Picerno-58	FourHundredGigE0/3/0/8			Interface	28313		
+Caserta-38	d31c38b0-ee4d-4203-9d4b-c31d07607dec	4	Battipaglia-54				Node	16054		
 Caserta-38	d31c38b0-ee4d-4203-9d4b-c31d07607dec	5	Ercolano-27				Node	16027		
 Ischia-21	6ad770d9-ca16-4e31-8489-73cd533303a0	1	Palinuro-29				Node	16029		
 Ischia-21	6ad770d9-ca16-4e31-8489-73cd533303a0	2	Napoli-45				Node	16045		
-Ercolano-27	1e5e8858-bd4d-44e7-a830-e22442408694	1	Ischia-21				Node	16021		
+Ercolano-27	1e5e8858-bd4d-44e7-a830-e22442408694	1	Ercolano-27	TenGigE0/0/0/0			Interface	24062		
 Napoli-45	01ec3900-afbf-4a4a-9279-a699fd0da519	1	Palinuro-29				Node		3fff:6:1029::/48	
 Napoli-45	01ec3900-afbf-4a4a-9279-a699fd0da519	2	Ercolano-27				Node		3fff:6:1027::/48	
 Napoli-45	01ec3900-afbf-4a4a-9279-a699fd0da519	3	Ancona-18				Node		3fff:6:3018::/48	
+Ravello-51	3af094d8-2f05-4c47-8cd2-0490f7c335bf	1	Ravello-51	FourHundredGigE0/0/3/0			Interface	32205		
+Ischia-21	18ea8785-11eb-436e-bc26-84b114cd58a6	1	Ravello-51				Node	19051		
+Ravello-51	3990132f-1289-4b16-85a5-003efa3b12eb	1	Ravello-51	HundredGigE0/0/1/1			Interface	32231		
+Ravello-51	864ed780-49e8-4de3-b6a5-37e1e939f9e5	1	Ravello-51	HundredGigE0/0/1/1			Interface	32231		
+Ravello-51	ce8b5b28-2b00-41c0-b91b-84ccd8f27b1b	1	Ischia-21				Node	17121		
+Ravello-51	441e3624-d029-4321-8a04-a9db2c9483bf	1	Ravello-51	FourHundredGigE0/0/3/0			Interface	32205		
+Ravello-51	5bf27190-4552-4f57-85eb-4b639956caec	1	Palinuro-29				Node	17929		
+Napoli-45	cbd901a3-5c00-4ce3-9fac-7f73ce6b3149	1	Palinuro-29				Node	18029		
+Napoli-45	cbd901a3-5c00-4ce3-9fac-7f73ce6b3149	2	Ravello-51				Node	19051		
+Ercolano-27	d4c83cd7-2350-44a2-92f4-ed53aac83ec9	1	Ravello-51				Node	19051		
+Ravello-51	33fed2a6-37df-4de1-af88-cdb975aca119	1	Picerno-58				Node	16058		
+Ravello-51	ab07dcd1-04cb-4444-9150-655fe88283a9	1	Ravello-51	HundredGigE0/0/1/1			Interface	32231		
+Ravello-51	ab07dcd1-04cb-4444-9150-655fe88283a9	2	Picerno-58	TenGigE0/3/0/1			Interface	24041		
+Ravello-51	0ed6424c-6279-4ad4-a9d3-043a970668ed	1	Ravello-51	HundredGigE0/0/0/24			Interface	32215		
+Ravello-51	0ed6424c-6279-4ad4-a9d3-043a970668ed	2	Palinuro-29	TenGigE0/0/0/17			Interface	24022		
+Ravello-51	0ed6424c-6279-4ad4-a9d3-043a970668ed	3	Picerno-58				Node	16058		
+Ravello-51	d6e8222b-5d92-4bf6-bf0f-7c36747f5f6a	1	Ravello-51	HundredGigE0/0/1/1			Interface	32231		
+Ravello-51	2f14c0e1-25de-47b6-bf9e-dd09016290fa	1	Ravello-51	HundredGigE0/0/1/1			Interface	32231		
+Caserta-38	43ffa680-16fd-41aa-b669-66b270e8cddc	1	Palinuro-29				Node	18029		
+Caserta-38	43ffa680-16fd-41aa-b669-66b270e8cddc	2	Ravello-51				Node	19051		
 
 <ServiceClasses>
 Name
@@ -3466,74 +3609,74 @@ Default
 <InterfaceTraffic>
 Node	Interface	TrafficLevel	Queue	TraffMeas	GrowthPercent
 Ravello-51	HundredGigE0/0/0/26	Default		0.002	
-Battipaglia-54	HundredGigE0/0/0/26	Default		0.006	
+Battipaglia-54	HundredGigE0/0/0/26	Default		0.007	
 Perugia-138	FourHundredGigE0/0/2/0	Default		0.028	
-Ancona-18	FourHundredGigE0/0/2/0	Default		1.377	
+Ancona-18	FourHundredGigE0/0/2/0	Default		0.028	
 Perugia-138	FourHundredGigE0/0/2/2	Default		0.058	
-Ancona-18	FourHundredGigE0/0/2/2	Default		0.003	
-Ravello-51	TenGigE0/0/0/2	Default		0.062	
-Palinuro-29	TenGigE0/0/0/2	Default		6.78	
-Ravello-51	HundredGigE0/0/0/24	Default		8.755	
-Palinuro-29	HundredGigE0/0/1/0	Default		0.92	
+Ancona-18	FourHundredGigE0/0/2/2	Default		0.002	
+Ravello-51	TenGigE0/0/0/2	Default		0.074	
+Palinuro-29	TenGigE0/0/0/2	Default		2.769	
+Ravello-51	HundredGigE0/0/0/24	Default		3.313	
+Palinuro-29	HundredGigE0/0/1/0	Default		0.969	
 Madrid-40	TenGigE0/0/0/25	Default		0.053	
 Vilnius-86	TenGigE0/0/0/15	Default		0.056	
-Palinuro-29	HundredGigE0/0/1/2/0	Default		4.904	
-Positano-92	HundredGigE0/0/1/2/0	Default		3.598	
+Palinuro-29	HundredGigE0/0/1/2/0	Default		3.517	
+Positano-92	HundredGigE0/0/1/2/0	Default		3.6	
 Palinuro-29	TenGigE0/0/0/1	Default		0.01	
 Positano-92	TenGigE0/0/0/0	Default		0.01	
 Palinuro-29	TenGigE0/0/0/17	Default		0.033	
-Positano-92	TenGigE0/0/0/7	Default		2.766	
-Ischia-21	TenGigE0/0/0/0	Default		5.786	
-Ercolano-27	TenGigE0/0/0/0	Default		2.989	
+Positano-92	TenGigE0/0/0/7	Default		2.721	
+Ischia-21	TenGigE0/0/0/0	Default		3.105	
+Ercolano-27	TenGigE0/0/0/0	Default		3.049	
 Ancona-18	TenGigE0/0/0/6	Default		0.072	
-Ercolano-27	TenGigE0/0/0/6	Default		1.366	
-Ravello-51	TenGigE0/0/0/1	Default		6.835	
-Ercolano-27	TenGigE0/0/0/10	Default		8.073	
-Battipaglia-54	HundredGigE0/0/0/3	Default		2.742	
-Ercolano-27	HundredGigE0/1/1/1	Default		3.077	
+Ercolano-27	TenGigE0/0/0/6	Default		0.049	
+Ravello-51	TenGigE0/0/0/1	Default		0.027	
+Ercolano-27	TenGigE0/0/0/10	Default		0.074	
+Battipaglia-54	HundredGigE0/0/0/3	Default		8833.61	
+Ercolano-27	HundredGigE0/1/1/1	Default		9401.169	
 Madrid-40	TenGigE0/0/0/24	Default		0.085	
 Tallinn-69	TenGigE0/0/0/35	Default		0.065	
 Palinuro-29	TenGigE0/0/0/14	Default		0.028	
-Caserta-38	TenGigE0/0/0/14	Default		0.033	
-Battipaglia-54	FourHundredGigE0/0/0/4	Default		2.721	
-Krakow-30	FourHundredGigE0/0/1/4	Default		2.69	
-Perugia-138	FortyGigE0/0/0/24	Default		1.665	
-Aquila-22	FortyGigE0/0/0/24	Default		0.375	
+Caserta-38	TenGigE0/0/0/14	Default		0.034	
+Battipaglia-54	FourHundredGigE0/0/0/4	Default		2.73	
+Krakow-30	FourHundredGigE0/0/1/4	Default		2.7	
+Perugia-138	FortyGigE0/0/0/24	Default		0.315	
+Aquila-22	FortyGigE0/0/0/24	Default		0.373	
 Caserta-38	TenGigE0/0/0/4	Default		0.012	
 Napoli-45	TenGigE0/0/0/24	Default		0.048	
-Palinuro-29	TenGigE0/0/0/3	Default		7.983	
-Napoli-45	TenGigE0/0/0/20	Default		5.421	
-Oleksandriia-105	TenGigE0/0/0/19	Default		2.717	
+Palinuro-29	TenGigE0/0/0/3	Default		2.565	
+Napoli-45	TenGigE0/0/0/20	Default		0.027	
+Oleksandriia-105	TenGigE0/0/0/19	Default		2.718	
 Poltava-88	TenGigE0/0/0/4	Default		2.735	
 Positano-92	TenGigE0/0/0/6	Default		0.014	
-Napoli-45	TenGigE0/0/0/16	Default		2.535	
-Ravello-51	HundredGigE0/0/1/1	Default		0.861	
-Picerno-58	HundredGigE0/3/2/1	Default		0.608	
+Napoli-45	TenGigE0/0/0/16	Default		2.54	
+Ravello-51	HundredGigE0/0/1/1	Default		8931.365	
+Picerno-58	HundredGigE0/3/2/1	Default		8881.197	
 Palinuro-29	TenGigE0/0/0/9	Default		2.518	
-Auletta-81	TenGigE0/0/0/9	Default		2.508	
+Auletta-81	TenGigE0/0/0/9	Default		2.509	
 Potenza-17	TenGigE0/0/0/10	Default		0.011	
-Auletta-81	TenGigE0/0/0/5	Default		0.026	
-Positano-92	TenGigE0/0/0/4	Default		0.028	
+Auletta-81	TenGigE0/0/0/5	Default		0.027	
+Positano-92	TenGigE0/0/0/4	Default		0.027	
 Picerno-58	TenGigE0/3/0/2	Default		0.071	
-Positano-92	HundredGigE0/0/1/0	Default		2.047	
+Positano-92	HundredGigE0/0/1/0	Default		0.675	
 Picerno-58	HundredGigE0/3/2/0	Default		0.832	
 Krakow-30	Bundle-Ether2830	Default		0.114	
-Kyiv-28	Bundle-Ether2830	Default		2.832	
+Kyiv-28	Bundle-Ether2830	Default		2.833	
 Rivne-67	Bundle-Ether2867	Default		0.181	
 Kyiv-28	Bundle-Ether2867	Default		0.151	
-Oleksandriia-105	Bundle-Ether28105	Default		2.86	
+Oleksandriia-105	Bundle-Ether28105	Default		2.861	
 Kyiv-28	Bundle-Ether28105	Default		0.198	
 Kyiv-28	TenGigE0/0/0/2/2	Default		0.028	
-Sumy-52	TenGigE0/11/0/2	Default		0.011	
+Sumy-52	TenGigE0/11/0/2	Default		0.012	
 Lyon-23	TenGigE0/0/0/6	Default		0.002	
 Bordeaux-33	TenGigE0/0/0/6	Default		0.002	
-Copenhagen-24	TenGigE0/0/0/17	Default		18.453	
+Copenhagen-24	TenGigE0/0/0/17	Default		18.515	
 Bordeaux-33	TenGigE0/0/0/2	Default		18.389	
-Kyiv-47	TenGigE0/0/0/27	Default		0.054	
-Mainz-65	TenGigE0/0/0/0	Default		0.205	
+Kyiv-47	TenGigE0/0/0/27	Default		0.055	
+Mainz-65	TenGigE0/0/0/0	Default		0.204	
 Oleksandriia-105	Bundle-Ether15113	Default		0.16	
 Chernivtsi-113	Bundle-Ether15113	Default		2.902	
-Krakow-30	Bundle-Ether30113	Default		2.727	
+Krakow-30	Bundle-Ether30113	Default		2.736	
 Chernivtsi-113	Bundle-Ether30113	Default		0.02	
 Krakow-30	Bundle-Ether3031	Default		0.041	
 Lviv-31	Bundle-Ether3031	Default		0.043	
@@ -3541,54 +3684,56 @@ Oleksandriia-105	Bundle-Ether31105	Default		0.159
 Lviv-31	Bundle-Ether31105	Default		0.155	
 Bordeaux-33	TenGigE0/0/0/1	Default		0.002	
 Lille-26	TenGigE0/0/0/9	Default		0.002	
-Copenhagen-24	TenGigE0/0/0/16	Default		18.325	
+Copenhagen-24	TenGigE0/0/0/16	Default		18.386	
 Lille-26	TenGigE0/0/0/0	Default		18.45	
-Vilnius-86	TenGigE0/0/0/9	Default		0.09	
+Vilnius-86	TenGigE0/0/0/9	Default		0.091	
 Marseille-77	TenGigE0/0/0/3/2	Default		0.066	
-Madrid-40	TenGigE0/0/0/27	Default		0.172	
-Marseille-77	TenGigE0/0/0/3/3	Default		0.18	
-Tallinn-69	TenGigE0/0/0/20	Default		0.34	
-Marseille-77	TenGigE0/0/0/1/0	Default		0.284	
-Madrid-40	TenGigE0/0/0/23	Default		0.194	
+Madrid-40	TenGigE0/0/0/27	Default		0.173	
+Marseille-77	TenGigE0/0/0/3/3	Default		0.181	
+Tallinn-69	TenGigE0/0/0/20	Default		0.339	
+Marseille-77	TenGigE0/0/0/1/0	Default		0.286	
+Madrid-40	TenGigE0/0/0/23	Default		0.195	
 Napoli-50	TenGigE0/0/1/15	Default		0.17	
-Madrid-40	TenGigE0/0/0/17	Default		0.176	
+Madrid-40	TenGigE0/0/0/17	Default		0.177	
 Napoli-50	TenGigE0/0/1/0	Default		0.224	
-Napoli-50	TenGigE0/0/1/3	Default		0.061	
-Paris-66	TenGigE0/0/0/3	Default		0.056	
+Napoli-50	TenGigE0/0/1/3	Default		0.062	
+Paris-66	TenGigE0/0/0/3	Default		0.057	
 Kyiv-47	TenGigE0/0/0/28	Default		0.036	
-Paris-66	TenGigE0/0/0/13	Default		0.013	
+Paris-66	TenGigE0/0/0/13	Default		0.014	
 Kyiv-47	TenGigE0/0/0/10	Default		0.202	
 Riga-46	TenGigE0/0/0/23	Default		0.064	
 Napoli-50	TenGigE0/0/1/9	Default		0.05	
 Riga-46	TenGigE0/0/0/21	Default		0.05	
-Paris-66	TenGigE0/0/0/19	Default		0.042	
+Paris-66	TenGigE0/0/0/19	Default		0.043	
 Riga-46	TenGigE0/0/0/31	Default		0.021	
 Napoli-50	TenGigE0/0/1/16	Default		0.171	
 Salerno-34	TenGigE0/0/0/11	Default		0.171	
-Riga-46	TenGigE0/0/0/22	Default		0.242	
+Riga-46	TenGigE0/0/0/22	Default		0.241	
 Salerno-34	TenGigE0/0/0/8	Default		0.204	
 Napoli-50	TenGigE0/0/1/17	Default		0.172	
-Salerno-34	TenGigE0/0/0/17	Default		0.195	
-Marseille-77	TenGigE0/0/0/3/1	Default		0.321	
-Salerno-34	TenGigE0/0/0/16	Default		0.296	
+Salerno-34	TenGigE0/0/0/17	Default		0.196	
+Marseille-77	TenGigE0/0/0/3/1	Default		0.322	
+Salerno-34	TenGigE0/0/0/16	Default		0.297	
 Riga-46	TenGigE0/0/0/27	Default		0.333	
-Stuttgart-64	TenGigE0/0/0/21	Default		0.225	
-Mainz-65	TenGigE0/0/0/1	Default		0.232	
-Stuttgart-64	TenGigE0/0/0/15	Default		0.36	
-Paris-66	TenGigE0/0/0/5	Default		0.049	
+Stuttgart-64	TenGigE0/0/0/21	Default		0.226	
+Mainz-65	TenGigE0/0/0/1	Default		0.231	
+Stuttgart-64	TenGigE0/0/0/15	Default		0.362	
+Paris-66	TenGigE0/0/0/5	Default		0.05	
 Stuttgart-64	TenGigE0/0/0/20	Default		0.024	
-Kyiv-47	TenGigE0/0/0/30	Default		0.049	
+Kyiv-47	TenGigE0/0/0/30	Default		0.048	
 Stuttgart-64	TenGigE0/0/0/10	Default		0.051	
-Battipaglia-54	FourHundredGigE0/0/0/6	Default		0.003	
-Picerno-58	FourHundredGigE0/3/0/9	Default		0.004	
-Picerno-58	FourHundredGigE0/3/0/8	Default		0.013	
-Battipaglia-54	FourHundredGigE0/0/0/2	Default		0.012	
+Battipaglia-54	FourHundredGigE0/0/0/6	Default		8930.662	
+Picerno-58	FourHundredGigE0/3/0/9	Default		8880.611	
+Picerno-58	FourHundredGigE0/3/0/8	Default		0.0	
+Battipaglia-54	FourHundredGigE0/0/0/2	Default		0.0	
 Battipaglia-54	FourHundredGigE0/0/0/14	Default		0.034	
 Ischia-21	FourHundredGigE0/1/0/7	Default		0.002	
-Picerno-58	TenGigE0/3/0/1	Default		1.465	
-Ischia-21	TenGigE0/0/0/18	Default		0.123	
-Aquila-22	TenGigE0/0/0/19/0	Default		2.741	
-Ischia-21	TenGigE0/0/0/19	Default		1.384	
+Picerno-58	TenGigE0/3/0/1	Default		0.105	
+Ischia-21	TenGigE0/0/0/18	Default		0.148	
+Aquila-22	TenGigE0/0/0/19/0	Default		0.025	
+Ischia-21	TenGigE0/0/0/19	Default		0.067	
+Ravello-51	FourHundredGigE0/0/3/0	Default		8833.534	
+Ischia-21	FourHundredGigE0/1/0/0	Default		8903.968	
 
 <InterfaceIPAddresses>
 Node	Interface	IPv4Address	IPv4PrefixLength	IPv6Address	IPv6PrefixLength
@@ -3788,6 +3933,8 @@ Aquila-22	TenGigE0/0/0/19/0	10.195.22.22
 Aquila-22	TenGigE0/0/0/19/0			3fff:9::300:21:22:22	
 Ischia-21	TenGigE0/0/0/19	10.195.22.21			
 Ischia-21	TenGigE0/0/0/19			3fff:9::300:21:22:21	
+Ravello-51	FourHundredGigE0/0/3/0	10.196.51.51			
+Ischia-21	FourHundredGigE0/1/0/0	10.196.51.21			
 
 <LSPTraffic>
 Name	Source	TrafficLevel	Queue	TraffMeas
@@ -3848,7 +3995,7 @@ srte_c_138123_ep_10.121.123.123	Perugia-138	Default		0.0
 srte_c_231_ep_10.141.21.21	Battipaglia-54	Default		0.0
 srte_c_232_ep_10.141.21.21	Battipaglia-54	Default		0.0
 srte_c_111_ep_10.119.30.30	Sumy-52	Default		0.0
-srte_c_7477132_ep_10.141.21.21	Ercolano-27	Default		0.009
+srte_c_7477132_ep_10.141.21.21	Ercolano-27	Default		0.0
 srte_c_4527_ep_10.120.27.27	Napoli-45	Default		0.0
 srte_c_3029_ep_10.142.29.29	Krakow-30	Default		0.0
 srte_c_3092_ep_10.144.92.92	Krakow-30	Default		0.0
@@ -3878,17 +4025,17 @@ srte_c_4003_ep_10.120.27.27	Positano-92	Default		0.0
 srte_c_2154_ep_10.141.21.21	Battipaglia-54	Default		0.0
 srte_c_30_ep_10.120.27.27	Perugia-138	Default		0.0
 srte_c_102_ep_10.144.92.92	Palinuro-29	Default		0.0
-srte_c_12_ep_10.141.21.21	Ercolano-27	Default		0.0
+srte_c_12_ep_10.141.21.21	Ercolano-27	Default		8542.846
 srte_c_7477131_ep_10.120.27.27	Caserta-38	Default		0.0
 srte_c_108_ep_10.128.58.58	Krakow-30	Default		0.0
 srte_c_10102006_ep_10.134.54.54	Ischia-21	Default		0.0
-srte_c_12_ep_10.120.27.27	Ischia-21	Default		0.0
+srte_c_12_ep_10.120.27.27	Ischia-21	Default		8542.834
 srte_c_45_ep_10.138.86.86	Kyiv-47	Default		0.0
 srte_c_44_ep_10.138.86.86	Kyiv-47	Default		0.0
 srte_c_43_ep_10.138.86.86	Kyiv-47	Default		0.0
 srte_c_108_ep_10.119.30.30	Picerno-58	Default		0.0
 srte_c_4004_ep_10.120.27.27	Ischia-21	Default		0.0
-srte_c_7477131_ep_10.141.21.21	Napoli-45	Default		0.018
+srte_c_7477131_ep_10.141.21.21	Napoli-45	Default		0.019
 srte_c_4003_ep_10.120.27.27	Ischia-21	Default		0.0
 srte_c_124_ep_10.141.21.21	Palinuro-29	Default		0.0
 srte_c_107_ep_10.128.58.58	Battipaglia-54	Default		0.0
@@ -3953,7 +4100,7 @@ srte_c_707_ep_10.124.51.51	Picerno-58	Default		0.0
 srte_c_61021_ep_3fff:2:0:100:92::	Ischia-21	Default		0.0
 srte_c_61021_ep_3fff:2:0:100:21::	Positano-92	Default		0.0
 srte_c_3000_ep_10.124.51.51	Picerno-58	Default		0.0
-Ercolano_Picerno_backup	Ercolano-27	Default		0.0
+Ercolano_Picerno_backup	Ercolano-27	Default		0.007
 Ravello-Picerno-5158	Ravello-51	Default		0.0
 tunnel-te21511	Ischia-21	Default		0.0
 srte_c_5100_ep_10.143.18.18	Ercolano-27	Default		0.0
@@ -4003,6 +4150,23 @@ srte_c_61004_ep_10.120.27.27	Caserta-38	Default		0.0
 srte_c_61004_ep_10.118.45.45	Ischia-21	Default		0.0
 srte_c_61004_ep_10.141.21.21	Ercolano-27	Default		0.0
 srte_c_61016_ep_3fff:2:0:300:18::	Napoli-45	Default		0.0
+srte_c_1001_ep_10.134.54.54	Ravello-51	Default		0.0
+srte_c_2151_ep_10.141.21.21	Ravello-51	Default		0.0
+srte_c_7477131_ep_10.124.51.51	Ischia-21	Default		0.0
+srte_c_3000_ep_10.128.58.58	Ravello-51	Default		0.002
+srte_c_3020_ep_10.128.58.58	Ravello-51	Default		0.0
+srte_c_7477131_ep_10.141.21.21	Ravello-51	Default		0.0
+srte_c_2000_ep_10.134.54.54	Ravello-51	Default		0.0
+srte_c_21511_ep_10.141.21.21	Ravello-51	Default		0.0
+srte_c_129_ep_10.142.29.29	Ravello-51	Default		0.0
+srte_c_7477131_ep_10.124.51.51	Napoli-45	Default		0.0
+srte_c_7477131_ep_10.124.51.51	Ercolano-27	Default		0.0
+srte_c_707_ep_10.128.58.58	Ravello-51	Default		0.0
+srte_c_1002_ep_10.134.54.54	Ravello-51	Default		0.0
+srte_c_3019_ep_10.128.58.58	Ravello-51	Default		0.0
+srte_c_3018_ep_10.128.58.58	Ravello-51	Default		0.0
+srte_c_3015_ep_10.128.58.58	Ravello-51	Default		0.001
+srte_c_7477131_ep_10.124.51.51	Caserta-38	Default		0.0
 
 <SRLGs>
 Name	Active	Description	Tags	Failed
@@ -4021,13 +4185,21 @@ FromAS	ToAS	RoutingPolicy
 
 <Sites>
 Name	DisplayName	LocationCode	ParentSite	Protected	Active	Failed	Longitude	Latitude	Tags
-Potenza							15.9999	40.5265	
-Battipaglia-43							14.9373	40.5563	
-Frosinone-44							13.9	41.2085	
-Benevento-42							14.798	41.0984	
-Frosinone73							13.6201	41.3447	
-Roma							12.389	41.8626	
-Battipaglia-97							15.0791	40.4903	
+PER							12.3891	43.1116	
+CUNEO							7.56311	44.3782	
+COMO							9.08528	45.8071	
+VENEZ							12.3056	45.4401	
+ANC							13.5161	43.6167	
+BAT							14.9788	40.6095	
+BEN							14.78	41.1299	
+FRO							13.3423	41.64	
+NAP							14.2488	40.8359	
+ROM							12.4769	41.8982	
+AQU							13.399	42.34	
+CAS							14.338	41.075	
+POT							15.7938	40.6381	
+PES							14.2167	42.4628	
+TER							14.99	42	
 
 <NodeSiteMappingRules>
 Order	NodeMatches	SiteExpression
@@ -4415,62 +4587,143 @@ UserTable	Reference	ReferenceType	Table	SourceJoinColumns	DestJoinColumns	Object
 
 <L1Nodes>
 Name	Site	Description	IPAddress	Vendor	Longitude	Latitude
-Potenza-96	Potenza	ONC device a183d070-4f49-3818-9808-b89db77c7022	192.0.2.96	Cisco	15.9999	40.5265
-Battipaglia-43	Battipaglia-43	ONC device ee5c1e73-d0c6-3b76-8f4a-62b86e7a9e08	192.0.2.43	Cisco	14.9373	40.5563
-Frosinone-44	Frosinone-44	ONC device 98e527cb-6940-304f-8d77-921093429df4	192.0.2.44	Cisco	13.9	41.2085
-Benevento-42	Benevento-42	ONC device a8ef617f-5a64-3391-93ff-ad85448e5d03	192.0.2.42	Cisco	14.798	41.0984
-Frosinone-73	Frosinone73	ONC device 389b9e3e-3a13-3081-a7b4-20e70eb56534	192.0.2.73	Cisco	13.6201	41.3447
-Roma-75	Roma	ONC device ed5c3756-55fa-36e4-8b2a-840f1a0e5cc8	192.0.2.75	Cisco	12.389	41.8626
-Battipaglia-97	Battipaglia-97	ONC device e04b2c25-bc18-3642-b367-878a67c9ef4d	192.0.2.97	Cisco	15.0791	40.4903
+07.ROADM.191	PER	HCO IN/cisco-epnm-adpt/ONE-07.ROADM.191	10.197.238.191	Cisco	12.3891	43.1116
+13.ROADM.115	CUNEO	HCO IN/cisco-epnm-adpt/ONE-13.ROADM.115	10.197.238.115	Cisco	7.56311	44.3782
+19.ROADM.124	COMO	HCO IN/cisco-epnm-adpt/ONE-19.ROADM.124	10.197.238.124	Cisco	9.08528	45.8071
+25.ROADM.128	VENEZ	HCO IN/cisco-epnm-adpt/ONE-25.ROADM.128	10.197.238.128	Cisco	12.3056	45.4401
+31.Terminal.84	ANC	HCO IN/cisco-epnm-adpt/ONE-31.Terminal.84	10.197.238.84	Cisco	13.5161	43.6167
+Ancona-18-ols	ANC	HCO IN/cisco-cnc-adpt/ROUTER-Ancona-18	10.197.244.18	Cisco	13.5161	43.6167
+Battipaglia-11	BAT	HCO IN/cisco-epnm-adpt/ONE-Battipaglia-11	10.197.244.11	Cisco	14.9788	40.6095
+Battipaglia-43-roadm	BAT	HCO IN/cisco-onc-adpt/8d059457-74e4-339c-a8f4-99f934434aec	192.0.2.43	Cisco	14.9788	40.6095
+Battipaglia-97-roadm		HCO IN/cisco-onc-adpt/7d416b3e-d7de-3792-9248-a3aa4fca7253	192.0.2.97	Cisco		
+Benevento-42-roadm	BEN	HCO IN/cisco-onc-adpt/e4029d95-599f-3d61-87fe-70d0a1296317	192.0.2.42	Cisco	14.78	41.1299
+Frosinone-44-roadm	FRO	HCO IN/cisco-onc-adpt/18c4bf4b-450c-3488-ac35-8564327b2de0	192.0.2.44	Cisco	13.3423	41.64
+Frosinone73-roadm	FRO	HCO IN/cisco-onc-adpt/6a489dac-137f-3d79-a20d-bfb56fdc7beb	192.0.2.73	Cisco	13.3423	41.64
+Napoli-12	NAP	HCO IN/cisco-epnm-adpt/ONE-Napoli-12	10.197.244.12	Cisco	14.2488	40.8359
+Perugia-138-ols	PER	HCO IN/cisco-cnc-adpt/ROUTER-Perugia-138	10.197.244.138	Cisco	12.3891	43.1116
+Potenza-roadm		HCO IN/cisco-onc-adpt/b2a1ce4c-de62-3d89-964d-eb918e9a6e7e	192.0.2.96	Cisco		
+Roma-14	ROM	HCO IN/cisco-epnm-adpt/ONE-Roma-14	10.197.244.14	Cisco	12.4769	41.8982
+Roma-roadm	ROM	HCO IN/cisco-onc-adpt/f521d934-bd38-338b-93ef-faff7948e90d	192.0.2.75	Cisco	12.4769	41.8982
 
 <L1Links>
 Name	Description	L1NodeA	L1NodeB	Metric	Distance	Loss	NoiseAtoB	NoiseSigmaAtoB	NoiseBtoA	NoiseSigmaBtoA
-Battipaglia-43_Benevento-42	ONC OMS 8fa2d84e-3628-38fd-9107-1e0224f48432	Battipaglia-43	Benevento-42	50	50	10	-21.274	0.116	-23.826	0.099
-Frosinone-44_Battipaglia-43	ONC OMS b1205401-1166-30e9-9449-5d28bbb27859	Frosinone-44	Battipaglia-43	100	100	23.8	-19.994	0.086	-15.29	0.184
-Frosinone-73_Roma-75	ONC OMS cb440bfd-641c-3e76-aae5-acbcfdbc0ab1	Frosinone-73	Roma-75	136	136	16.3				
-Battipaglia-97_Potenza-96	ONC OMS cf397bf5-21d6-333b-bbb9-51fea2c0cde8	Battipaglia-97	Potenza-96	100	100	0				
-Benevento-42_Frosinone-44	ONC OMS ddabfaeb-208c-322c-9b4a-bfb42c988b5c	Benevento-42	Frosinone-44	50	50	14.9	-23.815	0.103	-23.109	0.082
+Battipaglia-97-roadm_Potenza-roadm	HCO cisco-onc-adpt OMS oms_Battipaglia-97-1_Potenza-96-1	Battipaglia-97-roadm	Potenza-roadm	100	100					
+Frosinone-44-roadm_Benevento-42-roadm	HCO cisco-onc-adpt OMS oms_Benevento-42-2_Frosinone-44-2	Frosinone-44-roadm	Benevento-42-roadm	50	50	14.9	-23.109	0.082	-23.815	0.103
+Frosinone-44-roadm_Battipaglia-43-roadm	HCO cisco-onc-adpt OMS oms_Frosinone-44-1_Battipaglia-43-1	Frosinone-44-roadm	Battipaglia-43-roadm	100	100	23.8	-19.994	0.086	-15.29	0.184
+Battipaglia-43-roadm_Benevento-42-roadm	HCO cisco-onc-adpt OMS oms_Battipaglia-43-2_Benevento-42-1	Battipaglia-43-roadm	Benevento-42-roadm	50	50	10	-21.274	0.116	-23.826	0.099
+Battipaglia-11_Roma-14	HCO cisco-epnm-adpt_optical OMS 10.197.244.11:LINE-1-2-3-RX&LINE-1-2-3-TX--10.197.244.14:LINE-1-7-3-RX&LINE-1-7-3-TX	Battipaglia-11	Roma-14	40	40					
+19.ROADM.124_25.ROADM.128	HCO cisco-epnm-adpt_optical OMS 10.197.238.124:LINE-7-3-RX&LINE-7-3-TX--10.197.238.128:LINE-2-3-RX&LINE-2-3-TX	19.ROADM.124	25.ROADM.128	600	600					
+Roma-14_Napoli-12	HCO cisco-epnm-adpt_optical OMS 10.197.244.12:LINE-1-7-3-RX&LINE-1-7-3-TX--10.197.244.14:LINE-1-3-3-RX&LINE-1-3-3-TX	Roma-14	Napoli-12	50	50					
+13.ROADM.115_19.ROADM.124	HCO cisco-epnm-adpt_optical OMS 10.197.238.115:LINE-7-3-RX&LINE-7-3-TX--10.197.238.124:LINE-2-3-RX&LINE-2-3-TX	13.ROADM.115	19.ROADM.124	600	600					
+Battipaglia-11_Napoli-12	HCO cisco-epnm-adpt_optical OMS 10.197.244.11:LINE-1-7-3-RX&LINE-1-7-3-TX--10.197.244.12:LINE-1-3-3-RX&LINE-1-3-3-TX	Battipaglia-11	Napoli-12	40	40					
+25.ROADM.128_31.Terminal.84	HCO cisco-epnm-adpt_optical OMS 10.197.238.128:LINE-7-3-RX&LINE-7-3-TX--10.197.238.84:LINE-2-3-RX&LINE-2-3-TX	25.ROADM.128	31.Terminal.84	600	600					
+Ancona-18-ols_Perugia-138-ols	HCO optical-persistor OMS OMS0/0/2/1/1 to OMS0/0/2/1/1; distance estimated	Ancona-18-ols	Perugia-138-ols	107	107					
+13.ROADM.115_07.ROADM.191	HCO cisco-epnm-adpt_optical OMS 10.197.238.115:LINE-2-3-RX&LINE-2-3-TX--10.197.238.191:LINE-7-3-RX&LINE-7-3-TX	13.ROADM.115	07.ROADM.191	600	600					
+Frosinone73-roadm_Roma-roadm	HCO cisco-onc-adpt OMS oms_Frosinone-73-1_Roma-75-1	Frosinone73-roadm	Roma-roadm	136	136	16.3				
 
 <L1LinkWaypoints>
 L1NodeA	L1NodeB	L1LinkName	Order	Longitude	Latitude	Description
-Frosinone-44	Battipaglia-43	Frosinone-44_Battipaglia-43	1	14.1816	40.807	Napoli.45
-Frosinone-73	Roma-75	Frosinone-73_Roma-75	1	13.371	41.7944	Isernia-74
+Frosinone-44-roadm	Battipaglia-43-roadm	Frosinone-44-roadm_Battipaglia-43-roadm	1	14.2488	40.8359	Napoli.45
+19.ROADM.124	25.ROADM.128	19.ROADM.124_25.ROADM.128	1	9.66812	45.6947	20.OLA.123
+19.ROADM.124	25.ROADM.128	19.ROADM.124_25.ROADM.128	2	10.2068	45.545	21.OLA.106
+19.ROADM.124	25.ROADM.128	19.ROADM.124_25.ROADM.128	3	10.9915	45.4385	22.OLA.188
+19.ROADM.124	25.ROADM.128	19.ROADM.124_25.ROADM.128	4	11.5431	45.5537	23.OLA.105
+19.ROADM.124	25.ROADM.128	19.ROADM.124_25.ROADM.128	5	11.8806	45.4106	24.OLA.88
+13.ROADM.115	19.ROADM.124	13.ROADM.115_19.ROADM.124	1	8.09847	44.7065	14.OLA.93
+13.ROADM.115	19.ROADM.124	13.ROADM.115_19.ROADM.124	2	7.69549	45.0689	15.OLA.126
+13.ROADM.115	19.ROADM.124	13.ROADM.115_19.ROADM.124	3	8.48592	45.3182	16.OLA.94
+13.ROADM.115	19.ROADM.124	13.ROADM.115_19.ROADM.124	4	8.71824	45.4483	17.OLA.92
+13.ROADM.115	19.ROADM.124	13.ROADM.115_19.ROADM.124	5	9.18423	45.4688	18.OLA.89
+25.ROADM.128	31.Terminal.84	25.ROADM.128_31.Terminal.84	1	11.8818	45.0815	26.OLA.145
+25.ROADM.128	31.Terminal.84	25.ROADM.128_31.Terminal.84	2	12.1699	44.6939	27.OLA.190
+25.ROADM.128	31.Terminal.84	25.ROADM.128_31.Terminal.84	3	12.1966	44.4153	28.OLA.116
+25.ROADM.128	31.Terminal.84	25.ROADM.128_31.Terminal.84	4	12.6262	44.0736	29.OLA.118
+25.ROADM.128	31.Terminal.84	25.ROADM.128_31.Terminal.84	5	13.0314	43.9005	30.OLA.117
+13.ROADM.115	07.ROADM.191	13.ROADM.115_07.ROADM.191	1	8.93546	44.4067	12.OLA.129
+13.ROADM.115	07.ROADM.191	13.ROADM.115_07.ROADM.191	2	9.8216	44.1065	11.OLA.122
+13.ROADM.115	07.ROADM.191	13.ROADM.115_07.ROADM.191	3	10.3995	43.7225	10.OLA.121
+13.ROADM.115	07.ROADM.191	13.ROADM.115_07.ROADM.191	4	10.4133	43.405	09.OLA.120
+13.ROADM.115	07.ROADM.191	13.ROADM.115_07.ROADM.191	5	11.3306	43.3184	08.OLA.189
+Frosinone73-roadm	Roma-roadm	Frosinone73-roadm_Roma-roadm	1	14.2281	41.5964	Isernia
 
 <L1Ports>
 L1Node	L1Port
-Benevento-42	2/PORT-1
-Battipaglia-43	3/PORT-1
-Battipaglia-43	2/PORT-1
-Benevento-42	3/PORT-1
-Roma-75	4/CH-6
-Frosinone-73	3/CH-6
+Battipaglia-43-roadm	2/PORT-1
+Benevento-42-roadm	3/PORT-1
+25.ROADM.128	PLINE-3-9-RX&PLINE-3-9-TX
+31.Terminal.84	PLINE-4-5-RX&PLINE-4-5-TX
+Ancona-18-ols	Optics0/0/2/0
+Perugia-138-ols	Optics0/0/2/0
+07.ROADM.191	LINE-6-12-RX&LINE-6-12-TX
+31.Terminal.84	LINE-3-12-RX&LINE-3-12-TX
+Roma-14	PLINE-3-9-RX&PLINE-3-9-TX
+Battipaglia-11	PLINE-3-9-RX&PLINE-3-9-TX
+13.ROADM.115	PLINE-3-11-RX&PLINE-3-11-TX
+25.ROADM.128	PLINE-6-12-RX&PLINE-6-12-TX
+07.ROADM.191	PLINE-6-5-RX&PLINE-6-5-TX
+25.ROADM.128	PLINE-6-9-RX&PLINE-6-9-TX
+07.ROADM.191	PLINE-6-7-RX&PLINE-6-7-TX
+25.ROADM.128	PLINE-6-10-RX&PLINE-6-10-TX
+Frosinone73-roadm	3/CH-6
+Roma-roadm	4/CH-6
 
 <L1Circuits>
 Name	L1NodeA	L1PortA	L1NodeB	L1PortB	BW	Tags
-Battipaglia_43_roadm_Benevento_42_roadm_50bacabf	Benevento-42	2/PORT-1	Battipaglia-43	3/PORT-1	400000	ONC_191.3625THz_75.0GHz
-Battipaglia_43_roadm_Benevento_42_roadm_138ba1a9	Battipaglia-43	2/PORT-1	Benevento-42	3/PORT-1	400000	ONC_191.3625THz_75.0GHz
-Roma_roadm_Frosinone73_roadm_4dd2ed4e	Roma-75	4/CH-6	Frosinone-73	3/CH-6	400000	ONC_195.2THz_71.16GHz
+Battipaglia_43_roadm_Benevento_42_roadm_138ba1a9	Battipaglia-43-roadm	2/PORT-1	Benevento-42-roadm	3/PORT-1	400000	HCO_191.3625THz
+100G_ZR_600km	25.ROADM.128	PLINE-3-9-RX&PLINE-3-9-TX	31.Terminal.84	PLINE-4-5-RX&PLINE-4-5-TX	100000	HCO_193.7THz
+Ancona-18-ols_Perugia-138-ols_NMC	Ancona-18-ols	Optics0/0/2/0	Perugia-138-ols	Optics0/0/2/0	400000	HCO_193.9THz
+400G_ULH_2400km_HCO	07.ROADM.191	LINE-6-12-RX&LINE-6-12-TX	31.Terminal.84	LINE-3-12-RX&LINE-3-12-TX	400000	HCO_195.725THz
+Ischia-Battipaglia-400g NMC	Roma-14	PLINE-3-9-RX&PLINE-3-9-TX	Battipaglia-11	PLINE-3-9-RX&PLINE-3-9-TX	400000	HCO_191.3625THz
+800G_OSFP	13.ROADM.115	PLINE-3-11-RX&PLINE-3-11-TX	25.ROADM.128	PLINE-6-12-RX&PLINE-6-12-TX	800000	HCO_192.05THz
+400G_ULH_3600km	07.ROADM.191	PLINE-6-5-RX&PLINE-6-5-TX	25.ROADM.128	PLINE-6-9-RX&PLINE-6-9-TX	400000	HCO_196.025THz
+800G_CIM8	07.ROADM.191	PLINE-6-7-RX&PLINE-6-7-TX	25.ROADM.128	PLINE-6-10-RX&PLINE-6-10-TX	800000	HCO_191.825THz
+Roma_roadm_Frosinone73_roadm_4dd2ed4e	Frosinone73-roadm	3/CH-6	Roma-roadm	4/CH-6	400000	HCO_195.2THz
 
 <L1CircuitPaths>
-L1Circuit	L1NodeA	L1PortA	L1NodeB	L1PortB	PathOption	Standby	Active	CentralFrequencyID	SpectralWidthID	AutoSpectrumAssignment	FeasibilityLimit	FeasibilityAcceptanceThreshold
-Battipaglia_43_roadm_Benevento_42_roadm_50bacabf	Benevento-42	2/PORT-1	Battipaglia-43	3/PORT-1	1	F	T		2	T	0.01	0
-Battipaglia_43_roadm_Benevento_42_roadm_138ba1a9	Battipaglia-43	2/PORT-1	Benevento-42	3/PORT-1	1	F	T		2	T	0.01	0
-Roma_roadm_Frosinone73_roadm_4dd2ed4e	Roma-75	4/CH-6	Frosinone-73	3/CH-6	1	F	T		2	T	0.01	0
+L1Circuit	L1NodeA	L1PortA	L1NodeB	L1PortB	PathOption	Standby	Active	CentralFrequencyID	SpectralWidthID	AutoSpectrumAssignment
+Battipaglia_43_roadm_Benevento_42_roadm_138ba1a9	Battipaglia-43-roadm	2/PORT-1	Benevento-42-roadm	3/PORT-1	1	F	T		2	T
+100G_ZR_600km	25.ROADM.128	PLINE-3-9-RX&PLINE-3-9-TX	31.Terminal.84	PLINE-4-5-RX&PLINE-4-5-TX	1	F	T		2	T
+Ancona-18-ols_Perugia-138-ols_NMC	Ancona-18-ols	Optics0/0/2/0	Perugia-138-ols	Optics0/0/2/0	1	F	T		2	T
+400G_ULH_2400km_HCO	07.ROADM.191	LINE-6-12-RX&LINE-6-12-TX	31.Terminal.84	LINE-3-12-RX&LINE-3-12-TX	1	F	T		2	T
+Ischia-Battipaglia-400g NMC	Roma-14	PLINE-3-9-RX&PLINE-3-9-TX	Battipaglia-11	PLINE-3-9-RX&PLINE-3-9-TX	1	F	T		2	T
+800G_OSFP	13.ROADM.115	PLINE-3-11-RX&PLINE-3-11-TX	25.ROADM.128	PLINE-6-12-RX&PLINE-6-12-TX	1	F	T		2	T
+400G_ULH_3600km	07.ROADM.191	PLINE-6-5-RX&PLINE-6-5-TX	25.ROADM.128	PLINE-6-9-RX&PLINE-6-9-TX	1	F	T		2	T
+800G_CIM8	07.ROADM.191	PLINE-6-7-RX&PLINE-6-7-TX	25.ROADM.128	PLINE-6-10-RX&PLINE-6-10-TX	1	F	T		2	T
+Roma_roadm_Frosinone73_roadm_4dd2ed4e	Frosinone73-roadm	3/CH-6	Roma-roadm	4/CH-6	1	F	T		2	T
 
 <ActualL1CircuitPathHops>
 L1Circuit	L1NodeA	L1PortA	L1NodeB	L1PortB	PathOption	Step	HopL1NodeA	HopL1NodeB	HopL1Link	CentralFrequencyID
-Battipaglia_43_roadm_Benevento_42_roadm_50bacabf	Benevento-42	2/PORT-1	Battipaglia-43	3/PORT-1	1	1	Battipaglia-43	Benevento-42	Battipaglia-43_Benevento-42	
-Battipaglia_43_roadm_Benevento_42_roadm_138ba1a9	Battipaglia-43	2/PORT-1	Benevento-42	3/PORT-1	1	1	Frosinone-44	Battipaglia-43	Frosinone-44_Battipaglia-43	
-Battipaglia_43_roadm_Benevento_42_roadm_138ba1a9	Battipaglia-43	2/PORT-1	Benevento-42	3/PORT-1	1	2	Benevento-42	Frosinone-44	Benevento-42_Frosinone-44	
-Roma_roadm_Frosinone73_roadm_4dd2ed4e	Roma-75	4/CH-6	Frosinone-73	3/CH-6	1	1	Frosinone-73	Roma-75	Frosinone-73_Roma-75	
+Battipaglia_43_roadm_Benevento_42_roadm_138ba1a9	Battipaglia-43-roadm	2/PORT-1	Benevento-42-roadm	3/PORT-1	1	1	Frosinone-44-roadm	Battipaglia-43-roadm	Frosinone-44-roadm_Battipaglia-43-roadm	
+Battipaglia_43_roadm_Benevento_42_roadm_138ba1a9	Battipaglia-43-roadm	2/PORT-1	Benevento-42-roadm	3/PORT-1	1	2	Frosinone-44-roadm	Benevento-42-roadm	Frosinone-44-roadm_Benevento-42-roadm	
+100G_ZR_600km	25.ROADM.128	PLINE-3-9-RX&PLINE-3-9-TX	31.Terminal.84	PLINE-4-5-RX&PLINE-4-5-TX	1	1	25.ROADM.128	31.Terminal.84	25.ROADM.128_31.Terminal.84	
+Ancona-18-ols_Perugia-138-ols_NMC	Ancona-18-ols	Optics0/0/2/0	Perugia-138-ols	Optics0/0/2/0	1	1	Ancona-18-ols	Perugia-138-ols	Ancona-18-ols_Perugia-138-ols	
+400G_ULH_2400km_HCO	07.ROADM.191	LINE-6-12-RX&LINE-6-12-TX	31.Terminal.84	LINE-3-12-RX&LINE-3-12-TX	1	1	13.ROADM.115	07.ROADM.191	13.ROADM.115_07.ROADM.191	
+400G_ULH_2400km_HCO	07.ROADM.191	LINE-6-12-RX&LINE-6-12-TX	31.Terminal.84	LINE-3-12-RX&LINE-3-12-TX	1	2	13.ROADM.115	19.ROADM.124	13.ROADM.115_19.ROADM.124	
+400G_ULH_2400km_HCO	07.ROADM.191	LINE-6-12-RX&LINE-6-12-TX	31.Terminal.84	LINE-3-12-RX&LINE-3-12-TX	1	3	19.ROADM.124	25.ROADM.128	19.ROADM.124_25.ROADM.128	
+400G_ULH_2400km_HCO	07.ROADM.191	LINE-6-12-RX&LINE-6-12-TX	31.Terminal.84	LINE-3-12-RX&LINE-3-12-TX	1	4	25.ROADM.128	31.Terminal.84	25.ROADM.128_31.Terminal.84	
+Ischia-Battipaglia-400g NMC	Roma-14	PLINE-3-9-RX&PLINE-3-9-TX	Battipaglia-11	PLINE-3-9-RX&PLINE-3-9-TX	1	1	Battipaglia-11	Roma-14	Battipaglia-11_Roma-14	
+800G_OSFP	13.ROADM.115	PLINE-3-11-RX&PLINE-3-11-TX	25.ROADM.128	PLINE-6-12-RX&PLINE-6-12-TX	1	1	13.ROADM.115	19.ROADM.124	13.ROADM.115_19.ROADM.124	
+800G_OSFP	13.ROADM.115	PLINE-3-11-RX&PLINE-3-11-TX	25.ROADM.128	PLINE-6-12-RX&PLINE-6-12-TX	1	2	19.ROADM.124	25.ROADM.128	19.ROADM.124_25.ROADM.128	
+400G_ULH_3600km	07.ROADM.191	PLINE-6-5-RX&PLINE-6-5-TX	25.ROADM.128	PLINE-6-9-RX&PLINE-6-9-TX	1	1	13.ROADM.115	07.ROADM.191	13.ROADM.115_07.ROADM.191	
+400G_ULH_3600km	07.ROADM.191	PLINE-6-5-RX&PLINE-6-5-TX	25.ROADM.128	PLINE-6-9-RX&PLINE-6-9-TX	1	2	13.ROADM.115	19.ROADM.124	13.ROADM.115_19.ROADM.124	
+400G_ULH_3600km	07.ROADM.191	PLINE-6-5-RX&PLINE-6-5-TX	25.ROADM.128	PLINE-6-9-RX&PLINE-6-9-TX	1	3	19.ROADM.124	25.ROADM.128	19.ROADM.124_25.ROADM.128	
+800G_CIM8	07.ROADM.191	PLINE-6-7-RX&PLINE-6-7-TX	25.ROADM.128	PLINE-6-10-RX&PLINE-6-10-TX	1	1	13.ROADM.115	07.ROADM.191	13.ROADM.115_07.ROADM.191	
+800G_CIM8	07.ROADM.191	PLINE-6-7-RX&PLINE-6-7-TX	25.ROADM.128	PLINE-6-10-RX&PLINE-6-10-TX	1	2	13.ROADM.115	19.ROADM.124	13.ROADM.115_19.ROADM.124	
+800G_CIM8	07.ROADM.191	PLINE-6-7-RX&PLINE-6-7-TX	25.ROADM.128	PLINE-6-10-RX&PLINE-6-10-TX	1	3	19.ROADM.124	25.ROADM.128	19.ROADM.124_25.ROADM.128	
+Roma_roadm_Frosinone73_roadm_4dd2ed4e	Frosinone73-roadm	3/CH-6	Roma-roadm	4/CH-6	1	1	Frosinone73-roadm	Roma-roadm	Frosinone73-roadm_Roma-roadm	
 
 <L3L1Links>
 Node	L1Node
-Auletta-81	Battipaglia-97
-Battipaglia-54	Battipaglia-43
-Battipaglia-54	Battipaglia-97
-Ischia-21	Roma-75
-Picerno-58	Benevento-42
-Potenza-17	Potenza-96
-Ravello-51	Frosinone-73
+Ancona-18	31.Terminal.84
+Ancona-18	Ancona-18-ols
+Auletta-81	Battipaglia-97-roadm
+Battipaglia-54	Battipaglia-11
+Battipaglia-54	Battipaglia-43-roadm
+Ischia-21	Roma-14
+Ischia-21	Roma-roadm
+Perugia-138	07.ROADM.191
+Perugia-138	Perugia-138-ols
+Picerno-58	Benevento-42-roadm
+Potenza-17	Potenza-roadm
+Ravello-51	Frosinone73-roadm
 

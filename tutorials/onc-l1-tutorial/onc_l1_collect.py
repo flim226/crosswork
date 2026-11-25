@@ -38,6 +38,7 @@ import os
 import re
 import ssl
 import sys
+import tempfile
 import urllib.request
 
 ONC_FILES = {
@@ -90,14 +91,17 @@ def write_plan_text(tables, path):
 
 
 def read_plan(path):
-    if not path.endswith('.txt'):
-        # The OPM library converts between plan formats by file extension.
-        from com.cisco.wae.opm.network import Network
-        text_path = '/tmp/onc_l1_source.txt'
+    if path.endswith('.txt'):
+        with open(path) as f:
+            return parse_plan_text(f.read())
+    # The OPM library converts between plan formats by file extension. On the Collector,
+    # only /tmp is writable, so the text copy goes in a per-run directory there.
+    from com.cisco.wae.opm.network import Network
+    with tempfile.TemporaryDirectory(prefix='onc_l1_') as tmp:
+        text_path = os.path.join(tmp, 'source.txt')
         Network(path).write(text_path)
-        path = text_path
-    with open(path) as f:
-        return parse_plan_text(f.read())
+        with open(text_path) as f:
+            return parse_plan_text(f.read())
 
 
 def write_plan(tables, path):
@@ -105,9 +109,10 @@ def write_plan(tables, path):
         write_plan_text(tables, path)
         return
     from com.cisco.wae.opm.network import Network
-    text_path = '/tmp/onc_l1_output.txt'
-    write_plan_text(tables, text_path)
-    Network(text_path).write(path)
+    with tempfile.TemporaryDirectory(prefix='onc_l1_') as tmp:
+        text_path = os.path.join(tmp, 'output.txt')
+        write_plan_text(tables, text_path)
+        Network(text_path).write(path)
 
 
 def table(tables, name):

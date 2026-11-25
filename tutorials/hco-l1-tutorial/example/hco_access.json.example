@@ -1,0 +1,7 @@
+{
+  "url": "https://<hco-host>:8443",
+  "username": "<read-only HCO user>",
+  "password": "<password>",
+  "verify_tls": true,
+  "ca_file": "hco-ca.pem"
+}
