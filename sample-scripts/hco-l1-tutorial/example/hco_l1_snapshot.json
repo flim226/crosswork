@@ -1,0 +1,3653 @@
+{
+ "devices": [
+  {
+   "guid": "IN/cisco-onc-adpt/cf5aa47b-ab05-35e4-8adf-9566da8fbfc4",
+   "name": "Isernia",
+   "type": "ONE",
+   "provider": "cisco-onc-adpt",
+   "site": "ST/isernia",
+   "ip": "192.0.2.74",
+   "uuid": "cf5aa47b-ab05-35e4-8adf-9566da8fbfc4",
+   "devices": "[\"66345186-4383-30b3-88fb-13f789a84c1b\"]"
+  },
+  {
+   "guid": "IN/cisco-onc-adpt/6a489dac-137f-3d79-a20d-bfb56fdc7beb",
+   "name": "Frosinone73-roadm",
+   "type": "ONE",
+   "provider": "cisco-onc-adpt",
+   "site": "ST/frosinone",
+   "ip": "192.0.2.73",
+   "uuid": "6a489dac-137f-3d79-a20d-bfb56fdc7beb",
+   "devices": "[\"389b9e3e-3a13-3081-a7b4-20e70eb56534\"]"
+  },
+  {
+   "guid": "IN/cisco-onc-adpt/b2a1ce4c-de62-3d89-964d-eb918e9a6e7e",
+   "name": "Potenza-roadm",
+   "type": "ONE",
+   "provider": "cisco-onc-adpt",
+   "site": null,
+   "ip": "192.0.2.96",
+   "uuid": "b2a1ce4c-de62-3d89-964d-eb918e9a6e7e",
+   "devices": "[\"a183d070-4f49-3818-9808-b89db77c7022\"]"
+  },
+  {
+   "guid": "IN/cisco-onc-adpt/7d416b3e-d7de-3792-9248-a3aa4fca7253",
+   "name": "Battipaglia-97-roadm",
+   "type": "ONE",
+   "provider": "cisco-onc-adpt",
+   "site": null,
+   "ip": "192.0.2.97",
+   "uuid": "7d416b3e-d7de-3792-9248-a3aa4fca7253",
+   "devices": "[\"e04b2c25-bc18-3642-b367-878a67c9ef4d\"]"
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-Roma-14",
+   "name": "Roma-14",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/roma",
+   "ip": "10.197.244.14",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-Napoli-12",
+   "name": "Napoli-12",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/napoli",
+   "ip": "10.197.244.12",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-onc-adpt/f521d934-bd38-338b-93ef-faff7948e90d",
+   "name": "Roma-roadm",
+   "type": "ONE",
+   "provider": "cisco-onc-adpt",
+   "site": "ST/roma",
+   "ip": "192.0.2.75",
+   "uuid": "f521d934-bd38-338b-93ef-faff7948e90d",
+   "devices": "[\"ed5c3756-55fa-36e4-8b2a-840f1a0e5cc8\"]"
+  },
+  {
+   "guid": "IN/cisco-onc-adpt/8d059457-74e4-339c-a8f4-99f934434aec",
+   "name": "Battipaglia-43-roadm",
+   "type": "ONE",
+   "provider": "cisco-onc-adpt",
+   "site": "ST/battipaglia",
+   "ip": "192.0.2.43",
+   "uuid": "8d059457-74e4-339c-a8f4-99f934434aec",
+   "devices": "[\"ee5c1e73-d0c6-3b76-8f4a-62b86e7a9e08\"]"
+  },
+  {
+   "guid": "IN/cisco-onc-adpt/a7fde4f3-a073-3d9b-a8a1-1f5e5a289fc3",
+   "name": "Battipaglia-43-txp_oduswitch",
+   "type": "ONE",
+   "provider": "cisco-onc-adpt",
+   "site": "ST/battipaglia",
+   "ip": "192.0.2.43",
+   "uuid": "a7fde4f3-a073-3d9b-a8a1-1f5e5a289fc3",
+   "devices": "[\"ee5c1e73-d0c6-3b76-8f4a-62b86e7a9e08\"]"
+  },
+  {
+   "guid": "IN/cisco-onc-adpt/67cbaf31-1fb6-3e41-8ac3-df64c0eb97b9",
+   "name": "Benevento-42-txp_oduswitch",
+   "type": "ONE",
+   "provider": "cisco-onc-adpt",
+   "site": "ST/benevento",
+   "ip": "192.0.2.42",
+   "uuid": "67cbaf31-1fb6-3e41-8ac3-df64c0eb97b9",
+   "devices": "[\"a8ef617f-5a64-3391-93ff-ad85448e5d03\"]"
+  },
+  {
+   "guid": "IN/cisco-onc-adpt/e4029d95-599f-3d61-87fe-70d0a1296317",
+   "name": "Benevento-42-roadm",
+   "type": "ONE",
+   "provider": "cisco-onc-adpt",
+   "site": "ST/benevento",
+   "ip": "192.0.2.42",
+   "uuid": "e4029d95-599f-3d61-87fe-70d0a1296317",
+   "devices": "[\"a8ef617f-5a64-3391-93ff-ad85448e5d03\"]"
+  },
+  {
+   "guid": "IN/cisco-onc-adpt/18c4bf4b-450c-3488-ac35-8564327b2de0",
+   "name": "Frosinone-44-roadm",
+   "type": "ONE",
+   "provider": "cisco-onc-adpt",
+   "site": "ST/frosinone",
+   "ip": "192.0.2.44",
+   "uuid": "18c4bf4b-450c-3488-ac35-8564327b2de0",
+   "devices": "[\"98e527cb-6940-304f-8d77-921093429df4\"]"
+  },
+  {
+   "guid": "IN/cisco-onc-adpt/37555326-088c-32ef-900f-6300f81ebcfe",
+   "name": "Napoli.45",
+   "type": "ONE",
+   "provider": "cisco-onc-adpt",
+   "site": "ST/napoli",
+   "ip": "192.0.2.45",
+   "uuid": "37555326-088c-32ef-900f-6300f81ebcfe",
+   "devices": "[\"016cac50-22c0-3f28-8954-934209c16314\"]"
+  },
+  {
+   "guid": "IN/cisco-onc-adpt/d32a3816-1913-3df0-ae2e-979e4c0db5db",
+   "name": "Frosinone-44-txp_oduswitch",
+   "type": "ONE",
+   "provider": "cisco-onc-adpt",
+   "site": "ST/frosinone",
+   "ip": "192.0.2.44",
+   "uuid": "d32a3816-1913-3df0-ae2e-979e4c0db5db",
+   "devices": "[\"98e527cb-6940-304f-8d77-921093429df4\"]"
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-Battipaglia-11",
+   "name": "Battipaglia-11",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/battipaglia",
+   "ip": "10.197.244.11",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Vilnius-86",
+   "name": "Vilnius-86",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.86",
+   "uuid": "994e06dc-f43d-482a-b31c-ee9c2723e20b",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Tallinn-69",
+   "name": "Tallinn-69",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.69",
+   "uuid": "d0907337-abdf-4ab3-8825-2d5df7ce62a5",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Auletta-81",
+   "name": "Auletta-81",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": "ST/battipaglia",
+   "ip": "10.197.244.81",
+   "uuid": "8d8f3cd2-d7ed-4c59-8190-bd1adea7113b",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Barcelona",
+   "name": "Barcelona",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.216",
+   "uuid": "e7bd3418-820c-45cd-b610-5f6850313bc6",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-IE9320-74",
+   "name": "IE9320-74",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.250.74",
+   "uuid": "2ee4ac84-2b14-42c0-a817-e1c564813061",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Kharkiv-42",
+   "name": "Kharkiv-42",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.42",
+   "uuid": "3b7c2469-cdb0-47ed-b1e7-4b04e2b3d54e",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Arezzo-121",
+   "name": "Arezzo-121",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.121",
+   "uuid": "25e78206-2901-4677-b985-d0636d8861db",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-dc1-spine02",
+   "name": "dc1-spine02",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.64.251",
+   "uuid": "0d8d5acf-3c69-482c-a28c-9dba55af5e7b",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-IR8340-77",
+   "name": "IR8340-77",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.250.77",
+   "uuid": "8ddafeb2-d443-4581-8ab5-6395b350387f",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Madrid",
+   "name": "Madrid",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.218",
+   "uuid": "2c91cc94-51ef-4ed7-b6ea-9807335c32cf",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Krakow-30",
+   "name": "Krakow-30",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.30",
+   "uuid": "c261fdf3-86a2-4588-bc1d-31e058e8dc39",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-dc3-rleaf02",
+   "name": "dc3-rleaf02",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.52.75",
+   "uuid": "d32cad61-0d88-4785-970b-7dbc37818b0c",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Chernihiv-76",
+   "name": "Chernihiv-76",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.76",
+   "uuid": "94449af0-b9fc-40af-a2eb-31949c0061b4",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Grosseto-122",
+   "name": "Grosseto-122",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.122",
+   "uuid": "2b224ea9-bf9c-4fff-8b5f-b1604462e5f0",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Rivne-67",
+   "name": "Rivne-67",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.67",
+   "uuid": "e23b91d2-1d3c-42af-948c-917059e570cf",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Aquila-22",
+   "name": "Aquila-22",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": "ST/aquila",
+   "ip": "10.197.244.22",
+   "uuid": "f25746fc-ac01-4bf5-9fd7-063fbeeb6d8a",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-dc3-rleaf01",
+   "name": "dc3-rleaf01",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.52.74",
+   "uuid": "2ea064df-3d6e-481b-883e-3dcd063000cc",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Chernivtsi-113",
+   "name": "Chernivtsi-113",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.113",
+   "uuid": "98addd6d-4901-49a1-aef4-4f7f3da579a7",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Oleksandriia-105",
+   "name": "Oleksandriia-105",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.105",
+   "uuid": "7e03dc18-ae94-4f82-ad0f-a35705db6807",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-dc1-leaf01",
+   "name": "dc1-leaf01",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.64.254",
+   "uuid": "4aa2da0c-f5c8-4065-8e45-88fefc3fce47",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-dc2-leaf02",
+   "name": "dc2-leaf02",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.64.249",
+   "uuid": "24dfd0ff-bc01-4bed-91ec-639a87f93481",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-dc2-leaf01",
+   "name": "dc2-leaf01",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.64.250",
+   "uuid": "bfc95f78-bc67-425d-922b-05608e4a6a56",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Lviv-31",
+   "name": "Lviv-31",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.31",
+   "uuid": "d91003c0-d9ea-411f-9cf5-e889c2d2c0de",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-dc1-leaf02",
+   "name": "dc1-leaf02",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.64.253",
+   "uuid": "5c84cff4-e358-4e26-8861-80a695bb8a94",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Kyiv-28",
+   "name": "Kyiv-28",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.28",
+   "uuid": "782ed3d9-f950-4bbb-8742-0939d04c63f1",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-IE3400-71",
+   "name": "IE3400-71",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.250.71",
+   "uuid": "e2883d9a-8482-4eb4-938f-42422c252e06",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Lyon",
+   "name": "Lyon",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.220",
+   "uuid": "d1e6972a-bb32-4953-afe9-0f808853237c",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-IE9300-LAN-B-73",
+   "name": "IE9300-LAN-B-73",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.250.73",
+   "uuid": "7346ef9a-2587-4309-a9a7-a8c2130407b9",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-dc1-spine01",
+   "name": "dc1-spine01",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.64.252",
+   "uuid": "e41d0134-c44c-4d0f-be90-c1c5ef1b924d",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Geneva",
+   "name": "Geneva",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.215",
+   "uuid": "0102d61e-ba69-4a6d-9492-46ab76eae878",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Paris",
+   "name": "Paris",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.219",
+   "uuid": "faccb6ae-7a10-4688-99dc-669cd3ece892",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-dc2-spine02",
+   "name": "dc2-spine02",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.64.247",
+   "uuid": "931ef399-9097-465d-a461-0b6ba00e94bd",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-dc2-spine01",
+   "name": "dc2-spine01",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.64.248",
+   "uuid": "3ca7c90f-865b-4423-bdc7-7cbc328d01d4",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Poltava-88",
+   "name": "Poltava-88",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.88",
+   "uuid": "f9d65008-dd68-4d14-8ab6-4d5764403614",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Bordeaux-33",
+   "name": "Bordeaux-33",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.33",
+   "uuid": "997d3b1c-865a-472b-bbaa-f6b6d72033c4",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Copenhagen-24",
+   "name": "Copenhagen-24",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.24",
+   "uuid": "fb18cd0e-461a-44ef-a231-e52f54225d9b",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Kyiv-47",
+   "name": "Kyiv-47",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.47",
+   "uuid": "9cf18041-54b4-4eb5-bf18-a9511457a087",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Lyon-23",
+   "name": "Lyon-23",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.23",
+   "uuid": "65a4a84a-8c06-4c44-b57c-c001a18da34b",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Madrid-40",
+   "name": "Madrid-40",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.40",
+   "uuid": "b675fa72-2762-498f-9a0b-e69fc2300b60",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Mainz-65",
+   "name": "Mainz-65",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.65",
+   "uuid": "ffb91315-e428-4360-9c5d-f3c3d3503d39",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Marseille-77",
+   "name": "Marseille-77",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.77",
+   "uuid": "05d21263-53ba-4b76-8838-737363cb87e2",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Napoli-50",
+   "name": "Napoli-50",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.50",
+   "uuid": "8c45b551-8f8d-4ba3-97c7-a80b005a82cb",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Paris-66",
+   "name": "Paris-66",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.66",
+   "uuid": "5b9e8efa-834d-431a-bdc9-74b3600dfd69",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Stuttgart-64",
+   "name": "Stuttgart-64",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.64",
+   "uuid": "0a896a01-34e5-44a6-8668-6020b93686ca",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-SR-PCE-74",
+   "name": "SR-PCE-74",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.74",
+   "uuid": "3a752934-9ceb-48e4-98a9-0f4be3495e4b",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Salerno-34",
+   "name": "Salerno-34",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.34",
+   "uuid": "17cb379c-a433-4b2c-81ad-cdbfe0b114d4",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-SR-PCE-48",
+   "name": "SR-PCE-48",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.48",
+   "uuid": "4fb731c7-0b92-4bfa-8499-fbf5eec41427",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Riga-46",
+   "name": "Riga-46",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.46",
+   "uuid": "b42bcf8b-8cf7-47f9-bd86-9eb8934073c4",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Lille-26",
+   "name": "Lille-26",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.26",
+   "uuid": "a5ddaaa2-827a-4a55-845f-858a1834520f",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-pce",
+   "name": "pce",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.217",
+   "uuid": "16839e0a-3a64-4937-8d15-b93deba6fd43",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Battipaglia-54",
+   "name": "Battipaglia-54",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": "ST/battipaglia",
+   "ip": "10.197.244.54",
+   "uuid": "a4ca9cb0-1eff-4042-87f2-8dd3808d3981",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Milano-205",
+   "name": "Milano-205",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.205",
+   "uuid": "109f7609-23f2-42de-b5b2-3d6933900616",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Napoli-45",
+   "name": "Napoli-45",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.45",
+   "uuid": "65a3447c-fcd7-4352-b034-a7df898d77a2",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Sumy-52",
+   "name": "Sumy-52",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.52",
+   "uuid": "1e66d48a-b810-4f5e-9952-68d5f04cba21",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Potenza-17",
+   "name": "Potenza-17",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": "ST/potenza",
+   "ip": "10.197.244.17",
+   "uuid": "59afb604-51c9-4b0c-8c0e-749793042e53",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Palinuro-29",
+   "name": "Palinuro-29",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": "ST/pescara",
+   "ip": "10.197.244.29",
+   "uuid": "54e1f9c4-283f-47f9-a509-b9d4c88ddfdb",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Caserta-38",
+   "name": "Caserta-38",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": "ST/CAS",
+   "ip": "10.197.244.38",
+   "uuid": "36a24e3d-a996-4e31-b10d-85818fb916f6",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Picerno-58",
+   "name": "Picerno-58",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": "ST/benevento",
+   "ip": "10.197.244.58",
+   "uuid": "f9b9c065-9fce-40df-8de7-8e64951318eb",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-28.OLA.116",
+   "name": "28.OLA.116",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/RAV",
+   "ip": "10.197.238.116",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-07.ROADM.191",
+   "name": "07.ROADM.191",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/perugia",
+   "ip": "10.197.238.191",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-29.OLA.118",
+   "name": "29.OLA.118",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/RIMINI",
+   "ip": "10.197.238.118",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-21.OLA.106",
+   "name": "21.OLA.106",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/BRESCIA",
+   "ip": "10.197.238.106",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-20.OLA.123",
+   "name": "20.OLA.123",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/BERG",
+   "ip": "10.197.238.123",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-18.OLA.89",
+   "name": "18.OLA.89",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/milan",
+   "ip": "10.197.238.89",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-31.Terminal.84",
+   "name": "31.Terminal.84",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/ancona",
+   "ip": "10.197.238.84",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-24.OLA.88",
+   "name": "24.OLA.88",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/PADOVA",
+   "ip": "10.197.238.88",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-22.OLA.188",
+   "name": "22.OLA.188",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/VER",
+   "ip": "10.197.238.188",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-23.OLA.105",
+   "name": "23.OLA.105",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/VICENZ",
+   "ip": "10.197.238.105",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-25.ROADM.128",
+   "name": "25.ROADM.128",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/VENEZ",
+   "ip": "10.197.238.128",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-30.OLA.117",
+   "name": "30.OLA.117",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/PESARO",
+   "ip": "10.197.238.117",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-19.ROADM.124",
+   "name": "19.ROADM.124",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/COMO",
+   "ip": "10.197.238.124",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-08.OLA.189",
+   "name": "08.OLA.189",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/SIE",
+   "ip": "10.197.238.189",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-14.OLA.93",
+   "name": "14.OLA.93",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/ALBA",
+   "ip": "10.197.238.93",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-16.OLA.94",
+   "name": "16.OLA.94",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/VERC",
+   "ip": "10.197.238.94",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-13.ROADM.115",
+   "name": "13.ROADM.115",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/CUNEO",
+   "ip": "10.197.238.115",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-17.OLA.92",
+   "name": "17.OLA.92",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/NOV",
+   "ip": "10.197.238.92",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-10.OLA.121",
+   "name": "10.OLA.121",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/PISA",
+   "ip": "10.197.238.121",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-12.OLA.129",
+   "name": "12.OLA.129",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/GEN",
+   "ip": "10.197.238.129",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-11.OLA.122",
+   "name": "11.OLA.122",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/LSPEZIA",
+   "ip": "10.197.238.122",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-09.OLA.120",
+   "name": "09.OLA.120",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/CAST",
+   "ip": "10.197.238.120",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-26.OLA.145",
+   "name": "26.OLA.145",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/ROVI",
+   "ip": "10.197.238.145",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-27.OLA.190",
+   "name": "27.OLA.190",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/COMAC",
+   "ip": "10.197.238.190",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-epnm-adpt/ONE-15.OLA.126",
+   "name": "15.OLA.126",
+   "type": "ONE",
+   "provider": "cisco-epnm-adpt_optical",
+   "site": "ST/TOR",
+   "ip": "10.197.238.126",
+   "uuid": null,
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Ancona-18",
+   "name": "Ancona-18",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": "ST/ancona",
+   "ip": "10.197.244.18",
+   "uuid": "c30bd5cd-1c20-4470-8151-4280fe49cd7a",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Positano-92",
+   "name": "Positano-92",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": "ST/termoli",
+   "ip": "10.197.244.92",
+   "uuid": "63a07f2e-e595-4300-a53b-e32ca80496d0",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Amsterdam",
+   "name": "Amsterdam",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.213",
+   "uuid": "b66881be-d5ab-4c16-89b4-f081e744f301",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Frankfurt",
+   "name": "Frankfurt",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.214",
+   "uuid": "590b96f5-a20c-48f7-a781-a47e8f745a2f",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-RRv4-161",
+   "name": "RRv4-161",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.161",
+   "uuid": "307a7d0c-b88f-4bc2-a0d3-84b05f7ff98f",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Perugia-138",
+   "name": "Perugia-138",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": "ST/perugia",
+   "ip": "10.197.244.138",
+   "uuid": "3b972a2d-46c4-46db-90c9-9e79be8cbf22",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Ischia-21",
+   "name": "Ischia-21",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": "ST/roma",
+   "ip": "10.197.244.21",
+   "uuid": "67aac570-a629-4d1f-b4e1-96e6f8054d21",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-junos49",
+   "name": "junos49",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.234.49",
+   "uuid": "08641e23-2133-4c3f-8c77-80a89170b120",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-junos50",
+   "name": "junos50",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.234.50",
+   "uuid": "d6a8f6bb-b3bc-415a-8ead-c030399fc916",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Ercolano-27",
+   "name": "Ercolano-27",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.27",
+   "uuid": "82846af2-86f2-4495-a456-97491b1455c1",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Ravello-51",
+   "name": "Ravello-51",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": "ST/frosinone",
+   "ip": "10.197.244.51",
+   "uuid": "312af4b1-752a-49ef-99b7-3f2796c32084",
+   "devices": null
+  },
+  {
+   "guid": "IN/cisco-cnc-adpt/ROUTER-Torre-125",
+   "name": "Torre-125",
+   "type": "ROUTER",
+   "provider": "cisco-cnc-adpt",
+   "site": null,
+   "ip": "10.197.244.125",
+   "uuid": "5c0cf3ea-d2da-4453-a03d-025268de5f3f",
+   "devices": null
+  }
+ ],
+ "sites": [
+  {
+   "guid": "ST/ams",
+   "name": "AMS",
+   "latitude": 52.36742636,
+   "longitude": 4.9128845
+  },
+  {
+   "guid": "ST/ancona",
+   "name": "ANC",
+   "latitude": 43.61670122,
+   "longitude": 13.51609297
+  },
+  {
+   "guid": "ST/andria",
+   "name": "ANDR",
+   "latitude": 41.228756,
+   "longitude": 16.30336
+  },
+  {
+   "guid": "ST/aquila",
+   "name": "AQU",
+   "latitude": 42.34,
+   "longitude": 13.399
+  },
+  {
+   "guid": "ST/arezzo",
+   "name": "ARE",
+   "latitude": 43.4633639,
+   "longitude": 11.87783174
+  },
+  {
+   "guid": "ST/ascolisatriano",
+   "name": "ASCO",
+   "latitude": 41.20551046,
+   "longitude": 15.51441216
+  },
+  {
+   "guid": "ST/ALBA",
+   "name": "ALBA",
+   "latitude": 44.70648756,
+   "longitude": 8.09847486
+  },
+  {
+   "guid": "ST/ASIAGO",
+   "name": "ASIAGO",
+   "latitude": 45.87626868,
+   "longitude": 11.52574313
+  },
+  {
+   "guid": "ST/bacau",
+   "name": "BAC",
+   "latitude": 46.566609,
+   "longitude": 27.224818
+  },
+  {
+   "guid": "ST/badia",
+   "name": "BADIA",
+   "latitude": 43.83240431,
+   "longitude": 11.86874506
+  },
+  {
+   "guid": "ST/battipaglia",
+   "name": "BAT",
+   "latitude": 40.609509,
+   "longitude": 14.978827
+  },
+  {
+   "guid": "ST/bellosguardo",
+   "name": "BELL",
+   "latitude": 40.41,
+   "longitude": 15.31
+  },
+  {
+   "guid": "ST/benevento",
+   "name": "BEN",
+   "latitude": 41.12987656,
+   "longitude": 14.77998513
+  },
+  {
+   "guid": "ST/bordeaux",
+   "name": "BORD",
+   "latitude": 44.84,
+   "longitude": -0.5
+  },
+  {
+   "guid": "ST/brazof",
+   "name": "BRA",
+   "latitude": 45.64767601,
+   "longitude": 25.76953443
+  },
+  {
+   "guid": "ST/budapest",
+   "name": "BUD",
+   "latitude": 47.507849,
+   "longitude": 19.407331
+  },
+  {
+   "guid": "ST/BERG",
+   "name": "BERG",
+   "latitude": 45.69473367,
+   "longitude": 9.66811881
+  },
+  {
+   "guid": "ST/BOLO",
+   "name": "BOLO",
+   "latitude": 44.49518816,
+   "longitude": 11.35708849
+  },
+  {
+   "guid": "ST/BRESCIA",
+   "name": "BRESCIA",
+   "latitude": 45.5449805,
+   "longitude": 10.20676442
+  },
+  {
+   "guid": "ST/calarasi",
+   "name": "CAL",
+   "latitude": 44.20045362,
+   "longitude": 27.4356788
+  },
+  {
+   "guid": "ST/campobasso",
+   "name": "CAMP",
+   "latitude": 41.56,
+   "longitude": 14.66
+  },
+  {
+   "guid": "ST/catania",
+   "name": "CATA",
+   "latitude": 37.51403345,
+   "longitude": 15.0982752
+  },
+  {
+   "guid": "ST/cerignola",
+   "name": "CERIG",
+   "latitude": 41.26911792,
+   "longitude": 15.89936479
+  },
+  {
+   "guid": "ST/CAS",
+   "name": "CAS",
+   "latitude": 41.075,
+   "longitude": 14.338
+  },
+  {
+   "guid": "ST/CAST",
+   "name": "CAST",
+   "latitude": 43.4049603,
+   "longitude": 10.41330014
+  },
+  {
+   "guid": "ST/Chernivtsi",
+   "name": "Chernivtsi",
+   "latitude": 48.357932,
+   "longitude": 26.184265
+  },
+  {
+   "guid": "ST/CHIOG",
+   "name": "CHIOG",
+   "latitude": 45.22667068,
+   "longitude": 12.49954828
+  },
+  {
+   "guid": "ST/Copenhagen",
+   "name": "COPE",
+   "latitude": 55.676854,
+   "longitude": 12.54987
+  },
+  {
+   "guid": "ST/COMAC",
+   "name": "COMACCHIO",
+   "latitude": 44.69394186,
+   "longitude": 12.16988563
+  },
+  {
+   "guid": "ST/COMO",
+   "name": "COMO",
+   "latitude": 45.80710842,
+   "longitude": 9.08528012
+  },
+  {
+   "guid": "ST/CUNEO",
+   "name": "CUNEO",
+   "latitude": 44.37820838,
+   "longitude": 7.56311332
+  },
+  {
+   "guid": "ST/ercolano",
+   "name": "ERC",
+   "latitude": 40.790093,
+   "longitude": 14.365405
+  },
+  {
+   "guid": "ST/foca",
+   "name": "FOC",
+   "latitude": 43.51,
+   "longitude": 18.84
+  },
+  {
+   "guid": "ST/foggia",
+   "name": "BAR",
+   "latitude": 41.46,
+   "longitude": 2.32
+  },
+  {
+   "guid": "ST/foggia2",
+   "name": "FOGG",
+   "latitude": 41.46288103,
+   "longitude": 15.54283186
+  },
+  {
+   "guid": "ST/frosinone",
+   "name": "FRO",
+   "latitude": 41.64004292,
+   "longitude": 13.34231015
+  },
+  {
+   "guid": "ST/FERR",
+   "name": "FERR",
+   "latitude": 44.83890995,
+   "longitude": 11.61828967
+  },
+  {
+   "guid": "ST/FIR",
+   "name": "FIR",
+   "latitude": 43.771,
+   "longitude": 11.265
+  },
+  {
+   "guid": "ST/galati",
+   "name": "GAL",
+   "latitude": 45.4519671,
+   "longitude": 28.18743777
+  },
+  {
+   "guid": "ST/genevra",
+   "name": "GENE",
+   "latitude": 46.20482403,
+   "longitude": 6.144289
+  },
+  {
+   "guid": "ST/grosseto",
+   "name": "GRO",
+   "latitude": 42.76384151,
+   "longitude": 11.1147819
+  },
+  {
+   "guid": "ST/GEN",
+   "name": "GEN",
+   "latitude": 44.40673808,
+   "longitude": 8.93546117
+  },
+  {
+   "guid": "ST/hamburg",
+   "name": "HAMB",
+   "latitude": 53.550301,
+   "longitude": 9.97519
+  },
+  {
+   "guid": "ST/isernia",
+   "name": "ISE",
+   "latitude": 41.59642479,
+   "longitude": 14.22812402
+  },
+  {
+   "guid": "ST/kharkiv",
+   "name": "KHARKIV",
+   "latitude": 50.020223,
+   "longitude": 36.526788
+  },
+  {
+   "guid": "ST/kyiv",
+   "name": "KYIV",
+   "latitude": 50.533994,
+   "longitude": 30.786245
+  },
+  {
+   "guid": "ST/Krakow",
+   "name": "Krakow",
+   "latitude": 50.047871,
+   "longitude": 20.489866
+  },
+  {
+   "guid": "ST/Kyiv",
+   "name": "KYIV",
+   "latitude": 50.450034,
+   "longitude": 30.52413
+  },
+  {
+   "guid": "ST/lille",
+   "name": "LILL",
+   "latitude": 50.62,
+   "longitude": 3.065
+  },
+  {
+   "guid": "ST/lyon",
+   "name": "LYO",
+   "latitude": 45.763897,
+   "longitude": 4.838508
+  },
+  {
+   "guid": "ST/London",
+   "name": "LON",
+   "latitude": 51.501,
+   "longitude": -0.14022
+  },
+  {
+   "guid": "ST/LSPEZIA",
+   "name": "SPEZIA",
+   "latitude": 44.10645138,
+   "longitude": 9.82159973
+  },
+  {
+   "guid": "ST/Lviv",
+   "name": "Lviv",
+   "latitude": 49.867829,
+   "longitude": 24.370121
+  },
+  {
+   "guid": "ST/madrid",
+   "name": "MAD",
+   "latitude": 40.416705,
+   "longitude": -3.703583
+  },
+  {
+   "guid": "ST/mainz",
+   "name": "FRANK",
+   "latitude": 49.99952,
+   "longitude": 8.27362
+  },
+  {
+   "guid": "ST/marseille",
+   "name": "MARS",
+   "latitude": 43.296174,
+   "longitude": 5.369953
+  },
+  {
+   "guid": "ST/messina",
+   "name": "MESS",
+   "latitude": 38.19527286,
+   "longitude": 15.56115831
+  },
+  {
+   "guid": "ST/milan",
+   "name": "MIL",
+   "latitude": 45.468773,
+   "longitude": 9.184232
+  },
+  {
+   "guid": "ST/napoli",
+   "name": "NAP",
+   "latitude": 40.835885,
+   "longitude": 14.248768
+  },
+  {
+   "guid": "ST/noto",
+   "name": "NOTO",
+   "latitude": 36.89454819,
+   "longitude": 15.05544036
+  },
+  {
+   "guid": "ST/NOV",
+   "name": "NOV",
+   "latitude": 45.44832234,
+   "longitude": 8.71824145
+  },
+  {
+   "guid": "ST/oleksandriia",
+   "name": "OLEKSANDRIIA",
+   "latitude": 48.711264,
+   "longitude": 33.358501
+  },
+  {
+   "guid": "ST/orta",
+   "name": "ORTA",
+   "latitude": 41.33136724,
+   "longitude": 15.73709776
+  },
+  {
+   "guid": "ST/paris",
+   "name": "PARIS",
+   "latitude": 48.85889,
+   "longitude": 2.320041
+  },
+  {
+   "guid": "ST/perugia",
+   "name": "PER",
+   "latitude": 43.11155506,
+   "longitude": 12.38907823
+  },
+  {
+   "guid": "ST/pescara",
+   "name": "PES",
+   "latitude": 42.46283294,
+   "longitude": 14.21669912
+  },
+  {
+   "guid": "ST/poltava",
+   "name": "POLTAVA",
+   "latitude": 49.5751348,
+   "longitude": 34.62374253
+  },
+  {
+   "guid": "ST/potenza",
+   "name": "POT",
+   "latitude": 40.63813,
+   "longitude": 15.79384
+  },
+  {
+   "guid": "ST/PADOVA",
+   "name": "PADOVA",
+   "latitude": 45.41057149,
+   "longitude": 11.8805996
+  },
+  {
+   "guid": "ST/PESARO",
+   "name": "PESARO",
+   "latitude": 43.90047012,
+   "longitude": 13.03141361
+  },
+  {
+   "guid": "ST/PISA",
+   "name": "PISA",
+   "latitude": 43.72250083,
+   "longitude": 10.39949729
+  },
+  {
+   "guid": "ST/ragusa",
+   "name": "RAG",
+   "latitude": 42.66091263,
+   "longitude": 17.94032721
+  },
+  {
+   "guid": "ST/recanati",
+   "name": "REC",
+   "latitude": 43.41,
+   "longitude": 13.44
+  },
+  {
+   "guid": "ST/riga",
+   "name": "RIGA",
+   "latitude": 56.94939,
+   "longitude": 24.10518
+  },
+  {
+   "guid": "ST/roma",
+   "name": "ROM",
+   "latitude": 41.89819874,
+   "longitude": 12.47693537
+  },
+  {
+   "guid": "ST/RAV",
+   "name": "RAVEN",
+   "latitude": 44.4152987,
+   "longitude": 12.19663524
+  },
+  {
+   "guid": "ST/Rivne",
+   "name": "Rivne",
+   "latitude": 50.652616,
+   "longitude": 26.421324
+  },
+  {
+   "guid": "ST/RIMINI",
+   "name": "RIMINI",
+   "latitude": 44.07358505,
+   "longitude": 12.62618288
+  },
+  {
+   "guid": "ST/ROVI",
+   "name": "ROVI",
+   "latitude": 45.08147149,
+   "longitude": 11.88184017
+  },
+  {
+   "guid": "ST/sarajevo",
+   "name": "SARJ",
+   "latitude": 43.949744,
+   "longitude": 18.378593
+  },
+  {
+   "guid": "ST/siracusa",
+   "name": "SIRA",
+   "latitude": 37.07356608,
+   "longitude": 15.26458037
+  },
+  {
+   "guid": "ST/skopie",
+   "name": "SKO",
+   "latitude": 42.716164,
+   "longitude": 23.320907
+  },
+  {
+   "guid": "ST/sofia",
+   "name": "SOF",
+   "latitude": 42.716164,
+   "longitude": 23.320907
+  },
+  {
+   "guid": "ST/stuttgart",
+   "name": "STUT",
+   "latitude": 48.77844,
+   "longitude": 9.180013
+  },
+  {
+   "guid": "ST/sumy",
+   "name": "SUMY",
+   "latitude": 50.961938,
+   "longitude": 34.946973
+  },
+  {
+   "guid": "ST/SIE",
+   "name": "SIENA",
+   "latitude": 43.31837398,
+   "longitude": 11.3305667
+  },
+  {
+   "guid": "ST/SONDRIO",
+   "name": "SONDRIO",
+   "latitude": 46.17493842,
+   "longitude": 9.87028517
+  },
+  {
+   "guid": "ST/tallin",
+   "name": "TALL",
+   "latitude": 59.43,
+   "longitude": 24.74
+  },
+  {
+   "guid": "ST/termoli",
+   "name": "TER",
+   "latitude": 42.0,
+   "longitude": 14.99
+  },
+  {
+   "guid": "ST/toulouse",
+   "name": "TOU",
+   "latitude": 43.604403,
+   "longitude": 1.444512
+  },
+  {
+   "guid": "ST/troia",
+   "name": "TROI",
+   "latitude": 41.36246962,
+   "longitude": 15.32625146
+  },
+  {
+   "guid": "ST/TOR",
+   "name": "TOR",
+   "latitude": 45.06889689,
+   "longitude": 7.69549222
+  },
+  {
+   "guid": "ST/TRENTO",
+   "name": "TRENTO",
+   "latitude": 46.06692799,
+   "longitude": 11.12678323
+  },
+  {
+   "guid": "ST/vienna",
+   "name": "VIE",
+   "latitude": 48.21,
+   "longitude": 16.37
+  },
+  {
+   "guid": "ST/vilnius",
+   "name": "VILN",
+   "latitude": 54.68704,
+   "longitude": 25.28291
+  },
+  {
+   "guid": "ST/Valmontone",
+   "name": "Valmontone",
+   "latitude": 41.7655715,
+   "longitude": 12.93111721
+  },
+  {
+   "guid": "ST/VAL",
+   "name": "VALM",
+   "latitude": 41.77398553,
+   "longitude": 12.92327856
+  },
+  {
+   "guid": "ST/VENEZ",
+   "name": "VENEZ",
+   "latitude": 45.44008783,
+   "longitude": 12.30561071
+  },
+  {
+   "guid": "ST/VER",
+   "name": "VER",
+   "latitude": 45.4385203,
+   "longitude": 10.99148669
+  },
+  {
+   "guid": "ST/VERC",
+   "name": "VERC",
+   "latitude": 45.31817424,
+   "longitude": 8.48592385
+  },
+  {
+   "guid": "ST/VICENZ",
+   "name": "VICENZA",
+   "latitude": 45.55367799,
+   "longitude": 11.54313079
+  },
+  {
+   "guid": "ST/zadar",
+   "name": "ZAD",
+   "latitude": 44.14365343,
+   "longitude": 15.34933633
+  },
+  {
+   "guid": "ST/zagreb",
+   "name": "ZAG",
+   "latitude": 45.852109,
+   "longitude": 16.108699
+  },
+  {
+   "guid": "ST/Zamosc",
+   "name": "Zamosc",
+   "latitude": 50.725751,
+   "longitude": 23.389539
+  }
+ ],
+ "links": [
+  {
+   "guid": "LI/cisco-onc-adpt/ots/98670da1-bfc2-3c7b-9ae3-d2d6a6fbd797/6ee2d3fb-18a7-383e-ab97-3514e06c37e5/5310c4a6-efef-3c4a-880c-ec185c0c1c8f",
+   "name": "ots_Potenza-96-1_Battipaglia-97-1",
+   "desc": "OTS: Battipaglia-97/1/1/LINE to Potenza-96/1/1/LINE",
+   "layer": "OTS",
+   "provider": "cisco-onc-adpt",
+   "portA": "PO/cisco-onc-adpt/ots/7d416b3e-d7de-3792-9248-a3aa4fca7253/98670da1-bfc2-3c7b-9ae3-d2d6a6fbd797",
+   "portB": "PO/cisco-onc-adpt/ots/b2a1ce4c-de62-3d89-964d-eb918e9a6e7e/6ee2d3fb-18a7-383e-ab97-3514e06c37e5",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-onc-adpt/ots/8d2e1792-4527-3c2b-b3f2-b62b497adf06/b46943e7-99d7-3cc8-9336-9730d1b8d1c7/f4dd5394-4529-3d5f-9f74-e77c77d922ad",
+   "name": "ots_Isernia-74-2_Roma-75-1",
+   "desc": "OTS: Isernia-74/1/0/LINE-2 to Roma-75/1/0/LINE",
+   "layer": "OTS",
+   "provider": "cisco-onc-adpt",
+   "portA": "PO/cisco-onc-adpt/ots/cf5aa47b-ab05-35e4-8adf-9566da8fbfc4/8d2e1792-4527-3c2b-b3f2-b62b497adf06",
+   "portB": "PO/cisco-onc-adpt/ots/f521d934-bd38-338b-93ef-faff7948e90d/b46943e7-99d7-3cc8-9336-9730d1b8d1c7",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-onc-adpt/oms/ae1a48fc-acf3-3ab2-b1fa-0f075e250ff5/5dbce3f7-da6d-38fb-9bea-41ca3090a74c",
+   "name": "oms_Battipaglia-97-1_Potenza-96-1",
+   "desc": "OMS: Battipaglia-97/1/1/LINE to Potenza-96/1/1/LINE",
+   "layer": "OMS",
+   "provider": "cisco-onc-adpt",
+   "portA": "PO/cisco-onc-adpt/oms/7d416b3e-d7de-3792-9248-a3aa4fca7253/ae1a48fc-acf3-3ab2-b1fa-0f075e250ff5",
+   "portB": "PO/cisco-onc-adpt/oms/b2a1ce4c-de62-3d89-964d-eb918e9a6e7e/5dbce3f7-da6d-38fb-9bea-41ca3090a74c",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-onc-adpt/ots/c19bebec-c962-3c27-912e-004137e386e5/5e4b174b-250b-3aca-9617-c9a2774ca143/7ce25e07-1574-3567-9443-a5e3be531cbc",
+   "name": "ots_Frosinone-44-2_Benevento-42-2",
+   "desc": "OTS: Frosinone-44/1/7/LINE to Benevento-42/1/7/LINE",
+   "layer": "OTS",
+   "provider": "cisco-onc-adpt",
+   "portA": "PO/cisco-onc-adpt/ots/18c4bf4b-450c-3488-ac35-8564327b2de0/c19bebec-c962-3c27-912e-004137e386e5",
+   "portB": "PO/cisco-onc-adpt/ots/e4029d95-599f-3d61-87fe-70d0a1296317/5e4b174b-250b-3aca-9617-c9a2774ca143",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-onc-adpt/oms/ecb50a23-d578-3a33-918f-ef1a3deb2815/f145c5be-42ef-368e-ab8f-fc683c8c323e/4c7602cb-bddd-3971-83a5-f3df64dfb948",
+   "name": "Benevento-42_1/3/11_2/PORT-4-RX",
+   "desc": "OMS: Benevento-42/1/3/11 to Benevento-42/2/PORT-4",
+   "layer": "OMS",
+   "provider": "cisco-onc-adpt",
+   "portA": "PO/cisco-onc-adpt/oms/67cbaf31-1fb6-3e41-8ac3-df64c0eb97b9/ecb50a23-d578-3a33-918f-ef1a3deb2815",
+   "portB": "PO/cisco-onc-adpt/oms/e4029d95-599f-3d61-87fe-70d0a1296317/f145c5be-42ef-368e-ab8f-fc683c8c323e",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-onc-adpt/ots/3093dc6c-bade-3956-8e54-cb12b7bffd34/01d798aa-2113-36df-9a00-ab3d00f1621d/9e5a5548-01c3-31b4-bda9-bbd7a69b472a",
+   "name": "ots_Battipaglia-43-2_Benevento-42-1",
+   "desc": "OTS: Battipaglia-43/1/7/LINE to Benevento-42/1/2/LINE",
+   "layer": "OTS",
+   "provider": "cisco-onc-adpt",
+   "portA": "PO/cisco-onc-adpt/ots/8d059457-74e4-339c-a8f4-99f934434aec/3093dc6c-bade-3956-8e54-cb12b7bffd34",
+   "portB": "PO/cisco-onc-adpt/ots/e4029d95-599f-3d61-87fe-70d0a1296317/01d798aa-2113-36df-9a00-ab3d00f1621d",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-onc-adpt/oms/4e23e152-1b68-3df3-8c76-e76f3d554e7e/3e2b4389-da37-36a3-b242-ec666a541a4d",
+   "name": "oms_Benevento-42-2_Frosinone-44-2",
+   "desc": "OMS: Frosinone-44/1/7/LINE to Benevento-42/1/7/LINE",
+   "layer": "OMS",
+   "provider": "cisco-onc-adpt",
+   "portA": "PO/cisco-onc-adpt/oms/18c4bf4b-450c-3488-ac35-8564327b2de0/4e23e152-1b68-3df3-8c76-e76f3d554e7e",
+   "portB": "PO/cisco-onc-adpt/oms/e4029d95-599f-3d61-87fe-70d0a1296317/3e2b4389-da37-36a3-b242-ec666a541a4d",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-onc-adpt/ots/4b86bc50-aa4a-35c6-b30e-3cf9773d0c43/265503cb-3d9c-3971-ab17-5a376fc1f6d3/6f408428-bf6e-341d-8cce-6661fe929036",
+   "name": "ots_Battipaglia-43-1_Napoli.45-2",
+   "desc": "OTS: Napoli.45/1/7/LINE to Battipaglia-43/1/2/LINE",
+   "layer": "OTS",
+   "provider": "cisco-onc-adpt",
+   "portA": "PO/cisco-onc-adpt/ots/37555326-088c-32ef-900f-6300f81ebcfe/4b86bc50-aa4a-35c6-b30e-3cf9773d0c43",
+   "portB": "PO/cisco-onc-adpt/ots/8d059457-74e4-339c-a8f4-99f934434aec/265503cb-3d9c-3971-ab17-5a376fc1f6d3",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-onc-adpt/ots/1adfc482-e131-3b35-a6b5-7d494de0686c/d5f69b14-360c-35d7-b18e-c692f1655a59/a28e4f8d-cda3-330f-abcf-7afc4b41adaf",
+   "name": "ots_Frosinone-44-1_Napoli.45-1",
+   "desc": "OTS: Frosinone-44/1/2/LINE to Napoli.45/1/2/LINE",
+   "layer": "OTS",
+   "provider": "cisco-onc-adpt",
+   "portA": "PO/cisco-onc-adpt/ots/18c4bf4b-450c-3488-ac35-8564327b2de0/1adfc482-e131-3b35-a6b5-7d494de0686c",
+   "portB": "PO/cisco-onc-adpt/ots/37555326-088c-32ef-900f-6300f81ebcfe/d5f69b14-360c-35d7-b18e-c692f1655a59",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-onc-adpt/oms/4613ec76-687b-38fa-bfe2-537a8c86240f/2b9180cf-6bf2-3e89-96ec-dd979c878e56",
+   "name": "oms_Frosinone-44-1_Battipaglia-43-1",
+   "desc": "OMS: Frosinone-44/1/2/LINE to Battipaglia-43/1/2/LINE",
+   "layer": "OMS",
+   "provider": "cisco-onc-adpt",
+   "portA": "PO/cisco-onc-adpt/oms/18c4bf4b-450c-3488-ac35-8564327b2de0/4613ec76-687b-38fa-bfe2-537a8c86240f",
+   "portB": "PO/cisco-onc-adpt/oms/8d059457-74e4-339c-a8f4-99f934434aec/2b9180cf-6bf2-3e89-96ec-dd979c878e56",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-onc-adpt/oms/3ac1cd25-c721-3d0e-8135-b30559249b8a/54a785df-349d-3fd4-a2c1-3eb829437bfd/f6047b2e-eaa9-309a-b403-eecad6335ee5",
+   "name": "Battipaglia-43_1/3/11_3/PORT-4-RX",
+   "desc": "OMS: Battipaglia-43/3/PORT-4 to Battipaglia-43/1/3/11",
+   "layer": "OMS",
+   "provider": "cisco-onc-adpt",
+   "portA": "PO/cisco-onc-adpt/oms/8d059457-74e4-339c-a8f4-99f934434aec/3ac1cd25-c721-3d0e-8135-b30559249b8a",
+   "portB": "PO/cisco-onc-adpt/oms/a7fde4f3-a073-3d9b-a8a1-1f5e5a289fc3/54a785df-349d-3fd4-a2c1-3eb829437bfd",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-onc-adpt/oms/b273602f-210d-3ecb-8c1e-c0eca6ceeb0c/9b5ce8ab-3509-3cc0-a8fc-1ea8ed91a05d",
+   "name": "oms_Battipaglia-43-2_Benevento-42-1",
+   "desc": "OMS: Battipaglia-43/1/7/LINE to Benevento-42/1/2/LINE",
+   "layer": "OMS",
+   "provider": "cisco-onc-adpt",
+   "portA": "PO/cisco-onc-adpt/oms/8d059457-74e4-339c-a8f4-99f934434aec/b273602f-210d-3ecb-8c1e-c0eca6ceeb0c",
+   "portB": "PO/cisco-onc-adpt/oms/e4029d95-599f-3d61-87fe-70d0a1296317/9b5ce8ab-3509-3cc0-a8fc-1ea8ed91a05d",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/Battipaglia-11/OMS:LINE-1-2-3-RX&LINE-1-2-3-TX-PO/cisco-epnm-adpt/Roma-14/OMS:LINE-1-7-3-RX&LINE-1-7-3-TX",
+   "name": "10.197.244.11:LINE-1-2-3-RX&LINE-1-2-3-TX--10.197.244.14:LINE-1-7-3-RX&LINE-1-7-3-TX",
+   "desc": "10.197.244.11:LINE-1-2-3-RX&LINE-1-2-3-TX--10.197.244.14:LINE-1-7-3-RX&LINE-1-7-3-TX",
+   "layer": "OMS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/Battipaglia-11/OMS:LINE-1-2-3-RX&LINE-1-2-3-TX",
+   "portB": "PO/cisco-epnm-adpt/Roma-14/OMS:LINE-1-7-3-RX&LINE-1-7-3-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "name": "10.197.238.124:LINE-7-3-RX&LINE-7-3-TX--10.197.238.128:LINE-2-3-RX&LINE-2-3-TX",
+   "desc": "10.197.238.124:LINE-7-3-RX&LINE-7-3-TX--10.197.238.128:LINE-2-3-RX&LINE-2-3-TX",
+   "layer": "OMS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX",
+   "portB": "PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/Roma-14/OMS:LINE-1-3-3-RX&LINE-1-3-3-TX-PO/cisco-epnm-adpt/Napoli-12/OMS:LINE-1-7-3-RX&LINE-1-7-3-TX",
+   "name": "10.197.244.12:LINE-1-7-3-RX&LINE-1-7-3-TX--10.197.244.14:LINE-1-3-3-RX&LINE-1-3-3-TX",
+   "desc": "10.197.244.12:LINE-1-7-3-RX&LINE-1-7-3-TX--10.197.244.14:LINE-1-3-3-RX&LINE-1-3-3-TX",
+   "layer": "OMS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/Roma-14/OMS:LINE-1-3-3-RX&LINE-1-3-3-TX",
+   "portB": "PO/cisco-epnm-adpt/Napoli-12/OMS:LINE-1-7-3-RX&LINE-1-7-3-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "name": "10.197.238.115:LINE-7-3-RX&LINE-7-3-TX--10.197.238.124:LINE-2-3-RX&LINE-2-3-TX",
+   "desc": "10.197.238.115:LINE-7-3-RX&LINE-7-3-TX--10.197.238.124:LINE-2-3-RX&LINE-2-3-TX",
+   "layer": "OMS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX",
+   "portB": "PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/27.OLA.190/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/28.OLA.116/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "name": "10.197.238.116:[WDMSIDE-A]--10.197.238.190:[WDMSIDE-B]",
+   "desc": "10.197.238.116:[WDMSIDE-A]--10.197.238.190:[WDMSIDE-B]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/27.OLA.190/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "portB": "PO/cisco-epnm-adpt/28.OLA.116/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/14.OLA.93/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/15.OLA.126/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "name": "10.197.238.93:[WDMSIDE-B]--10.197.238.126:[WDMSIDE-A]",
+   "desc": "10.197.238.93:[WDMSIDE-B]--10.197.238.126:[WDMSIDE-A]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/14.OLA.93/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "portB": "PO/cisco-epnm-adpt/15.OLA.126/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-5-RX&PLINE-14-5-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-5-RX&PLINE-13-5-TX",
+   "name": "ASE_41",
+   "desc": "ASE_41",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-5-RX&PLINE-14-5-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-5-RX&PLINE-13-5-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-6-RX&PLINE-14-6-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-6-RX&PLINE-13-6-TX",
+   "name": "ASE_42",
+   "desc": "ASE_42",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-6-RX&PLINE-14-6-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-6-RX&PLINE-13-6-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-3-RX&PLINE-11-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-3-RX&PLINE-10-3-TX",
+   "name": "ASE_21",
+   "desc": "ASE_21",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-3-RX&PLINE-11-3-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-3-RX&PLINE-10-3-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-5-RX&PLINE-11-5-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-5-RX&PLINE-10-5-TX",
+   "name": "ASE_23",
+   "desc": "ASE_23",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-5-RX&PLINE-11-5-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-5-RX&PLINE-10-5-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-2-RX&PLINE-11-2-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-2-RX&PLINE-10-2-TX",
+   "name": "ASE_20",
+   "desc": "ASE_20",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-2-RX&PLINE-11-2-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-2-RX&PLINE-10-2-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-1-RX&PLINE-14-1-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-1-RX&PLINE-13-1-TX",
+   "name": "ASE_37",
+   "desc": "ASE_37",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-1-RX&PLINE-14-1-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-1-RX&PLINE-13-1-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-6-RX&PLINE-15-6-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-6-RX&PLINE-14-6-TX",
+   "name": "ASE_48",
+   "desc": "ASE_48",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-6-RX&PLINE-15-6-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-6-RX&PLINE-14-6-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-3-RX&PLINE-15-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-3-RX&PLINE-14-3-TX",
+   "name": "ASE_45",
+   "desc": "ASE_45",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-3-RX&PLINE-15-3-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-3-RX&PLINE-14-3-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-onc-adpt/nmc/3bed57c3-7318-3e1f-b8ff-cdd8585d34f6-otsimc/989c87f9-1963-3b61-af8d-ea79bca3c306-otsimc/1f433d0b-e788-3ff8-a444-65d9bbfd543f",
+   "name": "Battipaglia_43_roadm_Benevento_42_roadm_138ba1a9_otsimc",
+   "desc": "NMC: Battipaglia-43/2/PORT-1 to Benevento-42/3/PORT-1",
+   "layer": "NMC",
+   "provider": "cisco-onc-adpt",
+   "portA": "PO/cisco-onc-adpt/nmc/8d059457-74e4-339c-a8f4-99f934434aec/3bed57c3-7318-3e1f-b8ff-cdd8585d34f6-otsimc",
+   "portB": "PO/cisco-onc-adpt/nmc/e4029d95-599f-3d61-87fe-70d0a1296317/989c87f9-1963-3b61-af8d-ea79bca3c306-otsimc",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/25.ROADM.128/NMC:PLINE-3-9-RX&PLINE-3-9-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-4-5-RX&PLINE-4-5-TX",
+   "name": "100G_ZR_600km",
+   "desc": "100G_ZR_600km",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/25.ROADM.128/NMC:PLINE-3-9-RX&PLINE-3-9-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-4-5-RX&PLINE-4-5-TX",
+   "distanceMeters": null,
+   "operStatus": "DOWN"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/Battipaglia-11/OMS:LINE-1-7-3-RX&LINE-1-7-3-TX-PO/cisco-epnm-adpt/Napoli-12/OMS:LINE-1-3-3-RX&LINE-1-3-3-TX",
+   "name": "10.197.244.11:LINE-1-7-3-RX&LINE-1-7-3-TX--10.197.244.12:LINE-1-3-3-RX&LINE-1-3-3-TX",
+   "desc": "10.197.244.11:LINE-1-7-3-RX&LINE-1-7-3-TX--10.197.244.12:LINE-1-3-3-RX&LINE-1-3-3-TX",
+   "layer": "OMS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/Battipaglia-11/OMS:LINE-1-7-3-RX&LINE-1-7-3-TX",
+   "portB": "PO/cisco-epnm-adpt/Napoli-12/OMS:LINE-1-3-3-RX&LINE-1-3-3-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/router-optics/ots/PO/cisco-cnc-adpt/OTS-Ancona-18:OTS0/0/2/1/1/PO/cisco-cnc-adpt/OTS-Perugia-138:OTS0/0/2/1/1",
+   "name": "OTS0/0/2/1/1 to OTS0/0/2/1/1",
+   "desc": "OTS0/0/2/1/1 to OTS0/0/2/1/1",
+   "layer": "OTS",
+   "provider": "optical-persistor",
+   "portA": "PO/cisco-cnc-adpt/OTS-Ancona-18:OTS0/0/2/1/1",
+   "portB": "PO/cisco-cnc-adpt/OTS-Perugia-138:OTS0/0/2/1/1",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "name": "10.197.238.128:LINE-7-3-RX&LINE-7-3-TX--10.197.238.84:LINE-2-3-RX&LINE-2-3-TX",
+   "desc": "10.197.238.128:LINE-7-3-RX&LINE-7-3-TX--10.197.238.84:LINE-2-3-RX&LINE-2-3-TX",
+   "layer": "OMS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/router-optics/oms/PO/cisco-cnc-adpt/OMS-Ancona-18:OMS0/0/2/1/1/PO/cisco-cnc-adpt/OMS-Perugia-138:OMS0/0/2/1/1",
+   "name": "OMS0/0/2/1/1 to OMS0/0/2/1/1",
+   "desc": "OMS0/0/2/1/1 to OMS0/0/2/1/1",
+   "layer": "OMS",
+   "provider": "optical-persistor",
+   "portA": "PO/cisco-cnc-adpt/OMS-Ancona-18:OMS0/0/2/1/1",
+   "portB": "PO/cisco-cnc-adpt/OMS-Perugia-138:OMS0/0/2/1/1",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/router-optics/nmc/PO/nmc/Ancona-18/Ots0/0/2/1/Optics0/0/2/0/PO/nmc/Perugia-138/Ots0/0/2/1/Optics0/0/2/0",
+   "name": "Optics0/0/2/0,MC0/0/2/1/0 to Optics0/0/2/0,MC0/0/2/1/0",
+   "desc": "Optics0/0/2/0,MC0/0/2/1/0 to Optics0/0/2/0,MC0/0/2/1/0",
+   "layer": "NMC",
+   "provider": "optical-persistor",
+   "portA": "PO/nmc/Ancona-18/Ots0/0/2/1/Optics0/0/2/0",
+   "portB": "PO/nmc/Perugia-138/Ots0/0/2/1/Optics0/0/2/0",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX",
+   "name": "10.197.238.115:LINE-2-3-RX&LINE-2-3-TX--10.197.238.191:LINE-7-3-RX&LINE-7-3-TX",
+   "desc": "10.197.238.115:LINE-2-3-RX&LINE-2-3-TX--10.197.238.191:LINE-7-3-RX&LINE-7-3-TX",
+   "layer": "OMS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "portB": "PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/13.ROADM.115/OTS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/14.OLA.93/OTS:LINE-2-3-RX&LINE-2-3-TX",
+   "name": "10.197.238.93:[WDMSIDE-A]--10.197.238.115:[WDMSIDE-B]",
+   "desc": "10.197.238.93:[WDMSIDE-A]--10.197.238.115:[WDMSIDE-B]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/13.ROADM.115/OTS:LINE-7-3-RX&LINE-7-3-TX",
+   "portB": "PO/cisco-epnm-adpt/14.OLA.93/OTS:LINE-2-3-RX&LINE-2-3-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-onc-adpt/oms/3cdf7379-cebf-3321-b1e7-62e15a27901d/6bbea04f-62f5-3ee1-9714-e6478c601eb2",
+   "name": "oms_Frosinone-73-1_Roma-75-1",
+   "desc": "OMS: Frosinone-73/1/0/LINE to Roma-75/1/0/LINE",
+   "layer": "OMS",
+   "provider": "cisco-onc-adpt",
+   "portA": "PO/cisco-onc-adpt/oms/6a489dac-137f-3d79-a20d-bfb56fdc7beb/3cdf7379-cebf-3321-b1e7-62e15a27901d",
+   "portB": "PO/cisco-onc-adpt/oms/f521d934-bd38-338b-93ef-faff7948e90d/6bbea04f-62f5-3ee1-9714-e6478c601eb2",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/28.OLA.116/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/29.OLA.118/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "name": "10.197.238.116:[WDMSIDE-B]--10.197.238.118:[WDMSIDE-A]",
+   "desc": "10.197.238.116:[WDMSIDE-B]--10.197.238.118:[WDMSIDE-A]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/28.OLA.116/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "portB": "PO/cisco-epnm-adpt/29.OLA.118/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/27.OLA.190/OTS:LINE-2-2-RX&LINE-2-2-TX-PO/cisco-epnm-adpt/26.OLA.145/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "name": "10.197.238.145:[WDMSIDE-B]--10.197.238.190:[WDMSIDE-A]",
+   "desc": "10.197.238.145:[WDMSIDE-B]--10.197.238.190:[WDMSIDE-A]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/27.OLA.190/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "portB": "PO/cisco-epnm-adpt/26.OLA.145/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-4-RX&PLINE-10-4-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-4-RX&PLINE-9-4-TX",
+   "name": "ASE_16",
+   "desc": "ASE_16",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-4-RX&PLINE-10-4-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-4-RX&PLINE-9-4-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-2-RX&PLINE-14-2-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-2-RX&PLINE-13-2-TX",
+   "name": "ASE_38",
+   "desc": "ASE_38",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-2-RX&PLINE-14-2-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-2-RX&PLINE-13-2-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-1-RX&PLINE-11-1-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-1-RX&PLINE-10-1-TX",
+   "name": "ASE_19",
+   "desc": "ASE_19",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-1-RX&PLINE-11-1-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-1-RX&PLINE-10-1-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-3-RX&PLINE-14-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-3-RX&PLINE-13-3-TX",
+   "name": "ASE_39",
+   "desc": "ASE_39",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-3-RX&PLINE-14-3-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-3-RX&PLINE-13-3-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-4-RX&PLINE-14-4-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-4-RX&PLINE-13-4-TX",
+   "name": "ASE_40",
+   "desc": "ASE_40",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-4-RX&PLINE-14-4-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-4-RX&PLINE-13-4-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-4-RX&PLINE-11-4-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-4-RX&PLINE-10-4-TX",
+   "name": "ASE_22",
+   "desc": "ASE_22",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-4-RX&PLINE-11-4-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-4-RX&PLINE-10-4-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-6-RX&PLINE-11-6-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-6-RX&PLINE-10-6-TX",
+   "name": "ASE_24",
+   "desc": "ASE_24",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-6-RX&PLINE-11-6-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-6-RX&PLINE-10-6-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/10.OLA.121/OTS:LINE-2-2-RX&LINE-2-2-TX-PO/cisco-epnm-adpt/09.OLA.120/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "name": "10.197.238.120:[WDMSIDE-B]--10.197.238.121:[WDMSIDE-A]",
+   "desc": "10.197.238.120:[WDMSIDE-B]--10.197.238.121:[WDMSIDE-A]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/10.OLA.121/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "portB": "PO/cisco-epnm-adpt/09.OLA.120/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/11.OLA.122/OTS:LINE-2-2-RX&LINE-2-2-TX-PO/cisco-epnm-adpt/10.OLA.121/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "name": "10.197.238.121:[WDMSIDE-B]--10.197.238.122:[WDMSIDE-A]",
+   "desc": "10.197.238.121:[WDMSIDE-B]--10.197.238.122:[WDMSIDE-A]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/11.OLA.122/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "portB": "PO/cisco-epnm-adpt/10.OLA.121/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-17-6-RX&PLINE-17-6-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-16-6-RX&PLINE-16-6-TX",
+   "name": "ASE_60",
+   "desc": "ASE_60",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-17-6-RX&PLINE-17-6-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-16-6-RX&PLINE-16-6-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-9-2-RX&PLINE-9-2-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-8-2-RX&PLINE-8-2-TX",
+   "name": "ASE_8",
+   "desc": "ASE_8",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-9-2-RX&PLINE-9-2-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-8-2-RX&PLINE-8-2-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/13.ROADM.115/OTS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/12.OLA.129/OTS:LINE-7-3-RX&LINE-7-3-TX",
+   "name": "10.197.238.115:[WDMSIDE-A]--10.197.238.129:[WDMSIDE-B]",
+   "desc": "10.197.238.115:[WDMSIDE-A]--10.197.238.129:[WDMSIDE-B]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/13.ROADM.115/OTS:LINE-2-3-RX&LINE-2-3-TX",
+   "portB": "PO/cisco-epnm-adpt/12.OLA.129/OTS:LINE-7-3-RX&LINE-7-3-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/21.OLA.106/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/22.OLA.188/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "name": "10.197.238.106:[WDMSIDE-B]--10.197.238.188:[WDMSIDE-A]",
+   "desc": "10.197.238.106:[WDMSIDE-B]--10.197.238.188:[WDMSIDE-A]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/21.OLA.106/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "portB": "PO/cisco-epnm-adpt/22.OLA.188/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-3-RX&PLINE-10-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-3-RX&PLINE-9-3-TX",
+   "name": "ASE_15",
+   "desc": "ASE_15",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-3-RX&PLINE-10-3-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-3-RX&PLINE-9-3-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/11.OLA.122/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/12.OLA.129/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "name": "10.197.238.122:[WDMSIDE-B]--10.197.238.129:[WDMSIDE-A]",
+   "desc": "10.197.238.122:[WDMSIDE-B]--10.197.238.129:[WDMSIDE-A]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/11.OLA.122/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "portB": "PO/cisco-epnm-adpt/12.OLA.129/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/20.OLA.123/OTS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OTS:LINE-7-3-RX&LINE-7-3-TX",
+   "name": "10.197.238.123:[WDMSIDE-A]--10.197.238.124:[WDMSIDE-B]",
+   "desc": "10.197.238.123:[WDMSIDE-A]--10.197.238.124:[WDMSIDE-B]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/20.OLA.123/OTS:LINE-2-3-RX&LINE-2-3-TX",
+   "portB": "PO/cisco-epnm-adpt/19.ROADM.124/OTS:LINE-7-3-RX&LINE-7-3-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-onc-adpt/ots/772c670f-264b-3aba-bcd9-122caa8052ad/2659df94-601f-32c0-a574-14c2228ff12f/937e9670-6f91-32ce-bb30-eb682efaf8f9",
+   "name": "ots_Isernia-74-1_Frosinone-73-1",
+   "desc": "OTS: Frosinone-73/1/0/LINE to Isernia-74/1/0/LINE-0",
+   "layer": "OTS",
+   "provider": "cisco-onc-adpt",
+   "portA": "PO/cisco-onc-adpt/ots/6a489dac-137f-3d79-a20d-bfb56fdc7beb/772c670f-264b-3aba-bcd9-122caa8052ad",
+   "portB": "PO/cisco-onc-adpt/ots/cf5aa47b-ab05-35e4-8adf-9566da8fbfc4/2659df94-601f-32c0-a574-14c2228ff12f",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-9-6-RX&PLINE-9-6-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-8-6-RX&PLINE-8-6-TX",
+   "name": "ASE_12",
+   "desc": "ASE_12",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-9-6-RX&PLINE-9-6-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-8-6-RX&PLINE-8-6-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:LINE-6-12-RX&LINE-6-12-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:LINE-3-12-RX&LINE-3-12-TX",
+   "name": "400G_ULH_2400km_HCO",
+   "desc": "400G_ULH_2400km_HCO",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:LINE-6-12-RX&LINE-6-12-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:LINE-3-12-RX&LINE-3-12-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/24.OLA.88/OTS:LINE-2-2-RX&LINE-2-2-TX-PO/cisco-epnm-adpt/23.OLA.105/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "name": "10.197.238.88:[WDMSIDE-A]--10.197.238.105:[WDMSIDE-B]",
+   "desc": "10.197.238.88:[WDMSIDE-A]--10.197.238.105:[WDMSIDE-B]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/24.OLA.88/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "portB": "PO/cisco-epnm-adpt/23.OLA.105/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-9-4-RX&PLINE-9-4-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-8-4-RX&PLINE-8-4-TX",
+   "name": "ASE_10",
+   "desc": "ASE_10",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-9-4-RX&PLINE-9-4-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-8-4-RX&PLINE-8-4-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-12-2-RX&PLINE-12-2-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-11-2-RX&PLINE-11-2-TX",
+   "name": "ASE_26",
+   "desc": "ASE_26",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-12-2-RX&PLINE-12-2-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-11-2-RX&PLINE-11-2-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-16-5-RX&PLINE-16-5-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-15-5-RX&PLINE-15-5-TX",
+   "name": "ASE_53",
+   "desc": "ASE_53",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-16-5-RX&PLINE-16-5-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-15-5-RX&PLINE-15-5-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-9-5-RX&PLINE-9-5-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-8-5-RX&PLINE-8-5-TX",
+   "name": "ASE_11",
+   "desc": "ASE_11",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-9-5-RX&PLINE-9-5-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-8-5-RX&PLINE-8-5-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/20.OLA.123/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/21.OLA.106/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "name": "10.197.238.106:[WDMSIDE-A]--10.197.238.123:[WDMSIDE-B]",
+   "desc": "10.197.238.106:[WDMSIDE-A]--10.197.238.123:[WDMSIDE-B]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/20.OLA.123/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "portB": "PO/cisco-epnm-adpt/21.OLA.106/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-6-RX&PLINE-10-6-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-6-RX&PLINE-9-6-TX",
+   "name": "ASE_18",
+   "desc": "ASE_18",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-6-RX&PLINE-10-6-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-6-RX&PLINE-9-6-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-1-RX&PLINE-15-1-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-1-RX&PLINE-14-1-TX",
+   "name": "ASE_43",
+   "desc": "ASE_43",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-1-RX&PLINE-15-1-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-1-RX&PLINE-14-1-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-9-3-RX&PLINE-9-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-8-3-RX&PLINE-8-3-TX",
+   "name": "ASE_9",
+   "desc": "ASE_9",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-9-3-RX&PLINE-9-3-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-8-3-RX&PLINE-8-3-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-1-RX&PLINE-10-1-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-1-RX&PLINE-9-1-TX",
+   "name": "ASE_13",
+   "desc": "ASE_13",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-1-RX&PLINE-10-1-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-1-RX&PLINE-9-1-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-12-1-RX&PLINE-12-1-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-11-1-RX&PLINE-11-1-TX",
+   "name": "ASE_25",
+   "desc": "ASE_25",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-12-1-RX&PLINE-12-1-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-11-1-RX&PLINE-11-1-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-4-RX&PLINE-15-4-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-4-RX&PLINE-14-4-TX",
+   "name": "ASE_46",
+   "desc": "ASE_46",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-4-RX&PLINE-15-4-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-4-RX&PLINE-14-4-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/18.OLA.89/OTS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OTS:LINE-2-3-RX&LINE-2-3-TX",
+   "name": "10.197.238.89:[WDMSIDE-B]--10.197.238.124:[WDMSIDE-A]",
+   "desc": "10.197.238.89:[WDMSIDE-B]--10.197.238.124:[WDMSIDE-A]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/18.OLA.89/OTS:LINE-7-3-RX&LINE-7-3-TX",
+   "portB": "PO/cisco-epnm-adpt/19.ROADM.124/OTS:LINE-2-3-RX&LINE-2-3-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-16-4-RX&PLINE-16-4-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-15-4-RX&PLINE-15-4-TX",
+   "name": "ASE_52",
+   "desc": "ASE_52",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-16-4-RX&PLINE-16-4-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-15-4-RX&PLINE-15-4-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-2-RX&PLINE-15-2-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-2-RX&PLINE-14-2-TX",
+   "name": "ASE_44",
+   "desc": "ASE_44",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-2-RX&PLINE-15-2-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-2-RX&PLINE-14-2-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-12-3-RX&PLINE-12-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-11-3-RX&PLINE-11-3-TX",
+   "name": "ASE_27",
+   "desc": "ASE_27",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-12-3-RX&PLINE-12-3-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-11-3-RX&PLINE-11-3-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-5-RX&PLINE-10-5-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-5-RX&PLINE-9-5-TX",
+   "name": "ASE_17",
+   "desc": "ASE_17",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-5-RX&PLINE-10-5-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-5-RX&PLINE-9-5-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-5-RX&PLINE-15-5-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-5-RX&PLINE-14-5-TX",
+   "name": "ASE_47",
+   "desc": "ASE_47",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-5-RX&PLINE-15-5-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-5-RX&PLINE-14-5-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/22.OLA.188/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/23.OLA.105/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "name": "10.197.238.105:[WDMSIDE-A]--10.197.238.188:[WDMSIDE-B]",
+   "desc": "10.197.238.105:[WDMSIDE-A]--10.197.238.188:[WDMSIDE-B]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/22.OLA.188/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "portB": "PO/cisco-epnm-adpt/23.OLA.105/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-2-RX&PLINE-10-2-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-2-RX&PLINE-9-2-TX",
+   "name": "ASE_14",
+   "desc": "ASE_14",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-2-RX&PLINE-10-2-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-2-RX&PLINE-9-2-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/Roma-14/NMC:PLINE-3-9-RX&PLINE-3-9-TX-PO/cisco-epnm-adpt/Battipaglia-11/NMC:PLINE-3-9-RX&PLINE-3-9-TX",
+   "name": "Ischia-Battipaglia-400g NMC",
+   "desc": "Ischia-Battipaglia-400g NMC",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/Roma-14/NMC:PLINE-3-9-RX&PLINE-3-9-TX",
+   "portB": "PO/cisco-epnm-adpt/Battipaglia-11/NMC:PLINE-3-9-RX&PLINE-3-9-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/Roma-14/OTS:LINE-1-3-3-RX&LINE-1-3-3-TX-PO/cisco-epnm-adpt/Napoli-12/OTS:LINE-1-7-3-RX&LINE-1-7-3-TX",
+   "name": "10.197.244.12:[WDMSIDE-B]--10.197.244.14:[WDMSIDE-C]",
+   "desc": "10.197.244.12:[WDMSIDE-B]--10.197.244.14:[WDMSIDE-C]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/Roma-14/OTS:LINE-1-3-3-RX&LINE-1-3-3-TX",
+   "portB": "PO/cisco-epnm-adpt/Napoli-12/OTS:LINE-1-7-3-RX&LINE-1-7-3-TX",
+   "distanceMeters": 50000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/Battipaglia-11/OTS:LINE-1-2-3-RX&LINE-1-2-3-TX-PO/cisco-epnm-adpt/Roma-14/OTS:LINE-1-7-3-RX&LINE-1-7-3-TX",
+   "name": "10.197.244.11:[WDMSIDE-A]--10.197.244.14:[WDMSIDE-B]",
+   "desc": "10.197.244.11:[WDMSIDE-A]--10.197.244.14:[WDMSIDE-B]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/Battipaglia-11/OTS:LINE-1-2-3-RX&LINE-1-2-3-TX",
+   "portB": "PO/cisco-epnm-adpt/Roma-14/OTS:LINE-1-7-3-RX&LINE-1-7-3-TX",
+   "distanceMeters": 40000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/17.OLA.92/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/18.OLA.89/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "name": "10.197.238.89:[WDMSIDE-A]--10.197.238.92:[WDMSIDE-B]",
+   "desc": "10.197.238.89:[WDMSIDE-A]--10.197.238.92:[WDMSIDE-B]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/17.OLA.92/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "portB": "PO/cisco-epnm-adpt/18.OLA.89/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/13.ROADM.115/NMC:PLINE-3-11-RX&PLINE-3-11-TX-PO/cisco-epnm-adpt/25.ROADM.128/NMC:PLINE-6-12-RX&PLINE-6-12-TX",
+   "name": "800G_OSFP",
+   "desc": "800G_OSFP",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/13.ROADM.115/NMC:PLINE-3-11-RX&PLINE-3-11-TX",
+   "portB": "PO/cisco-epnm-adpt/25.ROADM.128/NMC:PLINE-6-12-RX&PLINE-6-12-TX",
+   "distanceMeters": null,
+   "operStatus": "DOWN"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/08.OLA.189/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/09.OLA.120/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "name": "10.197.238.120:[WDMSIDE-A]--10.197.238.189:[WDMSIDE-B]",
+   "desc": "10.197.238.120:[WDMSIDE-A]--10.197.238.189:[WDMSIDE-B]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/08.OLA.189/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "portB": "PO/cisco-epnm-adpt/09.OLA.120/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/Napoli-12/OTS:LINE-1-3-3-RX&LINE-1-3-3-TX-PO/cisco-epnm-adpt/Battipaglia-11/OTS:LINE-1-7-3-RX&LINE-1-7-3-TX",
+   "name": "10.197.244.11:[WDMSIDE-B]--10.197.244.12:[WDMSIDE-A]",
+   "desc": "10.197.244.11:[WDMSIDE-B]--10.197.244.12:[WDMSIDE-A]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/Napoli-12/OTS:LINE-1-3-3-RX&LINE-1-3-3-TX",
+   "portB": "PO/cisco-epnm-adpt/Battipaglia-11/OTS:LINE-1-7-3-RX&LINE-1-7-3-TX",
+   "distanceMeters": 40000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/29.OLA.118/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/30.OLA.117/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "name": "10.197.238.117:[WDMSIDE-A]--10.197.238.118:[WDMSIDE-B]",
+   "desc": "10.197.238.117:[WDMSIDE-A]--10.197.238.118:[WDMSIDE-B]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/29.OLA.118/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "portB": "PO/cisco-epnm-adpt/30.OLA.117/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/16.OLA.94/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/17.OLA.92/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "name": "10.197.238.92:[WDMSIDE-A]--10.197.238.94:[WDMSIDE-B]",
+   "desc": "10.197.238.92:[WDMSIDE-A]--10.197.238.94:[WDMSIDE-B]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/16.OLA.94/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "portB": "PO/cisco-epnm-adpt/17.OLA.92/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/25.ROADM.128/OTS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/26.OLA.145/OTS:LINE-2-3-RX&LINE-2-3-TX",
+   "name": "10.197.238.128:[WDMSIDE-B]--10.197.238.145:[WDMSIDE-A]",
+   "desc": "10.197.238.128:[WDMSIDE-B]--10.197.238.145:[WDMSIDE-A]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/25.ROADM.128/OTS:LINE-7-3-RX&LINE-7-3-TX",
+   "portB": "PO/cisco-epnm-adpt/26.OLA.145/OTS:LINE-2-3-RX&LINE-2-3-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/08.OLA.189/OTS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OTS:LINE-7-3-RX&LINE-7-3-TX",
+   "name": "10.197.238.189:[WDMSIDE-A]--10.197.238.191:[WDMSIDE-B]",
+   "desc": "10.197.238.189:[WDMSIDE-A]--10.197.238.191:[WDMSIDE-B]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/08.OLA.189/OTS:LINE-2-3-RX&LINE-2-3-TX",
+   "portB": "PO/cisco-epnm-adpt/07.ROADM.191/OTS:LINE-7-3-RX&LINE-7-3-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/24.OLA.88/OTS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OTS:LINE-2-3-RX&LINE-2-3-TX",
+   "name": "10.197.238.88:[WDMSIDE-B]--10.197.238.128:[WDMSIDE-A]",
+   "desc": "10.197.238.88:[WDMSIDE-B]--10.197.238.128:[WDMSIDE-A]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/24.OLA.88/OTS:LINE-7-3-RX&LINE-7-3-TX",
+   "portB": "PO/cisco-epnm-adpt/25.ROADM.128/OTS:LINE-2-3-RX&LINE-2-3-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-6-5-RX&PLINE-6-5-TX-PO/cisco-epnm-adpt/25.ROADM.128/NMC:PLINE-6-9-RX&PLINE-6-9-TX",
+   "name": "400G_ULH_3600km",
+   "desc": "400G_ULH_3600km",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-6-5-RX&PLINE-6-5-TX",
+   "portB": "PO/cisco-epnm-adpt/25.ROADM.128/NMC:PLINE-6-9-RX&PLINE-6-9-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-6-7-RX&PLINE-6-7-TX-PO/cisco-epnm-adpt/25.ROADM.128/NMC:PLINE-6-10-RX&PLINE-6-10-TX",
+   "name": "800G_CIM8",
+   "desc": "800G_CIM8",
+   "layer": "NMC",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-6-7-RX&PLINE-6-7-TX",
+   "portB": "PO/cisco-epnm-adpt/25.ROADM.128/NMC:PLINE-6-10-RX&PLINE-6-10-TX",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/30.OLA.117/OTS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OTS:LINE-2-3-RX&LINE-2-3-TX",
+   "name": "10.197.238.84:[WDMSIDE-A]--10.197.238.117:[WDMSIDE-B]",
+   "desc": "10.197.238.84:[WDMSIDE-A]--10.197.238.117:[WDMSIDE-B]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/30.OLA.117/OTS:LINE-7-3-RX&LINE-7-3-TX",
+   "portB": "PO/cisco-epnm-adpt/31.Terminal.84/OTS:LINE-2-3-RX&LINE-2-3-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/16.OLA.94/OTS:LINE-2-2-RX&LINE-2-2-TX-PO/cisco-epnm-adpt/15.OLA.126/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "name": "10.197.238.94:[WDMSIDE-A]--10.197.238.126:[WDMSIDE-B]",
+   "desc": "10.197.238.94:[WDMSIDE-A]--10.197.238.126:[WDMSIDE-B]",
+   "layer": "OTS",
+   "provider": "cisco-epnm-adpt_optical",
+   "portA": "PO/cisco-epnm-adpt/16.OLA.94/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "portB": "PO/cisco-epnm-adpt/15.OLA.126/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "distanceMeters": 100000,
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/cisco-onc-adpt/nmc/5e616c59-eee3-34e7-9f81-aa3d9d9e0828-otsimc/460820de-71a6-3784-ba2a-ba47a4592e3c-otsimc/3586aa2f-98b9-3354-860c-e02ce1a642af",
+   "name": "Roma_roadm_Frosinone73_roadm_4dd2ed4e_otsimc",
+   "desc": "NMC: Frosinone-73/3/CH-6 to Roma-75/4/CH-6",
+   "layer": "NMC",
+   "provider": "cisco-onc-adpt",
+   "portA": "PO/cisco-onc-adpt/nmc/6a489dac-137f-3d79-a20d-bfb56fdc7beb/5e616c59-eee3-34e7-9f81-aa3d9d9e0828-otsimc",
+   "portB": "PO/cisco-onc-adpt/nmc/f521d934-bd38-338b-93ef-faff7948e90d/460820de-71a6-3784-ba2a-ba47a4592e3c-otsimc",
+   "distanceMeters": null,
+   "operStatus": "UP"
+  }
+ ],
+ "eth": [
+  {
+   "guid": "LI/router-optics/eth/PO/cisco-cnc-adpt/ETH-Auletta-81:HundredGigE0/0/0/29/halfLink",
+   "name": "HundredGigE0/0/0/29 - half-link",
+   "portA": "PO/cisco-cnc-adpt/ETH-Auletta-81:HundredGigE0/0/0/29",
+   "portB": null,
+   "operStatus": "DOWN"
+  },
+  {
+   "guid": "LI/router-optics/eth/PO/cisco-cnc-adpt/ETH-Potenza-17:HundredGigE0/0/0/0/halfLink",
+   "name": "HundredGigE0/0/0/0 - half-link",
+   "portA": "PO/cisco-cnc-adpt/ETH-Potenza-17:HundredGigE0/0/0/0",
+   "portB": null,
+   "operStatus": "DOWN"
+  },
+  {
+   "guid": "LI/router-optics/eth/PO/cisco-cnc-adpt/ETH-Potenza-17:FourHundredGigE0/0/0/1/halfLink",
+   "name": "FourHundredGigE0/0/0/1 - half-link",
+   "portA": "PO/cisco-cnc-adpt/ETH-Potenza-17:FourHundredGigE0/0/0/1",
+   "portB": null,
+   "operStatus": "DOWN"
+  },
+  {
+   "guid": "LI/router-optics/eth/PO/cisco-cnc-adpt/ETH-Battipaglia-54:FourHundredGigE0/0/0/6/PO/cisco-cnc-adpt/ETH-Picerno-58:FourHundredGigE0/3/0/9",
+   "name": "FourHundredGigE0/0/0/6 to FourHundredGigE0/3/0/9",
+   "portA": "PO/cisco-cnc-adpt/ETH-Battipaglia-54:FourHundredGigE0/0/0/6",
+   "portB": "PO/cisco-cnc-adpt/ETH-Picerno-58:FourHundredGigE0/3/0/9",
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/router-optics/eth/PO/cisco-cnc-adpt/ETH-Battipaglia-54:FourHundredGigE0/0/0/14/PO/cisco-cnc-adpt/ETH-Ischia-21:FourHundredGigE0/1/0/7",
+   "name": "FourHundredGigE0/0/0/14 to FourHundredGigE0/1/0/7",
+   "portA": "PO/cisco-cnc-adpt/ETH-Battipaglia-54:FourHundredGigE0/0/0/14",
+   "portB": "PO/cisco-cnc-adpt/ETH-Ischia-21:FourHundredGigE0/1/0/7",
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/router-optics/eth/PO/cisco-cnc-adpt/ETH-Ancona-18:FourHundredGigE0/0/2/0/PO/cisco-cnc-adpt/ETH-Perugia-138:FourHundredGigE0/0/2/0",
+   "name": "FourHundredGigE0/0/2/0 to FourHundredGigE0/0/2/0",
+   "portA": "PO/cisco-cnc-adpt/ETH-Ancona-18:FourHundredGigE0/0/2/0",
+   "portB": "PO/cisco-cnc-adpt/ETH-Perugia-138:FourHundredGigE0/0/2/0",
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/router-optics/eth/PO/cisco-cnc-adpt/ETH-Ancona-18:FourHundredGigE0/0/2/2/PO/cisco-cnc-adpt/ETH-Perugia-138:FourHundredGigE0/0/2/2",
+   "name": "FourHundredGigE0/0/2/2 to FourHundredGigE0/0/2/2",
+   "portA": "PO/cisco-cnc-adpt/ETH-Ancona-18:FourHundredGigE0/0/2/2",
+   "portB": "PO/cisco-cnc-adpt/ETH-Perugia-138:FourHundredGigE0/0/2/2",
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/router-optics/eth/PO/cisco-cnc-adpt/ETH-Ischia-21:FourHundredGigE0/1/0/0/PO/cisco-cnc-adpt/ETH-Ravello-51:FourHundredGigE0/0/3/0",
+   "name": "FourHundredGigE0/1/0/0 to FourHundredGigE0/0/3/0",
+   "portA": "PO/cisco-cnc-adpt/ETH-Ischia-21:FourHundredGigE0/1/0/0",
+   "portB": "PO/cisco-cnc-adpt/ETH-Ravello-51:FourHundredGigE0/0/3/0",
+   "operStatus": "UP"
+  },
+  {
+   "guid": "LI/router-optics/eth/PO/cisco-cnc-adpt/ETH-Picerno-58:FourHundredGigE0/3/0/8/halfLink",
+   "name": "FourHundredGigE0/3/0/8 - half-link",
+   "portA": "PO/cisco-cnc-adpt/ETH-Picerno-58:FourHundredGigE0/3/0/8",
+   "portB": null,
+   "operStatus": "DOWN"
+  },
+  {
+   "guid": "LI/router-optics/eth/PO/cisco-cnc-adpt/ETH-Battipaglia-54:FourHundredGigE0/0/0/2/halfLink",
+   "name": "FourHundredGigE0/0/0/2 - half-link",
+   "portA": "PO/cisco-cnc-adpt/ETH-Battipaglia-54:FourHundredGigE0/0/0/2",
+   "portB": null,
+   "operStatus": "DOWN"
+  }
+ ],
+ "spectrum": [
+  {
+   "guid": "PO/nmc/Perugia-138/Ots0/0/2/1/Optics0/0/2/0",
+   "centerFrequencyMhz": 193900000
+  },
+  {
+   "guid": "PO/nmc/Ancona-18/Ots0/0/2/1/Optics0/0/2/0",
+   "centerFrequencyMhz": 193900000
+  },
+  {
+   "guid": "PO/cisco-onc-adpt/nmc/6a489dac-137f-3d79-a20d-bfb56fdc7beb/5e616c59-eee3-34e7-9f81-aa3d9d9e0828-otsimc",
+   "centerFrequencyMhz": 195200000
+  },
+  {
+   "guid": "PO/cisco-onc-adpt/nmc/f521d934-bd38-338b-93ef-faff7948e90d/460820de-71a6-3784-ba2a-ba47a4592e3c-otsimc",
+   "centerFrequencyMhz": 195200000
+  },
+  {
+   "guid": "PO/cisco-onc-adpt/nmc/8d059457-74e4-339c-a8f4-99f934434aec/3bed57c3-7318-3e1f-b8ff-cdd8585d34f6-otsimc",
+   "centerFrequencyMhz": 191362500
+  },
+  {
+   "guid": "PO/cisco-onc-adpt/nmc/e4029d95-599f-3d61-87fe-70d0a1296317/989c87f9-1963-3b61-af8d-ea79bca3c306-otsimc",
+   "centerFrequencyMhz": 191362500
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-9-2-RX&PLINE-9-2-TX",
+   "centerFrequencyMhz": 195575000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-6-7-RX&PLINE-6-7-TX",
+   "centerFrequencyMhz": 191825000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-9-3-RX&PLINE-9-3-TX",
+   "centerFrequencyMhz": 195500000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-9-6-RX&PLINE-9-6-TX",
+   "centerFrequencyMhz": 195275000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-4-RX&PLINE-15-4-TX",
+   "centerFrequencyMhz": 192725000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-16-4-RX&PLINE-16-4-TX",
+   "centerFrequencyMhz": 192275000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-2-RX&PLINE-10-2-TX",
+   "centerFrequencyMhz": 195125000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-4-RX&PLINE-14-4-TX",
+   "centerFrequencyMhz": 193175000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-2-RX&PLINE-11-2-TX",
+   "centerFrequencyMhz": 194675000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-1-RX&PLINE-14-1-TX",
+   "centerFrequencyMhz": 193400000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-6-RX&PLINE-11-6-TX",
+   "centerFrequencyMhz": 194375000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-5-RX&PLINE-14-5-TX",
+   "centerFrequencyMhz": 193100000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-9-4-RX&PLINE-9-4-TX",
+   "centerFrequencyMhz": 195425000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-6-RX&PLINE-15-6-TX",
+   "centerFrequencyMhz": 192575000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-4-RX&PLINE-10-4-TX",
+   "centerFrequencyMhz": 194975000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-5-RX&PLINE-10-5-TX",
+   "centerFrequencyMhz": 194900000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-1-RX&PLINE-10-1-TX",
+   "centerFrequencyMhz": 195200000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-5-RX&PLINE-11-5-TX",
+   "centerFrequencyMhz": 194450000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-2-RX&PLINE-15-2-TX",
+   "centerFrequencyMhz": 192875000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-6-RX&PLINE-10-6-TX",
+   "centerFrequencyMhz": 194825000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-5-RX&PLINE-15-5-TX",
+   "centerFrequencyMhz": 192650000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-16-5-RX&PLINE-16-5-TX",
+   "centerFrequencyMhz": 192200000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-3-RX&PLINE-11-3-TX",
+   "centerFrequencyMhz": 194600000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-9-5-RX&PLINE-9-5-TX",
+   "centerFrequencyMhz": 195350000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/13.ROADM.115/NMC:PLINE-3-11-RX&PLINE-3-11-TX",
+   "centerFrequencyMhz": 192050000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-6-5-RX&PLINE-6-5-TX",
+   "centerFrequencyMhz": 196025000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-3-RX&PLINE-10-3-TX",
+   "centerFrequencyMhz": 195050000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-2-RX&PLINE-9-2-TX",
+   "centerFrequencyMhz": 195125000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-5-RX&PLINE-14-5-TX",
+   "centerFrequencyMhz": 192650000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-4-RX&PLINE-14-4-TX",
+   "centerFrequencyMhz": 192725000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-3-RX&PLINE-9-3-TX",
+   "centerFrequencyMhz": 195050000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-4-RX&PLINE-11-4-TX",
+   "centerFrequencyMhz": 194525000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-3-RX&PLINE-15-3-TX",
+   "centerFrequencyMhz": 192800000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-1-RX&PLINE-11-1-TX",
+   "centerFrequencyMhz": 194750000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:LINE-6-12-RX&LINE-6-12-TX",
+   "centerFrequencyMhz": 195725000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-6-RX&PLINE-14-6-TX",
+   "centerFrequencyMhz": 193025000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-12-2-RX&PLINE-12-2-TX",
+   "centerFrequencyMhz": 194225000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-8-5-RX&PLINE-8-5-TX",
+   "centerFrequencyMhz": 195350000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-17-6-RX&PLINE-17-6-TX",
+   "centerFrequencyMhz": 191675000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-8-2-RX&PLINE-8-2-TX",
+   "centerFrequencyMhz": 195575000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-6-RX&PLINE-10-6-TX",
+   "centerFrequencyMhz": 194375000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-5-RX&PLINE-13-5-TX",
+   "centerFrequencyMhz": 193100000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-1-RX&PLINE-13-1-TX",
+   "centerFrequencyMhz": 193400000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-2-RX&PLINE-10-2-TX",
+   "centerFrequencyMhz": 194675000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-15-4-RX&PLINE-15-4-TX",
+   "centerFrequencyMhz": 192275000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-8-6-RX&PLINE-8-6-TX",
+   "centerFrequencyMhz": 195275000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-16-6-RX&PLINE-16-6-TX",
+   "centerFrequencyMhz": 191675000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-4-RX&PLINE-9-4-TX",
+   "centerFrequencyMhz": 194975000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-6-RX&PLINE-14-6-TX",
+   "centerFrequencyMhz": 192575000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-3-RX&PLINE-14-3-TX",
+   "centerFrequencyMhz": 192800000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-11-1-RX&PLINE-11-1-TX",
+   "centerFrequencyMhz": 194300000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-12-3-RX&PLINE-12-3-TX",
+   "centerFrequencyMhz": 194150000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-3-RX&PLINE-14-3-TX",
+   "centerFrequencyMhz": 193250000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-3-RX&PLINE-13-3-TX",
+   "centerFrequencyMhz": 193250000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-8-4-RX&PLINE-8-4-TX",
+   "centerFrequencyMhz": 195425000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-4-RX&PLINE-10-4-TX",
+   "centerFrequencyMhz": 194525000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-4-RX&PLINE-13-4-TX",
+   "centerFrequencyMhz": 193175000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-12-1-RX&PLINE-12-1-TX",
+   "centerFrequencyMhz": 194300000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-3-RX&PLINE-10-3-TX",
+   "centerFrequencyMhz": 194600000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-15-5-RX&PLINE-15-5-TX",
+   "centerFrequencyMhz": 192200000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:LINE-3-12-RX&LINE-3-12-TX",
+   "centerFrequencyMhz": 195725000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-11-2-RX&PLINE-11-2-TX",
+   "centerFrequencyMhz": 194225000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-1-RX&PLINE-15-1-TX",
+   "centerFrequencyMhz": 192950000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-2-RX&PLINE-14-2-TX",
+   "centerFrequencyMhz": 192875000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-5-RX&PLINE-10-5-TX",
+   "centerFrequencyMhz": 194450000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-8-3-RX&PLINE-8-3-TX",
+   "centerFrequencyMhz": 195500000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-2-RX&PLINE-13-2-TX",
+   "centerFrequencyMhz": 193325000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-5-RX&PLINE-9-5-TX",
+   "centerFrequencyMhz": 194900000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-11-3-RX&PLINE-11-3-TX",
+   "centerFrequencyMhz": 194150000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-2-RX&PLINE-14-2-TX",
+   "centerFrequencyMhz": 193325000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-1-RX&PLINE-14-1-TX",
+   "centerFrequencyMhz": 192950000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-6-RX&PLINE-9-6-TX",
+   "centerFrequencyMhz": 194825000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-6-RX&PLINE-13-6-TX",
+   "centerFrequencyMhz": 193025000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-1-RX&PLINE-9-1-TX",
+   "centerFrequencyMhz": 195200000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-1-RX&PLINE-10-1-TX",
+   "centerFrequencyMhz": 194750000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/25.ROADM.128/NMC:PLINE-6-10-RX&PLINE-6-10-TX",
+   "centerFrequencyMhz": 191825000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-4-5-RX&PLINE-4-5-TX",
+   "centerFrequencyMhz": 193700000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/25.ROADM.128/NMC:PLINE-6-9-RX&PLINE-6-9-TX",
+   "centerFrequencyMhz": 196025000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/25.ROADM.128/NMC:PLINE-3-9-RX&PLINE-3-9-TX",
+   "centerFrequencyMhz": 193700000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/25.ROADM.128/NMC:PLINE-6-12-RX&PLINE-6-12-TX",
+   "centerFrequencyMhz": 192050000
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/Roma-14/NMC:PLINE-3-9-RX&PLINE-3-9-TX",
+   "centerFrequencyMhz": 191362500
+  },
+  {
+   "guid": "PO/cisco-epnm-adpt/Battipaglia-11/NMC:PLINE-3-9-RX&PLINE-3-9-TX",
+   "centerFrequencyMhz": 191362500
+  }
+ ],
+ "below": {
+  "LI/cisco-onc-adpt/oms/ae1a48fc-acf3-3ab2-b1fa-0f075e250ff5/5dbce3f7-da6d-38fb-9bea-41ca3090a74c": [
+   "LI/cisco-onc-adpt/ots/98670da1-bfc2-3c7b-9ae3-d2d6a6fbd797/6ee2d3fb-18a7-383e-ab97-3514e06c37e5/5310c4a6-efef-3c4a-880c-ec185c0c1c8f"
+  ],
+  "LI/cisco-onc-adpt/oms/ecb50a23-d578-3a33-918f-ef1a3deb2815/f145c5be-42ef-368e-ab8f-fc683c8c323e/4c7602cb-bddd-3971-83a5-f3df64dfb948": [],
+  "LI/cisco-onc-adpt/oms/4e23e152-1b68-3df3-8c76-e76f3d554e7e/3e2b4389-da37-36a3-b242-ec666a541a4d": [
+   "LI/cisco-onc-adpt/ots/c19bebec-c962-3c27-912e-004137e386e5/5e4b174b-250b-3aca-9617-c9a2774ca143/7ce25e07-1574-3567-9443-a5e3be531cbc"
+  ],
+  "LI/cisco-onc-adpt/oms/4613ec76-687b-38fa-bfe2-537a8c86240f/2b9180cf-6bf2-3e89-96ec-dd979c878e56": [
+   "LI/cisco-onc-adpt/ots/4b86bc50-aa4a-35c6-b30e-3cf9773d0c43/265503cb-3d9c-3971-ab17-5a376fc1f6d3/6f408428-bf6e-341d-8cce-6661fe929036",
+   "LI/cisco-onc-adpt/ots/1adfc482-e131-3b35-a6b5-7d494de0686c/d5f69b14-360c-35d7-b18e-c692f1655a59/a28e4f8d-cda3-330f-abcf-7afc4b41adaf"
+  ],
+  "LI/cisco-onc-adpt/oms/3ac1cd25-c721-3d0e-8135-b30559249b8a/54a785df-349d-3fd4-a2c1-3eb829437bfd/f6047b2e-eaa9-309a-b403-eecad6335ee5": [],
+  "LI/cisco-onc-adpt/oms/b273602f-210d-3ecb-8c1e-c0eca6ceeb0c/9b5ce8ab-3509-3cc0-a8fc-1ea8ed91a05d": [
+   "LI/cisco-onc-adpt/ots/3093dc6c-bade-3956-8e54-cb12b7bffd34/01d798aa-2113-36df-9a00-ab3d00f1621d/9e5a5548-01c3-31b4-bda9-bbd7a69b472a"
+  ],
+  "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/Battipaglia-11/OMS:LINE-1-2-3-RX&LINE-1-2-3-TX-PO/cisco-epnm-adpt/Roma-14/OMS:LINE-1-7-3-RX&LINE-1-7-3-TX": [
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/Battipaglia-11/OTS:LINE-1-2-3-RX&LINE-1-2-3-TX-PO/cisco-epnm-adpt/Roma-14/OTS:LINE-1-7-3-RX&LINE-1-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX": [
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/21.OLA.106/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/22.OLA.188/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/24.OLA.88/OTS:LINE-2-2-RX&LINE-2-2-TX-PO/cisco-epnm-adpt/23.OLA.105/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/22.OLA.188/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/23.OLA.105/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/20.OLA.123/OTS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OTS:LINE-7-3-RX&LINE-7-3-TX",
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/20.OLA.123/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/21.OLA.106/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/24.OLA.88/OTS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OTS:LINE-2-3-RX&LINE-2-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/Roma-14/OMS:LINE-1-3-3-RX&LINE-1-3-3-TX-PO/cisco-epnm-adpt/Napoli-12/OMS:LINE-1-7-3-RX&LINE-1-7-3-TX": [
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/Roma-14/OTS:LINE-1-3-3-RX&LINE-1-3-3-TX-PO/cisco-epnm-adpt/Napoli-12/OTS:LINE-1-7-3-RX&LINE-1-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX": [
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/14.OLA.93/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/15.OLA.126/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/18.OLA.89/OTS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OTS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/17.OLA.92/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/18.OLA.89/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/16.OLA.94/OTS:LINE-2-2-RX&LINE-2-2-TX-PO/cisco-epnm-adpt/15.OLA.126/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/16.OLA.94/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/17.OLA.92/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/13.ROADM.115/OTS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/14.OLA.93/OTS:LINE-2-3-RX&LINE-2-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-5-RX&PLINE-14-5-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-5-RX&PLINE-13-5-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-6-RX&PLINE-14-6-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-6-RX&PLINE-13-6-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-3-RX&PLINE-11-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-3-RX&PLINE-10-3-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-5-RX&PLINE-11-5-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-5-RX&PLINE-10-5-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-2-RX&PLINE-11-2-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-2-RX&PLINE-10-2-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-1-RX&PLINE-14-1-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-1-RX&PLINE-13-1-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-6-RX&PLINE-15-6-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-6-RX&PLINE-14-6-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-3-RX&PLINE-15-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-3-RX&PLINE-14-3-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-onc-adpt/nmc/3bed57c3-7318-3e1f-b8ff-cdd8585d34f6-otsimc/989c87f9-1963-3b61-af8d-ea79bca3c306-otsimc/1f433d0b-e788-3ff8-a444-65d9bbfd543f": [
+   "LI/cisco-onc-adpt/oms/4e23e152-1b68-3df3-8c76-e76f3d554e7e/3e2b4389-da37-36a3-b242-ec666a541a4d",
+   "LI/cisco-onc-adpt/oms/4613ec76-687b-38fa-bfe2-537a8c86240f/2b9180cf-6bf2-3e89-96ec-dd979c878e56"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/25.ROADM.128/NMC:PLINE-3-9-RX&PLINE-3-9-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-4-5-RX&PLINE-4-5-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/Battipaglia-11/OMS:LINE-1-7-3-RX&LINE-1-7-3-TX-PO/cisco-epnm-adpt/Napoli-12/OMS:LINE-1-3-3-RX&LINE-1-3-3-TX": [
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/Napoli-12/OTS:LINE-1-3-3-RX&LINE-1-3-3-TX-PO/cisco-epnm-adpt/Battipaglia-11/OTS:LINE-1-7-3-RX&LINE-1-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX": [
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/27.OLA.190/OTS:LINE-2-2-RX&LINE-2-2-TX-PO/cisco-epnm-adpt/26.OLA.145/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/27.OLA.190/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/28.OLA.116/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/29.OLA.118/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/30.OLA.117/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/25.ROADM.128/OTS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/26.OLA.145/OTS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/30.OLA.117/OTS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OTS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/28.OLA.116/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/29.OLA.118/OTS:LINE-2-2-RX&LINE-2-2-TX"
+  ],
+  "LI/router-optics/oms/PO/cisco-cnc-adpt/OMS-Ancona-18:OMS0/0/2/1/1/PO/cisco-cnc-adpt/OMS-Perugia-138:OMS0/0/2/1/1": [
+   "LI/router-optics/ots/PO/cisco-cnc-adpt/OTS-Ancona-18:OTS0/0/2/1/1/PO/cisco-cnc-adpt/OTS-Perugia-138:OTS0/0/2/1/1"
+  ],
+  "LI/router-optics/nmc/PO/nmc/Ancona-18/Ots0/0/2/1/Optics0/0/2/0/PO/nmc/Perugia-138/Ots0/0/2/1/Optics0/0/2/0": [
+   "LI/router-optics/oms/PO/cisco-cnc-adpt/OMS-Ancona-18:OMS0/0/2/1/1/PO/cisco-cnc-adpt/OMS-Perugia-138:OMS0/0/2/1/1"
+  ],
+  "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX": [
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/10.OLA.121/OTS:LINE-2-2-RX&LINE-2-2-TX-PO/cisco-epnm-adpt/09.OLA.120/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/11.OLA.122/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/12.OLA.129/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/11.OLA.122/OTS:LINE-2-2-RX&LINE-2-2-TX-PO/cisco-epnm-adpt/10.OLA.121/OTS:LINE-4-2-RX&LINE-4-2-TX",
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/13.ROADM.115/OTS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/12.OLA.129/OTS:LINE-7-3-RX&LINE-7-3-TX",
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/08.OLA.189/OTS:LINE-4-2-RX&LINE-4-2-TX-PO/cisco-epnm-adpt/09.OLA.120/OTS:LINE-2-2-RX&LINE-2-2-TX",
+   "LI/cisco-epnm-adpt/OTS/PO/cisco-epnm-adpt/08.OLA.189/OTS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OTS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-onc-adpt/oms/3cdf7379-cebf-3321-b1e7-62e15a27901d/6bbea04f-62f5-3ee1-9714-e6478c601eb2": [
+   "LI/cisco-onc-adpt/ots/8d2e1792-4527-3c2b-b3f2-b62b497adf06/b46943e7-99d7-3cc8-9336-9730d1b8d1c7/f4dd5394-4529-3d5f-9f74-e77c77d922ad",
+   "LI/cisco-onc-adpt/ots/772c670f-264b-3aba-bcd9-122caa8052ad/2659df94-601f-32c0-a574-14c2228ff12f/937e9670-6f91-32ce-bb30-eb682efaf8f9"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-4-RX&PLINE-10-4-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-4-RX&PLINE-9-4-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-2-RX&PLINE-14-2-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-2-RX&PLINE-13-2-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-1-RX&PLINE-11-1-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-1-RX&PLINE-10-1-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-3-RX&PLINE-14-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-3-RX&PLINE-13-3-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-14-4-RX&PLINE-14-4-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-13-4-RX&PLINE-13-4-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-4-RX&PLINE-11-4-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-4-RX&PLINE-10-4-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-11-6-RX&PLINE-11-6-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-10-6-RX&PLINE-10-6-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-17-6-RX&PLINE-17-6-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-16-6-RX&PLINE-16-6-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-9-2-RX&PLINE-9-2-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-8-2-RX&PLINE-8-2-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-3-RX&PLINE-10-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-3-RX&PLINE-9-3-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-9-6-RX&PLINE-9-6-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-8-6-RX&PLINE-8-6-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:LINE-6-12-RX&LINE-6-12-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:LINE-3-12-RX&LINE-3-12-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-9-4-RX&PLINE-9-4-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-8-4-RX&PLINE-8-4-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-12-2-RX&PLINE-12-2-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-11-2-RX&PLINE-11-2-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-16-5-RX&PLINE-16-5-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-15-5-RX&PLINE-15-5-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-9-5-RX&PLINE-9-5-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-8-5-RX&PLINE-8-5-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-6-RX&PLINE-10-6-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-6-RX&PLINE-9-6-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-1-RX&PLINE-15-1-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-1-RX&PLINE-14-1-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-9-3-RX&PLINE-9-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-8-3-RX&PLINE-8-3-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-1-RX&PLINE-10-1-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-1-RX&PLINE-9-1-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-12-1-RX&PLINE-12-1-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-11-1-RX&PLINE-11-1-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-4-RX&PLINE-15-4-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-4-RX&PLINE-14-4-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-16-4-RX&PLINE-16-4-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-15-4-RX&PLINE-15-4-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-2-RX&PLINE-15-2-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-2-RX&PLINE-14-2-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-12-3-RX&PLINE-12-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-11-3-RX&PLINE-11-3-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-5-RX&PLINE-10-5-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-5-RX&PLINE-9-5-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-15-5-RX&PLINE-15-5-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-14-5-RX&PLINE-14-5-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-10-2-RX&PLINE-10-2-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:PLINE-9-2-RX&PLINE-9-2-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/31.Terminal.84/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/Roma-14/NMC:PLINE-3-9-RX&PLINE-3-9-TX-PO/cisco-epnm-adpt/Battipaglia-11/NMC:PLINE-3-9-RX&PLINE-3-9-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/Battipaglia-11/OMS:LINE-1-2-3-RX&LINE-1-2-3-TX-PO/cisco-epnm-adpt/Roma-14/OMS:LINE-1-7-3-RX&LINE-1-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/13.ROADM.115/NMC:PLINE-3-11-RX&PLINE-3-11-TX-PO/cisco-epnm-adpt/25.ROADM.128/NMC:PLINE-6-12-RX&PLINE-6-12-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-6-5-RX&PLINE-6-5-TX-PO/cisco-epnm-adpt/25.ROADM.128/NMC:PLINE-6-9-RX&PLINE-6-9-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:PLINE-6-7-RX&PLINE-6-7-TX-PO/cisco-epnm-adpt/25.ROADM.128/NMC:PLINE-6-10-RX&PLINE-6-10-TX": [
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/25.ROADM.128/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-7-3-RX&LINE-7-3-TX-PO/cisco-epnm-adpt/19.ROADM.124/OMS:LINE-2-3-RX&LINE-2-3-TX",
+   "LI/cisco-epnm-adpt/OMS/PO/cisco-epnm-adpt/13.ROADM.115/OMS:LINE-2-3-RX&LINE-2-3-TX-PO/cisco-epnm-adpt/07.ROADM.191/OMS:LINE-7-3-RX&LINE-7-3-TX"
+  ],
+  "LI/cisco-onc-adpt/nmc/5e616c59-eee3-34e7-9f81-aa3d9d9e0828-otsimc/460820de-71a6-3784-ba2a-ba47a4592e3c-otsimc/3586aa2f-98b9-3354-860c-e02ce1a642af": [
+   "LI/cisco-onc-adpt/oms/3cdf7379-cebf-3321-b1e7-62e15a27901d/6bbea04f-62f5-3ee1-9714-e6478c601eb2"
+  ],
+  "LI/router-optics/eth/PO/cisco-cnc-adpt/ETH-Auletta-81:HundredGigE0/0/0/29/halfLink": [],
+  "LI/router-optics/eth/PO/cisco-cnc-adpt/ETH-Potenza-17:HundredGigE0/0/0/0/halfLink": [],
+  "LI/router-optics/eth/PO/cisco-cnc-adpt/ETH-Potenza-17:FourHundredGigE0/0/0/1/halfLink": [],
+  "LI/router-optics/eth/PO/cisco-cnc-adpt/ETH-Battipaglia-54:FourHundredGigE0/0/0/6/PO/cisco-cnc-adpt/ETH-Picerno-58:FourHundredGigE0/3/0/9": [
+   "LI/cisco-onc-adpt/nmc/3bed57c3-7318-3e1f-b8ff-cdd8585d34f6-otsimc/989c87f9-1963-3b61-af8d-ea79bca3c306-otsimc/1f433d0b-e788-3ff8-a444-65d9bbfd543f"
+  ],
+  "LI/router-optics/eth/PO/cisco-cnc-adpt/ETH-Battipaglia-54:FourHundredGigE0/0/0/14/PO/cisco-cnc-adpt/ETH-Ischia-21:FourHundredGigE0/1/0/7": [
+   "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/Roma-14/NMC:PLINE-3-9-RX&PLINE-3-9-TX-PO/cisco-epnm-adpt/Battipaglia-11/NMC:PLINE-3-9-RX&PLINE-3-9-TX"
+  ],
+  "LI/router-optics/eth/PO/cisco-cnc-adpt/ETH-Ancona-18:FourHundredGigE0/0/2/0/PO/cisco-cnc-adpt/ETH-Perugia-138:FourHundredGigE0/0/2/0": [
+   "LI/router-optics/nmc/PO/nmc/Ancona-18/Ots0/0/2/1/Optics0/0/2/0/PO/nmc/Perugia-138/Ots0/0/2/1/Optics0/0/2/0"
+  ],
+  "LI/router-optics/eth/PO/cisco-cnc-adpt/ETH-Ancona-18:FourHundredGigE0/0/2/2/PO/cisco-cnc-adpt/ETH-Perugia-138:FourHundredGigE0/0/2/2": [
+   "LI/cisco-epnm-adpt/NMC/PO/cisco-epnm-adpt/07.ROADM.191/NMC:LINE-6-12-RX&LINE-6-12-TX-PO/cisco-epnm-adpt/31.Terminal.84/NMC:LINE-3-12-RX&LINE-3-12-TX"
+  ],
+  "LI/router-optics/eth/PO/cisco-cnc-adpt/ETH-Ischia-21:FourHundredGigE0/1/0/0/PO/cisco-cnc-adpt/ETH-Ravello-51:FourHundredGigE0/0/3/0": [
+   "LI/cisco-onc-adpt/nmc/5e616c59-eee3-34e7-9f81-aa3d9d9e0828-otsimc/460820de-71a6-3784-ba2a-ba47a4592e3c-otsimc/3586aa2f-98b9-3354-860c-e02ce1a642af"
+  ],
+  "LI/router-optics/eth/PO/cisco-cnc-adpt/ETH-Picerno-58:FourHundredGigE0/3/0/8/halfLink": [],
+  "LI/router-optics/eth/PO/cisco-cnc-adpt/ETH-Battipaglia-54:FourHundredGigE0/0/0/2/halfLink": []
+ },
+ "cross_links": [
+  {
+   "technology": "NMC",
+   "router": "Battipaglia-54",
+   "routerPort": "Optics0/0/0/14",
+   "device": "Battipaglia-11",
+   "devicePort": "PLINE-3-9-RX&PLINE-3-9-TX",
+   "guid": "PO/cisco-epnm-adpt/Battipaglia-11/NMC:PLINE-3-9-RX&PLINE-3-9-TX"
+  },
+  {
+   "technology": "NMC",
+   "router": "Ischia-21",
+   "routerPort": "Optics0/1/0/7",
+   "device": "Roma-14",
+   "devicePort": "PLINE-3-9-RX&PLINE-3-9-TX",
+   "guid": "PO/cisco-epnm-adpt/Roma-14/NMC:PLINE-3-9-RX&PLINE-3-9-TX"
+  },
+  {
+   "technology": "NMC",
+   "router": "Ischia-21",
+   "routerPort": "Optics0/1/0/0",
+   "device": "Roma-roadm",
+   "devicePort": "Roma-75/4/CH-6",
+   "guid": "PO/cisco-onc-adpt/nmc/f521d934-bd38-338b-93ef-faff7948e90d/460820de-71a6-3784-ba2a-ba47a4592e3c-otsimc"
+  },
+  {
+   "technology": "NMC",
+   "router": "Battipaglia-54",
+   "routerPort": "Optics0/0/0/20",
+   "device": "Battipaglia97-roadm",
+   "devicePort": "Battipaglia-97/2/CHAN 3 (1550.92)",
+   "guid": null
+  },
+  {
+   "technology": "NMC",
+   "router": "Ravello-51",
+   "routerPort": "Optics0/0/3/0",
+   "device": "Frosinone73-roadm",
+   "devicePort": "Frosinone-73/3/CH-6",
+   "guid": "PO/cisco-onc-adpt/nmc/6a489dac-137f-3d79-a20d-bfb56fdc7beb/5e616c59-eee3-34e7-9f81-aa3d9d9e0828-otsimc"
+  },
+  {
+   "technology": "NMC",
+   "router": "Perugia-138",
+   "routerPort": "Optics0/0/2/0",
+   "device": "Perugia-138",
+   "devicePort": "MC0/0/2/1/0",
+   "guid": "PO/nmc/Perugia-138/Ots0/0/2/1/Optics0/0/2/0"
+  },
+  {
+   "technology": "NMC",
+   "router": "Potenza-17",
+   "routerPort": "Optics0/0/0/0",
+   "device": "Potenza-roadm",
+   "devicePort": "Potenza-96/2/CHAN 2 (1550.12)",
+   "guid": "PO/cisco-onc-adpt/nmc/b2a1ce4c-de62-3d89-964d-eb918e9a6e7e/59e11b6b-e871-3890-9835-e4e417cc3317-otsimc"
+  },
+  {
+   "technology": "NMC",
+   "router": "Potenza-17",
+   "routerPort": "Optics0/0/0/1",
+   "device": "Potenza-roadm",
+   "devicePort": "Potenza-96/2/CHAN 3 (1550.92)",
+   "guid": "PO/cisco-onc-adpt/nmc/b2a1ce4c-de62-3d89-964d-eb918e9a6e7e/b3ec0335-645d-3fe3-b104-c27c9bcc34ce-otsimc"
+  },
+  {
+   "technology": "NMC",
+   "router": "Auletta-81",
+   "routerPort": "Optics0/0/0/29",
+   "device": "Battipaglia-97-roadm",
+   "devicePort": "Battipaglia-97/2/CHAN 2 (1550.12)",
+   "guid": "PO/cisco-onc-adpt/nmc/7d416b3e-d7de-3792-9248-a3aa4fca7253/7a2636a5-a996-324d-a235-cf7a53a2fcd2-otsimc"
+  },
+  {
+   "technology": "NMC",
+   "router": "Ancona-18",
+   "routerPort": "Optics0/0/2/0",
+   "device": "Ancona-18",
+   "devicePort": "MC0/0/2/1/0",
+   "guid": "PO/nmc/Ancona-18/Ots0/0/2/1/Optics0/0/2/0"
+  },
+  {
+   "technology": "NMC",
+   "router": "Battipaglia-54",
+   "routerPort": "Optics0/0/0/2",
+   "device": "Battipaglia-43-roadm",
+   "devicePort": "Battipaglia-43/3/PORT-1",
+   "guid": "PO/cisco-onc-adpt/nmc/8d059457-74e4-339c-a8f4-99f934434aec/da24942e-ac98-3194-99f1-18bf8568eeba-otsimc"
+  },
+  {
+   "technology": "NMC",
+   "router": "Battipaglia-54",
+   "routerPort": "Optics0/0/0/6",
+   "device": "Battipaglia-43-roadm",
+   "devicePort": "Battipaglia-43/2/PORT-1",
+   "guid": "PO/cisco-onc-adpt/nmc/8d059457-74e4-339c-a8f4-99f934434aec/3bed57c3-7318-3e1f-b8ff-cdd8585d34f6-otsimc"
+  },
+  {
+   "technology": "NMC",
+   "router": "Picerno-58",
+   "routerPort": "Optics0/3/0/8",
+   "device": "Benevento-42-roadm",
+   "devicePort": "Benevento-42/2/PORT-1",
+   "guid": "PO/cisco-onc-adpt/nmc/e4029d95-599f-3d61-87fe-70d0a1296317/3d9299b1-0b8e-3393-9976-7eeccb111364-otsimc"
+  },
+  {
+   "technology": "NMC",
+   "router": "Picerno-58",
+   "routerPort": "Optics0/3/0/9",
+   "device": "Benevento-42-roadm",
+   "devicePort": "Benevento-42/3/PORT-1",
+   "guid": "PO/cisco-onc-adpt/nmc/e4029d95-599f-3d61-87fe-70d0a1296317/989c87f9-1963-3b61-af8d-ea79bca3c306-otsimc"
+  },
+  {
+   "technology": "NMC",
+   "router": "Ancona-18",
+   "routerPort": "Optics0/0/2/2",
+   "device": "31.Terminal.84",
+   "devicePort": "LINE-3-12-RX&LINE-3-12-TX",
+   "guid": "PO/cisco-epnm-adpt/31.Terminal.84/NMC:LINE-3-12-RX&LINE-3-12-TX"
+  },
+  {
+   "technology": "NMC",
+   "router": "Perugia-138",
+   "routerPort": "Optics0/0/2/2",
+   "device": "07.ROADM.191",
+   "devicePort": "LINE-6-12-RX&LINE-6-12-TX",
+   "guid": "PO/cisco-epnm-adpt/07.ROADM.191/NMC:LINE-6-12-RX&LINE-6-12-TX"
+  }
+ ]
+}

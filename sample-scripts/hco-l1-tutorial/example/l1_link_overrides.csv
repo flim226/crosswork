@@ -1,0 +1,6 @@
+L1Link,Distance,Loss,NoiseAtoB,NoiseSigmaAtoB,NoiseBtoA,NoiseSigmaBtoA
+Battipaglia-43-roadm_Benevento-42-roadm,50,10,-21.274,0.116,-23.826,0.099
+Frosinone-44-roadm_Battipaglia-43-roadm,100,23.8,-19.994,0.086,-15.29,0.184
+Frosinone-44-roadm_Benevento-42-roadm,50,14.9,-23.109,0.082,-23.815,0.103
+Frosinone73-roadm_Roma-roadm,136,16.3,,,,
+Battipaglia-97-roadm_Potenza-roadm,100,,,,,
