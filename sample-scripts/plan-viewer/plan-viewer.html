@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-bHWtXJamCRYP5SNsGxPFz/ZJzeEKm3Bt9bk4hM5qD7Y=' 'wasm-unsafe-eval'; style-src 'sha256-9sLPtHoi7gwmvJuhFfSupoVt21tbW5WBc6ieuyf9LYU='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-02ftzpfY/wEoTCIvNrq4IHgXeP8YjgpSj3iqyVx9+is=' 'wasm-unsafe-eval'; style-src 'sha256-9APCAAx4RZLl8ICYJ0OSCDV4rbgBJRgGPXwALiiAjOc='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
   <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="plan-viewer 1.1.0; sql.js 1.12.0; d3 7.9.2; maplibre-gl 6.18.0; sql-wasm.wasm sha256 083460b3e9d428ebbbbaa03918ba55da33d810e0fb3470d4b5d8677b462b2c2b">
@@ -234,6 +234,7 @@ body.topo-max .topo-wrap svg { height: 100%; }
 .edge.split, .edge.split:hover, .topo-wrap svg.node-hover .edge.split:not(.hl) { stroke-opacity: 0; }
 .edge-half { fill: none; stroke-linecap: butt; pointer-events: none; background: none; }
 .edge-half.inactive { stroke-dasharray: 6 4; opacity: .5; }
+.topo-wrap svg.straight .edge.multi, .topo-wrap svg.straight .edge-half.multi { stroke-dasharray: 10 6; }
 .topo-wrap svg.node-hover .edge-half { stroke-opacity: .12; }
 .topo-wrap svg.node-hover .node.hover .node-circle, .topo-wrap svg.node-hover .node.nb .node-circle { stroke: var(--hl); }
 .topo-wrap svg.node-hover .node.hover .node-circle { fill: #12405a; stroke-width: 3; }
@@ -3340,9 +3341,8 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
           ${!in3d && mode.sites.length ? h`<label class="topo-layout"><input type="checkbox" id="topoGroups" data-action="topo-groups"${topoGroups ? h` checked` : ''}> Show Groups</label>` : ''}
           ${!fa3d ? h`<label class="topo-layout" title="Colour each half of a link by the utilisation leaving its nearer end"><input type="checkbox" id="topoDirectional" data-action="topo-directional"${topoDirectional ? h` checked` : ''}> Directional</label>` : ''}
           <label class="topo-layout" title="Scale nodes, sites and their labels">Node size <input type="range" id="topoNodeScale" min="0.3" max="3" step="0.1" value="${topoNodeScale}" data-action="topo-node-scale"><output id="topoNodeScaleValue" for="topoNodeScale">${scaleLabel(topoNodeScale)}</output></label>
-          ${in3d
-    ? h`<label class="topo-layout" title="Vertical gap between the panes">Pane spacing <input type="range" id="topoPaneGap" min="0.2" max="3" step="0.1" value="${topoPaneGap}" data-action="topo-pane-gap"><output id="topoPaneGapValue" for="topoPaneGap">${scaleLabel(topoPaneGap)}</output></label>`
-    : h`<label class="topo-layout">Curvature <input type="range" id="topoCurve" min="0" max="3" step="0.1" value="${topoCurve}" data-action="topo-curve"><output id="topoCurveValue" for="topoCurve">${curveLabel(topoCurve)}</output></label>`}
+          ${in3d ? h`<label class="topo-layout" title="Vertical gap between the panes">Pane spacing <input type="range" id="topoPaneGap" min="0.2" max="3" step="0.1" value="${topoPaneGap}" data-action="topo-pane-gap"><output id="topoPaneGapValue" for="topoPaneGap">${scaleLabel(topoPaneGap)}</output></label>` : ''}
+          ${!l13d ? h`<label class="topo-layout">Curvature <input type="range" id="topoCurve" min="0" max="3" step="0.1" value="${topoCurve}" data-action="topo-curve"><output id="topoCurveValue" for="topoCurve">${curveLabel(topoCurve)}</output></label>` : ''}
           <button type="button" class="secondary small" data-action="relayout">↻ Re-layout</button>
           <button type="button" class="secondary small" data-action="fit">⤢ Fit</button>
           <button type="button" class="secondary small" id="topoMaxBtn" data-action="topo-max" aria-pressed="${String(topoMax)}" title="${topoMax ? 'Restore the standard view (Esc)' : 'Give the topology the whole window'}">${topoMax ? '⤡ Restore' : '⛶ Maximize'}</button>
@@ -3354,7 +3354,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       </div>` : ''}
       <div class="note" id="topoNote">${modeNote}${l13d ? h`${paletteNote}${l1Note}` : fa3d ? faNote : h`${paletteNote}${groupNote}Drag a node to pull the graph around it, drag the background to pan, scroll to zoom. ${topoDirectional
     ? 'Each link is split in two: the half next to a node is coloured by the utilisation of traffic leaving that node (A→B near A, B→A near B).'
-    : 'Link colour shows the higher of the two directional utilisations.'} Line width shows capacity; parallel circuits between the same nodes fan out as curves. Hover a node to highlight its circuits in cyan; hover a link for details. `}The row filter highlights matching nodes.</div>
+    : 'Link colour shows the higher of the two directional utilisations.'} Line width shows capacity; parallel circuits between the same nodes fan out as curves, or draw dashed when Curvature is straight. Hover a node to highlight its circuits in cyan; hover a link to highlight it and see details. `}The row filter highlights matching nodes.</div>
       <div class="topo-wrap" id="topoWrap">
         ${mapOn ? h`<div class="topo-basemap" id="topoBaseMap"></div>` : ''}
         <svg id="topo" role="img" aria-label="Network topology"></svg>
@@ -3838,7 +3838,8 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     const colorOf = u => (pal ? paletteColor(pal, u) : null);
     const bandOf = u => (colorOf(u) ? 'u-pal' : utilClass(u));
     const linkColor = l => colorOf(l.c._maxU);
-    const down = l => (isTrue(l.c.Active ?? 'T') && !isTrue(l.c.Failed) ? '' : ' inactive');
+    const down = l => (isTrue(l.c.Active ?? 'T') && !isTrue(l.c.Failed) ? '' : ' inactive') + (l.parallel > 1 ? ' multi' : '');
+    svgEl.classList.toggle('straight', topoCurve === 0);
     const halves = topoDirectional
       ? links.flatMap((l, i) => [{ l, i, half: 'a', u: l.c._uA ?? null }, { l, i, half: 'b', u: l.c._uB ?? null }])
       : [];
@@ -4097,7 +4098,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
         const curveOf = k => {
           if (!curve.has(k)) {
             const c = model.circuits[k];
-            curve.set(k, faCurve(P, pos.get(c.NodeA), pos.get(c.NodeB), offsets[k], i));
+            curve.set(k, faCurve(P, pos.get(c.NodeA), pos.get(c.NodeB), offsets[k] * topoCurve, i));
           }
           return curve.get(k);
         };
@@ -4622,6 +4623,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     if (e.target.dataset.action === 'topo-curve') {
       topoCurve = Math.max(0, Math.min(3, Number(e.target.value) || 0));
       $('topoCurveValue').textContent = curveLabel(topoCurve);
+      if ($('topo')) $('topo').classList.toggle('straight', topoCurve === 0);
       if (topoState && topoState.redraw) topoState.redraw();
       return;
     }
