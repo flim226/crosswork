@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-bHWtXJamCRYP5SNsGxPFz/ZJzeEKm3Bt9bk4hM5qD7Y=' 'wasm-unsafe-eval'; style-src 'sha256-9sLPtHoi7gwmvJuhFfSupoVt21tbW5WBc6ieuyf9LYU='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-gOfKEo3KpxolcQ3jKBAkuCPHyryNbAFSXLwqOBQ8fRY=' 'wasm-unsafe-eval'; style-src 'sha256-xpGgkg1n2d+GFVOkHIrhcJIdcwtdWEw3lo1Nwuy7/EI='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
   <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="plan-viewer 1.1.0; sql.js 1.12.0; d3 7.9.2; maplibre-gl 6.18.0; sql-wasm.wasm sha256 083460b3e9d428ebbbbaa03918ba55da33d810e0fb3470d4b5d8677b462b2c2b">
@@ -234,6 +234,7 @@ body.topo-max .topo-wrap svg { height: 100%; }
 .edge.split, .edge.split:hover, .topo-wrap svg.node-hover .edge.split:not(.hl) { stroke-opacity: 0; }
 .edge-half { fill: none; stroke-linecap: butt; pointer-events: none; background: none; }
 .edge-half.inactive { stroke-dasharray: 6 4; opacity: .5; }
+.topo-wrap svg.straight .edge.multi, .topo-wrap svg.straight .edge-half.multi { stroke-dasharray: 10 6; }
 .topo-wrap svg.node-hover .edge-half { stroke-opacity: .12; }
 .topo-wrap svg.node-hover .node.hover .node-circle, .topo-wrap svg.node-hover .node.nb .node-circle { stroke: var(--hl); }
 .topo-wrap svg.node-hover .node.hover .node-circle { fill: #12405a; stroke-width: 3; }
@@ -251,6 +252,7 @@ body.topo-max .topo-wrap svg { height: 100%; }
 .fa-pane-label { font-size: 12px; font-weight: 600; pointer-events: none; }
 .fa-half { fill: none; stroke-width: 3; stroke-linecap: butt; pointer-events: none; }
 .fa-half.fa-pruned { stroke: var(--muted); stroke-opacity: .35; stroke-width: 1.5; stroke-dasharray: 4 4; }
+.topo-wrap svg.straight .fa-half.fa-ok.multi { stroke-dasharray: 10 6; }
 .fa-link { fill: none; stroke: transparent; stroke-width: 10; cursor: pointer; }
 .fa-node circle { fill: #1d3150; stroke-width: 2; cursor: pointer; }
 .fa-node .node-label { font-size: 8px; }
@@ -1404,6 +1406,7 @@ uniform ${n} ${r} u_${i};
   let topoDirectional = true;
   let topoCurve = 1;
   let topoNodeScale = 1;
+  let topoGroupScale = 1;
   let topoMax = false;
   let topoMap = false;
   let topoBaseMap = null;
@@ -3339,10 +3342,10 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
           ${!in3d && mode.kind === 'geo' ? h`<label class="topo-layout" title="Draw an OpenFreeMap map under the topology. Map data is fetched from tiles.openfreemap.org, which sees the area you view."><input type="checkbox" id="topoMap" data-action="topo-map"${topoMap ? h` checked` : ''}> OpenFreeMap</label>` : ''}
           ${!in3d && mode.sites.length ? h`<label class="topo-layout"><input type="checkbox" id="topoGroups" data-action="topo-groups"${topoGroups ? h` checked` : ''}> Show Groups</label>` : ''}
           ${!fa3d ? h`<label class="topo-layout" title="Colour each half of a link by the utilisation leaving its nearer end"><input type="checkbox" id="topoDirectional" data-action="topo-directional"${topoDirectional ? h` checked` : ''}> Directional</label>` : ''}
-          <label class="topo-layout" title="Scale nodes, sites and their labels">Node size <input type="range" id="topoNodeScale" min="0.3" max="3" step="0.1" value="${topoNodeScale}" data-action="topo-node-scale"><output id="topoNodeScaleValue" for="topoNodeScale">${scaleLabel(topoNodeScale)}</output></label>
-          ${in3d
-    ? h`<label class="topo-layout" title="Vertical gap between the panes">Pane spacing <input type="range" id="topoPaneGap" min="0.2" max="3" step="0.1" value="${topoPaneGap}" data-action="topo-pane-gap"><output id="topoPaneGapValue" for="topoPaneGap">${scaleLabel(topoPaneGap)}</output></label>`
-    : h`<label class="topo-layout">Curvature <input type="range" id="topoCurve" min="0" max="3" step="0.1" value="${topoCurve}" data-action="topo-curve"><output id="topoCurveValue" for="topoCurve">${curveLabel(topoCurve)}</output></label>`}
+          ${!in3d && mode.sites.length && !topoGroups ? h`<label class="topo-layout" title="Spread or tighten the ring of nodes around each site">Group size <input type="range" id="topoGroupScale" min="0.1" max="3" step="0.1" value="${topoGroupScale}" data-action="topo-group-scale"><output id="topoGroupScaleValue" for="topoGroupScale">${scaleLabel(topoGroupScale)}</output></label>` : ''}
+          <label class="topo-layout" title="Scale nodes, sites and their labels">Node size <input type="range" id="topoNodeScale" min="0.1" max="3" step="0.1" value="${topoNodeScale}" data-action="topo-node-scale"><output id="topoNodeScaleValue" for="topoNodeScale">${scaleLabel(topoNodeScale)}</output></label>
+          ${in3d ? h`<label class="topo-layout" title="Vertical gap between the panes">Pane spacing <input type="range" id="topoPaneGap" min="0.2" max="3" step="0.1" value="${topoPaneGap}" data-action="topo-pane-gap"><output id="topoPaneGapValue" for="topoPaneGap">${scaleLabel(topoPaneGap)}</output></label>` : ''}
+          ${!l13d ? h`<label class="topo-layout">Curvature <input type="range" id="topoCurve" min="0" max="3" step="0.1" value="${topoCurve}" data-action="topo-curve"><output id="topoCurveValue" for="topoCurve">${curveLabel(topoCurve)}</output></label>` : ''}
           <button type="button" class="secondary small" data-action="relayout">↻ Re-layout</button>
           <button type="button" class="secondary small" data-action="fit">⤢ Fit</button>
           <button type="button" class="secondary small" id="topoMaxBtn" data-action="topo-max" aria-pressed="${String(topoMax)}" title="${topoMax ? 'Restore the standard view (Esc)' : 'Give the topology the whole window'}">${topoMax ? '⤡ Restore' : '⛶ Maximize'}</button>
@@ -3354,7 +3357,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       </div>` : ''}
       <div class="note" id="topoNote">${modeNote}${l13d ? h`${paletteNote}${l1Note}` : fa3d ? faNote : h`${paletteNote}${groupNote}Drag a node to pull the graph around it, drag the background to pan, scroll to zoom. ${topoDirectional
     ? 'Each link is split in two: the half next to a node is coloured by the utilisation of traffic leaving that node (A→B near A, B→A near B).'
-    : 'Link colour shows the higher of the two directional utilisations.'} Line width shows capacity; parallel circuits between the same nodes fan out as curves. Hover a node to highlight its circuits in cyan; hover a link for details. `}The row filter highlights matching nodes.</div>
+    : 'Link colour shows the higher of the two directional utilisations.'} Line width shows capacity; parallel circuits between the same nodes fan out as curves, or draw dashed when Curvature is straight. Hover a node to highlight its circuits in cyan; hover a link to highlight it and see details. `}The row filter highlights matching nodes.</div>
       <div class="topo-wrap" id="topoWrap">
         ${mapOn ? h`<div class="topo-basemap" id="topoBaseMap"></div>` : ''}
         <svg id="topo" role="img" aria-label="Network topology"></svg>
@@ -3725,7 +3728,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
 
   // Halo padding around a site's ring of nodes (node radius 14 + 12), scaled with the nodes.
   const TOPO_HALO_PAD = 26;
-  const haloRadius = s => s.r + TOPO_HALO_PAD * (topoNodeScale - 1);
+  const haloRadius = s => (s.r - TOPO_HALO_PAD) * topoGroupScale + TOPO_HALO_PAD * topoNodeScale;
 
   function topoLinkControl(l) {
     const s = l.source;
@@ -3814,6 +3817,20 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     if (flex3dActive()) { initFlexAlgo3D(svgEl, mode, { prev, shuffle, prevState }); return; }
     const grouped = topoGroups && mode.sites.length > 0;
     const { nodes, links, sim } = placeTopoNodes(mode, { grouped, prev, shuffle });
+    // Positions carried over from the previous view already include its group scale.
+    const siteByMember = new Map(grouped ? [] : mode.sites.flatMap(s => s.members.map(m => [m, s])));
+    const regroup = from => {
+      const k = topoGroupScale / from;
+      if (k === 1) return;
+      for (const d of nodes) {
+        const s = siteByMember.get(d.id);
+        if (!s) continue;
+        d.x = s.x + (d.x - s.x) * k;
+        d.y = s.y + (d.y - s.y) * k;
+        if (d.fx !== null && d.fx !== undefined) { d.fx = d.x; d.fy = d.y; }
+      }
+    };
+    regroup(prev ? (prevState.groupScale ?? 1) : 1);
     const maxCap = links.reduce((m, l) => Math.max(m, l.c._cap || 0), 0);
     const width = l => (maxCap && l.c._cap ? 1.5 + 3.5 * Math.sqrt(l.c._cap / maxCap) : 2);
     const fixedLayout = mode.kind !== 'force';
@@ -3838,7 +3855,8 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     const colorOf = u => (pal ? paletteColor(pal, u) : null);
     const bandOf = u => (colorOf(u) ? 'u-pal' : utilClass(u));
     const linkColor = l => colorOf(l.c._maxU);
-    const down = l => (isTrue(l.c.Active ?? 'T') && !isTrue(l.c.Failed) ? '' : ' inactive');
+    const down = l => (isTrue(l.c.Active ?? 'T') && !isTrue(l.c.Failed) ? '' : ' inactive') + (l.parallel > 1 ? ' multi' : '');
+    svgEl.classList.toggle('straight', topoCurve === 0);
     const halves = topoDirectional
       ? links.flatMap((l, i) => [{ l, i, half: 'a', u: l.c._uA ?? null }, { l, i, half: 'b', u: l.c._uB ?? null }])
       : [];
@@ -3916,7 +3934,17 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       .on('end', () => svgEl.classList.remove('panning'));
     svg.call(zoom).on('dblclick.zoom', null);
 
-    topoState = { nodes, sites: mode.sites, edges: links, sim, zoom, redraw: ticked, resize: sized, transform: null, nodesByName: new Map(plan.nodes.map(n => [n.Name, n])) };
+    topoState = {
+      nodes, sites: mode.sites, edges: links, sim, zoom, redraw: ticked, resize: sized, transform: null, nodesByName: new Map(plan.nodes.map(n => [n.Name, n])),
+      groupScale: topoGroupScale,
+      regroup: () => {
+        regroup(topoState.groupScale);
+        topoState.groupScale = topoGroupScale;
+        if (fixedLayout) spreadLinks(links, nodes);
+        ticked();
+        sized();
+      },
+    };
     if (prevState && prevState.transform && !shuffle) svg.call(zoom.transform, prevState.transform);
     else fitTopology();
     attachTopologyEvents(svgEl);
@@ -4057,9 +4085,14 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     const names = plan.nodes.map(n => n.Name);
     const big = names.length * panes.length > FA_BIG_SCENE;
     const offsets = fanOffsets(model.circuits, c => [c.NodeA, c.NodeB]);
+    const pairOf = c => nodePairKey(c.NodeA, c.NodeB);
+    const pairCount = new Map();
+    for (const c of model.circuits) pairCount.set(pairOf(c), (pairCount.get(pairOf(c)) || 0) + 1);
+    const multi = k => (pairCount.get(pairOf(model.circuits[k])) > 1 ? ' multi' : '');
 
     const scene = paneScene(svgEl, [...pos.values()]);
     const { root } = scene;
+    svgEl.classList.toggle('straight', topoCurve === 0);
     const span = names.map(n => {
       const idx = panes.map((p, i) => (p.nodes.has(n) ? i : -1)).filter(i => i >= 0);
       return { n, lo: idx.length ? idx[0] : -1, hi: idx.length ? idx[idx.length - 1] : -1 };
@@ -4073,7 +4106,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       const shown = pane.links.map((l, k) => ({ l, k })).filter(({ l }) => !big || l.status !== 'pruned');
       const halves = g.append('g').selectAll('path')
         .data(shown.flatMap(({ l, k }) => [{ l, k, half: 'a', ok: l.a.ok }, { l, k, half: 'b', ok: l.b.ok }])).join('path')
-        .attr('class', d => `fa-half ${d.ok ? 'fa-ok' : 'fa-pruned'}`)
+        .attr('class', d => `fa-half ${d.ok ? 'fa-ok' : 'fa-pruned'}${multi(d.k)}`)
         .attr('data-a', d => d.l.c.NodeA).attr('data-b', d => d.l.c.NodeB)
         .attr('stroke', pane.color);
       const hits = g.append('g').selectAll('path').data(shown).join('path')
@@ -4097,7 +4130,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
         const curveOf = k => {
           if (!curve.has(k)) {
             const c = model.circuits[k];
-            curve.set(k, faCurve(P, pos.get(c.NodeA), pos.get(c.NodeB), offsets[k], i));
+            curve.set(k, faCurve(P, pos.get(c.NodeA), pos.get(c.NodeB), offsets[k] * topoCurve, i));
           }
           return curve.get(k);
         };
@@ -4120,7 +4153,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     topoState = {
       fa: { model, byAlgo: new Map(model.panes.map(p => [p.algo, p])), big },
       nodes: names.map(n => ({ id: n, ...pos.get(n) })), sites: [], edges: [], sim: null, zoom, bounds: scene.bounds(layers.map(l => l.frame)),
-      redraw: draw, resize: draw, transform: null, nodesByName: new Map(plan.nodes.map(n => [n.Name, n])),
+      redraw: draw, resize: draw, transform: null, nodesByName: new Map(plan.nodes.map(n => [n.Name, n])), groupScale: prev ? (prevState.groupScale ?? 1) : 1,
     };
     if (prevState && prevState.transform && !shuffle) scene.svg.call(zoom.transform, prevState.transform);
     else fitTopology();
@@ -4258,7 +4291,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     topoState = {
       l1: { model, nodesByName: l1Rows },
       nodes: names.map(n => ({ id: n, ...l3pos.get(n) })), sites: [], edges: [], sim: null, zoom, bounds: scene.bounds([f1, f3]),
-      redraw: draw, resize: draw, transform: null, nodesByName: l3Rows,
+      redraw: draw, resize: draw, transform: null, nodesByName: l3Rows, groupScale: prev ? (prevState.groupScale ?? 1) : 1,
     };
     if (prevState && prevState.transform && !shuffle) scene.svg.call(zoom.transform, prevState.transform);
     else fitTopology();
@@ -4394,19 +4427,54 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       ${missing.length ? h`<span class="muted">Not in algo ${missing.join(', ')}</span><br>` : ''}<span class="muted">Double-click to open in Nodes</span>`;
   }
 
+  // At straight curvature, parallel circuits overlap, so the tooltip lists every circuit between the two nodes.
   function faLinkTip(algo, i) {
     const pane = topoState.fa.byAlgo.get(algo);
     const l = pane && pane.links[i];
     if (!l) return null;
-    const c = l.c;
-    const procs = [...new Set([l.a, l.b].map(d => d.def && d.def.IGPProcessID).filter(v => !isBlank(v)))];
+    const key = nodePairKey(l.c.NodeA, l.c.NodeB);
+    const ls = topoCurve === 0 ? pane.links.filter(x => nodePairKey(x.c.NodeA, x.c.NodeB) === key) : [l];
+    const procs = [...new Set(ls.flatMap(x => [x.a, x.b]).map(d => d.def && d.def.IGPProcessID).filter(v => !isBlank(v)))];
     const dir = (from, to, d) => (d.ok
       ? h`<b>${from}→${to}</b> <span class="fa-tip-ok">usable</span> · ${d.metricType} metric ${d.metric ?? '—'}<br>`
       : h`<b>${from}→${to}</b> <span class="fa-tip-pruned">pruned</span>: ${d.reason}<br>`);
-    const status = { both: 'usable both ways', 'a-only': `only ${c.NodeA}→${c.NodeB}`, 'b-only': `only ${c.NodeB}→${c.NodeA}`, pruned: 'pruned both ways' }[l.status];
-    return h`<b>${pane.base ? 'Algo 0 (IGP baseline)' : `Algo ${algo}`}</b>${procs.length ? h` <span class="muted">process ${procs.join(', ')}</span>` : ''} · ${status}<br>
-      <b>${c.NodeA}</b> <span class="mono muted">${c.InterfaceA}</span> ↔ <b>${c.NodeB}</b> <span class="mono muted">${c.InterfaceB}</span><br>
-      ${dir(c.NodeA, c.NodeB, l.a)}${dir(c.NodeB, c.NodeA, l.b)}`;
+    const status = x => ({ both: 'usable both ways', 'a-only': `only ${x.c.NodeA}→${x.c.NodeB}`, 'b-only': `only ${x.c.NodeB}→${x.c.NodeA}`, pruned: 'pruned both ways' }[x.status]);
+    const ends = c => h`<b>${c.NodeA}</b> <span class="mono muted">${c.InterfaceA}</span> ↔ <b>${c.NodeB}</b> <span class="mono muted">${c.InterfaceB}</span>`;
+    const title = h`<b>${pane.base ? 'Algo 0 (IGP baseline)' : `Algo ${algo}`}</b>${procs.length ? h` <span class="muted">process ${procs.join(', ')}</span>` : ''}`;
+    if (ls.length === 1) {
+      const c = l.c;
+      return h`${title} · ${status(l)}<br>${ends(c)}<br>${dir(c.NodeA, c.NodeB, l.a)}${dir(c.NodeB, c.NodeA, l.b)}`;
+    }
+    const shown = ls.slice(0, TIP_MAX_CIRCUITS);
+    return h`${title} · ${ls.length} parallel circuits<br>
+      ${shown.map(x => h`${ends(x.c)} · ${status(x)}<br>${dir(x.c.NodeA, x.c.NodeB, x.a)}${dir(x.c.NodeB, x.c.NodeA, x.b)}`)}
+      ${ls.length > shown.length ? h`<span class="muted">+${ls.length - shown.length} more</span>` : ''}`;
+  }
+
+  const TIP_MAX_CIRCUITS = 12;
+  const nodePairKey = (a, b) => [a, b].sort().join('\u0000');
+
+  // Every circuit between the hovered link's two nodes, oriented like the hovered one.
+  function parallelEdgesTip(l0) {
+    const key = nodePairKey(l0.a, l0.b);
+    const ls = topoState.edges.filter(l => !l.circuits && nodePairKey(l.a, l.b) === key);
+    const a = l0.c.NodeA;
+    const b = l0.c.NodeB;
+    const u = v => (v === null || v === undefined ? '—' : `${v.toFixed(1)}%`);
+    const or = v => v ?? '—';
+    const cap = ls.reduce((s, l) => s + (l.c._cap || 0), 0);
+    const down = ls.filter(l => !(isTrue(l.c.Active ?? 'T') && !isTrue(l.c.Failed))).length;
+    const shown = ls.slice(0, TIP_MAX_CIRCUITS);
+    const row = c => {
+      const [ia, ib, ua, ub, ma, mb] = c.NodeA === a
+        ? [c.InterfaceA, c.InterfaceB, c._uA, c._uB, c._ia, c._ib]
+        : [c.InterfaceB, c.InterfaceA, c._uB, c._uA, c._ib, c._ia];
+      return h`<span class="mono">${ia}</span> ↔ <span class="mono">${ib}</span> · ${fmtBw(c._cap) || '—'} · ${a}→${b} ${u(ua)} · ${b}→${a} ${u(ub)} · IGP ${or(ma.IGPMetric)}/${or(mb.IGPMetric)}<br>`;
+    };
+    return h`<b>${a}</b> ↔ <b>${b}</b><br>
+      ${ls.length} parallel circuits${down ? ` (${down} down)` : ''} · total capacity ${fmtBw(cap) || '—'}<br>
+      ${shown.map(l => row(l.c))}
+      ${ls.length > shown.length ? h`<span class="muted">+${ls.length - shown.length} more</span>` : ''}`;
   }
 
   function relayout() { initTopology({ shuffle: true }); }
@@ -4523,6 +4591,8 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
         ${l.circuits.length} circuit${l.circuits.length === 1 ? '' : 's'}${l.up < l.circuits.length ? ` (${l.circuits.length - l.up} down)` : ''} · total capacity ${fmtBw(l.c._cap) || '—'}<br>
         Highest utilisation ${l.c._maxU === null ? '—' : `${l.c._maxU.toFixed(1)}%`}${l.c._maxU === null ? '' : h` on <span class="mono">${worst.NodeA} ${worst.InterfaceA}</span> ↔ <span class="mono">${worst.NodeB} ${worst.InterfaceB}</span>`}<br>
         Highest ${label(l.a)}→${label(l.b)} ${l.c._uA === null ? '—' : `${l.c._uA.toFixed(1)}%`} · ${label(l.b)}→${label(l.a)} ${l.c._uB === null ? '—' : `${l.c._uB.toFixed(1)}%`}`;
+    } else if (edge && topoCurve === 0 && edge.classList.contains('multi')) {
+      content = parallelEdgesTip(topoState.edges[Number(edge.dataset.i)]);
     } else if (edge) {
       const c = topoState.edges[Number(edge.dataset.i)].c;
       const u = v => (v === null ? '—' : `${v.toFixed(1)}%`);
@@ -4622,6 +4692,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     if (e.target.dataset.action === 'topo-curve') {
       topoCurve = Math.max(0, Math.min(3, Number(e.target.value) || 0));
       $('topoCurveValue').textContent = curveLabel(topoCurve);
+      if ($('topo')) $('topo').classList.toggle('straight', topoCurve === 0);
       if (topoState && topoState.redraw) topoState.redraw();
       return;
     }
@@ -4631,8 +4702,14 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       if (topoState && (topoState.fa || topoState.l1)) topoState.redraw();
       return;
     }
+    if (e.target.dataset.action === 'topo-group-scale') {
+      topoGroupScale = Math.max(0.1, Math.min(3, Number(e.target.value) || 1));
+      $('topoGroupScaleValue').textContent = scaleLabel(topoGroupScale);
+      if (topoState && topoState.regroup) topoState.regroup();
+      return;
+    }
     if (e.target.dataset.action === 'topo-node-scale') {
-      topoNodeScale = Math.max(0.3, Math.min(3, Number(e.target.value) || 1));
+      topoNodeScale = Math.max(0.1, Math.min(3, Number(e.target.value) || 1));
       $('topoNodeScaleValue').textContent = scaleLabel(topoNodeScale);
       if (topoState && topoState.redraw) { topoState.redraw(); topoState.resize(); }
       return;
