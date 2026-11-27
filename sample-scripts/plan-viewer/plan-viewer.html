@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-02ftzpfY/wEoTCIvNrq4IHgXeP8YjgpSj3iqyVx9+is=' 'wasm-unsafe-eval'; style-src 'sha256-9APCAAx4RZLl8ICYJ0OSCDV4rbgBJRgGPXwALiiAjOc='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-OMYDMG9ht75oBq5FfjseBQM7se+aTr8xn+vgt4EqaGc=' 'wasm-unsafe-eval'; style-src 'sha256-xpGgkg1n2d+GFVOkHIrhcJIdcwtdWEw3lo1Nwuy7/EI='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
   <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="plan-viewer 1.1.0; sql.js 1.12.0; d3 7.9.2; maplibre-gl 6.18.0; sql-wasm.wasm sha256 083460b3e9d428ebbbbaa03918ba55da33d810e0fb3470d4b5d8677b462b2c2b">
@@ -252,6 +252,7 @@ body.topo-max .topo-wrap svg { height: 100%; }
 .fa-pane-label { font-size: 12px; font-weight: 600; pointer-events: none; }
 .fa-half { fill: none; stroke-width: 3; stroke-linecap: butt; pointer-events: none; }
 .fa-half.fa-pruned { stroke: var(--muted); stroke-opacity: .35; stroke-width: 1.5; stroke-dasharray: 4 4; }
+.topo-wrap svg.straight .fa-half.fa-ok.multi { stroke-dasharray: 10 6; }
 .fa-link { fill: none; stroke: transparent; stroke-width: 10; cursor: pointer; }
 .fa-node circle { fill: #1d3150; stroke-width: 2; cursor: pointer; }
 .fa-node .node-label { font-size: 8px; }
@@ -4058,9 +4059,14 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     const names = plan.nodes.map(n => n.Name);
     const big = names.length * panes.length > FA_BIG_SCENE;
     const offsets = fanOffsets(model.circuits, c => [c.NodeA, c.NodeB]);
+    const pairOf = c => [c.NodeA, c.NodeB].sort().join('\u0000');
+    const pairCount = new Map();
+    for (const c of model.circuits) pairCount.set(pairOf(c), (pairCount.get(pairOf(c)) || 0) + 1);
+    const multi = k => (pairCount.get(pairOf(model.circuits[k])) > 1 ? ' multi' : '');
 
     const scene = paneScene(svgEl, [...pos.values()]);
     const { root } = scene;
+    svgEl.classList.toggle('straight', topoCurve === 0);
     const span = names.map(n => {
       const idx = panes.map((p, i) => (p.nodes.has(n) ? i : -1)).filter(i => i >= 0);
       return { n, lo: idx.length ? idx[0] : -1, hi: idx.length ? idx[idx.length - 1] : -1 };
@@ -4074,7 +4080,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       const shown = pane.links.map((l, k) => ({ l, k })).filter(({ l }) => !big || l.status !== 'pruned');
       const halves = g.append('g').selectAll('path')
         .data(shown.flatMap(({ l, k }) => [{ l, k, half: 'a', ok: l.a.ok }, { l, k, half: 'b', ok: l.b.ok }])).join('path')
-        .attr('class', d => `fa-half ${d.ok ? 'fa-ok' : 'fa-pruned'}`)
+        .attr('class', d => `fa-half ${d.ok ? 'fa-ok' : 'fa-pruned'}${multi(d.k)}`)
         .attr('data-a', d => d.l.c.NodeA).attr('data-b', d => d.l.c.NodeB)
         .attr('stroke', pane.color);
       const hits = g.append('g').selectAll('path').data(shown).join('path')
