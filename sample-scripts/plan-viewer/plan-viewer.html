@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-gOfKEo3KpxolcQ3jKBAkuCPHyryNbAFSXLwqOBQ8fRY=' 'wasm-unsafe-eval'; style-src 'sha256-xpGgkg1n2d+GFVOkHIrhcJIdcwtdWEw3lo1Nwuy7/EI='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-OoSfhI+Kg7hxD5C1ZC/azEsgUxenWgosW4VW/yDcfuc=' 'wasm-unsafe-eval'; style-src 'sha256-xpGgkg1n2d+GFVOkHIrhcJIdcwtdWEw3lo1Nwuy7/EI='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
   <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="plan-viewer 1.1.0; sql.js 1.12.0; d3 7.9.2; maplibre-gl 6.18.0; sql-wasm.wasm sha256 083460b3e9d428ebbbbaa03918ba55da33d810e0fb3470d4b5d8677b462b2c2b">
@@ -4558,6 +4558,39 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     for (const g of svg.querySelectorAll('.node')) if (g.dataset.name === l.a || g.dataset.name === l.b) g.classList.add('nb');
   }
 
+  // Circuits with one end in the site: egress is the inside interfaces' capacity and traffic, ingress the outside ones'.
+  const siteStatsCache = new WeakMap();
+  function siteStats(s) {
+    if (!siteStatsCache.has(plan.derived)) siteStatsCache.set(plan.derived, new WeakMap());
+    const cache = siteStatsCache.get(plan.derived);
+    if (cache.has(s)) return cache.get(s);
+    const inside = new Set(s.members);
+    const st = { circuits: 0, down: 0, internal: 0, egress: { cap: 0, t: 0, known: false }, ingress: { cap: 0, t: 0, known: false } };
+    const add = (dir, ifRow, t, cap) => {
+      dir.cap += num(ifRow.Capacity) ?? cap ?? 0;
+      if (t !== null) { dir.t += t; dir.known = true; }
+    };
+    for (const c of circuitRows()) {
+      const a = inside.has(c.NodeA);
+      const b = inside.has(c.NodeB);
+      if (a && b) { st.internal++; continue; }
+      if (!a && !b) continue;
+      st.circuits++;
+      if (!(isTrue(c.Active ?? 'T') && !isTrue(c.Failed))) st.down++;
+      add(st.egress, a ? c._ia : c._ib, a ? c._tA : c._tB, c._cap);
+      add(st.ingress, a ? c._ib : c._ia, a ? c._tB : c._tA, c._cap);
+    }
+    cache.set(s, st);
+    return st;
+  }
+
+  function siteCapacityTip(s) {
+    const st = siteStats(s);
+    const line = (label, d) => h`${label} <b>${fmtBw(d.cap) || '0'}</b>${d.known ? h` <span class="muted">· traffic ${fmtBw(d.t) || '0'}${d.cap ? ` (${((d.t / d.cap) * 100).toFixed(1)}%)` : ''}</span>` : ''}<br>`;
+    return h`${st.circuits} circuit${st.circuits === 1 ? '' : 's'} leaving the site${st.down ? ` (${st.down} down)` : ''}${st.internal ? ` · ${st.internal} internal` : ''}<br>
+      ${line('Ingress capacity', st.ingress)}${line('Egress capacity', st.egress)}`;
+  }
+
   function showTip(e, tip, wrap) {
     const node = e.target.closest('.node');
     const edge = e.target.closest('.edge');
@@ -4574,7 +4607,16 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       const shown = s.members.slice(0, 12);
       content = h`<b>${s.name}</b> <span class="muted">site</span><br>
         ${s.count} node${s.count === 1 ? '' : 's'}: ${shown.join(', ')}${s.members.length > shown.length ? ` +${s.members.length - shown.length} more` : ''}<br>
-        ${ls.reduce((t, l) => t + l.circuits.length, 0)} circuit(s) to ${ls.length} other group(s)<br><span class="muted">Double-click to list its nodes</span>`;
+        ${ls.reduce((t, l) => t + l.circuits.length, 0)} circuit(s) to ${ls.length} other group(s)<br>
+        ${siteCapacityTip(s)}<span class="muted">Double-click to list its nodes</span>`;
+    } else if (!node && !edge && e.target.closest('.site')) {
+      const s = topoState.sites.find(x => x.name === e.target.closest('.site').dataset.site);
+      if (s) {
+        const shown = s.members.slice(0, 12);
+        content = h`<b>${s.name}</b> <span class="muted">site</span><br>
+          ${s.count} node${s.count === 1 ? '' : 's'}: ${shown.join(', ')}${s.members.length > shown.length ? ` +${s.members.length - shown.length} more` : ''}<br>
+          ${siteCapacityTip(s)}`;
+      }
     } else if (node) {
       const n = topoState.nodesByName.get(node.dataset.name);
       if (!n) return;
