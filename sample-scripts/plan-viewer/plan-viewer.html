@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-OMYDMG9ht75oBq5FfjseBQM7se+aTr8xn+vgt4EqaGc=' 'wasm-unsafe-eval'; style-src 'sha256-xpGgkg1n2d+GFVOkHIrhcJIdcwtdWEw3lo1Nwuy7/EI='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-f5j/rpBaNoA7MJL0mVy52jFksc/zDEulIpuQtazAd6c=' 'wasm-unsafe-eval'; style-src 'sha256-xpGgkg1n2d+GFVOkHIrhcJIdcwtdWEw3lo1Nwuy7/EI='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
   <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="plan-viewer 1.1.0; sql.js 1.12.0; d3 7.9.2; maplibre-gl 6.18.0; sql-wasm.wasm sha256 083460b3e9d428ebbbbaa03918ba55da33d810e0fb3470d4b5d8677b462b2c2b">
@@ -4059,7 +4059,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     const names = plan.nodes.map(n => n.Name);
     const big = names.length * panes.length > FA_BIG_SCENE;
     const offsets = fanOffsets(model.circuits, c => [c.NodeA, c.NodeB]);
-    const pairOf = c => [c.NodeA, c.NodeB].sort().join('\u0000');
+    const pairOf = c => nodePairKey(c.NodeA, c.NodeB);
     const pairCount = new Map();
     for (const c of model.circuits) pairCount.set(pairOf(c), (pairCount.get(pairOf(c)) || 0) + 1);
     const multi = k => (pairCount.get(pairOf(model.circuits[k])) > 1 ? ' multi' : '');
@@ -4401,19 +4401,54 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       ${missing.length ? h`<span class="muted">Not in algo ${missing.join(', ')}</span><br>` : ''}<span class="muted">Double-click to open in Nodes</span>`;
   }
 
+  // At straight curvature, parallel circuits overlap, so the tooltip lists every circuit between the two nodes.
   function faLinkTip(algo, i) {
     const pane = topoState.fa.byAlgo.get(algo);
     const l = pane && pane.links[i];
     if (!l) return null;
-    const c = l.c;
-    const procs = [...new Set([l.a, l.b].map(d => d.def && d.def.IGPProcessID).filter(v => !isBlank(v)))];
+    const key = nodePairKey(l.c.NodeA, l.c.NodeB);
+    const ls = topoCurve === 0 ? pane.links.filter(x => nodePairKey(x.c.NodeA, x.c.NodeB) === key) : [l];
+    const procs = [...new Set(ls.flatMap(x => [x.a, x.b]).map(d => d.def && d.def.IGPProcessID).filter(v => !isBlank(v)))];
     const dir = (from, to, d) => (d.ok
       ? h`<b>${from}→${to}</b> <span class="fa-tip-ok">usable</span> · ${d.metricType} metric ${d.metric ?? '—'}<br>`
       : h`<b>${from}→${to}</b> <span class="fa-tip-pruned">pruned</span>: ${d.reason}<br>`);
-    const status = { both: 'usable both ways', 'a-only': `only ${c.NodeA}→${c.NodeB}`, 'b-only': `only ${c.NodeB}→${c.NodeA}`, pruned: 'pruned both ways' }[l.status];
-    return h`<b>${pane.base ? 'Algo 0 (IGP baseline)' : `Algo ${algo}`}</b>${procs.length ? h` <span class="muted">process ${procs.join(', ')}</span>` : ''} · ${status}<br>
-      <b>${c.NodeA}</b> <span class="mono muted">${c.InterfaceA}</span> ↔ <b>${c.NodeB}</b> <span class="mono muted">${c.InterfaceB}</span><br>
-      ${dir(c.NodeA, c.NodeB, l.a)}${dir(c.NodeB, c.NodeA, l.b)}`;
+    const status = x => ({ both: 'usable both ways', 'a-only': `only ${x.c.NodeA}→${x.c.NodeB}`, 'b-only': `only ${x.c.NodeB}→${x.c.NodeA}`, pruned: 'pruned both ways' }[x.status]);
+    const ends = c => h`<b>${c.NodeA}</b> <span class="mono muted">${c.InterfaceA}</span> ↔ <b>${c.NodeB}</b> <span class="mono muted">${c.InterfaceB}</span>`;
+    const title = h`<b>${pane.base ? 'Algo 0 (IGP baseline)' : `Algo ${algo}`}</b>${procs.length ? h` <span class="muted">process ${procs.join(', ')}</span>` : ''}`;
+    if (ls.length === 1) {
+      const c = l.c;
+      return h`${title} · ${status(l)}<br>${ends(c)}<br>${dir(c.NodeA, c.NodeB, l.a)}${dir(c.NodeB, c.NodeA, l.b)}`;
+    }
+    const shown = ls.slice(0, TIP_MAX_CIRCUITS);
+    return h`${title} · ${ls.length} parallel circuits<br>
+      ${shown.map(x => h`${ends(x.c)} · ${status(x)}<br>${dir(x.c.NodeA, x.c.NodeB, x.a)}${dir(x.c.NodeB, x.c.NodeA, x.b)}`)}
+      ${ls.length > shown.length ? h`<span class="muted">+${ls.length - shown.length} more</span>` : ''}`;
+  }
+
+  const TIP_MAX_CIRCUITS = 12;
+  const nodePairKey = (a, b) => [a, b].sort().join('\u0000');
+
+  // Every circuit between the hovered link's two nodes, oriented like the hovered one.
+  function parallelEdgesTip(l0) {
+    const key = nodePairKey(l0.a, l0.b);
+    const ls = topoState.edges.filter(l => !l.circuits && nodePairKey(l.a, l.b) === key);
+    const a = l0.c.NodeA;
+    const b = l0.c.NodeB;
+    const u = v => (v === null || v === undefined ? '—' : `${v.toFixed(1)}%`);
+    const or = v => v ?? '—';
+    const cap = ls.reduce((s, l) => s + (l.c._cap || 0), 0);
+    const down = ls.filter(l => !(isTrue(l.c.Active ?? 'T') && !isTrue(l.c.Failed))).length;
+    const shown = ls.slice(0, TIP_MAX_CIRCUITS);
+    const row = c => {
+      const [ia, ib, ua, ub, ma, mb] = c.NodeA === a
+        ? [c.InterfaceA, c.InterfaceB, c._uA, c._uB, c._ia, c._ib]
+        : [c.InterfaceB, c.InterfaceA, c._uB, c._uA, c._ib, c._ia];
+      return h`<span class="mono">${ia}</span> ↔ <span class="mono">${ib}</span> · ${fmtBw(c._cap) || '—'} · ${a}→${b} ${u(ua)} · ${b}→${a} ${u(ub)} · IGP ${or(ma.IGPMetric)}/${or(mb.IGPMetric)}<br>`;
+    };
+    return h`<b>${a}</b> ↔ <b>${b}</b><br>
+      ${ls.length} parallel circuits${down ? ` (${down} down)` : ''} · total capacity ${fmtBw(cap) || '—'}<br>
+      ${shown.map(l => row(l.c))}
+      ${ls.length > shown.length ? h`<span class="muted">+${ls.length - shown.length} more</span>` : ''}`;
   }
 
   function relayout() { initTopology({ shuffle: true }); }
@@ -4530,6 +4565,8 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
         ${l.circuits.length} circuit${l.circuits.length === 1 ? '' : 's'}${l.up < l.circuits.length ? ` (${l.circuits.length - l.up} down)` : ''} · total capacity ${fmtBw(l.c._cap) || '—'}<br>
         Highest utilisation ${l.c._maxU === null ? '—' : `${l.c._maxU.toFixed(1)}%`}${l.c._maxU === null ? '' : h` on <span class="mono">${worst.NodeA} ${worst.InterfaceA}</span> ↔ <span class="mono">${worst.NodeB} ${worst.InterfaceB}</span>`}<br>
         Highest ${label(l.a)}→${label(l.b)} ${l.c._uA === null ? '—' : `${l.c._uA.toFixed(1)}%`} · ${label(l.b)}→${label(l.a)} ${l.c._uB === null ? '—' : `${l.c._uB.toFixed(1)}%`}`;
+    } else if (edge && topoCurve === 0 && edge.classList.contains('multi')) {
+      content = parallelEdgesTip(topoState.edges[Number(edge.dataset.i)]);
     } else if (edge) {
       const c = topoState.edges[Number(edge.dataset.i)].c;
       const u = v => (v === null ? '—' : `${v.toFixed(1)}%`);
