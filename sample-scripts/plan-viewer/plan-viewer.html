@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-k+DeZBhKaZFbfqDzvjHCvhVl+M3nmXVYVth4i1kfooE=' 'wasm-unsafe-eval'; style-src 'sha256-9sLPtHoi7gwmvJuhFfSupoVt21tbW5WBc6ieuyf9LYU='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-bHWtXJamCRYP5SNsGxPFz/ZJzeEKm3Bt9bk4hM5qD7Y=' 'wasm-unsafe-eval'; style-src 'sha256-9sLPtHoi7gwmvJuhFfSupoVt21tbW5WBc6ieuyf9LYU='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
   <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="plan-viewer 1.1.0; sql.js 1.12.0; d3 7.9.2; maplibre-gl 6.18.0; sql-wasm.wasm sha256 083460b3e9d428ebbbbaa03918ba55da33d810e0fb3470d4b5d8677b462b2c2b">
@@ -4431,10 +4431,11 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     const wrap = $('topoWrap');
     svg.addEventListener('pointermove', e => { if (!svg.classList.contains('panning')) showTip(e, tip, wrap); });
     svg.addEventListener('pointerleave', () => { tip.style.display = 'none'; });
-    const hoverable = '.node, .fa-node, .l1-link, .l3-link';
+    const hoverable = '.node, .fa-node, .l1-link, .l3-link, .edge';
     const highlight = el => {
       if (topoState && topoState.l1) highlightL1(svg, el);
       else if (topoState && topoState.fa) highlightFaNode(svg, el && el.dataset.name);
+      else if (el && el.classList.contains('edge')) highlightEdge(svg, el);
       else highlightNodeLinks(svg, el && el.dataset.name);
     };
     svg.addEventListener('pointerover', e => {
@@ -4475,6 +4476,18 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       if (g.dataset.name === name) g.classList.add('hover');
       else if (neighbours.has(g.dataset.name)) g.classList.add('nb');
     }
+  }
+
+  // Colours the hovered link, raises it above other links and marks its two end nodes.
+  function highlightEdge(svg, el) {
+    highlightNodeLinks(svg, null);
+    const l = topoState && topoState.edges[Number(el.dataset.i)];
+    if (!l) return;
+    svg.classList.add('node-hover');
+    el.classList.add('hl');
+    // Re-append only when not already last, so moving the hovered element cannot re-trigger pointerover forever.
+    if (el.nextSibling) el.parentNode.appendChild(el);
+    for (const g of svg.querySelectorAll('.node')) if (g.dataset.name === l.a || g.dataset.name === l.b) g.classList.add('nb');
   }
 
   function showTip(e, tip, wrap) {
