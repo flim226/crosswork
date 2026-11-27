@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-f5j/rpBaNoA7MJL0mVy52jFksc/zDEulIpuQtazAd6c=' 'wasm-unsafe-eval'; style-src 'sha256-xpGgkg1n2d+GFVOkHIrhcJIdcwtdWEw3lo1Nwuy7/EI='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Q6H0pOQ6OGmuKQxV5n/+FmZSvcWrpVYeDgTu17+WUe4=' 'sha256-MqS8hVqP38Ri6xZ50DhewoHvxzrHVHzLd3W69CyhowM=' 'sha256-3wTX4+PHmrus+5wNQpxa7Fh9b0jOdwwD/9lgVCyvIyI=' 'sha256-bsCNCsNa6mzpI4zAyZqYYP6y3H3lB3zqfL+MBO3Ai5g=' 'wasm-unsafe-eval'; style-src 'sha256-xpGgkg1n2d+GFVOkHIrhcJIdcwtdWEw3lo1Nwuy7/EI='; img-src 'none'; connect-src https://tiles.openfreemap.org blob:; worker-src blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types plan-viewer default">
   <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="plan-viewer 1.1.0; sql.js 1.12.0; d3 7.9.2; maplibre-gl 6.18.0; sql-wasm.wasm sha256 083460b3e9d428ebbbbaa03918ba55da33d810e0fb3470d4b5d8677b462b2c2b">
@@ -1406,6 +1406,7 @@ uniform ${n} ${r} u_${i};
   let topoDirectional = true;
   let topoCurve = 1;
   let topoNodeScale = 1;
+  let topoGroupScale = 1;
   let topoMax = false;
   let topoMap = false;
   let topoBaseMap = null;
@@ -3341,6 +3342,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
           ${!in3d && mode.kind === 'geo' ? h`<label class="topo-layout" title="Draw an OpenFreeMap map under the topology. Map data is fetched from tiles.openfreemap.org, which sees the area you view."><input type="checkbox" id="topoMap" data-action="topo-map"${topoMap ? h` checked` : ''}> OpenFreeMap</label>` : ''}
           ${!in3d && mode.sites.length ? h`<label class="topo-layout"><input type="checkbox" id="topoGroups" data-action="topo-groups"${topoGroups ? h` checked` : ''}> Show Groups</label>` : ''}
           ${!fa3d ? h`<label class="topo-layout" title="Colour each half of a link by the utilisation leaving its nearer end"><input type="checkbox" id="topoDirectional" data-action="topo-directional"${topoDirectional ? h` checked` : ''}> Directional</label>` : ''}
+          ${!in3d && mode.sites.length && !topoGroups ? h`<label class="topo-layout" title="Spread or tighten the ring of nodes around each site">Group size <input type="range" id="topoGroupScale" min="0.3" max="3" step="0.1" value="${topoGroupScale}" data-action="topo-group-scale"><output id="topoGroupScaleValue" for="topoGroupScale">${scaleLabel(topoGroupScale)}</output></label>` : ''}
           <label class="topo-layout" title="Scale nodes, sites and their labels">Node size <input type="range" id="topoNodeScale" min="0.3" max="3" step="0.1" value="${topoNodeScale}" data-action="topo-node-scale"><output id="topoNodeScaleValue" for="topoNodeScale">${scaleLabel(topoNodeScale)}</output></label>
           ${in3d ? h`<label class="topo-layout" title="Vertical gap between the panes">Pane spacing <input type="range" id="topoPaneGap" min="0.2" max="3" step="0.1" value="${topoPaneGap}" data-action="topo-pane-gap"><output id="topoPaneGapValue" for="topoPaneGap">${scaleLabel(topoPaneGap)}</output></label>` : ''}
           ${!l13d ? h`<label class="topo-layout">Curvature <input type="range" id="topoCurve" min="0" max="3" step="0.1" value="${topoCurve}" data-action="topo-curve"><output id="topoCurveValue" for="topoCurve">${curveLabel(topoCurve)}</output></label>` : ''}
@@ -3726,7 +3728,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
 
   // Halo padding around a site's ring of nodes (node radius 14 + 12), scaled with the nodes.
   const TOPO_HALO_PAD = 26;
-  const haloRadius = s => s.r + TOPO_HALO_PAD * (topoNodeScale - 1);
+  const haloRadius = s => (s.r - TOPO_HALO_PAD) * topoGroupScale + TOPO_HALO_PAD * topoNodeScale;
 
   function topoLinkControl(l) {
     const s = l.source;
@@ -3815,6 +3817,20 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     if (flex3dActive()) { initFlexAlgo3D(svgEl, mode, { prev, shuffle, prevState }); return; }
     const grouped = topoGroups && mode.sites.length > 0;
     const { nodes, links, sim } = placeTopoNodes(mode, { grouped, prev, shuffle });
+    // Positions carried over from the previous view already include its group scale.
+    const siteByMember = new Map(grouped ? [] : mode.sites.flatMap(s => s.members.map(m => [m, s])));
+    const regroup = from => {
+      const k = topoGroupScale / from;
+      if (k === 1) return;
+      for (const d of nodes) {
+        const s = siteByMember.get(d.id);
+        if (!s) continue;
+        d.x = s.x + (d.x - s.x) * k;
+        d.y = s.y + (d.y - s.y) * k;
+        if (d.fx !== null && d.fx !== undefined) { d.fx = d.x; d.fy = d.y; }
+      }
+    };
+    regroup(prev ? (prevState.groupScale ?? 1) : 1);
     const maxCap = links.reduce((m, l) => Math.max(m, l.c._cap || 0), 0);
     const width = l => (maxCap && l.c._cap ? 1.5 + 3.5 * Math.sqrt(l.c._cap / maxCap) : 2);
     const fixedLayout = mode.kind !== 'force';
@@ -3918,7 +3934,17 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       .on('end', () => svgEl.classList.remove('panning'));
     svg.call(zoom).on('dblclick.zoom', null);
 
-    topoState = { nodes, sites: mode.sites, edges: links, sim, zoom, redraw: ticked, resize: sized, transform: null, nodesByName: new Map(plan.nodes.map(n => [n.Name, n])) };
+    topoState = {
+      nodes, sites: mode.sites, edges: links, sim, zoom, redraw: ticked, resize: sized, transform: null, nodesByName: new Map(plan.nodes.map(n => [n.Name, n])),
+      groupScale: topoGroupScale,
+      regroup: () => {
+        regroup(topoState.groupScale);
+        topoState.groupScale = topoGroupScale;
+        if (fixedLayout) spreadLinks(links, nodes);
+        ticked();
+        sized();
+      },
+    };
     if (prevState && prevState.transform && !shuffle) svg.call(zoom.transform, prevState.transform);
     else fitTopology();
     attachTopologyEvents(svgEl);
@@ -4127,7 +4153,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     topoState = {
       fa: { model, byAlgo: new Map(model.panes.map(p => [p.algo, p])), big },
       nodes: names.map(n => ({ id: n, ...pos.get(n) })), sites: [], edges: [], sim: null, zoom, bounds: scene.bounds(layers.map(l => l.frame)),
-      redraw: draw, resize: draw, transform: null, nodesByName: new Map(plan.nodes.map(n => [n.Name, n])),
+      redraw: draw, resize: draw, transform: null, nodesByName: new Map(plan.nodes.map(n => [n.Name, n])), groupScale: prev ? (prevState.groupScale ?? 1) : 1,
     };
     if (prevState && prevState.transform && !shuffle) scene.svg.call(zoom.transform, prevState.transform);
     else fitTopology();
@@ -4265,7 +4291,7 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
     topoState = {
       l1: { model, nodesByName: l1Rows },
       nodes: names.map(n => ({ id: n, ...l3pos.get(n) })), sites: [], edges: [], sim: null, zoom, bounds: scene.bounds([f1, f3]),
-      redraw: draw, resize: draw, transform: null, nodesByName: l3Rows,
+      redraw: draw, resize: draw, transform: null, nodesByName: l3Rows, groupScale: prev ? (prevState.groupScale ?? 1) : 1,
     };
     if (prevState && prevState.transform && !shuffle) scene.svg.call(zoom.transform, prevState.transform);
     else fitTopology();
@@ -4674,6 +4700,12 @@ Incoming: ${st.in} flow${st.in === 1 ? '' : 's'}, ${fmtBw(st.inT) || '0 Mbps'}</
       topoPaneGap = Math.max(0.2, Math.min(3, Number(e.target.value) || 1));
       $('topoPaneGapValue').textContent = scaleLabel(topoPaneGap);
       if (topoState && (topoState.fa || topoState.l1)) topoState.redraw();
+      return;
+    }
+    if (e.target.dataset.action === 'topo-group-scale') {
+      topoGroupScale = Math.max(0.3, Math.min(3, Number(e.target.value) || 1));
+      $('topoGroupScaleValue').textContent = scaleLabel(topoGroupScale);
+      if (topoState && topoState.regroup) topoState.regroup();
       return;
     }
     if (e.target.dataset.action === 'topo-node-scale') {
